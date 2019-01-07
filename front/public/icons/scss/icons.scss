@@ -1,0 +1,13 @@
+/*------------------------
+	icons
+-------------------------*/
+@function unicode($str) {
+  @return unquote("\"\\#{$str}\"");
+}
+
+$icon-home-52: unicode(ea01);
+
+.icon-home-52::before {
+  content: $icon-home-52;
+}
+
