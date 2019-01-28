@@ -16,3 +16,19 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::Resource('/clientes', 'ClienteController');
+Route::Resource('/administracion/companias', 'CompaniaController');
+Route::Resource('/administracion/organizadores', 'OrganizadorController');
+Route::Resource('/administracion/productores', 'ProductorController');
+Route::Resource('/localidades', 'LocalidadController');
+Route::Resource('/codigoorganizador', 'CodigoOrganizadorController');
+Route::Resource('/codigoproductor', 'CodigoProductorController');
+Route::Resource('/cobertura', 'CoberturaController');
+Route::Resource('/tiporiesgo', 'TipoRiesgoController');
+Route::Resource('/tipovigencia', 'TipoVigenciaController');
+Route::Resource('/polizas', 'PolizaController');
+Route::get('/numerosolicitud', 'PolizaController@numeroDeSolicitud');
+Route::get('/codigoorganizador/compania/{id}', 'CodigoOrganizadorController@indexFiltrado');
+Route::get('/codigoproductor/compania/{id}', 'CodigoProductorController@indexFiltrado');
+Route::get('/cobertura/compania/{id}', 'CoberturaController@indexFiltrado');
