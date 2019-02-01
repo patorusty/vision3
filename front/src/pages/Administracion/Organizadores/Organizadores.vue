@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="row mt-5">
+    <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <router-link
@@ -129,23 +129,46 @@
         </card>
       </div>
     </div>
+    <!-- EMPEZO EL MODAL -->
     <modal
       :show.sync="modal.organizadores"
-      headerClasses="justify-content-center"
+      headerClasses=""
     >
-      <h4
-        slot="header"
-        class="title title-up"
-      >Modal title</h4>
-      <p>
-        Far far away, behind the word mountains, far from the countries
-        Vokalia and Consonantia, there live the blind texts. Separated
-        they live in Bookmarksgrove right at the coast of the Semantics,
-        a large language ocean. A small river named Duden flows by their
-        place and supplies it with the necessary regelialia. It is a
-        paradisematic country, in which roasted parts of sentences fly
-        into your mouth.
-      </p>
+      <div class="col-md">
+        <card
+          class="stacked-form"
+          title="Stacked Form"
+        >
+          <h4
+            slot="header"
+            class="card-title"
+          >Stacked Form</h4>
+          <form @submit.prevent>
+            <div>
+              <base-input
+                label="Email address"
+                type="email"
+                placeholder="Enter email"
+              >
+              </base-input>
+              <base-input
+                label="Password"
+                type="password"
+                placeholder="Password"
+              >
+              </base-input>
+              <div class="form-group">
+                <base-checkbox>Subscribe to newsletter</base-checkbox>
+              </div>
+              <base-button
+                class="mt-3"
+                native-type="submit"
+                type="primary"
+              >Submit</base-button>
+            </div>
+          </form>
+        </card>
+      </div>
       <template slot="footer">
         <base-button>Nice Button</base-button>
         <base-button
@@ -155,6 +178,7 @@
         </base-button>
       </template>
     </modal>
+    <!-- TERMINO EL MODAL -->
   </div>
 </template>
 <script>

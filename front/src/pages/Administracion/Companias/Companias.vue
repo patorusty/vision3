@@ -1,11 +1,11 @@
 <template>
   <div class="content">
-    <div class="row mt-5">
+    <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <router-link
             slot="header"
-            to=""
+            to="/administracion/companias/create"
           >
             <base-button
               class="animation-on-hover pull-right"

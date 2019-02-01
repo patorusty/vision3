@@ -39,8 +39,18 @@ let administracion = {
   redirect: '/administracion/companias',
   children: [{
     path: 'companias',
-    name: 'Companias',
+    name: 'Compañias',
     component: require('../pages/Administracion/Companias/Companias.vue').default
+  },
+  {
+    path: 'companias/create',
+    name: 'Crear Compañia',
+    component: require('../pages/Administracion/Companias/Create.vue').default
+  },
+  {
+    path: 'companias/:nombre/edit',
+    name: 'Editar Compania',
+    component: require('../pages/Administracion/Companias/Edit.vue').default
   },
   {
     path: 'organizadores',
@@ -106,6 +116,11 @@ const routes = [{
     path: '/polizas/automotor',
     component: require('../pages/Polizas/Automotor/Automotor.vue').default,
     name: 'Automotor'
+  },
+  {
+    path: '/polizas/automotor/create',
+    component: require('../pages/Polizas/Automotor/Create.vue').default,
+    name: 'Poliza Automotor'
   },
   {
     path: 'siniestros',
