@@ -191,38 +191,40 @@
                   <div class="col-sm-12">
                     <el-table :data="codigoOrganizadoresTable">
                       <el-table-column
-                        min-width="150"
+                        min-width="80"
                         prop="name"
                         label="Apellido"
+                        align="left"
                       >
                         <div slot-scope="{ row }">{{row.organizadores.apellido}}</div>
 
                       </el-table-column>
                       <el-table-column
-                        min-width="200"
+                        min-width="80"
                         prop="job"
                         label="Nombre"
+                        align="left"
                       >
                         <div slot-scope="{ row }">{{row.organizadores.nombre}}</div>
 
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
-                        align="center"
+                        min-width="80"
+                        align="left"
                         label="Matricula"
                       >
                         <div slot-scope="{ row }">{{row.organizadores.matricula}}</div>
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
+                        min-width="80"
                         prop="codigo_organizador"
-                        align="right"
+                        align="left"
                         label="Cod. Organizador"
                       >
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
-                        align="right"
+                        min-width="80"
+                        align="left"
                         label="Activo"
                       >
                         <div slot-scope="{ row }">
@@ -231,9 +233,9 @@
                         </div>
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
+                        min-width="80"
                         header-align="right"
-                        align="right"
+                        align="left"
                         label="Edicion"
                       >
                         <div
@@ -294,45 +296,47 @@
                   <div class="col-sm-12">
                     <el-table :data="codigoProductoresTable">
                       <el-table-column
-                        min-width="150"
+                        min-width="80"
                         label="Apellido"
+                        align="left"
                       >
                         <div slot-scope="{ row }">{{row.productores.apellido}}</div>
 
                       </el-table-column>
                       <el-table-column
-                        min-width="200"
+                        min-width="80"
                         label="Nombre"
+                        align="left"
                       >
                         <div slot-scope="{ row }">{{row.productores.nombre}}</div>
 
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
-                        align="center"
+                        min-width="80"
+                        align="left"
                         label="Matricula"
                       >
                         <div slot-scope="{ row }">{{row.productores.matricula}}</div>
 
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
+                        min-width="80"
                         prop="codigo_productor"
-                        align="right"
+                        align="left"
                         label="Cod. Productor"
                       >
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
-                        align="right"
+                        min-width="90"
+                        align="left"
                         label="Cod. Organizador"
                       >
                         <div slot-scope="{ row }">{{row.codigo_organizador.codigo_organizador}}</div>
 
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
-                        align="right"
+                        min-width="80"
+                        align="left"
                         label="Activo"
                       >
                         <div slot-scope="{ row }">
@@ -341,9 +345,9 @@
                         </div>
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
+                        min-width="80"
                         header-align="right"
-                        align="right"
+                        align="left"
                         label="Edicion"
                       >
                         <div
@@ -404,20 +408,22 @@
                   <div class="col-sm-12">
                     <el-table :data="coberturasTable">
                       <el-table-column
-                        min-width="150"
+                        min-width="80"
                         prop="nombre"
                         label="Nombre"
+                        align="left"
                       >
                       </el-table-column>
                       <el-table-column
-                        min-width="200"
+                        min-width="80"
                         prop="antiguedad"
                         label="Antiguedad"
+                        align="left"
                       >
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
-                        align="center"
+                        min-width="80"
+                        align="left"
                         label="Todo Riesgo"
                       >
                         <div slot-scope="{ row }">
@@ -426,22 +432,22 @@
                         </div>
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
+                        min-width="80"
                         prop="franquicia"
-                        align="right"
+                        align="left"
                         label="Franquicia"
                       >
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
+                        min-width="80"
                         prop="ajuste"
-                        align="right"
+                        align="left"
                         label="Ajuste"
                       >
                       </el-table-column>
                       <el-table-column
-                        min-width="150"
-                        align="right"
+                        min-width="80"
+                        align="left"
                         label="Activa"
                       >
                         <div slot-scope="{ row }">
