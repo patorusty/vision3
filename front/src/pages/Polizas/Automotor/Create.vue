@@ -3,7 +3,9 @@
     <form @submit.prevent="crearPoliza">
       <div class="page-header no-margin-bottom">
         <div class="container-fluid">
-          <h2 class="h5 no-margin-bottom">CREAR POLIZA</h2>
+          <div class="row">
+            <h4 class="text-primary pl-3">CREAR POLIZA </h4>
+          </div>
         </div>
       </div>
       <div class="container-fluid">
@@ -14,13 +16,13 @@
                 <card class="stacked-form">
                   <form @submit.prevent>
                     <div class="row">
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label
-                            for="cliente"
-                            class="control-label"
-                          >Cliente</label>
-                          <div class="mb-1">
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label
+                              for="cliente"
+                              class="control-label"
+                            >Cliente</label>
                             <select
                               name='cliente_id'
                               class="form-control form-control-sm mb-1"
@@ -35,14 +37,10 @@
                               >{{cliente.apellido}}
                                 {{cliente.nombre}} //DNI:{{cliente.nro_dni}}</option>
                             </select>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="riesgo"
-                            class=" control-label"
-                          >Riesgo</label>
-                          <div class=" mb-1">
+                            <label
+                              for="riesgo"
+                              class=" control-label"
+                            >Riesgo</label>
                             <select
                               name='tipo_riesgo_id'
                               class="form-control form-control-sm select2"
@@ -55,14 +53,10 @@
                                 v-bind:value="tipo_riesgo.id"
                               >{{tipo_riesgo.nombre}}</option>
                             </select>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="compania"
-                            class=" control-label"
-                          >Compañia</label>
-                          <div class=" mb-1">
+                            <label
+                              for="compania"
+                              class=" control-label"
+                            >Compañia</label>
                             <select
                               name='compania_id'
                               class="form-control form-control-sm select2"
@@ -77,14 +71,13 @@
                                 v-bind:value="compania.id"
                               >{{compania.nombre}}</option>
                             </select>
+
                           </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="codigo_productor_id"
-                            class=" control-label"
-                          >Codigo Productor</label>
-                          <div class=" mb-1">
+                          <div class="col-md-6">
+                            <label
+                              for="codigo_productor_id"
+                              class=" control-label"
+                            >Codigo Productor</label>
                             <select
                               name='codigo_productor_id'
                               class="form-control form-control-sm select2"
@@ -99,17 +92,10 @@
                                 {{codigo_productor.productores.nombre}}
                                 ((Cod.{{codigo_productor.codigo_productor}}))</option>
                             </select>
-                          </div>
-                        </div>
-
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label
-                            for="numero"
-                            class=" control-label"
-                          >Poliza N:</label>
-                          <div class="mb-1">
+                            <label
+                              for="numero"
+                              class=" control-label"
+                            >Poliza N:</label>
                             <input
                               type="text"
                               class="form-control form-control-sm"
@@ -118,14 +104,22 @@
                               v-model="poliza.numero"
                               placeholder=""
                             >
+
+                            <label
+                              for="numero_solicitud"
+                              class=""
+                            >Nro de Solicitud:</label>
+                            <p>{{poliza.numero_solicitud}}</p>
                           </div>
                         </div>
-                        <div class="form-group">
-                          <label
-                            for="tipo_vigencia_id"
-                            class=" control-label"
-                          >Vigencia</label>
-                          <div class="mb-1">
+                      </div>
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <label
+                              for="tipo_vigencia_id"
+                              class=" control-label"
+                            >Vigencia</label>
                             <select
                               name='tipo_vigencia_id'
                               class="form-control form-control-sm "
@@ -139,14 +133,10 @@
                                 v-bind:value="tipo_vigencia.id"
                               >{{tipo_vigencia.vigencia}}</option>
                             </select>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="vigencia_desde"
-                            class=" control-label"
-                          >Desde:</label>
-                          <div class="mb-1">
+                            <label
+                              for="vigencia_desde"
+                              class=" control-label"
+                            >Desde:</label>
                             <input
                               type="date"
                               class="form-control form-control-sm"
@@ -154,14 +144,10 @@
                               name="vigencia_desde"
                               v-model="poliza.vigencia_desde"
                             >
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="vigencia_hasta"
-                            class=" control-label"
-                          >Hasta:</label>
-                          <div class="">
+                            <label
+                              for="vigencia_hasta"
+                              class=" control-label"
+                            >Hasta:</label>
                             <input
                               type="date"
                               class="form-control form-control-sm"
@@ -170,25 +156,12 @@
                               v-model="poliza.vigencia_hasta"
                             >
                           </div>
-                        </div>
 
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label
-                            for="numero_solicitud"
-                            class=""
-                          >Nro de Solicitud:</label>
-                          <div class="mb-1">
-                            <p>{{poliza.numero_solicitud}}</p>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="fecha_solicitud"
-                            class=" control-label"
-                          >Fecha de Solicitud:</label>
-                          <div class="mb-1">
+                          <div class="col-md-4">
+                            <label
+                              for="fecha_solicitud"
+                              class=" control-label"
+                            >Fecha de Solicitud:</label>
                             <input
                               type="date"
                               class="form-control form-control-sm"
@@ -196,14 +169,10 @@
                               name="fecha_solicitud"
                               v-model="poliza.fecha_solicitud"
                             >
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="fecha_emision"
-                            class=" control-label"
-                          >Emision:</label>
-                          <div class="mb-1">
+                            <label
+                              for="fecha_emision"
+                              class=" control-label"
+                            >Emision:</label>
                             <input
                               type="date"
                               class="form-control form-control-sm"
@@ -211,17 +180,10 @@
                               name="fecha_emision"
                               v-model="poliza.fecha_emision"
                             >
-                          </div>
-                        </div>
-
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label
-                            for="fecha_recepcion"
-                            class=" control-label"
-                          >Recepcion:</label>
-                          <div class="mb-1">
+                            <label
+                              for="fecha_recepcion"
+                              class=" control-label"
+                            >Recepcion:</label>
                             <input
                               type="date"
                               class="form-control form-control-sm"
@@ -229,14 +191,14 @@
                               name="fecha_recepcion"
                               v-model="poliza.fecha_recepcion"
                             >
+
                           </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="fecha_entrega_original"
-                            class=" control-label"
-                          >Entrega de Original:</label>
-                          <div class="mb-1">
+
+                          <div class="col-md-4">
+                            <label
+                              for="fecha_entrega_original"
+                              class=" control-label"
+                            >Entrega de Original:</label>
                             <input
                               type="date"
                               class="form-control form-control-sm"
@@ -244,14 +206,10 @@
                               name="fecha_entrega_original"
                               v-model="poliza.fecha_entrega_original"
                             >
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="fecha_entrega_email"
-                            class=" control-label"
-                          >Envio x Email:</label>
-                          <div class="mb-1">
+                            <label
+                              for="fecha_entrega_email"
+                              class=" control-label"
+                            >Envio x Email:</label>
                             <input
                               type="date"
                               class="form-control form-control-sm"
@@ -259,14 +217,10 @@
                               name="fecha_entrega_email"
                               v-model="poliza.fecha_entrega_email"
                             >
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label
-                            for="fecha_entrega_correo"
-                            class=" control-label"
-                          >Envio x Correo:</label>
-                          <div class="mb-1">
+                            <label
+                              for="fecha_entrega_correo"
+                              class=" control-label"
+                            >Envio x Correo:</label>
                             <input
                               type="date"
                               class="form-control form-control-sm"
@@ -275,8 +229,8 @@
                               v-model="poliza.fecha_entrega_correo"
                             >
                           </div>
-                        </div>
 
+                        </div>
                       </div>
                     </div>
                   </form>
@@ -286,102 +240,84 @@
           </div>
         </div>
         <div class="row ">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="card p-3">
               <div class="row">
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label
-                      for="premio"
-                      class="control-label"
-                    >Premio:</label>
-                    <div class="mb-1">
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        id="premio"
-                        name="premio"
-                        v-model="poliza.premio"
-                      >
-                    </div>
-                  </div>
+                  <label
+                    for="premio"
+                    class="control-label"
+                  >Premio:</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="premio"
+                    name="premio"
+                    v-model="poliza.premio"
+                  >
                 </div>
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label
-                      for="prima"
-                      class="control-label"
-                    >Prima:</label>
-                    <div class="mb-1">
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        id="prima"
-                        name="prima"
-                        v-model="poliza.prima"
-                      >
-                    </div>
-                  </div>
+                  <label
+                    for="prima"
+                    class="control-label"
+                  >Prima:</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="prima"
+                    name="prima"
+                    v-model="poliza.prima"
+                  >
                 </div>
               </div>
               <div class="row">
 
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label
-                      for="prima"
-                      class="control-label"
-                    >Comision:</label>
-                    <div class="mb-1">
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        id="comision"
-                        value="0"
-                        name="comision"
-                        v-model="poliza.comision"
-                      >
-                    </div>
-                  </div>
+                  <label
+                    for="prima"
+                    class="control-label"
+                  >Comision:</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="comision"
+                    value="0"
+                    name="comision"
+                    v-model="poliza.comision"
+                  >
                 </div>
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label
-                      for="descuento"
-                      class="control-label"
-                    >Descuento:</label>
-                    <div class="mb-1">
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        id="descuento"
-                        name="descuento"
-                        v-model="poliza.descuento"
-                      >
-                    </div>
-                  </div>
+                  <label
+                    for="descuento"
+                    class="control-label"
+                  >Descuento:</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="descuento"
+                    name="descuento"
+                    v-model="poliza.descuento"
+                  >
                 </div>
               </div>
             </div>
             <div class="row">
-
-              <div class="col-md-6 pt-md-4 mt-md-">
+              <div class="col-md-6 ">
                 <button
                   type="submit"
                   class="btn btn-primary"
                 >Crear</button>
               </div>
-
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="card p-3">
-              <div class="form-group">
-                <label
-                  for="medio_pago"
-                  class=" control-label"
-                >Medio de Pago:</label>
-                <div class=" mb-1">
+              <div class="row">
+                <div class="col-6">
+                  <label
+                    for="medio_pago"
+                    class=" control-label"
+                  >Medio de Pago:</label>
                   <select
                     name='medio_pago'
                     class="form-control form-control-sm "
@@ -391,16 +327,12 @@
                     <option value='DC'>DEBITO EN CUENTA</option>
                     <option value='EFT'>PAGO EFECTIVO / PAGO FACIL</option>
                   </select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-8">
-                  <div class="form-group">
-                    <label
-                      for="plan_pago"
-                      class=" control-label"
-                    >Plan de Pago:</label>
-                    <div class=" mb-1">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <label
+                        for="plan_pago"
+                        class=" control-label"
+                      >Plan de Pago:</label>
                       <select
                         name='plan_pago'
                         class="form-control form-control-sm"
@@ -412,15 +344,11 @@
                         <option value='TOTAL'>TOTAL</option>
                       </select>
                     </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label
-                      for="cantidad_cuotas"
-                      class=" control-label"
-                    >Cant. Cuotas:</label>
-                    <div class=" mb-1">
+                    <div class="col-md-4">
+                      <label
+                        for="cantidad_cuotas"
+                        class=" control-label"
+                      >Cant. Cuotas:</label>
                       <input
                         type="text"
                         class=" form-control form-control-sm"
@@ -431,23 +359,18 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="">
-
-                <div class="form-group">
+                <div class="col-md-6">
                   <label
                     for="detalle_medio_pago"
                     class="control-label"
                   >Detalle:</label>
-                  <div class="">
-                    <textarea
-                      class="form-control form-control mb-1"
-                      rows="3"
-                      id="detalle_medio_pago"
-                      name='detalle_medio_pago'
-                      v-model="poliza.detalle_medio_pago"
-                    ></textarea>
-                  </div>
+                  <textarea
+                    class="form-control form-control"
+                    rows="3"
+                    id="detalle_medio_pago"
+                    name='detalle_medio_pago'
+                    v-model="poliza.detalle_medio_pago"
+                  ></textarea>
                 </div>
               </div>
             </div>
