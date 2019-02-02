@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="page-header no-margin-bottom">
       <div class="container-fluid">
-        <h2 class="h5 no-margin-bottom">CREAR COMPAÑIA</h2>
+        <h4 class="text-primary">CREAR COMPAÑIA</h4>
       </div>
     </div>
     <form @submit.prevent="crearCompania()">
@@ -92,51 +92,55 @@
                     >
                     </base-input>
 
-                    <div class="form-group">
-                      <p class="category col-sm ">Localidad</p>
-                      <div class="col-md-12">
-                        <select
-                          name='localidad_id'
-                          class="form-control form-control-sm"
-                          value='localidad_id'
-                          v-model="compania.localidad_id"
-                        >
-                          <option
-                            v-for="localidad in localidades"
-                            :key="localidad.id"
-                            v-bind:value='localidad.id'
-                          >{{localidad.nombre}} / CP: {{localidad.codigo_postal}}</option>
-                        </select>
-                      </div>
-                    </div>
+                    <label>Localidad</label>
+                    <select
+                      name='localidad_id'
+                      class="form-control form-control"
+                      value='localidad_id'
+                      v-model="compania.localidad_id"
+                    >
+                      <option
+                        v-for="localidad in localidades"
+                        :key="localidad.id"
+                        v-bind:value='localidad.id'
+                      >{{localidad.nombre}} / CP: {{localidad.codigo_postal}}</option>
+                    </select>
 
                   </div>
 
                   <div class="col-md-4">
-                    <label>Telefono Oficina</label>
-                    <base-input
-                      type="text"
-                      placeholder="Telefono Oficina"
-                      v-model="compania.telefono_1"
-                      addon-left-icon="tim-icons icon-mobile"
-                    >
-                    </base-input>
-                    <label>Telefono Auxilio</label>
-                    <base-input
-                      type="text"
-                      placeholder="Telefono Auxilio"
-                      v-model="compania.telefono_aux"
-                      addon-left-icon="tim-icons icon-mobile"
-                    >
-                    </base-input>
-                    <label>Telefono Siniestros</label>
-                    <base-input
-                      type="text"
-                      placeholder="Telefono Siniestros"
-                      v-model="compania.telefono_siniestros"
-                      addon-left-icon="tim-icons icon-mobile"
-                    >
-                    </base-input>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label>Telefono Oficina</label>
+                        <base-input
+                          type="text"
+                          placeholder="Telefono Oficina"
+                          v-model="compania.telefono_1"
+                          addon-left-icon="tim-icons icon-mobile"
+                        >
+                        </base-input>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Telefono Auxilio</label>
+                        <base-input
+                          type="text"
+                          placeholder="Telefono Auxilio"
+                          v-model="compania.telefono_aux"
+                          addon-left-icon="tim-icons icon-mobile"
+                        >
+                        </base-input>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Telefono Siniestros</label>
+                        <base-input
+                          type="text"
+                          placeholder="Telefono Siniestros"
+                          v-model="compania.telefono_siniestros"
+                          addon-left-icon="tim-icons icon-mobile"
+                        >
+                        </base-input>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-md-4">
                     <label>Email Emision</label>
@@ -166,7 +170,7 @@
                 <button
                   type="submit"
                   class="btn btn-primary ladda-button"
-                > Guardar </button>
+                > Crear </button>
               </div>
             </div>
           </div>
@@ -234,12 +238,10 @@ export default {
         .catch(e => console.log(e));
     },
     cargarLocalidades() {
-      axios
-        .get('http://127.0.0.1:8000/api/localidades')
-        .then(function(response) {
-          console.log(response.data.data);
-          this.localidades = response.data.data;
-        });
+      axios.get('http://127.0.0.1:8000/api/localidades').then(response => {
+        this.dataLoaded = true;
+        this.localidades = response.data.data;
+      });
     }
   },
   created() {

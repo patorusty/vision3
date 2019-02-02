@@ -2,7 +2,10 @@
   <div class="container-fluid">
     <div class="page-header no-margin-bottom">
       <div class="container-fluid">
-        <h2 class="h5 no-margin-bottom">EDITAR COMPAÑIA</h2>
+        <div class="row">
+          <h4 class="text-primary">EDITAR / </h4>
+          <h4 class=""> {{compania.nombre}}</h4>
+        </div>
       </div>
     </div>
     <form @submit.prevent="crearCompania()">
@@ -91,52 +94,54 @@
                       v-model="compania.direccion"
                     >
                     </base-input>
-
-                    <!-- <div class="form-group">
-                      <p class="category col-sm ">Localidad</p>
-                      <div class="col-md-12">
-                        <select
-                          name='localidad_id'
-                          class="form-control form-control-sm"
-                          value='localidad_id'
-                          v-model="compania.localidad_id"
-                        >
-                          <option
-                            v-for="localidad in localidades"
-                            :key="localidad.id"
-                            v-bind:value='localidad.id'
-                          >{{localidad.nombre}} / CP: {{localidad.codigo_postal}}</option>
-                        </select>
-                      </div>
-                    </div> -->
-
+                    <label>Localidad</label>
+                    <select
+                      name='localidad_id'
+                      class="form-control form-control"
+                      value='localidad_id'
+                      v-model="compania.localidad_id"
+                    >
+                      <option
+                        v-for="localidad in localidades"
+                        :key="localidad.id"
+                        v-bind:value='localidad.id'
+                      >{{localidad.nombre}} / CP: {{localidad.codigo_postal}}
+                      </option>
+                    </select>
                   </div>
-
                   <div class="col-md-4">
-                    <label>Telefono Oficina</label>
-                    <base-input
-                      type="text"
-                      placeholder="Telefono Oficina"
-                      v-model="compania.telefono_1"
-                      addon-left-icon="tim-icons icon-mobile"
-                    >
-                    </base-input>
-                    <label>Telefono Auxilio</label>
-                    <base-input
-                      type="text"
-                      placeholder="Telefono Auxilio"
-                      v-model="compania.telefono_aux"
-                      addon-left-icon="tim-icons icon-mobile"
-                    >
-                    </base-input>
-                    <label>Telefono Siniestros</label>
-                    <base-input
-                      type="text"
-                      placeholder="Telefono Siniestros"
-                      v-model="compania.telefono_siniestros"
-                      addon-left-icon="tim-icons icon-mobile"
-                    >
-                    </base-input>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label>Telefono Oficina</label>
+                        <base-input
+                          type="text"
+                          placeholder="Telefono Oficina"
+                          v-model="compania.telefono_1"
+                          addon-left-icon="tim-icons icon-mobile"
+                        >
+                        </base-input>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Telefono Auxilio</label>
+                        <base-input
+                          type="text"
+                          placeholder="Telefono Auxilio"
+                          v-model="compania.telefono_aux"
+                          addon-left-icon="tim-icons icon-mobile"
+                        >
+                        </base-input>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Telefono Siniestros</label>
+                        <base-input
+                          type="text"
+                          placeholder="Telefono Siniestros"
+                          v-model="compania.telefono_siniestros"
+                          addon-left-icon="tim-icons icon-mobile"
+                        >
+                        </base-input>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-md-4">
                     <label>Email Emision</label>
@@ -171,8 +176,16 @@
 
               <!-- ACA EMPIEZA LA TABLA DE CODIGO ORGANIZADOR -->
               <card>
-                <div slot="header">
-                  <h4 class="card-title">CODIGOS ORGANIZADOR</h4>
+                <div
+                  class="col-sm-12"
+                  slot="header"
+                >
+                  <h4 class="d-inline align-bottom text-primary">CODIGOS ORGANIZADOR</h4>
+                  <base-button
+                    type="primary"
+                    size="sm"
+                    class="float-right"
+                  >Crear</base-button>
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -182,33 +195,40 @@
                         prop="name"
                         label="Apellido"
                       >
+                        <div slot-scope="{ row }">{{row.organizadores.apellido}}</div>
+
                       </el-table-column>
                       <el-table-column
                         min-width="200"
                         prop="job"
                         label="Nombre"
                       >
+                        <div slot-scope="{ row }">{{row.organizadores.nombre}}</div>
+
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="since"
                         align="center"
                         label="Matricula"
                       >
+                        <div slot-scope="{ row }">{{row.organizadores.matricula}}</div>
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="salary"
+                        prop="codigo_organizador"
                         align="right"
                         label="Cod. Organizador"
                       >
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="salary"
                         align="right"
                         label="Activo"
                       >
+                        <div slot-scope="{ row }">
+                          <div v-if="row.activo == 1">SI</div>
+                          <div v-else>NO</div>
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="150"
@@ -235,7 +255,7 @@
                               size="sm"
                               class="btn-link"
                             >
-                              <i class="tim-icons icon-refresh-01"></i>
+                              <i class="tim-icons icon-pencil"></i>
                             </base-button>
                           </el-tooltip>
                           <el-tooltip
@@ -263,50 +283,62 @@
               <!-- ACA EMPIEZA LA TABLA DE CODIGO PRODUCTOR -->
               <card>
                 <div slot="header">
-                  <h4 class="card-title">CODIGOS PRODUCTOR</h4>
+                  <h4 class="d-inline align-bottom text-primary">CODIGOS PRODUCTOR</h4>
+                  <base-button
+                    type="primary"
+                    size="sm"
+                    class="float-right"
+                  >Crear</base-button>
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
                     <el-table :data="codigoProductoresTable">
                       <el-table-column
                         min-width="150"
-                        prop="name"
                         label="Apellido"
                       >
+                        <div slot-scope="{ row }">{{row.productores.apellido}}</div>
+
                       </el-table-column>
                       <el-table-column
                         min-width="200"
-                        prop="job"
                         label="Nombre"
                       >
+                        <div slot-scope="{ row }">{{row.productores.nombre}}</div>
+
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="since"
                         align="center"
                         label="Matricula"
                       >
+                        <div slot-scope="{ row }">{{row.productores.matricula}}</div>
+
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="salary"
+                        prop="codigo_productor"
                         align="right"
                         label="Cod. Productor"
                       >
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="salary"
                         align="right"
                         label="Cod. Organizador"
                       >
+                        <div slot-scope="{ row }">{{row.codigo_organizador.codigo_organizador}}</div>
+
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="salary"
                         align="right"
                         label="Activo"
                       >
+                        <div slot-scope="{ row }">
+                          <div v-if="row.activo == 1">SI</div>
+                          <div v-else>NO</div>
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="150"
@@ -333,7 +365,7 @@
                               size="sm"
                               class="btn-link"
                             >
-                              <i class="tim-icons icon-refresh-01"></i>
+                              <i class="tim-icons icon-pencil"></i>
                             </base-button>
                           </el-tooltip>
                           <el-tooltip
@@ -361,50 +393,61 @@
               <!-- ACA EMPIEZA COBERTURAS -->
               <card>
                 <div slot="header">
-                  <h4 class="card-title">COBERTURAS</h4>
+                  <h4 class="d-inline align-bottom text-primary">COBERTURAS</h4>
+                  <base-button
+                    type="primary"
+                    size="sm"
+                    class="float-right"
+                  >Crear</base-button>
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
                     <el-table :data="coberturasTable">
                       <el-table-column
                         min-width="150"
-                        prop="name"
+                        prop="nombre"
                         label="Nombre"
                       >
                       </el-table-column>
                       <el-table-column
                         min-width="200"
-                        prop="job"
+                        prop="antiguedad"
                         label="Antiguedad"
                       >
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="since"
                         align="center"
                         label="Todo Riesgo"
                       >
+                        <div slot-scope="{ row }">
+                          <div v-if="row.todo_riesgo == 1">SI</div>
+                          <div v-else>NO</div>
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="salary"
+                        prop="franquicia"
                         align="right"
                         label="Franquicia"
                       >
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="salary"
+                        prop="ajuste"
                         align="right"
                         label="Ajuste"
                       >
                       </el-table-column>
                       <el-table-column
                         min-width="150"
-                        prop="salary"
                         align="right"
                         label="Activa"
                       >
+                        <div slot-scope="{ row }">
+                          <div v-if="row.activo == 1">SI</div>
+                          <div v-else>NO</div>
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="150"
@@ -431,7 +474,7 @@
                               size="sm"
                               class="btn-link"
                             >
-                              <i class="tim-icons icon-refresh-01"></i>
+                              <i class="tim-icons icon-pencil"></i>
                             </base-button>
                           </el-tooltip>
                           <el-tooltip
@@ -482,39 +525,9 @@ export default {
   },
   data() {
     return {
-      codigoOrganizadoresTable: [
-        {
-          id: 1,
-          img: 'img/tania.jpg',
-          name: 'Tania Mike',
-          job: 'Develop',
-          progress: 25,
-          since: 2013,
-          salary: '€ 99,225'
-        }
-      ],
-      codigoProductoresTable: [
-        {
-          id: 1,
-          img: 'img/tania.jpg',
-          name: 'Tania Mike',
-          job: 'Develop',
-          progress: 25,
-          since: 2013,
-          salary: '€ 99,225'
-        }
-      ],
-      coberturasTable: [
-        {
-          id: 1,
-          img: 'img/tania.jpg',
-          name: 'Tania Mike',
-          job: 'Develop',
-          progress: 25,
-          since: 2013,
-          salary: '€ 99,225'
-        }
-      ],
+      codigoOrganizadoresTable: [],
+      codigoProductoresTable: [],
+      coberturasTable: [],
       modelValidations: {
         email: {
           required: true,
@@ -527,7 +540,9 @@ export default {
       },
 
       compania: {},
-      // localidades: {},
+      nombreCompania: this.$route.params.nombre,
+
+      localidades: {},
       images: {
         regular: null
       },
@@ -560,7 +575,7 @@ export default {
                 this.compania.id
             )
             .then(response => {
-              this.codigo_organizadores = response.data.data;
+              this.codigoOrganizadoresTable = response.data.data;
             })
             .catch(err => {
               console.log(err);
@@ -571,7 +586,7 @@ export default {
                 this.compania.id
             )
             .then(response => {
-              this.codigo_productores = response.data.data;
+              this.codigoProductoresTable = response.data.data;
             })
             .catch(err => {
               console.log(err);
@@ -581,7 +596,7 @@ export default {
               'http://127.0.0.1:8000/api/cobertura/compania/' + this.compania.id
             )
             .then(response => {
-              this.coberturas = response.data.data;
+              this.coberturasTable = response.data.data;
             })
             .catch(err => {
               console.log(err);
@@ -609,11 +624,10 @@ export default {
     //FIN - FUNCIONES COMPANIA //
 
     cargarLocalidades() {
-      axios
-        .get('http://127.0.0.1:8000/api/localidades')
-        .then(function(response) {
-          this.localidades = response.data.data;
-        });
+      axios.get('http://127.0.0.1:8000/api/localidades').then(response => {
+        this.dataLoaded = true;
+        this.localidades = response.data.data;
+      });
     },
     vaciarForm() {
       this.modoEditar = false;
@@ -687,11 +701,117 @@ export default {
     // FIN - FUNCIONES CODIGO ORGANIZADOR //
 
     // FUNCIONES CODIGO PRODUCTOR //
-
+    cargarCodigo_Productor() {
+      axios
+        .get(
+          'http://127.0.0.1:8000/api/codigoproductor/compania/' +
+            this.compania.id
+        )
+        .then(response => {
+          this.dataLoaded = true;
+          this.codigo_productores = response.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    crearCodigo_Productor() {
+      this.codigo_productor.compania_id = this.compania.id;
+      axios
+        .post(
+          'http://127.0.0.1:8000/api/codigoproductor',
+          self.codigo_productor
+        )
+        .then(() => {
+          $('#modalcodigoproductor').modal('hide');
+          this.codigo_productor = {};
+          this.codigo_productor.activo = true;
+          this.cargarCodigo_Productor();
+        })
+        .catch(e => console.log(e));
+    },
+    updateCodigo_Productor(id) {
+      axios
+        .put(
+          'http://127.0.0.1:8000/api/codigoproductor/' + id,
+          this.codigo_productor
+        )
+        .then(() => {
+          $('#modalcodigoproductor').modal('hide');
+          this.cargarCodigo_Productor();
+          console.log('listo!');
+        })
+        .catch(e => console.log(e));
+    },
+    editarCodigo_Productor(id) {
+      (this.modoEditar = true), $('#modalcodigoproductor').modal('show');
+      axios
+        .get('http://127.0.0.1:8000/api/codigoproductor/' + id)
+        .then(function(response) {
+          self.codigo_productor = response.data.data;
+        })
+        .catch(e => console.log(e));
+    },
+    borrarCodigo_Productor(id) {
+      axios
+        .delete('http://127.0.0.1:8000/api/codigoproductor/' + id)
+        .then(() => {
+          this.cargarCodigo_Productor();
+          console.log('borado!');
+        });
+    },
     // FIN - FUNCIONES CODIGO PRODUCTOR
 
     // FUNCIONES COBERTURAS //
-
+    cargarCobertura() {
+      axios
+        .get('http://127.0.0.1:8000/api/cobertura/' + this.compania.id)
+        .then(response => {
+          this.dataLoaded = true;
+          this.coberturas = response.data.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    crearCobertura() {
+      this.cobertura.compania_id = this.compania.id;
+      axios
+        .post('http://127.0.0.1:8000/api/cobertura', this.cobertura)
+        .then(() => {
+          $('#modalcobertura').modal('hide');
+          this.cobertura = {};
+          this.cobertura.activo = true;
+          this.cargarCobertura();
+        })
+        .catch(e => console.log(e));
+    },
+    updateCobertura(id) {
+      axios
+        .put('http://127.0.0.1:8000/api/cobertura/' + id, this.cobertura)
+        .then(() => {
+          $('#modalcobertura').modal('hide');
+          this.cargarCobertura();
+          console.log('listo!');
+        })
+        .catch(e => console.log(e));
+    },
+    editarCobertura(id) {
+      (this.modoEditar = true), $('#modalcobertura').modal('show');
+      axios
+        .get('http://127.0.0.1:8000/api/cobertura/' + id)
+        .then(function(response) {
+          console.log(response.data.data);
+          this.cobertura = response.data.data;
+        })
+        .catch(e => console.log(e));
+    },
+    borrarCobertura(id) {
+      axios.delete('http://127.0.0.1:8000/api/cobertura/' + id).then(() => {
+        this.cargarCobertura();
+        console.log('borado!');
+      });
+    },
     //FIN - FUNCIONES COBERTURAS //
 
     cargarOrganizadores() {

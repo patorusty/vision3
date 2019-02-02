@@ -75,15 +75,7 @@
                 label="Actions"
               >
                 <div slot-scope="props">
-                  <base-button
-                    @click.native="handleLike(props.$index, props.row);"
-                    class="remove btn-link"
-                    type="info"
-                    size="sm"
-                    icon
-                  >
-                    <i class="tim-icons icon-heart-2"></i>
-                  </base-button>
+
                   <base-button
                     @click.native="handleEdit(props.$index, props.row);"
                     class="edit btn-link"
@@ -93,6 +85,7 @@
                   >
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
+
                   <base-button
                     @click.native="handleDelete(props.$index, props.row);"
                     class="remove btn-link"
