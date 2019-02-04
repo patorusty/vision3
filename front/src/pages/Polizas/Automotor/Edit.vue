@@ -4,7 +4,8 @@
       <div class="page-header no-margin-bottom">
         <div class="container-fluid">
           <div class="row">
-            <h4 class="text-primary pl-3">CREAR POLIZA </h4>
+            <h4 class="text-primary pl-3">POLIZA / </h4>
+            <h4 class=""> {{poliza.numero}}</h4>
           </div>
         </div>
       </div>
@@ -378,15 +379,160 @@
         </div>
       </div>
     </form>
+    <!-- TABLA RIESGO -->
+    <div class="col-md-12">
+      <card class="mt-4 ">
+        <div
+          class="col-sm-12 row align-items-center"
+          slot="header"
+        >
+          <div class="col">
+            <h4 class="d-inline text-primary ">RIESGO</h4>
+          </div>
+          <div class="center row ">
+            <p class="">
+              Flota </p>
+            <base-switch
+              v-model="switches.defaultOn"
+              type="primary"
+              on-text="No"
+              off-text="Si"
+            ></base-switch>
+          </div>
+          <div class="col">
+            <base-button
+              type="primary"
+              size="sm"
+              class=" d-inline float-right "
+            >Agregar</base-button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <el-table>
+              <el-table-column
+                min-width="150"
+                prop=""
+                label="Marca / Modelo / Version"
+                align="left"
+              >
+
+              </el-table-column>
+              <el-table-column
+                min-width="80"
+                prop=""
+                label="Patente"
+                align="left"
+              >
+
+              </el-table-column>
+              <el-table-column
+                min-width="80"
+                align="left"
+                label="Motor"
+              >
+              </el-table-column>
+              <el-table-column
+                min-width="80"
+                prop=""
+                align="left"
+                label="Chasis"
+              >
+              </el-table-column>
+              <el-table-column
+                min-width="80"
+                align="left"
+                label="Tipo"
+              >
+              </el-table-column>
+              <el-table-column
+                min-width="80"
+                align="left"
+                label="Cobertura"
+              >
+              </el-table-column>
+              <el-table-column
+                min-width="80"
+                align="left"
+                label="Franquicia"
+              >
+              </el-table-column>
+              <el-table-column
+                min-width="80"
+                header-align="right"
+                align="left"
+                label="Edicion"
+              >
+                <div
+                  slot-scope="{
+                  row,
+                  $index
+                }"
+                  class="text-right table-actions"
+                >
+                  <el-tooltip
+                    content="Refresh"
+                    effect="light"
+                    :open-delay="300"
+                    placement="top"
+                  >
+                    <base-button
+                      :type="$index > 2 ? 'success' : 'neutral'"
+                      icon
+                      size="sm"
+                      class="btn-link"
+                    >
+                      <i class="tim-icons icon-pencil"></i>
+                    </base-button>
+                  </el-tooltip>
+                  <el-tooltip
+                    content="Delete"
+                    effect="light"
+                    :open-delay="300"
+                    placement="top"
+                  >
+                    <base-button
+                      :type="$index > 2 ? 'danger' : 'neutral'"
+                      icon
+                      size="sm"
+                      class="btn-link"
+                    >
+                      <i class="tim-icons icon-simple-remove"></i>
+                    </base-button>
+                  </el-tooltip>
+                </div>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+      </card>
+    </div>
+    <!-- !TABLA RIESGO -->
+
   </div>
 
 </template>
 <script>
 import axios from 'axios';
+import { Table, TableColumn } from 'element-ui';
+
+import {
+  BaseProgress,
+  BaseSwitch,
+  ImageUpload,
+  TagsInput
+} from 'src/components/index';
 
 export default {
+  components: {
+    [Table.name]: Table,
+    [TableColumn.name]: TableColumn,
+    ImageUpload,
+    BaseSwitch
+  },
   data() {
     return {
+      tipo_riesgosTable: [],
       poliza: {
         cliente_id: '',
         tipo_riesgo_id: '',
@@ -394,11 +540,11 @@ export default {
         codigo_productor_id: '',
         numero: '',
         tipo_vigencia_id: '',
-        vigencia_desde: new Date().toISOString().slice(0, 10),
+        vigencia_desde: '',
         vigencia_hasta: '',
         numero_solicitud: '',
-        estado_poliza_id: 1,
-        fecha_solicitud: new Date().toISOString().slice(0, 10),
+        estado_poliza_id: '',
+        fecha_solicitud: '',
         fecha_emision: '',
         fecha_recepcion: '',
         fecha_entrega_original: '',
@@ -406,21 +552,26 @@ export default {
         fecha_entrega_correo: '',
         premio: '',
         prima: '',
-        comision: '0',
-        descuento: '0',
+        comision: '',
+        descuento: '',
         medio_pago: '',
         plan_pago: '',
-        cantidad_cuotas: '12',
-        detalle_medio_pago: ''
+        cantidad_cuotas: '',
+        detalle_medio_pago: '',
+        flota: ''
       },
-      //   cliente: {},
+      cliente: {},
       clientes: {},
       companias: {},
       compania: {},
       tipo_riesgos: {},
       codigo_productores: {},
       tipo_vigencias: {},
-      codigo_productor: {}
+      numeroSolicitud: this.$route.params.numero_solicitud,
+      switches: {
+        defaultOn: true,
+        defaultOff: false
+      }
     };
   },
   methods: {
@@ -452,22 +603,46 @@ export default {
         .slice(0, 10);
     },
 
-    cargarUltimoNumeroSolicitud() {
-      axios.get('http://127.0.0.1:8000/api/numerosolicitud').then(response => {
-        this.poliza.numero_solicitud =
-          response.data.data[0].numero_solicitud + 1;
-      });
-    },
-    crearPoliza() {
-      this.poliza.numero_solicitud = this.poliza.numero_solicitud;
+    //     sumarSoloMes(mes){
+    //        this.poliza.vigencia_hasta = addMonths(this.poliza.vigencia_desde, mes)
+    //         .toISOString()
+    //         .slice(0, 10);
+    //     },
 
+    cargarPoliza() {
       axios
-        .post('http://127.0.0.1:8000/api/polizas', this.poliza)
+        .get('http://127.0.0.1:8000/api/polizas/' + this.numeroSolicitud)
+        .then(response => {
+          this.poliza = response.data.data[0];
+          //   console.log(this.poliza.compania_id);
+          axios
+            .get(
+              'http://127.0.0.1:8000/api/codigoproductor/compania/' +
+                this.poliza.compania_id
+            )
+            .then(response => {
+              // console.log(response.data.data);
+              this.codigo_productores = response.data.data;
+            })
+            .catch(err => {
+              // console.log(err);
+            });
+        });
+    },
+    updatePoliza() {
+      axios
+        .put(
+          'http://127.0.0.1:8000/api/polizas/' + this.numeroSolicitud,
+          this.poliza
+        )
         .then(() => {
-          this.poliza = {};
-          $router.push('http://127.0.0.1:8000/polizas');
-        })
-        .catch(e => console.log(e));
+          console.log('update ok');
+          windows.location.replace(
+            'http://127.0.0.1:8000/api/polizas/' +
+              this.numeroSolicitud +
+              '/edit'
+          );
+        });
     },
     cargarClientes() {
       axios.get('http://127.0.0.1:8000/api/clientes').then(response => {
@@ -491,25 +666,27 @@ export default {
           this.companias = response.data.data;
         });
     },
-    cargarCodigos_Productor(id) {
+    cargarCodigos_ProductorOnChange(id) {
       axios
         .get('http://127.0.0.1:8000/api/codigoproductor/compania/' + id)
         .then(response => {
+          // console.log(response.data.data);
           this.codigo_productores = response.data.data;
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     }
   },
 
   created() {
+    this.cargarPoliza();
     this.cargarClientes();
     this.cargarTipo_Riesgos();
     this.cargarCompanias();
     this.cargarTipo_Vigencias();
-    this.cargarUltimoNumeroSolicitud();
-    this.sumarMes();
-  }
+    //     this.cargarCodigos_Productor();
+  },
+  mounted() {}
 };
 </script>
