@@ -39,7 +39,7 @@ let administracion = {
   redirect: '/administracion/companias',
   children: [{
     path: 'companias',
-    name: 'Compañias',
+    name: 'Companias',
     component: require('../pages/Administracion/Companias/Companias.vue').default
   },
   {

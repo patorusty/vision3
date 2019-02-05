@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <form @submit.prevent="crearCompania()">
+    <form @submit.prevent="updateCompania()">
       <div class="block">
         <div class="block-body">
           <div class="row">
@@ -55,7 +55,7 @@
                         <label>Compañia Activa?</label>
                         <base-input>
                           <base-switch
-                            v-model="switches.defaultOn"
+                            v-model="compania.activo"
                             type="primary"
                             on-text="ON"
                             off-text="OFF"
@@ -252,6 +252,7 @@
                             placement="top"
                           >
                             <base-button
+                              @click.native="handleEdit(props.$nombre, props.row);"
                               :type="$index > 2 ? 'success' : 'neutral'"
                               icon
                               size="sm"
@@ -267,6 +268,7 @@
                             placement="top"
                           >
                             <base-button
+                              @click.native="handleDelete(props.$index, props.row);"
                               :type="$index > 2 ? 'danger' : 'neutral'"
                               icon
                               size="sm"
@@ -515,6 +517,7 @@
 <script>
 import axios from 'axios';
 import { Table, TableColumn } from 'element-ui';
+import swal from 'sweetalert2';
 
 import {
   BaseProgress,
@@ -551,14 +554,34 @@ export default {
       localidades: {},
       images: {
         regular: null
-      },
-      switches: {
-        defaultOn: true,
-        defaultOff: false
       }
     };
   },
   methods: {
+    handleDelete(index, row) {
+      swal({
+        title: 'Are you sure?',
+        text: `You won't be able to revert this!`,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-success btn-fill',
+        cancelButtonClass: 'btn btn-danger btn-fill',
+        confirmButtonText: 'Yes, delete it!',
+        buttonsStyling: false
+      }).then(result => {
+        if (result.value) {
+          this.deleteRow(row);
+          swal({
+            title: 'Deleted!',
+            text: `You deleted ${row.nombre}`,
+            type: 'success',
+            confirmButtonClass: 'btn btn-success btn-fill',
+            buttonsStyling: false
+          });
+        }
+      });
+    },
+
     getError(fieldName) {
       return this.errors.first(fieldName);
     },
@@ -609,7 +632,6 @@ export default {
             });
         });
     },
-
     updateCompania() {
       axios
         .put(
@@ -618,12 +640,19 @@ export default {
           this.compania
         )
         .then(() => {
+          swal({
+            title: `Cambios guardados!`,
+            // text: 'You clicked the button!',
+            buttonsStyling: false,
+            confirmButtonClass: 'btn btn-success btn-fill',
+            type: 'success'
+          });
           console.log('update ok');
-          window.location.replace(
-            'http://127.0.0.1:8000/administracion/companias/' +
-              this.compania.nombre +
-              '/edit'
-          );
+          // window.location.replace(
+          //   'http://127.0.0.1:8000/administracion/companias/' +
+          //     this.compania.nombre +
+          //     '/edit'
+          // );
         });
     },
 
@@ -839,7 +868,7 @@ export default {
   created() {
     this.cargarLocalidades();
     this.cargarCompania();
-    // this.cargarCobertura();
+    this.cargarCobertura();
   }
 };
 </script>

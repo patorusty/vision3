@@ -393,10 +393,10 @@
             <p class="">
               Flota </p>
             <base-switch
-              v-model="switches.defaultOn"
+              v-model="poliza.flota"
               type="primary"
-              on-text="No"
-              off-text="Si"
+              on-text="NO"
+              off-text="SI"
             ></base-switch>
           </div>
           <div class="col">
@@ -567,11 +567,7 @@ export default {
       tipo_riesgos: {},
       codigo_productores: {},
       tipo_vigencias: {},
-      numeroSolicitud: this.$route.params.numero_solicitud,
-      switches: {
-        defaultOn: true,
-        defaultOff: false
-      }
+      numeroSolicitud: this.$route.params.numero_solicitud
     };
   },
   methods: {

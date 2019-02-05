@@ -8,18 +8,18 @@
         <a
           href="http://element.eleme.io/#/en-US/component/table"
           target="_blank"
-          >Element UI Table</a
-        >
+        >Element UI Table</a>
       </p>
     </div>
     <div class="row mt-5">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <h4 slot="header" class="card-title">Paginated Tables</h4>
+          <h4
+            slot="header"
+            class="card-title"
+          >Paginated Tables</h4>
           <div>
-            <div
-              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-            >
+            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
               <el-select
                 class="select-primary mb-3 pagination-select"
                 v-model="pagination.perPage"
@@ -57,7 +57,11 @@
                 :label="column.label"
               >
               </el-table-column>
-              <el-table-column :min-width="135" align="right" label="Actions">
+              <el-table-column
+                :min-width="135"
+                align="right"
+                label="Actions"
+              >
                 <div slot-scope="props">
                   <base-button
                     @click.native="handleLike(props.$index, props.row);"
@@ -109,8 +113,9 @@
           </div>
         </card>
       </div>
-    </div></div
-></template>
+    </div>
+  </div>
+</template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
@@ -201,20 +206,20 @@ export default {
     },
     handleEdit(index, row) {
       swal({
-        title: `You want to edit ${row.name}`,
+        title: `You want to edit ${row.nombre}`,
         buttonsStyling: false,
         confirmButtonClass: 'btn btn-info btn-fill'
       });
     },
     handleDelete(index, row) {
       swal({
-        title: 'Are you sure?',
-        text: `You won't be able to revert this!`,
+        title: 'Estás seguro que queres borrar el registro?',
+        text: `Esto no se puede revertir`,
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-success btn-fill',
         cancelButtonClass: 'btn btn-danger btn-fill',
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'Sí, Eliminalo',
         buttonsStyling: false
       }).then(result => {
         if (result.value) {

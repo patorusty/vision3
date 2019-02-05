@@ -3,30 +3,9 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <router-link
-            slot="header"
-            to="/administracion/companias/create"
-          >
-            <base-button
-              class="animation-on-hover pull-right"
-              type="primary"
-            >Crear</base-button>
-          </router-link>
+
           <div>
             <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
-              <el-select
-                class="select-primary mb-3 pagination-select"
-                v-model="pagination.perPage"
-                placeholder="Per page"
-              >
-                <el-option
-                  class="select-primary"
-                  v-for="item in pagination.perPageOptions"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
               <base-input>
                 <el-input
                   type="search"
@@ -38,6 +17,15 @@
                   aria-controls="datatables"
                 ></el-input>
               </base-input>
+              <router-link
+                slot="header"
+                to="/administracion/companias/create"
+              >
+                <base-button
+                  class="animation-on-hover pull-right"
+                  type="primary"
+                >Crear</base-button>
+              </router-link>
             </div>
             <el-table :data="queriedData">
               <el-table-column
@@ -106,6 +94,19 @@
             <div class>
               <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
             </div>
+            <el-select
+              class="select-primary mb-3 pagination-select"
+              v-model="pagination.perPage"
+              placeholder="Per page"
+            >
+              <el-option
+                class="select-primary"
+                v-for="item in pagination.perPageOptions"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
+            </el-select>
             <base-pagination
               class="pagination-no-border"
               v-model="pagination.currentPage"
@@ -123,6 +124,7 @@ import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import Fuse from 'fuse.js';
 import axios from 'axios';
+import swal from 'sweetalert2';
 
 export default {
   components: {
@@ -175,11 +177,52 @@ export default {
     };
   },
   methods: {
+    handleDelete(index, row) {
+      swal({
+        title: 'Estás seguro que queres borrar el registro?',
+        text: `Esto no se puede revertir`,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-success btn-fill',
+        cancelButtonClass: 'btn btn-danger btn-fill',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Sí, Eliminalo',
+        buttonsStyling: false
+      }).then(result => {
+        if (result.value) {
+          this.deleteRow(row);
+          swal({
+            title: 'Eliminado!',
+            text: `Vos eliminaste ${row.nombre}`,
+            type: 'success',
+            confirmButtonClass: 'btn btn-success btn-fill',
+            buttonsStyling: false
+          });
+        }
+      });
+    },
+    deleteRow(row) {
+      axios
+        .delete('http://127.0.0.1:8000/api/administracion/companias/' + row.id)
+        .then(() => {
+          console.log('borado!');
+        });
+      let indexToDelete = this.tableData.findIndex(
+        tableRow => tableRow.id === row.id
+      );
+      if (indexToDelete >= 0) {
+        this.tableData.splice(indexToDelete, 1);
+      }
+    },
+    handleEdit(index, row) {
+      this.$router.push({
+        path: `/administracion/companias/${row.nombre}/edit`
+      });
+    },
     cargaPolizas() {
       axios
         .get('http://127.0.0.1:8000/api/administracion/companias/')
         .then(response => {
-          console.log(response.data.data);
           this.dataLoaded = true;
           this.tableData = response.data.data;
         });

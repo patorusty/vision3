@@ -52,7 +52,7 @@
                         <label>Compañia Activa?</label>
                         <base-input>
                           <base-switch
-                            v-model="switches.defaultOn"
+                            v-model="compania.activo"
                             type="primary"
                             on-text="ON"
                             off-text="OFF"
@@ -210,10 +210,6 @@ export default {
       localidades: {},
       images: {
         regular: null
-      },
-      switches: {
-        defaultOn: true,
-        defaultOff: false
       }
     };
   },
@@ -233,7 +229,7 @@ export default {
         .then(() => {
           this.compania = {};
           this.compania.activo = true;
-          router.push('http://127.0.0.1:8000/administracion/companias');
+          this.$router.push({ name: 'Companias' });
         })
         .catch(e => console.log(e));
     },
