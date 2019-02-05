@@ -4,14 +4,21 @@
       class="fileinput-new thumbnail"
       :class="{ 'img-circle': type === 'avatar' }"
     >
-      <img :src="image" alt="preview" />
+      <img
+        :src="image"
+        alt="preview"
+      />
     </div>
     <div>
       <span class="btn btn-primary btn-simple btn-file">
         <span class="fileinput-new">{{
           fileExists ? changeText : selectText
-        }}</span>
-        <input type="hidden" value="" name="" />
+          }}</span>
+        <input
+          type="hidden"
+          value=""
+          name=""
+        />
         <input
           accept="image/*"
           @change="handlePreview"
@@ -22,7 +29,12 @@
           aria-invalid="false"
         />
       </span>
-      <base-button v-if="fileExists" @click="removeFile" round type="danger">
+      <base-button
+        v-if="fileExists"
+        @click="removeFile"
+        round
+        type="danger"
+      >
         <i class="fas fa-times"></i> {{ removeText }}
       </base-button>
     </div>
@@ -57,7 +69,7 @@ export default {
   },
   data() {
     let avatarPlaceholder = 'img/placeholder.jpg';
-    let imgPlaceholder = 'img/image_placeholder.jpg';
+    let imgPlaceholder = 'image_placeholder.jpg';
     return {
       placeholder: this.type === 'avatar' ? avatarPlaceholder : imgPlaceholder,
       imagePreview: null

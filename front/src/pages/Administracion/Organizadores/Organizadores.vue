@@ -1,23 +1,18 @@
 <template>
   <div class="content">
-    <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">Paginated Tables</h2>
-      <p class="text-center">
-        With a selection of custom components & and Element UI components, you
-        can built beautiful data tables. For more info check
-        <a
-          href="http://element.eleme.io/#/en-US/component/table"
-          target="_blank"
-        >Element UI Table</a>
-      </p>
-    </div>
-    <div class="row mt-5">
+    <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <h4
+          <router-link
             slot="header"
-            class="card-title"
-          >Paginated Tables</h4>
+            to=""
+          >
+            <base-button
+              class="animation-on-hover pull-right"
+              type="primary"
+              @click.native="modal.organizadores = true"
+            >Crear</base-button>
+          </router-link>
           <div>
             <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
               <el-select
@@ -31,41 +26,64 @@
                   :key="item"
                   :label="item"
                   :value="item"
-                >
-                </el-option>
+                ></el-option>
               </el-select>
-
               <base-input>
                 <el-input
                   type="search"
                   class="mb-3 search-input"
                   clearable
                   prefix-icon="el-icon-search"
-                  placeholder="Search records"
+                  placeholder="Buscar"
                   v-model="searchQuery"
                   aria-controls="datatables"
-                >
-                </el-input>
+                ></el-input>
               </base-input>
             </div>
             <el-table :data="queriedData">
               <el-table-column
-                v-for="column in tableColumns"
-                :key="column.label"
-                :min-width="column.minWidth"
-                :prop="column.prop"
-                :label="column.label"
+                label="Apellido"
+                prop="apellido"
+                sortable
+                :min-width="80"
+              ></el-table-column>
+              <el-table-column
+                label="Nombre"
+                prop="nombre"
+                :min-width="80"
+              ></el-table-column>
+              <el-table-column
+                label="Cuit"
+                prop="cuit"
+                :min-width="80"
+              ></el-table-column>
+              <el-table-column
+                label="Email"
+                prop="email"
+                :min-width="100"
+              ></el-table-column>
+              <el-table-column
+                label="Celular"
+                prop="telefono_2"
+                :min-width="80"
+              ></el-table-column>
+              <el-table-column
+                label="Activo"
+                prop="activo"
               >
+                <div slot-scope="{ row }">
+                  <div v-if="row.activo == 1">SI</div>
+                  <div v-else>NO</div>
+                </div>
               </el-table-column>
               <el-table-column
-                :min-width="135"
                 align="right"
                 label="Actions"
               >
                 <div slot-scope="props">
                   <base-button
                     @click.native="handleLike(props.$index, props.row);"
-                    class="like btn-link"
+                    class="remove btn-link"
                     type="info"
                     size="sm"
                     icon
@@ -98,38 +116,86 @@
             slot="footer"
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
-            <div class="">
-              <p class="card-category">
-                Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
-              </p>
+            <div class>
+              <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
             </div>
             <base-pagination
               class="pagination-no-border"
               v-model="pagination.currentPage"
               :per-page="pagination.perPage"
               :total="total"
-            >
-            </base-pagination>
+            ></base-pagination>
           </div>
         </card>
       </div>
     </div>
+    <!-- EMPEZO EL MODAL -->
+    <modal
+      :show.sync="modal.organizadores"
+      headerClasses=""
+    >
+      <div class="col-md">
+        <card
+          class="stacked-form"
+          title="Stacked Form"
+        >
+          <h4
+            slot="header"
+            class="card-title"
+          >Stacked Form</h4>
+          <form @submit.prevent>
+            <div>
+              <base-input
+                label="Email address"
+                type="email"
+                placeholder="Enter email"
+              >
+              </base-input>
+              <base-input
+                label="Password"
+                type="password"
+                placeholder="Password"
+              >
+              </base-input>
+              <div class="form-group">
+                <base-checkbox>Subscribe to newsletter</base-checkbox>
+              </div>
+              <base-button
+                class="mt-3"
+                native-type="submit"
+                type="primary"
+              >Submit</base-button>
+            </div>
+          </form>
+        </card>
+      </div>
+      <template slot="footer">
+        <base-button>Nice Button</base-button>
+        <base-button
+          type="danger"
+          @click.native="modals.classic = false;"
+        >Close
+        </base-button>
+      </template>
+    </modal>
+    <!-- TERMINO EL MODAL -->
   </div>
 </template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
-import users from './users';
 import Fuse from 'fuse.js';
-import swal from 'sweetalert2';
-
+import axios from 'axios';
+import { Modal, BaseAlert } from 'src/components';
 export default {
   components: {
     BasePagination,
     [Select.name]: Select,
     [Option.name]: Option,
     [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [TableColumn.name]: TableColumn,
+    Modal,
+    BaseAlert
   },
   computed: {
     /***
@@ -167,88 +233,33 @@ export default {
         total: 0
       },
       searchQuery: '',
-      propsToSearch: ['name', 'email', 'age'],
-      tableColumns: [
-        {
-          prop: 'name',
-          label: 'Name',
-          minWidth: 200
-        },
-        {
-          prop: 'email',
-          label: 'Email',
-          minWidth: 250
-        },
-        {
-          prop: 'age',
-          label: 'Age',
-          minWidth: 100
-        },
-        {
-          prop: 'salary',
-          label: 'Salary',
-          minWidth: 120
-        }
-      ],
-      tableData: users,
+      propsToSearch: [],
+      tableData: [],
       searchedData: [],
-      fuseSearch: null
+      fuseSearch: null,
+      modal: {
+        organizadores: false
+      }
     };
   },
   methods: {
-    handleLike(index, row) {
-      swal({
-        title: `You liked ${row.name}`,
-        buttonsStyling: false,
-        type: 'success',
-        confirmButtonClass: 'btn btn-success btn-fill'
-      });
-    },
-    handleEdit(index, row) {
-      swal({
-        title: `You want to edit ${row.nombre}`,
-        buttonsStyling: false,
-        confirmButtonClass: 'btn btn-info btn-fill'
-      });
-    },
-    handleDelete(index, row) {
-      swal({
-        title: 'Estás seguro que queres borrar el registro?',
-        text: `Esto no se puede revertir`,
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonClass: 'btn btn-success btn-fill',
-        cancelButtonClass: 'btn btn-danger btn-fill',
-        confirmButtonText: 'Sí, Eliminalo',
-        buttonsStyling: false
-      }).then(result => {
-        if (result.value) {
-          this.deleteRow(row);
-          swal({
-            title: 'Deleted!',
-            text: `You deleted ${row.name}`,
-            type: 'success',
-            confirmButtonClass: 'btn btn-success btn-fill',
-            buttonsStyling: false
-          });
-        }
-      });
-    },
-    deleteRow(row) {
-      let indexToDelete = this.tableData.findIndex(
-        tableRow => tableRow.id === row.id
-      );
-      if (indexToDelete >= 0) {
-        this.tableData.splice(indexToDelete, 1);
-      }
+    cargaPolizas() {
+      axios
+        .get('http://127.0.0.1:8000/api/administracion/organizadores/')
+        .then(response => {
+          console.log(response.data.data);
+          this.dataLoaded = true;
+          this.tableData = response.data.data;
+        });
     }
   },
   mounted() {
-    // Fuse search initialization.
     this.fuseSearch = new Fuse(this.tableData, {
-      keys: ['name', 'email'],
+      keys: [],
       threshold: 0.3
     });
+
+    this.cargaPolizas();
   },
   watch: {
     /**
@@ -266,9 +277,3 @@ export default {
   }
 };
 </script>
-<style>
-.pagination-select,
-.search-input {
-  width: 200px;
-}
-</style>

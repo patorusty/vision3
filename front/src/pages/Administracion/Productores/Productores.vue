@@ -1,9 +1,17 @@
 <template>
   <div class="content">
-    <div class="row mt-5">
+    <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <router-link slot="header" to="/polizas/create"><base-button class="animation-on-hover pull-right" type="primary">Crear</base-button></router-link>
+          <router-link
+            slot="header"
+            to=""
+          >
+            <base-button
+              class="animation-on-hover pull-right"
+              type="primary"
+            >Crear</base-button>
+          </router-link>
           <div>
             <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
               <el-select
@@ -32,77 +40,72 @@
               </base-input>
             </div>
             <el-table :data="queriedData">
-              <el-table-column label="Poliza" prop="numero" sortable :min-width="50"></el-table-column>
-              <!-- <el-table-column label="Patente"></el-table-column> -->
-              <el-table-column label="Compania">
-                <div slot-scope="{ row }">{{row.companias.nombre}} ({{row.codigo_productor.codigo_productor}})</div>
-              </el-table-column>
-              <el-table-column label="Cliente" sortable :min-width="100">
+              <el-table-column
+                label="Apellido"
+                prop="apellido"
+                sortable
+                :min-width="80"
+              ></el-table-column>
+              <el-table-column
+                label="Nombre"
+                prop="nombre"
+                :min-width="80"
+              ></el-table-column>
+              <el-table-column
+                label="Cuit"
+                prop="cuit"
+                :min-width="80"
+              ></el-table-column>
+              <el-table-column
+                label="Email"
+                prop="email"
+                :min-width="100"
+              ></el-table-column>
+              <el-table-column
+                label="Celular"
+                prop="telefono_2"
+                :min-width="80"
+              ></el-table-column>
+              <el-table-column
+                label="Activo"
+                prop="activo"
+              >
                 <div slot-scope="{ row }">
-                  <router-link
-                    v-if="row.clientes.razon_social === null"
-                    to="#"
-                  >{{ row.clientes.nombre }} {{ row.clientes.apellido }}</router-link>
-                  <router-link v-else to="#">{{ row.clientes.razon_social }}</router-link>
+                  <div v-if="row.activo == 1">SI</div>
+                  <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column label="Vigencia" :min-width="60" prop="tipo_vigencias.vigencia"></el-table-column>
-              <el-table-column label="Desde / Hasta" :min-width="90">
-                <div slot-scope="{ row }">{{row.vigencia_desde}} / {{row.vigencia_hasta}}</div>
-              </el-table-column>
-              <el-table-column label="Estado" prop="estado_polizas.nombre" :min-width="100"></el-table-column>
-              <el-table-column label="Envio">
-                <div slot-scope="{ row }">
-                  <div
-                    v-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null"
-                  >Recibida</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null"
-                  >Entregada</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null"
-                  >Correo</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null"
-                  >Email</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null"
-                  >Entregada / Correo</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null"
-                  >Entregada / Email</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null"
-                  >Correo / Email</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null"
-                  >Entregada / Correo / Email</div>
-                  <div v-else>No recibida</div>
-                </div>
-              </el-table-column>
-              <el-table-column label="F. Pago" prop="medio_pago" :min-width="50"></el-table-column>
-              <el-table-column align="right" label="Actions">
-                <div>
+              <el-table-column
+                align="right"
+                label="Actions"
+              >
+                <div slot-scope="props">
                   <base-button
+                    @click.native="handleLike(props.$index, props.row);"
                     class="remove btn-link"
                     type="info"
                     size="sm"
-                    icon>
-                    <i class="tim-icons icon-pencil"></i>
+                    icon
+                  >
+                    <i class="tim-icons icon-heart-2"></i>
                   </base-button>
                   <base-button
+                    @click.native="handleEdit(props.$index, props.row);"
                     class="edit btn-link"
-                    type="danger"
+                    type="warning"
                     size="sm"
-                    icon>
+                    icon
+                  >
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
                   <base-button
+                    @click.native="handleDelete(props.$index, props.row);"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
-                    icon>
-                    <i class="tim-icons icon-trash-simple"></i>
+                    icon
+                  >
+                    <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </div>
               </el-table-column>
@@ -177,7 +180,7 @@ export default {
         total: 0
       },
       searchQuery: '',
-      propsToSearch: ['numero', 'medio_pago'],
+      propsToSearch: [],
       tableData: [],
       searchedData: [],
       fuseSearch: null
@@ -185,16 +188,18 @@ export default {
   },
   methods: {
     cargaPolizas() {
-      axios.get('http://127.0.0.1:8000/api/polizas').then(response => {
-        console.log(response.data.data);
-        this.dataLoaded = true;
-        this.tableData = response.data.data;
-      });
+      axios
+        .get('http://127.0.0.1:8000/api/administracion/productores/')
+        .then(response => {
+          console.log(response.data.data);
+          this.dataLoaded = true;
+          this.tableData = response.data.data;
+        });
     }
   },
   mounted() {
     this.fuseSearch = new Fuse(this.tableData, {
-      keys: ['numero', 'clientes.nombre'],
+      keys: [],
       threshold: 0.3
     });
 
