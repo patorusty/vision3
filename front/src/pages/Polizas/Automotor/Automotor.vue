@@ -95,6 +95,7 @@
                   <div v-else>No recibida</div>
                 </div>
               </el-table-column>
+<<<<<<< HEAD:front/src/pages/Polizas/Automotor/Automotor.vue
               <el-table-column
                 label="F. Pago"
                 prop="medio_pago"
@@ -105,32 +106,31 @@
                 label="Actions"
               >
                 <div slot-scope="props">
+=======
+              <el-table-column label="F. Pago" prop="medio_pago" :min-width="50"></el-table-column>
+              <el-table-column align="right" label="Actions">
+                <div>
+>>>>>>> master:front/src/pages/Automotor.vue
                   <base-button
-                    @click.native="handleLike(props.$index, props.row);"
                     class="remove btn-link"
                     type="info"
                     size="sm"
-                    icon
-                  >
-                    <i class="tim-icons icon-heart-2"></i>
-                  </base-button>
-                  <base-button
-                    @click.native="handleEdit(props.$index, props.row);"
-                    class="edit btn-link"
-                    type="warning"
-                    size="sm"
-                    icon
-                  >
+                    icon>
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
                   <base-button
-                    @click.native="handleDelete(props.$index, props.row);"
+                    class="edit btn-link"
+                    type="danger"
+                    size="sm"
+                    icon>
+                    <i class="tim-icons icon-pencil"></i>
+                  </base-button>
+                  <base-button
                     class="remove btn-link"
                     type="danger"
                     size="sm"
-                    icon
-                  >
-                    <i class="tim-icons icon-simple-remove"></i>
+                    icon>
+                    <i class="tim-icons icon-trash-simple"></i>
                   </base-button>
                 </div>
               </el-table-column>
