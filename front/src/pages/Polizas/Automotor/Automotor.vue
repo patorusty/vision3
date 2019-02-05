@@ -95,41 +95,28 @@
                   <div v-else>No recibida</div>
                 </div>
               </el-table-column>
-<<<<<<< HEAD:front/src/pages/Polizas/Automotor/Automotor.vue
-              <el-table-column
-                label="F. Pago"
-                prop="medio_pago"
-                :min-width="50"
-              ></el-table-column>
-              <el-table-column
-                align="right"
-                label="Actions"
-              >
-                <div slot-scope="props">
-=======
               <el-table-column label="F. Pago" prop="medio_pago" :min-width="50"></el-table-column>
               <el-table-column align="right" label="Actions">
                 <div>
->>>>>>> master:front/src/pages/Automotor.vue
                   <base-button
                     class="remove btn-link"
                     type="info"
                     size="sm"
-                    icon>
+                    >
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
                   <base-button
                     class="edit btn-link"
                     type="danger"
                     size="sm"
-                    icon>
+                    >
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
                   <base-button
                     class="remove btn-link"
                     type="danger"
                     size="sm"
-                    icon>
+                    >
                     <i class="tim-icons icon-trash-simple"></i>
                   </base-button>
                 </div>
@@ -214,7 +201,7 @@ export default {
   methods: {
     cargaPolizas() {
       axios.get('http://127.0.0.1:8000/api/polizas').then(response => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         this.dataLoaded = true;
         this.tableData = response.data.data;
       });

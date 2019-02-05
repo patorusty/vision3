@@ -10,7 +10,7 @@
             <base-button
               class="animation-on-hover pull-right"
               type="primary"
-              @click.native="modal.organizadores = true"
+              @click="showModal"
             >Crear</base-button>
           </router-link>
           <div>
@@ -130,7 +130,7 @@
       </div>
     </div>
     <!-- EMPEZO EL MODAL -->
-    <modal
+    <!-- <modal
       :show.sync="modal.organizadores"
       headerClasses=""
     >
@@ -177,8 +177,11 @@
         >Close
         </base-button>
       </template>
-    </modal>
+    </modal> -->
     <!-- TERMINO EL MODAL -->
+    <!-- <modal-organizadores v-show="isModalVisible"></modal-organizadores> -->
+    <modal-organizadores v-show="isModalVisible" @close="closeModal"></modal-organizadores>
+
   </div>
 </template>
 <script>
@@ -186,7 +189,8 @@ import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import Fuse from 'fuse.js';
 import axios from 'axios';
-import { Modal, BaseAlert } from 'src/components';
+// import { Modal, BaseAlert } from 'src/components';
+import ModalOrganizadores from './ModalOrganizadores';
 export default {
   components: {
     BasePagination,
@@ -194,8 +198,9 @@ export default {
     [Option.name]: Option,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
-    Modal,
-    BaseAlert
+    // Modal,
+    // BaseAlert,
+    ModalOrganizadores
   },
   computed: {
     /***
@@ -237,9 +242,7 @@ export default {
       tableData: [],
       searchedData: [],
       fuseSearch: null,
-      modal: {
-        organizadores: false
-      }
+      isModalVisible: false
     };
   },
   methods: {
@@ -251,6 +254,12 @@ export default {
           this.dataLoaded = true;
           this.tableData = response.data.data;
         });
+    },
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
     }
   },
   mounted() {
