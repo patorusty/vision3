@@ -9,17 +9,14 @@
         @click.stop
       >
         <card type="secodary">
-          <form @submit.prevent="crearOrganizador()">
+          <form>
             <div class="modal-titulo d-flex 
             align-item=center ">
               <!-- ACA VA EL TITULO -->
               <h4>Organizador</h4>
               <button
-                class="
-            close "
-                type="
-            button"
-                data-dismiss="modal"
+                class="close "
+                type="button"
                 aria-label="Close"
                 @click="close"
               >
@@ -92,7 +89,7 @@
                   <base-input
                     required
                     placeholder="Phone"
-                    v-model="organizador.telefono_01"
+                    v-model="organizador.telefono_1"
                     addon-left-icon="tim-icons icon-mobile"
                   >
                   </base-input>
@@ -121,6 +118,7 @@
               <base-button
                 class="btn btn-primary ladda-button"
                 type="submit"
+                @click="crear"
               >Guardar</base-button>
             </div>
           </form>
@@ -139,7 +137,6 @@ import { BaseProgress, BaseSwitch, TagsInput } from 'src/components/index';
 export default {
   data() {
     return {
-      organizadores: {},
       organizador: {
         nombre: '',
         apellido: '',
@@ -148,7 +145,7 @@ export default {
         email: '',
         telefono_1: '',
         telefono_2: '',
-        activo: ''
+        activo: true
       },
       modoEditar: false
     };
@@ -162,33 +159,16 @@ export default {
   },
 
   methods: {
-    crearOrganizador() {
-      axios
-        .post(
-          'http://127.0.0.1:8000/api/administracion/organizadores',
-          this.organizador
-        )
-        .then(() => {
-          this.organizador = {};
-          this.organizador.activo = true;
-        })
-        .catch(e => console.log(e));
-    },
-    cargarOrganizadores() {
-      axios
-        .get('http://127.0.0.1:8000/api/administracion/organizadores')
-        .then(response => {
-          this.dataLoaded = true;
-
-          this.organizadores = response.data.data;
-        });
-    },
     close() {
       this.$emit('close');
+    },
+    crear(event) {
+      this.$emit('crear', this.organizador);
+    },
+    vaciarForm() {
+      this.organizador = {};
+      // this.modoEditar = false;
     }
-  },
-  created() {
-    this.cargarOrganizadores();
   }
 };
 </script>

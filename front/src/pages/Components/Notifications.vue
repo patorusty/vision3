@@ -2,19 +2,33 @@
   <div class="row">
     <div class="col-md-6">
       <card>
-        <h4 slot="header" class="card-title">Notifications Style</h4>
+        <h4
+          slot="header"
+          class="card-title"
+        >Notifications Style</h4>
 
         <base-alert type="info"> This is a plain notification</base-alert>
 
-        <base-alert type="info" dismissible>
+        <base-alert
+          type="info"
+          dismissible
+        >
           This is a notification with close button.
         </base-alert>
 
-        <base-alert type="info" dismissible icon="tim-icons icon-bell-55">
+        <base-alert
+          type="info"
+          dismissible
+          icon="tim-icons icon-bell-55"
+        >
           This is a notification with close button and icon.
         </base-alert>
 
-        <base-alert type="info" dismissible icon="tim-icons icon-bell-55">
+        <base-alert
+          type="info"
+          dismissible
+          icon="tim-icons icon-bell-55"
+        >
           This is a notification with close button and icon and have many lines.
           You can see that the icon and the close button are always vertically
           aligned. This is a beautiful notification. So you don't have to worry
@@ -25,41 +39,49 @@
 
     <div class="col-md-6">
       <card>
-        <h4 slot="header" class="card-title">Notification states</h4>
+        <h4
+          slot="header"
+          class="card-title"
+        >Notification states</h4>
 
-        <base-alert type="primary" dismissible>
-          <span
-            ><b> Primary - </b> This is a regular notification made with
-            ".alert-primary"</span
-          >
+        <base-alert
+          type="primary"
+          dismissible
+        >
+          <span><b> Primary - </b> This is a regular notification made with
+            ".alert-primary"</span>
         </base-alert>
 
-        <base-alert type="info" dismissible>
-          <span
-            ><b> Info - </b> This is a regular notification made with
-            ".alert-info"</span
-          >
+        <base-alert
+          type="info"
+          dismissible
+        >
+          <span><b> Info - </b> This is a regular notification made with
+            ".alert-info"</span>
         </base-alert>
 
-        <base-alert type="success" dismissible>
-          <span
-            ><b> Success - </b> This is a regular notification made with
-            ".alert-success"</span
-          >
+        <base-alert
+          type="success"
+          dismissible
+        >
+          <span><b> Success - </b> This is a regular notification made with
+            ".alert-success"</span>
         </base-alert>
 
-        <base-alert type="warning" dismissible>
-          <span
-            ><b> Warning - </b> This is a regular notification made with
-            ".alert-warning"</span
-          >
+        <base-alert
+          type="warning"
+          dismissible
+        >
+          <span><b> Warning - </b> This is a regular notification made with
+            ".alert-warning"</span>
         </base-alert>
 
-        <base-alert type="danger" dismissible>
-          <span
-            ><b> Danger - </b> This is a regular notification made with
-            ".alert-danger"</span
-          >
+        <base-alert
+          type="danger"
+          dismissible
+        >
+          <span><b> Danger - </b> This is a regular notification made with
+            ".alert-danger"</span>
         </base-alert>
       </card>
     </div>
@@ -82,7 +104,7 @@
                     type="primary"
                     block
                     @click.native="notifyVue('top', 'left');"
-                    >Top Left
+                  >Top Left
                   </base-button>
                 </div>
                 <div class="col-md-4">
@@ -90,7 +112,7 @@
                     type="primary"
                     block
                     @click.native="notifyVue('top', 'center');"
-                    >Top Center
+                  >Top Center
                   </base-button>
                 </div>
                 <div class="col-md-4">
@@ -98,7 +120,7 @@
                     type="primary"
                     block
                     @click.native="notifyVue('top', 'right');"
-                    >Top Right
+                  >Top Right
                   </base-button>
                 </div>
               </div>
@@ -112,7 +134,7 @@
                     type="primary"
                     block
                     @click.native="notifyVue('bottom', 'left');"
-                    >Bottom Left
+                  >Bottom Left
                   </base-button>
                 </div>
                 <div class="col-md-4">
@@ -120,7 +142,7 @@
                     type="primary"
                     block
                     @click.native="notifyVue('bottom', 'center');"
-                    >Bottom Center
+                  >Bottom Center
                   </base-button>
                 </div>
                 <div class="col-md-4">
@@ -128,7 +150,7 @@
                     type="primary"
                     block
                     @click.native="notifyVue('bottom', 'right');"
-                    >Bottom Right
+                  >Bottom Right
                   </base-button>
                 </div>
               </div>
@@ -138,13 +160,21 @@
 
         <div class="row">
           <div class="col-md-12 text-center">
-            <div class="card-header"><h4 class="card-title">Modal</h4></div>
+            <div class="card-header">
+              <h4 class="card-title">Modal</h4>
+            </div>
 
-            <base-button type="primary" @click.native="modals.classic = true;">
+            <base-button
+              type="primary"
+              @click.native="modals.classic = true;"
+            >
               Classic modal
             </base-button>
             &nbsp;
-            <base-button type="info" @click.native="modals.notice = true;">
+            <base-button
+              type="info"
+              @click.native="modals.notice = true;"
+            >
               Notice modal
             </base-button>
             &nbsp;
@@ -157,7 +187,10 @@
               :show.sync="modals.classic"
               headerClasses="justify-content-center"
             >
-              <h4 slot="header" class="title title-up">Modal title</h4>
+              <h4
+                slot="header"
+                class="title title-up"
+              >Modal title</h4>
               <p>
                 Far far away, behind the word mountains, far from the countries
                 Vokalia and Consonantia, there live the blind texts. Separated
@@ -172,7 +205,7 @@
                 <base-button
                   type="danger"
                   @click.native="modals.classic = false;"
-                  >Close
+                >Close
                 </base-button>
               </template>
             </modal>
@@ -184,7 +217,10 @@
               footerClasses="justify-content-center"
               type="notice"
             >
-              <h5 slot="header" class="modal-title">
+              <h5
+                slot="header"
+                class="modal-title"
+              >
                 How Do You Become an Affiliate?
               </h5>
               <div class="instruction">
@@ -235,12 +271,15 @@
                 If you have more questions, don't hesitate to contact us or send
                 us a tweet @creativetim. We're here to help!
               </p>
-              <div slot="footer" class="justify-content-center">
+              <div
+                slot="footer"
+                class="justify-content-center"
+              >
                 <base-button
                   type="info"
                   round
                   @click.native="modals.notice = false;"
-                  >Sounds good!
+                >Sounds good!
                 </base-button>
               </div>
             </modal>
@@ -253,17 +292,23 @@
               headerClasses="justify-content-center"
               type="mini"
             >
-              <div slot="header" class="modal-profile">
+              <div
+                slot="header"
+                class="modal-profile"
+              >
                 <i class="tim-icons icon-single-02"></i>
               </div>
               <p>Always have an access to your profile</p>
               <template slot="footer">
-                <base-button type="neutral" link>Back</base-button>
+                <base-button
+                  type="neutral"
+                  link
+                >Back</base-button>
                 <base-button
                   type="neutral"
                   link
                   @click.native="modals.mini = false;"
-                  >Close
+                >Close
                 </base-button>
               </template>
             </modal>
@@ -296,7 +341,6 @@ export default {
   },
   methods: {
     notifyVue(verticalAlign, horizontalAlign) {
-      let color = Math.floor(Math.random() * 4 + 1);
       this.$notify({
         message:
           'Welcome to <b>Vue Black Dashboard Pro</b> - a beautiful resource for every web developer',

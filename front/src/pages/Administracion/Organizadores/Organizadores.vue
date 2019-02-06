@@ -122,8 +122,8 @@
     <modal-organizadores
       v-show="isModalVisible"
       @close="closeModal"
+      @crear="crearOrganizador"
     ></modal-organizadores>
-
   </div>
 </template>
 <script>
@@ -132,6 +132,7 @@ import { BasePagination } from 'src/components';
 import Fuse from 'fuse.js';
 import axios from 'axios';
 import ModalOrganizadores from './ModalOrganizadores';
+import { BaseAlert } from 'src/components';
 export default {
   components: {
     BasePagination,
@@ -139,7 +140,8 @@ export default {
     [Option.name]: Option,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
-    ModalOrganizadores
+    ModalOrganizadores,
+    BaseAlert
   },
   computed: {
     /***
@@ -190,16 +192,36 @@ export default {
       axios
         .get('http://127.0.0.1:8000/api/administracion/organizadores/')
         .then(response => {
-          console.log(response.data.data);
           this.dataLoaded = true;
           this.tableData = response.data.data;
         });
     },
+    vaciarForm() {
+      this.organizador = {};
+      // this.modoEditar = false;
+    },
     showModal() {
+      this.vaciarForm();
+
       this.isModalVisible = true;
     },
     closeModal() {
+      this.vaciarForm();
       this.isModalVisible = false;
+    },
+    crearOrganizador(value) {
+      this.organizador = value;
+      axios
+        .post(
+          'http://127.0.0.1:8000/api/administracion/organizadores',
+          this.organizador
+        )
+        .then(() => {
+          this.notifyVue('top', 'right');
+          this.isModalVisible = false;
+          this.vaciarForm();
+        })
+        .catch(e => console.log(e));
     },
     modoEdicion(index, row) {
       this.showModal((this.modoEditar = true)),
@@ -213,6 +235,16 @@ export default {
             this.organizador = response.data.data;
           })
           .catch(e => console.log(e));
+    },
+    notifyVue(verticalAlign, horizontalAlign) {
+      this.$notify({
+        message: 'Prueba',
+        timeout: 30000,
+        icon: 'tim-icons icon-bell-55',
+        horizontalAlign: horizontalAlign,
+        verticalAlign: verticalAlign,
+        type: 'success'
+      });
     }
   },
   mounted() {
