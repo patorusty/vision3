@@ -129,57 +129,6 @@
         </card>
       </div>
     </div>
-    <!-- EMPEZO EL MODAL -->
-    <!-- <modal
-      :show.sync="modal.organizadores"
-      headerClasses=""
-    >
-      <div class="col-md">
-        <card
-          class="stacked-form"
-          title="Stacked Form"
-        >
-          <h4
-            slot="header"
-            class="card-title"
-          >Stacked Form</h4>
-          <form @submit.prevent>
-            <div>
-              <base-input
-                label="Email address"
-                type="email"
-                placeholder="Enter email"
-              >
-              </base-input>
-              <base-input
-                label="Password"
-                type="password"
-                placeholder="Password"
-              >
-              </base-input>
-              <div class="form-group">
-                <base-checkbox>Subscribe to newsletter</base-checkbox>
-              </div>
-              <base-button
-                class="mt-3"
-                native-type="submit"
-                type="primary"
-              >Submit</base-button>
-            </div>
-          </form>
-        </card>
-      </div>
-      <template slot="footer">
-        <base-button>Nice Button</base-button>
-        <base-button
-          type="danger"
-          @click.native="modals.classic = false;"
-        >Close
-        </base-button>
-      </template>
-    </modal> -->
-    <!-- TERMINO EL MODAL -->
-    <!-- <modal-organizadores v-show="isModalVisible"></modal-organizadores> -->
     <modal-organizadores v-show="isModalVisible" @close="closeModal"></modal-organizadores>
 
   </div>
@@ -189,7 +138,6 @@ import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import Fuse from 'fuse.js';
 import axios from 'axios';
-// import { Modal, BaseAlert } from 'src/components';
 import ModalOrganizadores from './ModalOrganizadores';
 export default {
   components: {
@@ -198,8 +146,6 @@ export default {
     [Option.name]: Option,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
-    // Modal,
-    // BaseAlert,
     ModalOrganizadores
   },
   computed: {
