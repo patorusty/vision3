@@ -3,28 +3,9 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          
-            <base-button
-            slot="header"
-              class="animation-on-hover pull-right"
-              type="primary"
-              @click="showModal"
-            >Crear</base-button>
+
           <div>
-            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
-              <el-select
-                class="select-primary mb-3 pagination-select"
-                v-model="pagination.perPage"
-                placeholder="Per page"
-              >
-                <el-option
-                  class="select-primary"
-                  v-for="item in pagination.perPageOptions"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
+            <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
               <base-input>
                 <el-input
                   type="search"
@@ -36,6 +17,14 @@
                   aria-controls="datatables"
                 ></el-input>
               </base-input>
+              <div>
+                <base-button
+                  slot="header"
+                  class="animation-on-hover "
+                  type="primary"
+                  @click="showModal"
+                >Crear</base-button>
+              </div>
             </div>
             <el-table :data="queriedData">
               <el-table-column
@@ -79,16 +68,7 @@
               >
                 <div slot-scope="props">
                   <base-button
-                    @click.native="handleLike(props.$index, props.row);"
-                    class="remove btn-link"
-                    type="info"
-                    size="sm"
-                    icon
-                  >
-                    <i class="tim-icons icon-heart-2"></i>
-                  </base-button>
-                  <base-button
-                    @click.native="handleEdit(props.$index, props.row);"
+                    @click.native="modoEdicion(props.$index, props.row)"
                     class="edit btn-link"
                     type="warning"
                     size="sm"
@@ -116,6 +96,19 @@
             <div class>
               <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
             </div>
+            <el-select
+              class="select-primary mb-3 pagination-select"
+              v-model="pagination.perPage"
+              placeholder="Per page"
+            >
+              <el-option
+                class="select-primary"
+                v-for="item in pagination.perPageOptions"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
+            </el-select>
             <base-pagination
               class="pagination-no-border"
               v-model="pagination.currentPage"
@@ -126,7 +119,10 @@
         </card>
       </div>
     </div>
-    <modal-organizadores v-show="isModalVisible" @close="closeModal"></modal-organizadores>
+    <modal-organizadores
+      v-show="isModalVisible"
+      @close="closeModal"
+    ></modal-organizadores>
 
   </div>
 </template>
@@ -178,7 +174,8 @@ export default {
         perPage: 5,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
-        total: 0
+        total: 0,
+        modoEditar: false
       },
       searchQuery: '',
       propsToSearch: [],
@@ -189,7 +186,7 @@ export default {
     };
   },
   methods: {
-    cargaPolizas() {
+    cargarOrganizadores() {
       axios
         .get('http://127.0.0.1:8000/api/administracion/organizadores/')
         .then(response => {
@@ -203,6 +200,19 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
+    },
+    modoEdicion(index, row) {
+      this.showModal((this.modoEditar = true)),
+        axios
+          .get(
+            'http://127.0.0.1:8000/api/administracion/organizadores/' + row.id
+          )
+          .then(response => {
+            this.dataLoaded = true;
+
+            this.organizador = response.data.data;
+          })
+          .catch(e => console.log(e));
     }
   },
   mounted() {
@@ -211,7 +221,7 @@ export default {
       threshold: 0.3
     });
 
-    this.cargaPolizas();
+    this.cargarOrganizadores();
   },
   watch: {
     /**
