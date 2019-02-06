@@ -3,16 +3,13 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <router-link
-            slot="header"
-            to=""
-          >
+          
             <base-button
+            slot="header"
               class="animation-on-hover pull-right"
               type="primary"
               @click="showModal"
             >Crear</base-button>
-          </router-link>
           <div>
             <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
               <el-select
