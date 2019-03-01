@@ -12,41 +12,39 @@
             <div class="col-md-12">
               <card class="stacked-form">
                 <div class="row">
-
                   <div class="col-md-4">
                     <base-input
                       label="Nombre de la Compañia"
                       type="text"
-                      placeholder="Nombre de la Compañia"
                       v-model="compania.nombre"
-                    >
-                    </base-input>
+                      v-validate="modelValidations.nombre"
+                      :error="getError('nombre')"
+                      name="nombre"
+                    ></base-input>
                     <base-input
                       label="Cuit"
                       type="text"
-                      placeholder="Cuit"
+                      v-validate="modelValidations.cuit"
                       v-model="compania.cuit"
-                    >
-                    </base-input>
-
+                      :class="{ 'has-danger': cuitError }"
+                      :error="getError('cuit')"
+                      name="cuit"
+                      @keydown.tab="buscarCuit"
+                    ></base-input>
                   </div>
                   <div class="col-md-4">
                     <base-input
                       label="Libros Rubricados"
                       type="text"
-                      placeholder="Codigo Libros Rubricados"
                       v-model="compania.codigo_lr"
-                    >
-                    </base-input>
+                    ></base-input>
                     <div class="row">
                       <div class="col-md-6">
                         <base-input
                           label="Color Compañia"
                           type="text"
-                          placeholder="Color Compañia"
                           v-model="compania.color"
-                        >
-                        </base-input>
+                        ></base-input>
                       </div>
                       <div class="col-md-6">
                         <label>Compañia Activa?</label>
@@ -87,25 +85,24 @@
                     <base-input
                       label="Direccion"
                       type="text"
-                      placeholder="Direccion"
                       v-model="compania.direccion"
-                    >
-                    </base-input>
+                    ></base-input>
 
                     <label>Localidad</label>
                     <select
-                      name='localidad_id'
+                      name="localidad_id"
                       class="form-control form-control"
-                      value='localidad_id'
+                      value="localidad_id"
                       v-model="compania.localidad_id"
                     >
                       <option
                         v-for="localidad in localidades"
                         :key="localidad.id"
-                        v-bind:value='localidad.id'
-                      >{{localidad.nombre}} / CP: {{localidad.codigo_postal}}</option>
+                        v-bind:value="localidad.id"
+                        >{{ localidad.nombre }} / CP:
+                        {{ localidad.codigo_postal }}</option
+                      >
                     </select>
-
                   </div>
 
                   <div class="col-md-4">
@@ -114,31 +111,25 @@
                         <label>Telefono Oficina</label>
                         <base-input
                           type="text"
-                          placeholder="Telefono Oficina"
                           v-model="compania.telefono_1"
                           addon-left-icon="tim-icons icon-mobile"
-                        >
-                        </base-input>
+                        ></base-input>
                       </div>
                       <div class="col-md-6">
                         <label>Telefono Auxilio</label>
                         <base-input
                           type="text"
-                          placeholder="Telefono Auxilio"
                           v-model="compania.telefono_aux"
                           addon-left-icon="tim-icons icon-mobile"
-                        >
-                        </base-input>
+                        ></base-input>
                       </div>
                       <div class="col-md-6">
                         <label>Telefono Siniestros</label>
                         <base-input
                           type="text"
-                          placeholder="Telefono Siniestros"
                           v-model="compania.telefono_siniestros"
                           addon-left-icon="tim-icons icon-mobile"
-                        >
-                        </base-input>
+                        ></base-input>
                       </div>
                     </div>
                   </div>
@@ -146,31 +137,22 @@
                     <label>Email Emision</label>
                     <base-input
                       required
-                      placeholder="Email"
                       v-model="compania.email_emision"
-                      v-validate="modelValidations.address"
-                      :error="getError('email')"
                       addon-left-icon="tim-icons icon-email-85"
-                    >
-                    </base-input>
+                    ></base-input>
                     <label>Email Siniestros</label>
                     <base-input
                       required
-                      placeholder="Email"
                       v-model="compania.email_siniestros"
-                      v-validate="modelValidations.address"
-                      :error="getError('email')"
                       addon-left-icon="tim-icons icon-email-85"
-                    >
-                    </base-input>
+                    ></base-input>
                   </div>
                 </div>
               </card>
-              <div class="">
-                <button
-                  type="submit"
-                  class="btn btn-primary ladda-button"
-                > Crear </button>
+              <div class>
+                <button type="submit" class="btn btn-primary ladda-button">
+                  Crear
+                </button>
               </div>
             </div>
           </div>
@@ -182,12 +164,7 @@
 <script>
 import axios from 'axios';
 
-import {
-  BaseProgress,
-  BaseSwitch,
-  ImageUpload,
-  TagsInput
-} from 'src/components/index';
+import { BaseSwitch, ImageUpload } from 'src/components/index';
 export default {
   components: {
     ImageUpload,
@@ -195,18 +172,22 @@ export default {
   },
   data() {
     return {
+      cuitError: false,
       modelValidations: {
-        email: {
-          required: true,
-          email: true
+        nombre: {
+          required: true
         },
-        phone: {
+        cuit: {
           required: true,
-          numeric: true
+          numeric: true,
+          max: 11,
+          min: 11
         }
       },
 
-      compania: {},
+      compania: {
+        activo: true
+      },
       localidades: {},
       images: {
         regular: null
@@ -216,6 +197,11 @@ export default {
   methods: {
     getError(fieldName) {
       return this.errors.first(fieldName);
+    },
+    validate() {
+      this.$validator.validateAll().then(isValid => {
+        this.$emit('on-submit', this.registerForm, isValid);
+      });
     },
     onImageChange(file) {
       this.images.regular = file;
@@ -238,6 +224,21 @@ export default {
         this.dataLoaded = true;
         this.localidades = response.data.data;
       });
+    },
+    buscarCuit() {
+      let query = this.compania.cuit;
+      let cuits = [];
+      console.log(query);
+      axios
+        .get('http://127.0.0.1:8000/api/companias/busquedaCuit?q=' + query)
+        .then(response => {
+          console.log(response.data.data);
+          cuits = response.data.data;
+          console.log(cuits);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   },
   created() {

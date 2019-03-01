@@ -228,7 +228,7 @@
                         label="Activo"
                       >
                         <div slot-scope="{ row }">
-                          <div v-if="row.activo == 1">SI</div>
+                          <div v-if="row.activo == true">SI</div>
                           <div v-else>NO</div>
                         </div>
                       </el-table-column>
@@ -342,7 +342,7 @@
                         label="Activo"
                       >
                         <div slot-scope="{ row }">
-                          <div v-if="row.activo == 1">SI</div>
+                          <div v-if="row.activo == tru">SI</div>
                           <div v-else>NO</div>
                         </div>
                       </el-table-column>
@@ -429,7 +429,7 @@
                         label="Todo Riesgo"
                       >
                         <div slot-scope="{ row }">
-                          <div v-if="row.todo_riesgo == 1">SI</div>
+                          <div v-if="row.todo_riesgo == true">SI</div>
                           <div v-else>NO</div>
                         </div>
                       </el-table-column>
@@ -453,7 +453,7 @@
                         label="Activa"
                       >
                         <div slot-scope="{ row }">
-                          <div v-if="row.activo == 1">SI</div>
+                          <div v-if="row.activo == true">SI</div>
                           <div v-else>NO</div>
                         </div>
                       </el-table-column>
@@ -548,7 +548,9 @@ export default {
         }
       },
 
-      compania: {},
+      compania: {
+        activo: true
+      },
       nombreCompania: this.$route.params.nombre,
 
       localidades: {},
@@ -669,7 +671,7 @@ export default {
       this.codigo_organizador = {};
       this.codigo_productor = {};
       this.cobertura = {};
-      this.compania.activo = 1;
+      this.compania.activo = true;
     },
 
     // FUNCIONES CODIGO ORGANIZADOR //

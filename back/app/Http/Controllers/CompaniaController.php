@@ -125,6 +125,18 @@ class CompaniaController extends Controller
         ]);
     }
 
+    public function search()
+    {
+        if ($search = \Request::get('q')) {
+            $cuits = companias::where(function ($query) use ($search) {
+                $query->where('cuit', 'LIKE', "%$search%");
+            })->get();
+        } else {
+            $cuits = 'Algo fallo';
+        }
+        return CompaniasResource::collection($cuits);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
