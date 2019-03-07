@@ -3,8 +3,8 @@
     <div class="page-header no-margin-bottom">
       <div class="container-fluid">
         <div class="row">
-          <h4 class="text-primary">EDITAR / </h4>
-          <h4 class=""> {{compania.nombre}}</h4>
+          <h4 class="text-primary">EDITAR /</h4>
+          <h4 class="">{{ compania.nombre }}</h4>
         </div>
       </div>
     </div>
@@ -15,7 +15,6 @@
             <div class="col-md-12">
               <card class="stacked-form">
                 <div class="row">
-
                   <div class="col-md-4">
                     <base-input
                       label="Nombre de la Compañia"
@@ -31,7 +30,6 @@
                       v-model="compania.cuit"
                     >
                     </base-input>
-
                   </div>
                   <div class="col-md-4">
                     <base-input
@@ -96,16 +94,17 @@
                     </base-input>
                     <label>Localidad</label>
                     <select
-                      name='localidad_id'
+                      name="localidad_id"
                       class="form-control form-control"
-                      value='localidad_id'
+                      value="localidad_id"
                       v-model="compania.localidad_id"
                     >
                       <option
                         v-for="localidad in localidades"
                         :key="localidad.id"
-                        v-bind:value='localidad.id'
-                      >{{localidad.nombre}} / CP: {{localidad.codigo_postal}}
+                        v-bind:value="localidad.id"
+                        >{{ localidad.nombre }} / CP:
+                        {{ localidad.codigo_postal }}
                       </option>
                     </select>
                   </div>
@@ -168,24 +167,20 @@
                 </div>
               </card>
               <div class="mb-4">
-                <button
-                  type="submit"
-                  class="btn btn-primary ladda-button"
-                > Guardar </button>
+                <button type="submit" class="btn btn-primary ladda-button">
+                  Guardar
+                </button>
               </div>
 
               <!-- ACA EMPIEZA LA TABLA DE CODIGO ORGANIZADOR -->
               <card>
-                <div
-                  class="col-sm-12"
-                  slot="header"
-                >
-                  <h4 class="d-inline align-bottom text-primary">CODIGOS ORGANIZADOR</h4>
-                  <base-button
-                    type="primary"
-                    size="sm"
-                    class="float-right"
-                  >Crear</base-button>
+                <div class="col-sm-12" slot="header">
+                  <h4 class="d-inline align-bottom text-primary">
+                    CODIGOS ORGANIZADOR
+                  </h4>
+                  <base-button type="primary" size="sm" class="float-right"
+                    >Crear</base-button
+                  >
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -196,8 +191,9 @@
                         label="Apellido"
                         align="left"
                       >
-                        <div slot-scope="{ row }">{{row.organizadores.apellido}}</div>
-
+                        <div slot-scope="{ row }">
+                          {{ row.organizadores.apellido }}
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="80"
@@ -205,15 +201,18 @@
                         label="Nombre"
                         align="left"
                       >
-                        <div slot-scope="{ row }">{{row.organizadores.nombre}}</div>
-
+                        <div slot-scope="{ row }">
+                          {{ row.organizadores.nombre }}
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="80"
                         align="left"
                         label="Matricula"
                       >
-                        <div slot-scope="{ row }">{{row.organizadores.matricula}}</div>
+                        <div slot-scope="{ row }">
+                          {{ row.organizadores.matricula }}
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="80"
@@ -239,10 +238,7 @@
                         label="Edicion"
                       >
                         <div
-                          slot-scope="{
-                  row,
-                  $index
-                }"
+                          slot-scope="{ row, $index }"
                           class="text-right table-actions"
                         >
                           <el-tooltip
@@ -252,7 +248,9 @@
                             placement="top"
                           >
                             <base-button
-                              @click.native="handleEdit(props.$nombre, props.row);"
+                              @click.native="
+                                handleEdit(props.$nombre, props.row)
+                              "
                               :type="$index > 2 ? 'success' : 'neutral'"
                               icon
                               size="sm"
@@ -268,7 +266,9 @@
                             placement="top"
                           >
                             <base-button
-                              @click.native="handleDelete(props.$index, props.row);"
+                              @click.native="
+                                handleDelete(props.$index, props.row)
+                              "
                               :type="$index > 2 ? 'danger' : 'neutral'"
                               icon
                               size="sm"
@@ -287,12 +287,12 @@
               <!-- ACA EMPIEZA LA TABLA DE CODIGO PRODUCTOR -->
               <card>
                 <div slot="header">
-                  <h4 class="d-inline align-bottom text-primary">CODIGOS PRODUCTOR</h4>
-                  <base-button
-                    type="primary"
-                    size="sm"
-                    class="float-right"
-                  >Crear</base-button>
+                  <h4 class="d-inline align-bottom text-primary">
+                    CODIGOS PRODUCTOR
+                  </h4>
+                  <base-button type="primary" size="sm" class="float-right"
+                    >Crear</base-button
+                  >
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -302,24 +302,27 @@
                         label="Apellido"
                         align="left"
                       >
-                        <div slot-scope="{ row }">{{row.productores.apellido}}</div>
-
+                        <div slot-scope="{ row }">
+                          {{ row.productores.apellido }}
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="80"
                         label="Nombre"
                         align="left"
                       >
-                        <div slot-scope="{ row }">{{row.productores.nombre}}</div>
-
+                        <div slot-scope="{ row }">
+                          {{ row.productores.nombre }}
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="80"
                         align="left"
                         label="Matricula"
                       >
-                        <div slot-scope="{ row }">{{row.productores.matricula}}</div>
-
+                        <div slot-scope="{ row }">
+                          {{ row.productores.matricula }}
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="80"
@@ -333,8 +336,9 @@
                         align="left"
                         label="Cod. Organizador"
                       >
-                        <div slot-scope="{ row }">{{row.codigo_organizador.codigo_organizador}}</div>
-
+                        <div slot-scope="{ row }">
+                          {{ row.codigo_organizador.codigo_organizador }}
+                        </div>
                       </el-table-column>
                       <el-table-column
                         min-width="80"
@@ -353,10 +357,7 @@
                         label="Edicion"
                       >
                         <div
-                          slot-scope="{
-                  row,
-                  $index
-                }"
+                          slot-scope="{ row, $index }"
                           class="text-right table-actions"
                         >
                           <el-tooltip
@@ -400,11 +401,9 @@
               <card>
                 <div slot="header">
                   <h4 class="d-inline align-bottom text-primary">COBERTURAS</h4>
-                  <base-button
-                    type="primary"
-                    size="sm"
-                    class="float-right"
-                  >Crear</base-button>
+                  <base-button type="primary" size="sm" class="float-right"
+                    >Crear</base-button
+                  >
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -464,10 +463,7 @@
                         label="Edicion"
                       >
                         <div
-                          slot-scope="{
-                  row,
-                  $index
-                }"
+                          slot-scope="{ row, $index }"
                           class="text-right table-actions"
                         >
                           <el-tooltip
@@ -519,12 +515,7 @@ import axios from 'axios';
 import { Table, TableColumn } from 'element-ui';
 import swal from 'sweetalert2';
 
-import {
-  BaseProgress,
-  BaseSwitch,
-  ImageUpload,
-  TagsInput
-} from 'src/components/index';
+import { BaseSwitch, ImageUpload } from 'src/components/index';
 export default {
   components: {
     [Table.name]: Table,
@@ -547,7 +538,6 @@ export default {
           numeric: true
         }
       },
-
       compania: {
         activo: true
       },
@@ -600,6 +590,7 @@ export default {
         )
         .then(response => {
           this.compania = response.data.data[0];
+          console.log(this.compania);
           axios
             .get(
               'http://127.0.0.1:8000/api/codigoorganizador/compania/' +

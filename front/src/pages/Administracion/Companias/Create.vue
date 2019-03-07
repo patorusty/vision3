@@ -26,8 +26,8 @@
                       type="text"
                       v-validate="modelValidations.cuit"
                       v-model="compania.cuit"
-                      :class="{ 'has-danger': cuitError }"
-                      :error="getError('cuit')"
+                      :class="{ 'has-danger': used }"
+                      :error="getError('cuit', used)"
                       name="cuit"
                       @keydown.tab="buscarCuit"
                     ></base-input>
@@ -54,9 +54,8 @@
                             type="primary"
                             on-text="ON"
                             off-text="OFF"
-                          ></base-switch>
-                        </base-input>
-                        &nbsp;
+                          ></base-switch> </base-input
+                        >&nbsp;
                       </div>
                     </div>
                   </div>
@@ -99,9 +98,10 @@
                         v-for="localidad in localidades"
                         :key="localidad.id"
                         v-bind:value="localidad.id"
-                        >{{ localidad.nombre }} / CP:
-                        {{ localidad.codigo_postal }}</option
                       >
+                        {{ localidad.nombre }} / CP:
+                        {{ localidad.codigo_postal }}
+                      </option>
                     </select>
                   </div>
 
@@ -172,7 +172,8 @@ export default {
   },
   data() {
     return {
-      cuitError: false,
+      used: false,
+      usedError: '',
       modelValidations: {
         nombre: {
           required: true
@@ -195,8 +196,12 @@ export default {
     };
   },
   methods: {
-    getError(fieldName) {
-      return this.errors.first(fieldName);
+    getError(fieldName, used = false) {
+      if (!used) {
+        return this.errors.first(fieldName);
+      } else {
+        return 'Este CUIT ya esta en uso';
+      }
     },
     validate() {
       this.$validator.validateAll().then(isValid => {
@@ -207,17 +212,21 @@ export default {
       this.images.regular = file;
     },
     crearCompania() {
-      axios
-        .post(
-          'http://127.0.0.1:8000/api/administracion/companias',
-          this.compania
-        )
-        .then(() => {
-          this.compania = {};
-          this.compania.activo = true;
-          this.$router.push({ name: 'Companias' });
-        })
-        .catch(e => console.log(e));
+      if (this.errors.items.length == 0) {
+        axios
+          .post(
+            'http://127.0.0.1:8000/api/administracion/companias',
+            this.compania
+          )
+          .then(() => {
+            this.compania = {};
+            // this.compania.activo = true;
+            this.$router.push({ name: 'Companias' });
+          })
+          .catch(e => console.log(e));
+      } else {
+        console.log(this.errors);
+      }
     },
     cargarLocalidades() {
       axios.get('http://127.0.0.1:8000/api/localidades').then(response => {
@@ -228,13 +237,19 @@ export default {
     buscarCuit() {
       let query = this.compania.cuit;
       let cuits = [];
-      console.log(query);
+      // console.log(query);
       axios
         .get('http://127.0.0.1:8000/api/companias/busquedaCuit?q=' + query)
         .then(response => {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           cuits = response.data.data;
-          console.log(cuits);
+          // console.log(cuits);
+          if (cuits.length > 0) {
+            this.used = true;
+            this.usedError = 'Este CUIT ya esta en uso';
+          } else {
+            this.used = false;
+          }
         })
         .catch(e => {
           console.log(e);
@@ -246,3 +261,10 @@ export default {
   }
 };
 </script>
+<style>
+.errorInput {
+  color: #ec250d;
+  font-size: 0.75rem;
+  margin-bottom: 5px;
+}
+</style>

@@ -18,7 +18,7 @@
 export default {
   name: 'base-switch',
   props: {
-    value: [Array, Boolean],
+    value: Boolean,
     onText: String,
     offText: String
   },
