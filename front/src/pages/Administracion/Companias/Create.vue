@@ -25,11 +25,11 @@
                       label="Cuit"
                       type="text"
                       v-validate="modelValidations.cuit"
-                      v-model="compania.cuit"
+                      v-model.lazy="compania.cuit"
                       :class="{ 'has-danger': used }"
                       :error="getError('cuit', used)"
                       name="cuit"
-                      @keydown.tab="buscarCuit"
+                      @change="buscarCuit"
                     ></base-input>
                   </div>
                   <div class="col-md-4">
@@ -235,6 +235,7 @@ export default {
       });
     },
     buscarCuit() {
+      console.log('pi');
       let query = this.compania.cuit;
       let cuits = [];
       // console.log(query);
