@@ -13,7 +13,7 @@ Validator.localize('en', diccionario);
 // plugin setup
 Vue.use(DashboardPlugin);
 /* eslint-disable no-new */
-Vue.config.devtools = false;
+// Vue.config.devtools = false;
 new Vue({
   el: '#app',
   render: h => h(App),
