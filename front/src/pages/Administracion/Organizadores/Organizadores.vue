@@ -77,7 +77,7 @@
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
                   <base-button
-                    @click.native="handleDelete(props.$index, props.row);"
+                    @click.native="borrarOrganizador(props.$index, props.row);"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -123,6 +123,7 @@
       v-show="isModalVisible"
       @close="closeModal"
       @crear="crearOrganizador"
+      :organizador="organizador"
     ></modal-organizadores>
   </div>
 </template>
@@ -133,6 +134,8 @@ import Fuse from 'fuse.js';
 import axios from 'axios';
 import ModalOrganizadores from './ModalOrganizadores';
 import { BaseAlert } from 'src/components';
+import swal from 'sweetalert2';
+
 export default {
   components: {
     BasePagination,
@@ -184,7 +187,8 @@ export default {
       tableData: [],
       searchedData: [],
       fuseSearch: null,
-      isModalVisible: false
+      isModalVisible: false,
+      organizador: {}
     };
   },
   methods: {
@@ -197,8 +201,9 @@ export default {
         });
     },
     vaciarForm() {
-      this.organizador = {};
-      // this.modoEditar = false;
+      this.organizador = {
+        activo: true
+      };
     },
     showModal() {
       this.vaciarForm();
@@ -219,7 +224,6 @@ export default {
         .then(() => {
           this.notifyVue('top', 'right');
           this.isModalVisible = false;
-          this.vaciarForm();
         })
         .catch(e => console.log(e));
     },
@@ -239,12 +243,53 @@ export default {
     notifyVue(verticalAlign, horizontalAlign) {
       this.$notify({
         message: 'Prueba',
-        timeout: 30000,
+        timeout: 2000,
         icon: 'tim-icons icon-bell-55',
         horizontalAlign: horizontalAlign,
         verticalAlign: verticalAlign,
         type: 'success'
       });
+    },
+
+    borrarOrganizador(index, row) {
+      swal({
+        title: 'Estás seguro que queres borrar el registro?',
+        text: `Esto no se puede revertir`,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-success btn-fill',
+        cancelButtonClass: 'btn btn-danger btn-fill',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Sí, Eliminalo',
+        buttonsStyling: false
+      }).then(result => {
+        if (result.value) {
+          this.deleteRow(row);
+          this.$notify({
+            message: 'Organizador eliminado',
+            timeout: 2000,
+            icon: 'tim-icons icon-bell-55',
+            horizontalAlign: 'right',
+            verticalAlign: 'top',
+            type: 'danger'
+          });
+        }
+      });
+    },
+    deleteRow(row) {
+      axios
+        .delete(
+          'http://127.0.0.1:8000/api/administracion/organizadores/' + row.id
+        )
+        .then(() => {
+          console.log('borado!');
+        });
+      let indexToDelete = this.tableData.findIndex(
+        tableRow => tableRow.id === row.id
+      );
+      if (indexToDelete >= 0) {
+        this.tableData.splice(indexToDelete, 1);
+      }
     }
   },
   mounted() {

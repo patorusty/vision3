@@ -33,7 +33,6 @@
                     class=" control-label"
                   >Nombre</label>
                   <base-input
-                    required
                     placeholder="Nombre"
                     v-model="organizador.nombre"
                     addon-left-icon="tim-icons icon-single-02"
@@ -44,7 +43,6 @@
                     class="control-label"
                   >Apellido</label>
                   <base-input
-                    required
                     placeholder="Apellido"
                     v-model="organizador.apellido"
                     addon-left-icon="tim-icons icon-single-02"
@@ -55,7 +53,6 @@
                     class="control-label"
                   >Cuit</label>
                   <base-input
-                    required
                     placeholder="Cuit"
                     v-model="organizador.cuit"
                   >
@@ -65,7 +62,6 @@
                     class="control-label"
                   >Matricula</label>
                   <base-input
-                    required
                     placeholder="Matricula"
                     v-model="organizador.matricula"
                   >
@@ -78,7 +74,6 @@
                     class="control-label"
                   >Email</label>
                   <base-input
-                    required
                     placeholder="Email"
                     v-model="organizador.email"
                     addon-left-icon="tim-icons icon-email-85"
@@ -87,7 +82,6 @@
 
                   <label>Telefono</label>
                   <base-input
-                    required
                     placeholder="Phone"
                     v-model="organizador.telefono_1"
                     addon-left-icon="tim-icons icon-mobile"
@@ -95,7 +89,6 @@
                   </base-input>
                   <label>Celular</label>
                   <base-input
-                    required
                     placeholder="Phone"
                     v-model="organizador.telefono_2"
                     addon-left-icon="tim-icons icon-mobile"
@@ -135,18 +128,9 @@ import { BaseButton } from 'src/components';
 import axios from 'axios';
 import { BaseProgress, BaseSwitch, TagsInput } from 'src/components/index';
 export default {
+  props: ['organizador'],
   data() {
     return {
-      organizador: {
-        nombre: '',
-        apellido: '',
-        cuit: '',
-        matricula: '',
-        email: '',
-        telefono_1: '',
-        telefono_2: '',
-        activo: true
-      },
       modoEditar: false
     };
   },
@@ -164,10 +148,6 @@ export default {
     },
     crear(event) {
       this.$emit('crear', this.organizador);
-    },
-    vaciarForm() {
-      this.organizador = {};
-      // this.modoEditar = false;
     }
   }
 };
