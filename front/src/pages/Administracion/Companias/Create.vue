@@ -5,7 +5,7 @@
         <h4 class="text-primary">CREAR COMPAÑIA</h4>
       </div>
     </div>
-    <form @submit.prevent="crearCompania()">
+    <form @submit.prevent="crearCompania">
       <div class="block">
         <div class="block-body">
           <div class="row">
@@ -86,7 +86,6 @@
                       type="text"
                       v-model="compania.direccion"
                     ></base-input>
-
                     <label>Localidad</label>
                     <select
                       name="localidad_id"
@@ -104,7 +103,6 @@
                       </option>
                     </select>
                   </div>
-
                   <div class="col-md-4">
                     <div class="row">
                       <div class="col-md-6">
@@ -162,9 +160,8 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-
 import { BaseSwitch, ImageUpload } from 'src/components/index';
+import { HTTP } from '../../../API/http-request';
 export default {
   components: {
     ImageUpload,
@@ -185,7 +182,6 @@ export default {
           min: 11
         }
       },
-
       compania: {
         activo: true
       },
@@ -203,48 +199,34 @@ export default {
         return 'Este CUIT ya esta en uso';
       }
     },
-    validate() {
+    crearCompania() {
       this.$validator.validateAll().then(isValid => {
-        this.$emit('on-submit', this.registerForm, isValid);
+        if (isValid && !this.used) {
+          HTTP.post('administracion/companias', this.compania)
+            .then(() => {
+              this.compania = {};
+              this.$router.push({ name: 'Companias' });
+            })
+            .catch(e => console.log(e));
+        } else {
+          console.log(this.errors);
+        }
       });
     },
     onImageChange(file) {
       this.images.regular = file;
     },
-    crearCompania() {
-      if (this.errors.items.length == 0) {
-        axios
-          .post(
-            'http://127.0.0.1:8000/api/administracion/companias',
-            this.compania
-          )
-          .then(() => {
-            this.compania = {};
-            // this.compania.activo = true;
-            this.$router.push({ name: 'Companias' });
-          })
-          .catch(e => console.log(e));
-      } else {
-        console.log(this.errors);
-      }
-    },
     cargarLocalidades() {
-      axios.get('http://127.0.0.1:8000/api/localidades').then(response => {
-        this.dataLoaded = true;
+      HTTP.get('localidades').then(response => {
         this.localidades = response.data.data;
       });
     },
     buscarCuit() {
-      console.log('pi');
       let query = this.compania.cuit;
       let cuits = [];
-      // console.log(query);
-      axios
-        .get('http://127.0.0.1:8000/api/companias/busquedaCuit?q=' + query)
+      HTTP.get('companias/busquedaCuit?q=' + query)
         .then(response => {
-          // console.log(response.data.data);
           cuits = response.data.data;
-          // console.log(cuits);
           if (cuits.length > 0) {
             this.used = true;
             this.usedError = 'Este CUIT ya esta en uso';

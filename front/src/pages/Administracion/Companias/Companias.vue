@@ -3,9 +3,10 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-
           <div>
-            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
+            <div
+              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+            >
               <base-input>
                 <el-input
                   type="search"
@@ -17,14 +18,12 @@
                   aria-controls="datatables"
                 ></el-input>
               </base-input>
-              <router-link
-                slot="header"
-                to="/administracion/companias/create"
-              >
+              <router-link slot="header" to="/administracion/companias/create">
                 <base-button
                   class="animation-on-hover pull-right"
                   type="primary"
-                >Crear</base-button>
+                  >Crear</base-button
+                >
               </router-link>
             </div>
             <el-table :data="queriedData">
@@ -49,23 +48,16 @@
                 prop="telefono_siniestros"
                 :min-width="100"
               ></el-table-column>
-              <el-table-column
-                label="Activo"
-                prop="activo"
-              >
+              <el-table-column label="Activo" prop="activo">
                 <div slot-scope="{ row }">
                   <div v-if="row.activo == 1">SI</div>
                   <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column
-                align="right"
-                label="Actions"
-              >
+              <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
-
                   <base-button
-                    @click.native="handleEdit(props.$index, props.row);"
+                    @click.native="handleEdit(props.$index, props.row)"
                     class="edit btn-link"
                     type="warning"
                     size="sm"
@@ -73,9 +65,8 @@
                   >
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
-
                   <base-button
-                    @click.native="handleDelete(props.$index, props.row);"
+                    @click.native="handleDelete(props.$index, props.row)"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -92,7 +83,9 @@
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
             <div class>
-              <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
+              <p class="card-category">
+                Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+              </p>
             </div>
             <el-select
               class="select-primary mb-3 pagination-select"
@@ -121,9 +114,9 @@
 </template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
-import { BasePagination } from 'src/components';
+import { BasePagination, BaseAlert } from 'src/components';
 import Fuse from 'fuse.js';
-import axios from 'axios';
+import { HTTP } from '../../../API/http-request.js';
 import swal from 'sweetalert2';
 
 export default {
@@ -132,7 +125,8 @@ export default {
     [Select.name]: Select,
     [Option.name]: Option,
     [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [TableColumn.name]: TableColumn,
+    BaseAlert
   },
   computed: {
     /***
@@ -159,6 +153,20 @@ export default {
       return this.searchedData.length > 0
         ? this.searchedData.length
         : this.tableData.length;
+    }
+  },
+  watch: {
+    /**
+     * Searches through the table data by a given query.
+     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
+     * @param value of the query
+     */
+    searchQuery(value) {
+      let result = this.tableData;
+      if (value !== '') {
+        result = this.fuseSearch.search(this.searchQuery);
+      }
+      this.searchedData = result;
     }
   },
   data() {
@@ -191,22 +199,21 @@ export default {
       }).then(result => {
         if (result.value) {
           this.deleteRow(row);
-          swal({
-            title: 'Eliminado!',
-            text: `Vos eliminaste ${row.nombre}`,
-            type: 'success',
-            confirmButtonClass: 'btn btn-success btn-fill',
-            buttonsStyling: false
+          this.$notify({
+            message: 'Compañia Eliminada',
+            timeout: 3000,
+            icon: 'tim-icons icon-alert-circle-exc',
+            horizontalAlign: 'right',
+            verticalAlign: 'top',
+            type: 'danger'
           });
         }
       });
     },
     deleteRow(row) {
-      axios
-        .delete('http://127.0.0.1:8000/api/administracion/companias/' + row.id)
-        .then(() => {
-          console.log('borado!');
-        });
+      HTTP.delete('administracion/companias/' + row.id).then(() => {
+        console.log('borado!');
+      });
       let indexToDelete = this.tableData.findIndex(
         tableRow => tableRow.id === row.id
       );
@@ -220,35 +227,19 @@ export default {
       });
     },
     cargaPolizas() {
-      axios
-        .get('http://127.0.0.1:8000/api/administracion/companias/')
-        .then(response => {
-          this.dataLoaded = true;
-          this.tableData = response.data.data;
-        });
+      HTTP.get('administracion/companias/').then(response => {
+        this.dataLoaded = true;
+        this.tableData = response.data.data;
+      });
     }
   },
   mounted() {
     this.fuseSearch = new Fuse(this.tableData, {
-      keys: [],
+      keys: ['nombre'],
       threshold: 0.3
     });
 
     this.cargaPolizas();
-  },
-  watch: {
-    /**
-     * Searches through the table data by a given query.
-     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
-     * @param value of the query
-     */
-    searchQuery(value) {
-      let result = this.tableData;
-      if (value !== '') {
-        result = this.fuseSearch.search(this.searchQuery);
-      }
-      this.searchedData = result;
-    }
   }
 };
 </script>

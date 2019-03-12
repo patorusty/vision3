@@ -3,17 +3,15 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <router-link
-            slot="header"
-            to=""
-          >
-            <base-button
-              class="animation-on-hover pull-right"
-              type="primary"
-            >Crear</base-button>
+          <router-link slot="header" to="">
+            <base-button class="animation-on-hover pull-right" type="primary"
+              >Crear</base-button
+            >
           </router-link>
           <div>
-            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
+            <div
+              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+            >
               <el-select
                 class="select-primary mb-3 pagination-select"
                 v-model="pagination.perPage"
@@ -45,8 +43,9 @@
                 sortable
                 :min-width="80"
               >
-                <div slot-scope="{ row }"> {{row.apellido}} {{row.nombre}}</div>
-
+                <div slot-scope="{ row }">
+                  {{ row.apellido }} {{ row.nombre }}
+                </div>
               </el-table-column>
               <el-table-column
                 label="DNI"
@@ -63,21 +62,15 @@
                 prop="email"
                 :min-width="100"
               ></el-table-column>
-
-              <el-table-column
-                label="Productor"
-                :min-width="80"
-              >
-                <div slot-scope="{ row }"> {{row.productores.apellido}} {{row.productores.nombre}}</div>
+              <el-table-column label="Productor" :min-width="80">
+                <div slot-scope="{ row }">
+                  {{ row.productores.apellido }} {{ row.productores.nombre }}
+                </div>
               </el-table-column>
-
-              <el-table-column
-                align="right"
-                label="Actions"
-              >
+              <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
                   <base-button
-                    @click.native="handleLike(props.$index, props.row);"
+                    @click.native="handleLike(props.$index, props.row)"
                     class="remove btn-link"
                     type="info"
                     size="sm"
@@ -86,7 +79,7 @@
                     <i class="tim-icons icon-heart-2"></i>
                   </base-button>
                   <base-button
-                    @click.native="handleEdit(props.$index, props.row);"
+                    @click.native="handleEdit(props.$index, props.row)"
                     class="edit btn-link"
                     type="warning"
                     size="sm"
@@ -95,7 +88,7 @@
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
                   <base-button
-                    @click.native="handleDelete(props.$index, props.row);"
+                    @click.native="handleDelete(props.$index, props.row)"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -112,7 +105,10 @@
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
             <div class>
-              <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
+              <p class="card-category">
+                Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+              </p>
+              Ï
             </div>
             <base-pagination
               class="pagination-no-border"
