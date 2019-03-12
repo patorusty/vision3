@@ -1,17 +1,13 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @click="close"
-    >
-      <div
-        class="col-md-6"
-        @click.stop
-      >
+    <div class="modal-backdrop" @click="close">
+      <div class="col-md-6" @click.stop>
         <card type="secodary">
           <form>
-            <div class="modal-titulo d-flex 
-            align-item=center ">
+            <div
+              class="modal-titulo d-flex 
+            align-item=center "
+            >
               <!-- ACA VA EL TITULO -->
               <h4>Organizador</h4>
               <button
@@ -25,61 +21,40 @@
             </div>
             <div class="modal-contenido">
               <!-- ACA VA EL FORMULARIO -->
-
               <div class="row">
                 <div class="col-md-6">
-                  <label
-                    for="nombre"
-                    class=" control-label"
-                  >Nombre</label>
+                  <label for="nombre" class=" control-label">Nombre</label>
                   <base-input
                     placeholder="Nombre"
                     v-model="organizador.nombre"
                     addon-left-icon="tim-icons icon-single-02"
                   >
                   </base-input>
-                  <label
-                    for="apellido"
-                    class="control-label"
-                  >Apellido</label>
+                  <label for="apellido" class="control-label">Apellido</label>
                   <base-input
                     placeholder="Apellido"
                     v-model="organizador.apellido"
                     addon-left-icon="tim-icons icon-single-02"
                   >
                   </base-input>
-                  <label
-                    for="cuit"
-                    class="control-label"
-                  >Cuit</label>
-                  <base-input
-                    placeholder="Cuit"
-                    v-model="organizador.cuit"
-                  >
+                  <label for="cuit" class="control-label">Cuit</label>
+                  <base-input placeholder="Cuit" v-model="organizador.cuit">
                   </base-input>
-                  <label
-                    for="matricula"
-                    class="control-label"
-                  >Matricula</label>
+                  <label for="matricula" class="control-label">Matricula</label>
                   <base-input
                     placeholder="Matricula"
                     v-model="organizador.matricula"
                   >
                   </base-input>
-
                 </div>
                 <div class="col-md-6">
-                  <label
-                    for="email"
-                    class="control-label"
-                  >Email</label>
+                  <label for="email" class="control-label">Email</label>
                   <base-input
                     placeholder="Email"
                     v-model="organizador.email"
                     addon-left-icon="tim-icons icon-email-85"
                   >
                   </base-input>
-
                   <label>Telefono</label>
                   <base-input
                     placeholder="Phone"
@@ -112,7 +87,14 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
+              <base-button
+                class="btn btn-primary ladda-button"
+                type="submit"
+                @click="crear"
+                >Guardar</base-button
+              >
             </div>
           </form>
         </card>
@@ -125,8 +107,7 @@
 import { SlideYUpTransition } from 'vue2-transitions';
 import { Card } from 'src/components';
 import { BaseButton } from 'src/components';
-import axios from 'axios';
-import { BaseProgress, BaseSwitch, TagsInput } from 'src/components/index';
+import { BaseSwitch } from 'src/components/index';
 export default {
   props: ['organizador'],
   data() {
@@ -146,7 +127,7 @@ export default {
     close() {
       this.$emit('close');
     },
-    crear(event) {
+    crear() {
       this.$emit('crear', this.organizador);
     }
   }
