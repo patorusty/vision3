@@ -3,9 +3,10 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-
           <div>
-            <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
+            <div
+              class="col-12 row justify-content-center justify-content-sm-between flex-wrap"
+            >
               <base-input>
                 <el-input
                   type="search"
@@ -23,7 +24,8 @@
                   class="animation-on-hover "
                   type="primary"
                   @click="showModal"
-                >Crear</base-button>
+                  >Crear</base-button
+                >
               </div>
             </div>
             <el-table :data="queriedData">
@@ -53,19 +55,13 @@
                 prop="telefono_2"
                 :min-width="80"
               ></el-table-column>
-              <el-table-column
-                label="Activo"
-                prop="activo"
-              >
+              <el-table-column label="Activo" prop="activo">
                 <div slot-scope="{ row }">
                   <div v-if="row.activo == 1">SI</div>
                   <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column
-                align="right"
-                label="Actions"
-              >
+              <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
                   <base-button
                     @click.native="modoEdicion(props.$index, props.row)"
@@ -77,7 +73,7 @@
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
                   <base-button
-                    @click.native="borrarOrganizador(props.$index, props.row);"
+                    @click.native="borrarOrganizador(props.$index, props.row)"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -94,7 +90,9 @@
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
             <div class>
-              <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
+              <p class="card-category">
+                Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+              </p>
             </div>
             <el-select
               class="select-primary mb-3 pagination-select"
@@ -222,8 +220,16 @@ export default {
           this.organizador
         )
         .then(() => {
-          this.notifyVue('top', 'right');
+          this.$notify({
+            message: 'Organizador creado',
+            timeout: 3000,
+            icon: 'tim-icons icon-alert-circle-exc',
+            horizontalAlign: 'right',
+            verticalAlign: 'top',
+            type: 'success'
+          });
           this.isModalVisible = false;
+          this.cargarOrganizadores();
         })
         .catch(e => console.log(e));
     },
@@ -240,17 +246,6 @@ export default {
           })
           .catch(e => console.log(e));
     },
-    notifyVue(verticalAlign, horizontalAlign) {
-      this.$notify({
-        message: 'Prueba',
-        timeout: 2000,
-        icon: 'tim-icons icon-bell-55',
-        horizontalAlign: horizontalAlign,
-        verticalAlign: verticalAlign,
-        type: 'success'
-      });
-    },
-
     borrarOrganizador(index, row) {
       swal({
         title: 'Estás seguro que queres borrar el registro?',
