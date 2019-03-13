@@ -103,7 +103,7 @@
                         v-for="localidad in localidades"
                         :key="localidad.id"
                         v-bind:value="localidad.id"
-                        >{{ localidad.nombre }} / CP:
+                      >{{ localidad.nombre }} / CP:
                         {{ localidad.codigo_postal }}
                       </option>
                     </select>
@@ -167,20 +167,29 @@
                 </div>
               </card>
               <div class="mb-4">
-                <button type="submit" class="btn btn-primary ladda-button">
+                <button
+                  type="submit"
+                  class="btn btn-primary ladda-button"
+                >
                   Guardar
                 </button>
               </div>
 
               <!-- ACA EMPIEZA LA TABLA DE CODIGO ORGANIZADOR -->
               <card>
-                <div class="col-sm-12" slot="header">
+                <div
+                  class="col-sm-12"
+                  slot="header"
+                >
                   <h4 class="d-inline align-bottom text-primary">
                     CODIGOS ORGANIZADOR
                   </h4>
-                  <base-button type="primary" size="sm" class="float-right"
-                    >Crear</base-button
-                  >
+                  <base-button
+                    type="primary"
+                    size="sm"
+                    class="float-right"
+                    @click="showModalCodigoOrg"
+                  >Crear</base-button>
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -290,9 +299,12 @@
                   <h4 class="d-inline align-bottom text-primary">
                     CODIGOS PRODUCTOR
                   </h4>
-                  <base-button type="primary" size="sm" class="float-right"
-                    >Crear</base-button
-                  >
+                  <base-button
+                    type="primary"
+                    size="sm"
+                    class="float-right"
+                    @click="showModalCodigoPro"
+                  >Crear</base-button>
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -346,7 +358,7 @@
                         label="Activo"
                       >
                         <div slot-scope="{ row }">
-                          <div v-if="row.activo == tru">SI</div>
+                          <div v-if="row.activo == true">SI</div>
                           <div v-else>NO</div>
                         </div>
                       </el-table-column>
@@ -401,9 +413,12 @@
               <card>
                 <div slot="header">
                   <h4 class="d-inline align-bottom text-primary">COBERTURAS</h4>
-                  <base-button type="primary" size="sm" class="float-right"
-                    >Crear</base-button
-                  >
+                  <base-button
+                    type="primary"
+                    size="sm"
+                    class="float-right"
+                    @click="showModalCobertura"
+                  >Crear</base-button>
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -502,6 +517,12 @@
                   </div>
                 </div>
               </card>
+              <modal-coberturas
+                v-show="isModalVisibleCobertura"
+                @close="closeModalCobertura"
+                @crear="crearCobertura"
+                :cobertura="cobertura"
+              ></modal-coberturas>
               <!-- !ACA TERMINA COBERTURAS -->
             </div>
           </div>
@@ -511,11 +532,21 @@
   </div>
 </template>
 <script>
+import { Table, TableColumn, Select, Option } from 'element-ui';
+import { BasePagination } from 'src/components';
+import Fuse from 'fuse.js';
 import axios from 'axios';
-import { Table, TableColumn } from 'element-ui';
 import swal from 'sweetalert2';
-
-import { BaseSwitch, ImageUpload } from 'src/components/index';
+import { BaseAlert } from 'src/components';
+import {
+  BaseSwitch,
+  TagsInput,
+  BaseProgress,
+  ImageUpload
+} from 'src/components/index';
+import ModalCoberturas from './Modales/ModalCoberturas';
+// import ModalCodigoOrganizadores from './Modales/ModalCodigoOrganizadores';
+// import ModalCodigoProductores from './Modales/ModalCodigoProductores';
 export default {
   components: {
     [Table.name]: Table,
@@ -550,30 +581,6 @@ export default {
     };
   },
   methods: {
-    handleDelete(index, row) {
-      swal({
-        title: 'Are you sure?',
-        text: `You won't be able to revert this!`,
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonClass: 'btn btn-success btn-fill',
-        cancelButtonClass: 'btn btn-danger btn-fill',
-        confirmButtonText: 'Yes, delete it!',
-        buttonsStyling: false
-      }).then(result => {
-        if (result.value) {
-          this.deleteRow(row);
-          swal({
-            title: 'Deleted!',
-            text: `You deleted ${row.nombre}`,
-            type: 'success',
-            confirmButtonClass: 'btn btn-success btn-fill',
-            buttonsStyling: false
-          });
-        }
-      });
-    },
-
     getError(fieldName) {
       return this.errors.first(fieldName);
     },
@@ -650,7 +657,42 @@ export default {
     },
 
     //FIN - FUNCIONES COMPANIA //
-
+    // ----------------------------------------------------------------
+    // FUNCIONES CODIGO ORGANIZADOR //
+    showModalCodigoOrg() {
+      this.vaciarForm();
+      this.isModalVisibleCodOrganizador = true;
+    },
+    closeModalCodigoOrg() {
+      this.vaciarForm();
+      this.isModalVisibleCodOrganizador = false;
+    },
+    // ACA PONER LAS FUNCIONES EDITAR Y BORRAR !!!!!!!!!!!!!!!!!!!!!!!!
+    // FIN FUNCIONES CODIGO ORGANIZADOR //
+    // ----------------------------------------------------------------
+    // FUNCIONES CODIGO PRODUCTOR //
+    showModalCodigoPro() {
+      this.vaciarForm();
+      this.isModalVisibleCodProductor = true;
+    },
+    closeModalCodigoPro() {
+      this.vaciarForm();
+      this.isModalVisibleCodProductor = false;
+    },
+    // ACA PONER LAS FUNCIONES EDITAR Y BORRAR !!!!!!!!!!!!!!!!!!!!!!!!
+    // FIN FUNCIONES CODIGO PRODUCTOR //
+    // ----------------------------------------------------------------
+    // FUNCIONES COBERTURA //
+    showModalCobertura() {
+      this.vaciarForm();
+      this.isModalVisibleCobertura = true;
+    },
+    closeModalCobertura() {
+      this.vaciarForm();
+      this.isModalVisibleCobertura = false;
+    },
+    // ACA PONER LAS FUNCIONES EDITAR Y BORRAR !!!!!!!!!!!!!!!!!!!!!!!!
+    // FIN FUNCIONES COBERTURA //
     cargarLocalidades() {
       axios.get('http://127.0.0.1:8000/api/localidades').then(response => {
         this.dataLoaded = true;
@@ -663,205 +705,27 @@ export default {
       this.codigo_productor = {};
       this.cobertura = {};
       this.compania.activo = true;
-    },
-
-    // FUNCIONES CODIGO ORGANIZADOR //
-    cargarCodigo_Organizador() {
-      axios
-        .get(
-          'http://127.0.0.1:8000/api/codigoorganizador/compania/' +
-            this.compania.id
-        )
-        .then(response => {
-          this.dataLoaded = true;
-          this.codigo_organizadores = response.data.data;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    crearCodigo_Organizador() {
-      this.codigo_organizador.compania_id = this.compania.id;
-      axios
-        .post(
-          'http://127.0.0.1:8000/api/codigoorganizador',
-          this.codigo_organizador
-        )
-        .then(() => {
-          $('#modalcodigoorganizador').modal('hide');
-          this.codigo_organizador = {};
-          this.codigo_organizador.activo = true;
-          this.cargarCodigo_Organizador();
-        })
-        .catch(e => console.log(e));
-    },
-    updateCodigo_Organizador(id) {
-      axios
-        .put(
-          'http://127.0.0.1:8000/api/codigoorganizador/' + id,
-          this.codigo_organizador
-        )
-        .then(() => {
-          $('#modalcodigoorganizador').modal('hide');
-          this.cargarCodigo_Organizador();
-          console.log('listo!');
-        })
-        .catch(e => console.log(e));
-    },
-    editarCodigo_Organizador(id) {
-      (this.modoEditar = true), $('#modalcodigoorganizador').modal('show');
-      axios
-        .get('http://127.0.0.1:8000/api/codigoorganizador/' + id)
-        .then(function(response) {
-          this.codigo_organizador = response.data.data;
-        })
-        .catch(e => console.log(e));
-    },
-    borrarCodigo_Organizador(id) {
-      axios
-        .delete('http://127.0.0.1:8000/api/codigoorganizador/' + id)
-        .then(() => {
-          this.cargarCodigo_Organizador();
-          console.log('borado!');
-        });
-    },
-
-    // FIN - FUNCIONES CODIGO ORGANIZADOR //
-
-    // FUNCIONES CODIGO PRODUCTOR //
-    cargarCodigo_Productor() {
-      axios
-        .get(
-          'http://127.0.0.1:8000/api/codigoproductor/compania/' +
-            this.compania.id
-        )
-        .then(response => {
-          this.dataLoaded = true;
-          this.codigo_productores = response.data.data;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    crearCodigo_Productor() {
-      this.codigo_productor.compania_id = this.compania.id;
-      axios
-        .post(
-          'http://127.0.0.1:8000/api/codigoproductor',
-          self.codigo_productor
-        )
-        .then(() => {
-          $('#modalcodigoproductor').modal('hide');
-          this.codigo_productor = {};
-          this.codigo_productor.activo = true;
-          this.cargarCodigo_Productor();
-        })
-        .catch(e => console.log(e));
-    },
-    updateCodigo_Productor(id) {
-      axios
-        .put(
-          'http://127.0.0.1:8000/api/codigoproductor/' + id,
-          this.codigo_productor
-        )
-        .then(() => {
-          $('#modalcodigoproductor').modal('hide');
-          this.cargarCodigo_Productor();
-          console.log('listo!');
-        })
-        .catch(e => console.log(e));
-    },
-    editarCodigo_Productor(id) {
-      (this.modoEditar = true), $('#modalcodigoproductor').modal('show');
-      axios
-        .get('http://127.0.0.1:8000/api/codigoproductor/' + id)
-        .then(function(response) {
-          self.codigo_productor = response.data.data;
-        })
-        .catch(e => console.log(e));
-    },
-    borrarCodigo_Productor(id) {
-      axios
-        .delete('http://127.0.0.1:8000/api/codigoproductor/' + id)
-        .then(() => {
-          this.cargarCodigo_Productor();
-          console.log('borado!');
-        });
-    },
-    // FIN - FUNCIONES CODIGO PRODUCTOR
-
-    // FUNCIONES COBERTURAS //
-    cargarCobertura() {
-      axios
-        .get('http://127.0.0.1:8000/api/cobertura/' + this.compania.id)
-        .then(response => {
-          this.dataLoaded = true;
-          this.coberturas = response.data.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    crearCobertura() {
-      this.cobertura.compania_id = this.compania.id;
-      axios
-        .post('http://127.0.0.1:8000/api/cobertura', this.cobertura)
-        .then(() => {
-          $('#modalcobertura').modal('hide');
-          this.cobertura = {};
-          this.cobertura.activo = true;
-          this.cargarCobertura();
-        })
-        .catch(e => console.log(e));
-    },
-    updateCobertura(id) {
-      axios
-        .put('http://127.0.0.1:8000/api/cobertura/' + id, this.cobertura)
-        .then(() => {
-          $('#modalcobertura').modal('hide');
-          this.cargarCobertura();
-          console.log('listo!');
-        })
-        .catch(e => console.log(e));
-    },
-    editarCobertura(id) {
-      (this.modoEditar = true), $('#modalcobertura').modal('show');
-      axios
-        .get('http://127.0.0.1:8000/api/cobertura/' + id)
-        .then(function(response) {
-          console.log(response.data.data);
-          this.cobertura = response.data.data;
-        })
-        .catch(e => console.log(e));
-    },
-    borrarCobertura(id) {
-      axios.delete('http://127.0.0.1:8000/api/cobertura/' + id).then(() => {
-        this.cargarCobertura();
-        console.log('borado!');
-      });
-    },
-    //FIN - FUNCIONES COBERTURAS //
-
-    cargarOrganizadores() {
-      axios
-        .get('http://127.0.0.1:8000/api/administracion/organizadores')
-        .then(response => {
-          this.organizadores = response.data.data;
-        });
-    },
-    cargarProductores() {
-      axios
-        .get('http://127.0.0.1:8000/api/administracion/productores')
-        .then(response => {
-          this.productores = response.data.data;
-        });
     }
+    // cargarOrganizadores() {
+    //   axios
+    //     .get('http://127.0.0.1:8000/api/administracion/organizadores')
+    //     .then(response => {
+    //       this.organizadores = response.data.data;
+    //     });
+    // },
+    // cargarProductores() {
+    //   axios
+    //     .get('http://127.0.0.1:8000/api/administracion/productores')
+    //     .then(response => {
+    //       this.productores = response.data.data;
+    //     });
+    // }
   },
 
   created() {
     this.cargarLocalidades();
     this.cargarCompania();
-    this.cargarCobertura();
+    // this.cargarCobertura();
   }
 };
 </script>

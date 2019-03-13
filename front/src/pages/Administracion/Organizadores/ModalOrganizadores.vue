@@ -109,13 +109,12 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
-              <!-- <base-button
-                v-show="!modoEditar"
+              >Guardar</base-button>
+              <base-button
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Guardar</base-button> -->
+              >Guardar</base-button>
             </div>
           </form>
         </card>
@@ -133,26 +132,21 @@ export default {
   props: ['organizador'],
   data() {
     return {
-      modoEdicion: false
+      modoEditar: false
     };
   },
-
   components: {
     SlideYUpTransition,
     Card,
     BaseButton,
     BaseSwitch
   },
-
   methods: {
     close() {
       this.$emit('close');
     },
     crear() {
       this.$emit('crear', this.organizador);
-    },
-    modificar() {
-      this.$emit('modificar', this.organizador);
     }
   }
 };
@@ -169,7 +163,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .modal-titulo {
   justify-content: space-between;
 }
