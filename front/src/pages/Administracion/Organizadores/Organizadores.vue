@@ -125,11 +125,11 @@
     <!-- INCION DEL MODAL //////////////////////// -->
     <!-- INCION DEL MODAL //////////////////////// -->
 
-    <div
-      v-show="isModalVisible"
-      @close="closeModal"
-    >
-      <SlideYUpTransition :duration="500">
+    <SlideYUpTransition :duration="500">
+      <div
+        v-show="isModalVisible"
+        @close="closeModal"
+      >
         <div
           class="modal-backdrop"
           @click="closeModal"
@@ -252,8 +252,8 @@
             </card>
           </div>
         </div>
-      </SlideYUpTransition>
-    </div>
+      </div>
+    </SlideYUpTransition>
     <!-- FIN DEL MODAL /////////////////////////// -->
     <!-- FIN DEL MODAL /////////////////////////// -->
     <!-- FIN DEL MODAL /////////////////////////// -->
@@ -276,12 +276,12 @@ import { BaseSwitch } from 'src/components/index';
 export default {
   components: {
     BasePagination,
+    SlideYUpTransition,
     [Select.name]: Select,
     [Option.name]: Option,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
     BaseAlert,
-    SlideYUpTransition,
     Card,
     BaseButton,
     BaseSwitch
