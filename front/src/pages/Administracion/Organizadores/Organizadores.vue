@@ -4,9 +4,7 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div
-              class="col-12 row justify-content-center justify-content-sm-between flex-wrap"
-            >
+            <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
               <base-input>
                 <el-input
                   type="search"
@@ -24,8 +22,7 @@
                   class="animation-on-hover "
                   type="primary"
                   @click="showModal"
-                  >Crear</base-button
-                >
+                >Crear</base-button>
               </div>
             </div>
             <el-table :data="queriedData">
@@ -55,13 +52,19 @@
                 prop="telefono_2"
                 :min-width="80"
               ></el-table-column>
-              <el-table-column label="Activo" prop="activo">
+              <el-table-column
+                label="Activo"
+                prop="activo"
+              >
                 <div slot-scope="{ row }">
                   <div v-if="row.activo == 1">SI</div>
                   <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column align="right" label="Actions">
+              <el-table-column
+                align="right"
+                label="Actions"
+              >
                 <div slot-scope="props">
                   <base-button
                     @click.native="modoEdicion(props.$index, props.row)"
@@ -117,22 +120,158 @@
         </card>
       </div>
     </div>
-    <modal-organizadores
+
+    <!-- INCION DEL MODAL //////////////////////// -->
+    <!-- INCION DEL MODAL //////////////////////// -->
+    <!-- INCION DEL MODAL //////////////////////// -->
+
+    <div
       v-show="isModalVisible"
       @close="closeModal"
-      @crear="crearOrganizador"
-      :organizador="organizador"
-    ></modal-organizadores>
+    >
+      <SlideYUpTransition :duration="500">
+        <div
+          class="modal-backdrop"
+          @click="closeModal"
+        >
+          <div
+            class="col-md-6"
+            @click.stop
+          >
+            <card type="secodary">
+              <form>
+                <div class="modal-titulo d-flex 
+            align-item=center ">
+                  <!-- ACA VA EL TITULO -->
+                  <h4>Organizador</h4>
+                  <button
+                    class="close "
+                    type="button"
+                    aria-label="Close"
+                    @click="closeModal"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-contenido">
+                  <!-- ACA VA EL FORMULARIO -->
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label
+                        for="nombre"
+                        class=" control-label"
+                      >Nombre</label>
+                      <base-input
+                        placeholder="Nombre"
+                        v-model="organizador.nombre"
+                        addon-left-icon="tim-icons icon-single-02"
+                      >
+                      </base-input>
+                      <label
+                        for="apellido"
+                        class="control-label"
+                      >Apellido</label>
+                      <base-input
+                        placeholder="Apellido"
+                        v-model="organizador.apellido"
+                        addon-left-icon="tim-icons icon-single-02"
+                      >
+                      </base-input>
+                      <label
+                        for="cuit"
+                        class="control-label"
+                      >Cuit</label>
+                      <base-input
+                        placeholder="Cuit"
+                        v-model="organizador.cuit"
+                      >
+                      </base-input>
+                      <label
+                        for="matricula"
+                        class="control-label"
+                      >Matricula</label>
+                      <base-input
+                        placeholder="Matricula"
+                        v-model="organizador.matricula"
+                      >
+                      </base-input>
+                    </div>
+                    <div class="col-md-6">
+                      <label
+                        for="email"
+                        class="control-label"
+                      >Email</label>
+                      <base-input
+                        placeholder="Email"
+                        v-model="organizador.email"
+                        addon-left-icon="tim-icons icon-email-85"
+                      >
+                      </base-input>
+                      <label>Telefono</label>
+                      <base-input
+                        placeholder="Phone"
+                        v-model="organizador.telefono_1"
+                        addon-left-icon="tim-icons icon-mobile"
+                      >
+                      </base-input>
+                      <label>Celular</label>
+                      <base-input
+                        placeholder="Phone"
+                        v-model="organizador.telefono_2"
+                        addon-left-icon="tim-icons icon-mobile"
+                      >
+                      </base-input>
+                      <label>Organizador Activo?</label>
+                      <base-input>
+                        <base-switch
+                          v-model="organizador.activo"
+                          type="primary"
+                          on-text="ON"
+                          off-text="OFF"
+                        ></base-switch>
+                      </base-input>
+                      &nbsp;
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-pie pull-right mt-3">
+                  <base-button
+                    v-show="!modoEditar"
+                    class="btn btn-primary ladda-button"
+                    type="submit"
+                    @click="crearOrganizador"
+                  >Crear</base-button>
+                  <base-button
+                    v-show="modoEditar"
+                    class="btn btn-primary ladda-button"
+                    type="submit"
+                    @click="updateOrganizador"
+                  >Guardar</base-button>
+                </div>
+              </form>
+            </card>
+          </div>
+        </div>
+      </SlideYUpTransition>
+    </div>
+    <!-- FIN DEL MODAL /////////////////////////// -->
+    <!-- FIN DEL MODAL /////////////////////////// -->
+    <!-- FIN DEL MODAL /////////////////////////// -->
+
   </div>
+
 </template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import Fuse from 'fuse.js';
 import axios from 'axios';
-import ModalOrganizadores from './ModalOrganizadores';
 import { BaseAlert } from 'src/components';
 import swal from 'sweetalert2';
+import { SlideYUpTransition } from 'vue2-transitions';
+import { Card } from 'src/components';
+import { BaseButton } from 'src/components';
+import { BaseSwitch } from 'src/components/index';
 
 export default {
   components: {
@@ -141,8 +280,11 @@ export default {
     [Option.name]: Option,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
-    ModalOrganizadores,
-    BaseAlert
+    BaseAlert,
+    SlideYUpTransition,
+    Card,
+    BaseButton,
+    BaseSwitch
   },
   computed: {
     /***
@@ -177,9 +319,9 @@ export default {
         perPage: 5,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
-        total: 0,
-        modoEditar: false
+        total: 0
       },
+      modoEditar: false,
       searchQuery: '',
       propsToSearch: [],
       tableData: [],
@@ -189,6 +331,7 @@ export default {
       organizador: {}
     };
   },
+
   methods: {
     cargarOrganizadores() {
       axios
@@ -202,26 +345,25 @@ export default {
       this.organizador = {
         activo: true
       };
+      this.modoEditar = false;
     },
     showModal() {
       this.vaciarForm();
-
       this.isModalVisible = true;
     },
     closeModal() {
       this.vaciarForm();
       this.isModalVisible = false;
     },
-    crearOrganizador(value) {
-      this.organizador = value;
+    crearOrganizador() {
       axios
         .post(
           'http://127.0.0.1:8000/api/administracion/organizadores',
           this.organizador
         )
-        .then(() => {
+        .then(response => {
           this.$notify({
-            message: 'Organizador creado',
+            message: 'Organizador Creado',
             timeout: 3000,
             icon: 'tim-icons icon-alert-circle-exc',
             horizontalAlign: 'right',
@@ -234,17 +376,36 @@ export default {
         .catch(e => console.log(e));
     },
     modoEdicion(index, row) {
-      this.showModal((this.modoEditar = true)),
-        axios
-          .get(
-            'http://127.0.0.1:8000/api/administracion/organizadores/' + row.id
-          )
-          .then(response => {
-            this.dataLoaded = true;
-
-            this.organizador = response.data.data;
-          })
-          .catch(e => console.log(e));
+      this.showModal();
+      this.modoEditar = true;
+      axios
+        .get('http://127.0.0.1:8000/api/administracion/organizadores/' + row.id)
+        .then(response => {
+          this.dataLoaded = true;
+          this.organizador = response.data.data;
+          console.log(this.organizador);
+        })
+        .catch(e => console.log(e));
+    },
+    updateOrganizador(id) {
+      axios
+        .put(
+          'http://127.0.0.1:8000/api/administracion/organizadores/' + id,
+          this.organizador
+        )
+        .then(response => {
+          this.$notify({
+            message: 'Organizador Modificado',
+            timeout: 3000,
+            icon: 'tim-icons icon-alert-circle-exc',
+            horizontalAlign: 'right',
+            verticalAlign: 'top',
+            type: 'success'
+          });
+          this.isModalVisible = false;
+          this.cargarOrganizadores();
+        })
+        .catch(e => console.log(e));
     },
     borrarOrganizador(index, row) {
       swal({
@@ -276,9 +437,7 @@ export default {
         .delete(
           'http://127.0.0.1:8000/api/administracion/organizadores/' + row.id
         )
-        .then(() => {
-          console.log('borado!');
-        });
+        .then(() => {});
       let indexToDelete = this.tableData.findIndex(
         tableRow => tableRow.id === row.id
       );
@@ -311,3 +470,20 @@ export default {
   }
 };
 </script>
+<style>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-titulo {
+  justify-content: space-between;
+}
+</style>
