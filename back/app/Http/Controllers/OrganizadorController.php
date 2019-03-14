@@ -109,6 +109,30 @@ class OrganizadorController extends Controller
         ]);
     }
 
+    public function searchCuit()
+    {
+        if ($search = \Request::get('q')) {
+            $cuits = Organizadores::where(function ($query) use ($search) {
+                $query->where('cuit', 'LIKE', "%$search%");
+            })->get();
+        } else {
+            $cuits = 'Algo fallo';
+        }
+        return OrganizadoresResource::collection($cuits);
+    }
+
+    public function searchMatricula()
+    {
+        if ($search = \Request::get('q')) {
+            $matriculas = Organizadores::where(function ($query) use ($search) {
+                $query->where('matricula', 'LIKE', "%$search%");
+            })->get();
+        } else {
+            $matriculas = 'Algo fallo';
+        }
+        return OrganizadoresResource::collection($matriculas);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

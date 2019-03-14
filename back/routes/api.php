@@ -33,3 +33,5 @@ Route::get('/codigoorganizador/compania/{id}', 'CodigoOrganizadorController@inde
 Route::get('/codigoproductor/compania/{id}', 'CodigoProductorController@indexFiltrado');
 Route::get('/cobertura/compania/{id}', 'CoberturaController@indexFiltrado');
 Route::get('/companias/busquedaCuit', 'CompaniaController@search');
+Route::get('/organizadores/busquedaCuit', 'OrganizadorController@searchCuit');
+Route::get('/organizadores/busquedaMatricula', 'OrganizadorController@searchMatricula');

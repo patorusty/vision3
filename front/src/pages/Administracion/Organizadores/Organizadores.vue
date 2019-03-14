@@ -4,7 +4,9 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
+            <div
+              class="col-12 row justify-content-center justify-content-sm-between flex-wrap"
+            >
               <base-input>
                 <el-input
                   type="search"
@@ -22,7 +24,8 @@
                   class="animation-on-hover "
                   type="primary"
                   @click="showModal"
-                >Crear</base-button>
+                  >Crear</base-button
+                >
               </div>
             </div>
             <el-table :data="queriedData">
@@ -52,19 +55,13 @@
                 prop="telefono_2"
                 :min-width="80"
               ></el-table-column>
-              <el-table-column
-                label="Activo"
-                prop="activo"
-              >
+              <el-table-column label="Activo" prop="activo">
                 <div slot-scope="{ row }">
                   <div v-if="row.activo == 1">SI</div>
                   <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column
-                align="right"
-                label="Actions"
-              >
+              <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
                   <base-button
                     @click.native="modoEdicion(props.$index, props.row)"
@@ -125,6 +122,7 @@
       @close="closeModal"
       @crear="crearOrganizador"
       :organizador="organizador"
+      :modo="modoEditar"
     ></modal-organizadores>
   </div>
 </template>
@@ -132,7 +130,7 @@
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import Fuse from 'fuse.js';
-import axios from 'axios';
+import { HTTP } from '../../../API/http-request.js';
 import ModalOrganizadores from './ModalOrganizadores';
 import { BaseAlert } from 'src/components';
 import swal from 'sweetalert2';
@@ -179,9 +177,9 @@ export default {
         perPage: 5,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
-        total: 0,
-        modoEditar: false
+        total: 0
       },
+      modoEditar: false,
       searchQuery: '',
       propsToSearch: [],
       tableData: [],
@@ -193,12 +191,9 @@ export default {
   },
   methods: {
     cargarOrganizadores() {
-      axios
-        .get('http://127.0.0.1:8000/api/administracion/organizadores/')
-        .then(response => {
-          this.dataLoaded = true;
-          this.tableData = response.data.data;
-        });
+      HTTP.get('administracion/organizadores/').then(response => {
+        this.tableData = response.data.data;
+      });
     },
     vaciarForm() {
       this.organizador = {
@@ -206,20 +201,18 @@ export default {
       };
     },
     showModal() {
-      this.vaciarForm();
+      this.$validator.reset();
+      this.errors.clear();
       this.isModalVisible = true;
     },
     closeModal() {
       this.vaciarForm();
+      this.cargarOrganizadores();
       this.isModalVisible = false;
     },
     crearOrganizador(value) {
       this.organizador = value;
-      axios
-        .post(
-          'http://127.0.0.1:8000/api/administracion/organizadores',
-          this.organizador
-        )
+      HTTP.post('administracion/organizadores', this.organizador)
         .then(() => {
           this.$notify({
             message: 'Organizador creado',
@@ -235,16 +228,13 @@ export default {
         .catch(e => console.log(e));
     },
     modoEdicion(index, row) {
-      this.showModal((this.modoEditar = true)),
-        axios
-          .get(
-            'http://127.0.0.1:8000/api/administracion/organizadores/' + row.id
-          )
-          .then(response => {
-            this.dataLoaded = true;
-            this.organizador = response.data.data;
-          })
-          .catch(e => console.log(e));
+      this.showModal();
+      this.modoEditar = true;
+      HTTP.get('administracion/organizadores/' + row.id)
+        .then(response => {
+          this.organizador = response.data.data;
+        })
+        .catch(e => console.log(e));
     },
     borrarOrganizador(index, row) {
       swal({
@@ -272,13 +262,9 @@ export default {
       });
     },
     deleteRow(row) {
-      axios
-        .delete(
-          'http://127.0.0.1:8000/api/administracion/organizadores/' + row.id
-        )
-        .then(() => {
-          console.log('borado!');
-        });
+      HTTP.delete('administracion/organizadores/' + row.id).then(() => {
+        console.log('borado!');
+      });
       let indexToDelete = this.tableData.findIndex(
         tableRow => tableRow.id === row.id
       );
