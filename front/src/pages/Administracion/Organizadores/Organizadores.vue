@@ -4,9 +4,7 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div
-              class="col-12 row justify-content-center justify-content-sm-between flex-wrap"
-            >
+            <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
               <base-input>
                 <el-input
                   type="search"
@@ -24,8 +22,7 @@
                   class="animation-on-hover "
                   type="primary"
                   @click="showModal"
-                  >Crear</base-button
-                >
+                >Crear</base-button>
               </div>
             </div>
             <el-table :data="queriedData">
@@ -55,13 +52,19 @@
                 prop="telefono_2"
                 :min-width="80"
               ></el-table-column>
-              <el-table-column label="Activo" prop="activo">
+              <el-table-column
+                label="Activo"
+                prop="activo"
+              >
                 <div slot-scope="{ row }">
                   <div v-if="row.activo == 1">SI</div>
                   <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column align="right" label="Actions">
+              <el-table-column
+                align="right"
+                label="Actions"
+              >
                 <div slot-scope="props">
                   <base-button
                     @click.native="modoEdicion(props.$index, props.row)"
@@ -119,8 +122,6 @@
     </div>
     <modal-organizadores
       v-show="isModalVisible"
-      @close="closeModal"
-      @crear="crearOrganizador"
       :organizador="organizador"
       :modo="modoEditar"
     ></modal-organizadores>
@@ -205,28 +206,33 @@ export default {
       this.errors.clear();
       this.isModalVisible = true;
     },
-    closeModal() {
-      this.vaciarForm();
-      this.cargarOrganizadores();
-      this.isModalVisible = false;
-    },
-    crearOrganizador(value) {
-      this.organizador = value;
-      HTTP.post('administracion/organizadores', this.organizador)
-        .then(() => {
-          this.$notify({
-            message: 'Organizador creado',
-            timeout: 3000,
-            icon: 'tim-icons icon-alert-circle-exc',
-            horizontalAlign: 'right',
-            verticalAlign: 'top',
-            type: 'success'
-          });
-          this.isModalVisible = false;
-          this.cargarOrganizadores();
-        })
-        .catch(e => console.log(e));
-    },
+    // closeModal() {
+    //   this.vaciarForm();
+    //   this.cargarOrganizadores();
+    //   this.isModalVisible = false;
+    // },
+    // crearOrganizador(value) {
+    //   this.organizador = value;
+    //   this.$validator.validateAll().then(isValid => {
+    //     if (isValid && !this.cuitUsed && !this.matriculaUsed) {
+    //       HTTP.post('administracion/organizadores', this.organizador)
+    //         .then(() => {
+    //           this.$notify({
+    //             message: 'Organizador creado',
+    //             timeout: 3000,
+    //             icon: 'tim-icons icon-alert-circle-exc',
+    //             horizontalAlign: 'right',
+    //             verticalAlign: 'top',
+    //             type: 'success'
+    //           });
+    //           this.isModalVisible = false;
+    //           this.cargarOrganizadores();
+    //         })
+    //         .catch(e => console.log(e));
+    //     }
+    //   });
+    // },
+
     modoEdicion(index, row) {
       this.showModal();
       this.modoEditar = true;
@@ -262,9 +268,7 @@ export default {
       });
     },
     deleteRow(row) {
-      HTTP.delete('administracion/organizadores/' + row.id).then(() => {
-        console.log('borado!');
-      });
+      HTTP.delete('administracion/organizadores/' + row.id).then(() => {});
       let indexToDelete = this.tableData.findIndex(
         tableRow => tableRow.id === row.id
       );

@@ -39,11 +39,11 @@ class ProductorController extends Controller
     public function store(Request $request)
     {        
         $this->validate($request, [
-            // 'nombre' => 'required',
-            // 'apellido' => 'required',
-            // 'cuit' => 'required',
-            // 'matricula' => 'required',
-            // 'email' => 'required',
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'cuit' => 'required',
+            'matricula' => 'required',
+            'email' => 'required',
             // 'telefono_1' => 'required',
             // 'telefono_2' => 'required',
         ]);

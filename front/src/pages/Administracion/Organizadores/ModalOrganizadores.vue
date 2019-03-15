@@ -1,20 +1,24 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div class="modal-backdrop" @click="close">
-      <div class="col-md-6" @click.stop>
+    <div
+      class="modal-backdrop"
+      @click="closeModal"
+    >
+      <div
+        class="col-md-6"
+        @click.stop
+      >
         <card type="secodary">
           <form>
-            <div
-              class="modal-titulo d-flex 
-            align-item=center "
-            >
+            <div class="modal-titulo d-flex 
+            align-item=center ">
               <!-- ACA VA EL TITULO -->
               <h4>Organizador</h4>
               <button
                 class="close "
                 type="button"
                 aria-label="Close"
-                @click="close"
+                @click="closeModal"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -23,7 +27,10 @@
               <!-- ACA VA EL FORMULARIO -->
               <div class="row">
                 <div class="col-md-6">
-                  <label for="nombre" class=" control-label">Nombre</label>
+                  <label
+                    for="nombre"
+                    class=" control-label"
+                  >Nombre</label>
                   <base-input
                     placeholder="Nombre"
                     v-model="organizador.nombre"
@@ -33,7 +40,10 @@
                     name="nombre"
                   >
                   </base-input>
-                  <label for="apellido" class="control-label">Apellido</label>
+                  <label
+                    for="apellido"
+                    class="control-label"
+                  >Apellido</label>
                   <base-input
                     placeholder="Apellido"
                     v-model="organizador.apellido"
@@ -43,7 +53,10 @@
                     name="apellido"
                   >
                   </base-input>
-                  <label for="cuit" class="control-label">Cuit</label>
+                  <label
+                    for="cuit"
+                    class="control-label"
+                  >Cuit</label>
                   <base-input
                     placeholder="Cuit"
                     v-model.lazy="organizador.cuit"
@@ -54,7 +67,10 @@
                     @change="buscarCuit"
                   >
                   </base-input>
-                  <label for="matricula" class="control-label">Matricula</label>
+                  <label
+                    for="matricula"
+                    class="control-label"
+                  >Matricula</label>
                   <base-input
                     placeholder="Matricula"
                     v-model="organizador.matricula"
@@ -66,7 +82,10 @@
                   </base-input>
                 </div>
                 <div class="col-md-6">
-                  <label for="email" class="control-label">Email</label>
+                  <label
+                    for="email"
+                    class="control-label"
+                  >Email</label>
                   <base-input
                     placeholder="Email"
                     v-model="organizador.email"
@@ -115,15 +134,13 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="updateOrganizador"
-                >Guardar</base-button
-              >
+              >Guardar</base-button>
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
-                @click="crear"
-                >Crear</base-button
-              >
+                @click="crearOrganizador"
+              >Crear</base-button>
             </div>
           </form>
         </card>
@@ -192,8 +209,49 @@ export default {
     crear() {
       this.$emit('crear', this.organizador);
     },
+    cargarOrganizadores() {
+      HTTP.get('administracion/organizadores/').then(response => {
+        this.tableData = response.data.data;
+      });
+    },
+    vaciarForm() {
+      this.organizador = {
+        activo: true
+      };
+    },
+    showModal() {
+      this.$validator.reset();
+      this.errors.clear();
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.vaciarForm();
+      this.cargarOrganizadores();
+      this.isModalVisible = false;
+    },
+    crearOrganizador() {
+      this.$validator.validateAll().then(isValid => {
+        if (isValid && !this.cuitUsed && !this.matriculaUsed) {
+          HTTP.post('administracion/organizadores', this.organizador)
+            .then(() => {
+              this.closeModal();
+              this.$notify({
+                message: 'Organizador creado',
+                timeout: 3000,
+                icon: 'tim-icons icon-alert-circle-exc',
+                horizontalAlign: 'right',
+                verticalAlign: 'top',
+                type: 'success'
+              });
+              this.isModalVisible = false;
+              this.cargarOrganizadores();
+            })
+            .catch(e => console.log(e));
+        }
+      });
+    },
+
     updateOrganizador() {
-      console.log(this.$validator);
       this.$validator.validateAll().then(isValid => {
         if (isValid && !this.cuitUsed && !this.matriculaUsed) {
           HTTP.put(
@@ -201,7 +259,7 @@ export default {
             this.organizador
           )
             .then(() => {
-              this.close();
+              this.closeModal();
               this.$notify({
                 message: 'Codigo Organizador Modificado',
                 timeout: 3000,
