@@ -124,6 +124,8 @@
       v-show="isModalVisible"
       :organizador="organizador"
       :modo="modoEditar"
+      @close="closeModal"
+      @crear="crearOrganizador"
     ></modal-organizadores>
   </div>
 </template>
@@ -206,33 +208,33 @@ export default {
       this.errors.clear();
       this.isModalVisible = true;
     },
-    // closeModal() {
-    //   this.vaciarForm();
-    //   this.cargarOrganizadores();
-    //   this.isModalVisible = false;
-    // },
-    // crearOrganizador(value) {
-    //   this.organizador = value;
-    //   this.$validator.validateAll().then(isValid => {
-    //     if (isValid && !this.cuitUsed && !this.matriculaUsed) {
-    //       HTTP.post('administracion/organizadores', this.organizador)
-    //         .then(() => {
-    //           this.$notify({
-    //             message: 'Organizador creado',
-    //             timeout: 3000,
-    //             icon: 'tim-icons icon-alert-circle-exc',
-    //             horizontalAlign: 'right',
-    //             verticalAlign: 'top',
-    //             type: 'success'
-    //           });
-    //           this.isModalVisible = false;
-    //           this.cargarOrganizadores();
-    //         })
-    //         .catch(e => console.log(e));
-    //     }
-    //   });
-    // },
-
+    closeModal() {
+      console.log('dos');
+      this.vaciarForm();
+      this.cargarOrganizadores();
+      this.isModalVisible = false;
+    },
+    crearOrganizador(value) {
+      this.organizador = value;
+      this.$validator.validateAll().then(isValid => {
+        if (isValid && !this.cuitUsed && !this.matriculaUsed) {
+          HTTP.post('administracion/organizadores', this.organizador)
+            .then(() => {
+              this.$notify({
+                message: 'Organizador creado',
+                timeout: 3000,
+                icon: 'tim-icons icon-alert-circle-exc',
+                horizontalAlign: 'right',
+                verticalAlign: 'top',
+                type: 'success'
+              });
+              this.isModalVisible = false;
+              this.cargarOrganizadores();
+            })
+            .catch(e => console.log(e));
+        }
+      });
+    },
     modoEdicion(index, row) {
       this.showModal();
       this.modoEditar = true;

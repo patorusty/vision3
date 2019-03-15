@@ -176,8 +176,34 @@ export default {
       return this.searchedData.length > 0
         ? this.searchedData.length
         : this.tableData.length;
+    },
+    searchedData() {
+      // Filter results
+      // return this.tableData.filter(data => {
+      //   return (
+      //     data.clientes.apellido
+      //       .toLowerCase()
+      //       .indexOf(this.searchQuery.toLowerCase()) > -1 ||
+      //     data.clientes.nombre
+      //       .toLowerCase()
+      //       .indexOf(this.searchQuery.toLowerCase()) > -1 ||
+      //     data.numero.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1
+      //   );
+      // });
+      var options = {
+        shouldSort: true,
+        threshold: 0.0,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: ['numero', 'clientes.nombre']
+      };
+      var fuse = new Fuse(this.tableData, options);
+      return fuse.search(this.searchQuery);
     }
   },
+
   data() {
     return {
       pagination: {
@@ -187,9 +213,8 @@ export default {
         total: 0
       },
       searchQuery: '',
-      propsToSearch: ['numero', 'medio_pago'],
       tableData: [],
-      searchedData: [],
+      // searchedData: [],
       fuseSearch: null
     };
   },
@@ -218,13 +243,13 @@ export default {
      * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
      * @param value of the query
      */
-    searchQuery(value) {
-      let result = this.tableData;
-      if (value !== '') {
-        result = this.fuseSearch.search(this.searchQuery);
-      }
-      this.searchedData = result;
-    }
+    // searchQuery(value) {
+    //   let result = this.tableData;
+    //   if (value !== '') {
+    //     result = this.fuseSearch.search(this.searchQuery);
+    //   }
+    //   this.searchedData = result;
+    // }
   }
 };
 </script>
