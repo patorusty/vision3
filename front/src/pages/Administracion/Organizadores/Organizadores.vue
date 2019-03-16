@@ -135,7 +135,14 @@ import { HTTP } from '../../../API/http-request.js';
 import ModalOrganizadores from './ModalOrganizadores';
 import { BaseAlert } from 'src/components';
 import swal from 'sweetalert2';
+import { cargarTabla } from '../Organizadores/administracion.js';
+let url = '"administracion/organizadores/"';
+
 export default {
+  mixins: [cargarTabla],
+  created() {
+    saludo('url');
+  },
   components: {
     BasePagination,
     [Select.name]: Select,
@@ -190,12 +197,13 @@ export default {
       organizador: {}
     };
   },
+
   methods: {
-    cargarOrganizadores() {
-      HTTP.get('administracion/organizadores/').then(response => {
-        this.tableData = response.data.data;
-      });
-    },
+    // cargarOrganizadores() {
+    //   HTTP.get('administracion/organizadores/').then(response => {
+    //     this.tableData = response.data.data;
+    //   });
+    // },
     vaciarForm() {
       this.organizador = {
         activo: true
@@ -282,7 +290,8 @@ export default {
       keys: [],
       threshold: 0.3
     });
-    this.cargarOrganizadores();
+
+    // this.cargarOrganizadores();
   },
   watch: {
     /**
