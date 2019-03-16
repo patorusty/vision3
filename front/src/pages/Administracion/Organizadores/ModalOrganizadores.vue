@@ -2,7 +2,7 @@
   <SlideYUpTransition :duration="500">
     <div
       class="modal-backdrop"
-      @click="closeModal"
+      @click="close"
     >
       <div
         class="col-md-6"
@@ -18,7 +18,7 @@
                 class="close "
                 type="button"
                 aria-label="Close"
-                @click="closeModal"
+                @click="close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -139,7 +139,7 @@
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
-                @click="crearOrganizador"
+                @click="crear"
               >Crear</base-button>
             </div>
           </form>
@@ -209,48 +209,6 @@ export default {
     crear() {
       this.$emit('crear', this.organizador);
     },
-    cargarOrganizadores() {
-      HTTP.get('administracion/organizadores/').then(response => {
-        this.tableData = response.data.data;
-      });
-    },
-    vaciarForm() {
-      this.organizador = {
-        activo: true
-      };
-    },
-    showModal() {
-      this.$validator.reset();
-      this.errors.clear();
-      this.isModalVisible = true;
-    },
-    closeModal() {
-      this.vaciarForm();
-      this.cargarOrganizadores();
-      this.isModalVisible = false;
-    },
-    crearOrganizador() {
-      this.$validator.validateAll().then(isValid => {
-        if (isValid && !this.cuitUsed && !this.matriculaUsed) {
-          HTTP.post('administracion/organizadores', this.organizador)
-            .then(() => {
-              this.closeModal();
-              this.$notify({
-                message: 'Organizador creado',
-                timeout: 3000,
-                icon: 'tim-icons icon-alert-circle-exc',
-                horizontalAlign: 'right',
-                verticalAlign: 'top',
-                type: 'success'
-              });
-              this.isModalVisible = false;
-              this.cargarOrganizadores();
-            })
-            .catch(e => console.log(e));
-        }
-      });
-    },
-
     updateOrganizador() {
       this.$validator.validateAll().then(isValid => {
         if (isValid && !this.cuitUsed && !this.matriculaUsed) {
@@ -259,7 +217,7 @@ export default {
             this.organizador
           )
             .then(() => {
-              this.closeModal();
+              this.close();
               this.$notify({
                 message: 'Codigo Organizador Modificado',
                 timeout: 3000,

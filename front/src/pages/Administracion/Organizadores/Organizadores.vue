@@ -123,6 +123,8 @@
       v-show="isModalVisible"
       :organizador="organizador"
       :modo="modoEditar"
+      @close="closeModal"
+      @crear="crearOrganizador"
     ></modal-organizadores>
   </div>
 </template>
