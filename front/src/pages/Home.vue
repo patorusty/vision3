@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     prueba() {
-      console.log(this.tabla);
+      console.log(this.tableData);
     }
   },
   created() {
