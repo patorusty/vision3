@@ -21,6 +21,7 @@
                   slot="header"
                   class="animation-on-hover "
                   type="primary"
+                  @click="showModal"
                 >Crear</base-button>
               </div>
             </div>
@@ -134,12 +135,11 @@ import { HTTP } from '../../../API/http-request.js';
 import ModalOrganizadores from './ModalOrganizadores';
 import { BaseAlert } from 'src/components';
 import swal from 'sweetalert2';
-import { cargarTabla } from '../../../funciones.js';
+import { cargarTabla } from '../../../funciones.js.js';
 let url = '"administracion/organizadores/"';
 
 export default {
   mixins: [cargarTabla],
-  created() {},
 
   components: {
     BasePagination,
@@ -195,8 +195,112 @@ export default {
       organizador: {}
     };
   },
+  created: {
+    cargar();
+  },
 
-  methods: {},
-  mounted() {}
+  methods: {
+    vaciarForm() {
+      this.organizador = {
+        activo: true
+      };
+    },
+    showModal() {
+      this.$validator.reset();
+      this.errors.clear();
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.vaciarForm();
+      this.cargarOrganizadores();
+      this.isModalVisible = false;
+    },
+    // crearOrganizador(value) {
+    //   this.organizador = value;
+    //   this.$validator.validateAll().then(isValid => {
+    //     if (isValid && !this.cuitUsed && !this.matriculaUsed) {
+    //       HTTP.post('administracion/organizadores', this.organizador)
+    //         .then(() => {
+    //           this.$notify({
+    //             message: 'Organizador creado',
+    //             timeout: 3000,
+    //             icon: 'tim-icons icon-alert-circle-exc',
+    //             horizontalAlign: 'right',
+    //             verticalAlign: 'top',
+    //             type: 'success'
+    //           });
+    //           this.isModalVisible = false;
+    //           this.cargarOrganizadores();
+    //         })
+    //         .catch(e => console.log(e));
+    //     }
+    //   });
+    // },
+
+    modoEdicion(index, row) {
+      this.showModal();
+      this.modoEditar = true;
+      HTTP.get('administracion/organizadores/' + row.id)
+        .then(response => {
+          this.organizador = response.data.data;
+        })
+        .catch(e => console.log(e));
+    },
+    borrarOrganizador(index, row) {
+      swal({
+        title: 'Estás seguro que queres borrar el registro?',
+        text: `Esto no se puede revertir`,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-success btn-fill',
+        cancelButtonClass: 'btn btn-danger btn-fill',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Sí, Eliminalo',
+        buttonsStyling: false
+      }).then(result => {
+        if (result.value) {
+          this.deleteRow(row);
+          this.$notify({
+            message: 'Organizador eliminado',
+            timeout: 2000,
+            icon: 'tim-icons icon-bell-55',
+            horizontalAlign: 'right',
+            verticalAlign: 'top',
+            type: 'danger'
+          });
+        }
+      });
+    },
+    deleteRow(row) {
+      HTTP.delete('administracion/organizadores/' + row.id).then(() => {});
+      let indexToDelete = this.tableData.findIndex(
+        tableRow => tableRow.id === row.id
+      );
+      if (indexToDelete >= 0) {
+        this.tableData.splice(indexToDelete, 1);
+      }
+    }
+  },
+  mounted() {
+    this.fuseSearch = new Fuse(this.tableData, {
+      keys: [],
+      threshold: 0.3
+    });
+    // this.cargarOrganizadores();
+  },
+  watch: {
+    /**
+     * Searches through the table data by a given query.
+     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
+     * @param value of the query
+     */
+    searchQuery(value) {
+      let result = this.tableData;
+      if (value !== '') {
+        result = this.fuseSearch.search(this.searchQuery);
+      }
+      this.searchedData = result;
+    }
+  }
 };
 </script>
