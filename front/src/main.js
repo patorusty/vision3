@@ -10,6 +10,7 @@ import { Validator } from 'vee-validate';
 Vue.use(VeeValidate);
 // console.log(diccionario);
 Validator.localize('en', diccionario);
+export const EventBus = new Vue();
 // plugin setup
 Vue.use(DashboardPlugin);
 /* eslint-disable no-new */

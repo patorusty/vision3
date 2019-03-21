@@ -21,6 +21,7 @@
                   slot="header"
                   class="animation-on-hover "
                   type="primary"
+                  @click="showModal"
                 >Crear</base-button>
               </div>
             </div>
@@ -66,7 +67,7 @@
               >
                 <div slot-scope="props">
                   <base-button
-                    @click.native="modoEdicion(props.$index, props.row)"
+                    @click.native="editar(url, props.row.id)"
                     class="edit btn-link"
                     type="warning"
                     size="sm"
@@ -75,7 +76,7 @@
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
                   <base-button
-                    @click.native="borrarOrganizador(props.$index, props.row)"
+                    @click.native="borrar(props.row.id)"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -124,25 +125,22 @@
       :organizador="organizador"
       :modo="modoEditar"
       @close="closeModal"
-      @crear="crearOrganizador"
+      @crear="crear"
+      @recargar='cargar'
     ></modal-organizadores>
   </div>
 </template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
-import Fuse from 'fuse.js';
-import { HTTP } from '../../../API/http-request.js';
+import http from '../../../API/http-request.js';
 import ModalOrganizadores from './ModalOrganizadores';
 import { BaseAlert } from 'src/components';
-import swal from 'sweetalert2';
-import { cargarTabla } from '../../../funciones.js';
-let url = '"administracion/organizadores/"';
+import { mixin } from '../../../mixins/mixin.js';
+import { EventBus } from '../../../main.js';
 
 export default {
-  mixins: [cargarTabla],
-  created() {},
-
+  mixins: [mixin],
   components: {
     BasePagination,
     [Select.name]: Select,
@@ -152,53 +150,70 @@ export default {
     ModalOrganizadores,
     BaseAlert
   },
-  computed: {
-    /***
-     * Returns a page from the searched data or the whole data. Search is performed in the watch section below
-     */
-    queriedData() {
-      let result = this.tableData;
-      if (this.searchedData.length > 0) {
-        result = this.searchedData;
-      }
-      return result.slice(this.from, this.to);
-    },
-    to() {
-      let highBound = this.from + this.pagination.perPage;
-      if (this.total < highBound) {
-        highBound = this.total;
-      }
-      return highBound;
-    },
-    from() {
-      return this.pagination.perPage * (this.pagination.currentPage - 1);
-    },
-    total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length;
-    }
-  },
   data() {
     return {
-      pagination: {
-        perPage: 5,
-        currentPage: 1,
-        perPageOptions: [5, 10, 25, 50],
-        total: 0
-      },
-      modoEditar: false,
-      searchQuery: '',
-      propsToSearch: [],
-      tableData: [],
-      searchedData: [],
-      fuseSearch: null,
-      isModalVisible: false,
-      organizador: {}
+      organizador: {},
+      url: 'administracion/organizadores'
     };
   },
+  methods: {
+    cargar() {
+      http.load(this.url).then(res => (this.tableData = res.data.data));
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
+      this.organizador = {
+        activo: true
+      };
+    },
+    showModal() {
+      this.vaciarForm();
+      this.$validator.reset();
+      this.errors.clear();
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+      this.vaciarForm();
+      this.$validator.reset();
+      this.errors.clear();
+    },
+    crear(value) {
+      this.showModal();
+      http
+        .create(this.url, value)
+        .then(() => {
+          this.notifyVue('success', 'El organizador ha sido creado con exito');
+          this.cargar();
+          this.closeModal();
+        })
+        .catch(e => console.log(e));
+    },
+    editar(url, id) {
+      this.showModal();
+      this.modoEditar = true;
+      http
+        .loadOne(this.url, id)
+        .then(r => {
+          this.organizador = r.data.data;
+        })
+        .catch(e => console.log(e));
+    },
+    borrar(id) {
+      this.dangerSwal().then(result => {
+        if (result.value) {
+          http.delete(this.url, id).then(() => {
+            this.notifyVue('danger', 'El organizador ha sido eliminado');
+            this.cargar();
+          });
+        }
+      });
+    }
+  },
+  created() {
+    this.cargar();
+  },
 
-  methods: {},
   mounted() {}
 };
 </script>

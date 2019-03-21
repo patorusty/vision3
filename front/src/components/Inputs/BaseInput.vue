@@ -40,6 +40,7 @@
   </div>
 </template>
 <script>
+import { EventBus } from '../../main.js';
 export default {
   inheritAttrs: false,
   name: 'base-input',
@@ -100,6 +101,7 @@ export default {
     onInput(evt) {
       if (!this.touched) {
         this.touched = true;
+        // this.resetTouched = true;
       }
       this.$emit('input', evt.target.value);
     },
@@ -109,7 +111,13 @@ export default {
     onBlur() {
       this.focused = false;
     }
+  },
+  mounted() {
+    EventBus.$on('resetInput', val => {
+      this.touched = val;
+    });
   }
 };
 </script>
-<style></style>
+<style>
+</style>

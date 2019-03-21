@@ -24,5 +24,8 @@ export default {
   },
   delete(url, id) {
     return HTTP.delete(`${url}/${id}`);
+  },
+  search(url) {
+    return HTTP.get(url);
   }
 };

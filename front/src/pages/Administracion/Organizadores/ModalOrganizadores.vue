@@ -133,7 +133,7 @@
                 v-if="modo == true"
                 class="btn btn-primary ladda-button"
                 type="submit"
-                @click="updateOrganizador"
+                @click="actualizar"
               >Guardar</base-button>
               <base-button
                 v-else
@@ -154,9 +154,13 @@ import { SlideYUpTransition } from 'vue2-transitions';
 import { Card } from 'src/components';
 import { BaseButton } from 'src/components';
 import { BaseSwitch } from 'src/components/index';
-import { HTTP } from '../../../API/http-request.js';
+import http from '../../../API/http-request.js';
+import { EventBus } from '../../../main.js';
+import { mixin } from '../../../mixins/mixin.js';
+
 export default {
   props: ['organizador', 'modo'],
+  mixins: [mixin],
   data() {
     return {
       cuitUsed: false,
@@ -164,6 +168,7 @@ export default {
       usedError: '',
       cuits: [],
       matriculas: [],
+      url: 'administracion/organizadores',
       modelValidations: {
         nombre: {
           required: true
@@ -202,30 +207,32 @@ export default {
   },
   methods: {
     close() {
+      EventBus.$emit('resetInput', false);
       this.$validator.reset();
       this.errors.clear();
       this.$emit('close');
     },
     crear() {
-      this.$emit('crear', this.organizador);
-    },
-    updateOrganizador() {
       this.$validator.validateAll().then(isValid => {
         if (isValid && !this.cuitUsed && !this.matriculaUsed) {
-          HTTP.put(
-            'administracion/organizadores/' + this.organizador.id,
-            this.organizador
-          )
+          this.$emit('crear', this.organizador);
+          this.$validator.reset();
+          this.errors.clear();
+        }
+      });
+    },
+    actualizar() {
+      this.$validator.validateAll().then(isValid => {
+        if (isValid && !this.cuitUsed && !this.matriculaUsed) {
+          http
+            .update(this.url, this.organizador.id, this.organizador)
             .then(() => {
               this.close();
-              this.$notify({
-                message: 'Codigo Organizador Modificado',
-                timeout: 3000,
-                icon: 'tim-icons icon-alert-circle-exc',
-                horizontalAlign: 'right',
-                verticalAlign: 'top',
-                type: 'success'
-              });
+              this.$emit('recargar');
+              this.notifyVue(
+                'success',
+                'El organizador ha sido actualizado con exito'
+              );
             })
             .catch(e => console.log(e));
         }
@@ -251,9 +258,10 @@ export default {
     buscarCuit() {
       let query = this.organizador.cuit;
       let cuits = [];
-      HTTP.get('organizadores/busquedaCuit?q=' + query)
-        .then(response => {
-          cuits = response.data.data;
+      http
+        .search('organizadores/busquedaCuit?q=' + query)
+        .then(r => {
+          cuits = r.data.data;
           if (cuits.length > 0) {
             this.cuitUsed = true;
             this.usedError = 'Este CUIT ya esta en uso';
@@ -268,9 +276,10 @@ export default {
     buscarMatricula() {
       let query = this.organizador.matricula;
       let matriculas = [];
-      HTTP.get('organizadores/busquedaMatricula?q=' + query)
-        .then(response => {
-          matriculas = response.data.data;
+      http
+        .search('organizadores/busquedaMatricula?q=' + query)
+        .then(r => {
+          matriculas = r.data.data;
           if (matriculas.length > 0) {
             this.matriculaUsed = true;
             this.usedError = 'Esta matricula ya esta en uso';
@@ -281,6 +290,9 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    },
+    isTouched() {
+      this.touched = true;
     }
   }
 };
