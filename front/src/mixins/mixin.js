@@ -1,11 +1,6 @@
-// import Fuse from 'fuse.js';
-// import axios from 'axios';
-// import { BaseAlert } from 'src/components';
 import swal from 'sweetalert2';
+import Fuse from 'fuse.js';
 
-// const HTTP = axios.create({
-//   baseURL: `http://127.0.0.1:8000/api/`
-// });
 export const mixin = {
   computed: {
     /***
@@ -32,6 +27,24 @@ export const mixin = {
       return this.searchedData.length > 0
         ? this.searchedData.length
         : this.tableData.length;
+    }
+  },
+  watch: {
+    /**
+     * Searches through the table data by a given query.
+     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
+     * @param value of the query
+     */
+    searchQuery(value) {
+      this.fuseSearch = new Fuse(this.tableData, {
+        keys: ['nombre', 'apellido'],
+        threshold: 0.3
+      });
+      let result = this.tableData;
+      if (value !== '') {
+        result = this.fuseSearch.search(this.searchQuery);
+      }
+      this.searchedData = result;
     }
   },
   data() {
@@ -73,20 +86,6 @@ export const mixin = {
         confirmButtonText: 'Sí, borrar!',
         buttonsStyling: false
       });
-    }
-  },
-  watch: {
-    /**
-     * Searches through the table data by a given query.
-     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
-     * @param value of the query
-     */
-    searchQuery(value) {
-      let result = this.tableData;
-      if (value !== '') {
-        result = this.fuseSearch.search(this.searchQuery);
-      }
-      this.searchedData = result;
     }
   }
 };

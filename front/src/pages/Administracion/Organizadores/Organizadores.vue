@@ -4,7 +4,9 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
+            <div
+              class="col-12 row justify-content-center justify-content-sm-between flex-wrap"
+            >
               <base-input>
                 <el-input
                   type="search"
@@ -22,7 +24,8 @@
                   class="animation-on-hover "
                   type="primary"
                   @click="showModal"
-                >Crear</base-button>
+                  >Crear</base-button
+                >
               </div>
             </div>
             <el-table :data="queriedData">
@@ -52,19 +55,13 @@
                 prop="telefono_2"
                 :min-width="80"
               ></el-table-column>
-              <el-table-column
-                label="Activo"
-                prop="activo"
-              >
+              <el-table-column label="Activo" prop="activo">
                 <div slot-scope="{ row }">
                   <div v-if="row.activo == 1">SI</div>
                   <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column
-                align="right"
-                label="Actions"
-              >
+              <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
                   <base-button
                     @click.native="editar(url, props.row.id)"
@@ -126,7 +123,7 @@
       :modo="modoEditar"
       @close="closeModal"
       @crear="crear"
-      @recargar='cargar'
+      @recargar="cargar"
     ></modal-organizadores>
   </div>
 </template>
@@ -158,7 +155,7 @@ export default {
   },
   methods: {
     cargar() {
-      http.load(this.url).then(res => (this.tableData = res.data.data));
+      http.load(this.url).then(r => (this.tableData = r.data.data));
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);
@@ -200,8 +197,8 @@ export default {
         .catch(e => console.log(e));
     },
     borrar(id) {
-      this.dangerSwal().then(result => {
-        if (result.value) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
           http.delete(this.url, id).then(() => {
             this.notifyVue('danger', 'El organizador ha sido eliminado');
             this.cargar();
@@ -212,8 +209,6 @@ export default {
   },
   created() {
     this.cargar();
-  },
-
-  mounted() {}
+  }
 };
 </script>
