@@ -3,9 +3,6 @@ import Fuse from 'fuse.js';
 
 export const mixin = {
   computed: {
-    /***
-     * Returns a page from the searched data or the whole data. Search is performed in the watch section below
-     */
     queriedData() {
       let result = this.tableData;
       if (this.searchedData.length > 0) {
@@ -30,11 +27,6 @@ export const mixin = {
     }
   },
   watch: {
-    /**
-     * Searches through the table data by a given query.
-     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
-     * @param value of the query
-     */
     searchQuery(value) {
       this.fuseSearch = new Fuse(this.tableData, {
         keys: ['nombre', 'apellido'],
