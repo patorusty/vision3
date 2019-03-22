@@ -1,50 +1,39 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @click="close"
-    >
-      <div
-        class="col-md-6"
-        @click.stop
-      >
-        <card type="secodary">
-          <form>
-            <div class="modal-titulo d-flex 
-            align-item=center ">
-              <!-- ACA VA EL TITULO -->
-              <h4>Organizador</h4>
-              <button
-                class="close "
-                type="button"
-                aria-label="Close"
-                @click="close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-contenido">
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div class="row">
+        <div class="col-md-12" @click.stop>
+          <card class="stacked-form" type="secodary">
+            <form>
+              <div>
+                <!-- ACA VA EL TITULO -->
+                <h4>Organizador</h4>
+                <button
+                  class="close "
+                  type="button"
+                  aria-label="Close"
+                  @click="close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
               <!-- ACA VA EL FORMULARIO -->
               <div class="row">
                 <div class="col-md-6">
-                  <label
-                    for="nombre"
-                    class=" control-label"
-                  >Nombre</label>
+                  <div class="col-md-16">
+                    <label>Nombre</label>
+                    <base-input
+                      placeholder="Nombre"
+                      v-model="organizador.nombre"
+                      addon-left-icon="tim-icons icon-single-02"
+                      v-validate="modelValidations.nombre"
+                      :error="getError('nombre')"
+                      name="nombre"
+                    >
+                    </base-input>
+                  </div>
                   <base-input
-                    placeholder="Nombre"
-                    v-model="organizador.nombre"
-                    addon-left-icon="tim-icons icon-single-02"
-                    v-validate="modelValidations.nombre"
-                    :error="getError('nombre')"
-                    name="nombre"
-                  >
-                  </base-input>
-                  <label
-                    for="apellido"
-                    class="control-label"
-                  >Apellido</label>
-                  <base-input
+                    label="Apellido"
                     placeholder="Apellido"
                     v-model="organizador.apellido"
                     addon-left-icon="tim-icons icon-single-02"
@@ -53,11 +42,8 @@
                     name="apellido"
                   >
                   </base-input>
-                  <label
-                    for="cuit"
-                    class="control-label"
-                  >Cuit</label>
                   <base-input
+                    label="CUIT"
                     placeholder="Cuit"
                     v-model.lazy="organizador.cuit"
                     v-validate="modelValidations.cuit"
@@ -67,11 +53,8 @@
                     @change="buscarCuit"
                   >
                   </base-input>
-                  <label
-                    for="matricula"
-                    class="control-label"
-                  >Matricula</label>
                   <base-input
+                    label="Matricula"
                     placeholder="Matricula"
                     v-model="organizador.matricula"
                     :class="{ 'has-danger': matriculaUsed }"
@@ -82,11 +65,8 @@
                   </base-input>
                 </div>
                 <div class="col-md-6">
-                  <label
-                    for="email"
-                    class="control-label"
-                  >Email</label>
                   <base-input
+                    label="Email"
                     placeholder="Email"
                     v-model="organizador.email"
                     addon-left-icon="tim-icons icon-email-85"
@@ -97,6 +77,7 @@
                   </base-input>
                   <label>Telefono</label>
                   <base-input
+                    label="Telefono"
                     placeholder="Phone"
                     v-model="organizador.telefono_1"
                     addon-left-icon="tim-icons icon-mobile"
@@ -107,6 +88,7 @@
                   </base-input>
                   <label>Celular</label>
                   <base-input
+                    label="Celular"
                     placeholder="Phone"
                     v-model="organizador.telefono_2"
                     addon-left-icon="tim-icons icon-mobile"
@@ -127,23 +109,25 @@
                   &nbsp;
                 </div>
               </div>
-            </div>
-            <div class="modal-pie pull-right mt-3">
-              <base-button
-                v-if="modo == true"
-                class="btn btn-primary ladda-button"
-                type="submit"
-                @click="actualizar"
-              >Guardar</base-button>
-              <base-button
-                v-else
-                class="btn btn-primary ladda-button"
-                type="submit"
-                @click="crear"
-              >Crear</base-button>
-            </div>
-          </form>
-        </card>
+              <div class="modal-pie pull-right mt-3">
+                <base-button
+                  v-if="modo == true"
+                  class="btn btn-primary ladda-button"
+                  type="submit"
+                  @click="actualizar"
+                  >Guardar</base-button
+                >
+                <base-button
+                  v-else
+                  class="btn btn-primary ladda-button"
+                  type="submit"
+                  @click="crear"
+                  >Crear</base-button
+                >
+              </div>
+            </form>
+          </card>
+        </div>
       </div>
     </div>
   </SlideYUpTransition>
@@ -208,6 +192,9 @@ export default {
   methods: {
     close() {
       EventBus.$emit('resetInput', false);
+      this.cuitUsed = false;
+      this.matriculaUsed = false;
+      this.usedError = '';
       this.$validator.reset();
       this.errors.clear();
       this.$emit('close');

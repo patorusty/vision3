@@ -26,11 +26,9 @@
         aria-describedby="addon-right addon-left"
       />
     </slot>
-
     <slot name="error" v-if="error || $slots.error">
       <label class="error">{{ error }}</label>
     </slot>
-
     <slot name="addonRight">
       <span v-if="addonRightIcon" class="input-group-append">
         <div class="input-group-text"><i :class="addonRightIcon"></i></div>
