@@ -66,7 +66,7 @@
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>
                   <base-button
-                    @click.native="handleDelete(props.$index, props.row)"
+                    @click.native="borrar(props.row.id)"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -115,11 +115,11 @@
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination, BaseAlert } from 'src/components';
-import Fuse from 'fuse.js';
-import { HTTP } from '../../../API/http-request.js';
-import swal from 'sweetalert2';
+import http from '../../../API/http-request.js';
+import { mixin } from '../../../mixins/mixin.js';
 
 export default {
+  mixins: [mixin],
   components: {
     BasePagination,
     [Select.name]: Select,
@@ -128,118 +128,33 @@ export default {
     [TableColumn.name]: TableColumn,
     BaseAlert
   },
-  computed: {
-    /***
-     * Returns a page from the searched data or the whole data. Search is performed in the watch section below
-     */
-    queriedData() {
-      let result = this.tableData;
-      if (this.searchedData.length > 0) {
-        result = this.searchedData;
-      }
-      return result.slice(this.from, this.to);
-    },
-    to() {
-      let highBound = this.from + this.pagination.perPage;
-      if (this.total < highBound) {
-        highBound = this.total;
-      }
-      return highBound;
-    },
-    from() {
-      return this.pagination.perPage * (this.pagination.currentPage - 1);
-    },
-    total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length;
-    }
-  },
-  watch: {
-    /**
-     * Searches through the table data by a given query.
-     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
-     * @param value of the query
-     */
-    searchQuery(value) {
-      let result = this.tableData;
-      if (value !== '') {
-        result = this.fuseSearch.search(this.searchQuery);
-      }
-      this.searchedData = result;
-    }
-  },
   data() {
     return {
-      pagination: {
-        perPage: 5,
-        currentPage: 1,
-        perPageOptions: [5, 10, 25, 50],
-        total: 0
-      },
-      searchQuery: '',
-      propsToSearch: [],
-      tableData: [],
-      searchedData: [],
-      fuseSearch: null
+      url: 'administracion/companias'
     };
   },
   methods: {
-    handleDelete(index, row) {
-      swal({
-        title: 'Estás seguro que queres borrar el registro?',
-        text: `Esto no se puede revertir`,
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonClass: 'btn btn-success btn-fill',
-        cancelButtonClass: 'btn btn-danger btn-fill',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Sí, Eliminalo',
-        buttonsStyling: false
-      }).then(result => {
-        if (result.value) {
-          this.deleteRow(row);
-          this.$notify({
-            message: 'Compañia Eliminada',
-            timeout: 3000,
-            icon: 'tim-icons icon-alert-circle-exc',
-            horizontalAlign: 'right',
-            verticalAlign: 'top',
-            type: 'danger'
+    borrar(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete(this.url, id).then(() => {
+            this.notifyVue('danger', 'La compania ha sido eliminada');
+            this.cargar();
           });
         }
       });
-    },
-    deleteRow(row) {
-      HTTP.delete('administracion/companias/' + row.id).then(() => {
-        console.log('borado!');
-      });
-      let indexToDelete = this.tableData.findIndex(
-        tableRow => tableRow.id === row.id
-      );
-      if (indexToDelete >= 0) {
-        this.tableData.splice(indexToDelete, 1);
-      }
     },
     handleEdit(index, row) {
       this.$router.push({
         path: `/administracion/companias/${row.nombre}/edit`
       });
     },
-    cargaPolizas() {
-      HTTP.get('administracion/companias/').then(response => {
-        this.dataLoaded = true;
-        this.tableData = response.data.data;
-      });
+    cargar() {
+      http.load(this.url).then(r => (this.tableData = r.data.data));
     }
   },
-  mounted() {
-    this.fuseSearch = new Fuse(this.tableData, {
-      keys: ['nombre'],
-      threshold: 0.3
-    });
-
-    this.cargaPolizas();
+  created() {
+    this.cargar();
   }
 };
 </script>
