@@ -175,147 +175,7 @@
                 </button>
               </div>
 
-              <!-- ACA EMPIEZA LA TABLA DE CODIGO ORGANIZADOR -->
-              <card>
-                <div class="col-sm-12" slot="header">
-                  <h4 class="d-inline align-bottom text-primary">
-                    CODIGOS ORGANIZADOR
-                  </h4>
-                  <base-button
-                    type="primary"
-                    size="sm"
-                    class="float-right"
-                    @click="showModalCodigoOrg"
-                    >Crear</base-button
-                  >
-                </div>
-                <div class="row">
-                  <div class="col-sm-12">
-                    <el-table :data="codigoOrganizadoresTable">
-                      <el-table-column
-                        min-width="80"
-                        prop="name"
-                        label="Apellido"
-                        align="left"
-                      >
-                        <div slot-scope="{ row }">
-                          {{ row.organizadores.apellido }}
-                        </div>
-                      </el-table-column>
-                      <el-table-column
-                        min-width="80"
-                        prop="job"
-                        label="Nombre"
-                        align="left"
-                      >
-                        <div slot-scope="{ row }">
-                          {{ row.organizadores.nombre }}
-                        </div>
-                      </el-table-column>
-                      <el-table-column
-                        min-width="80"
-                        align="left"
-                        label="Matricula"
-                      >
-                        <div slot-scope="{ row }">
-                          {{ row.organizadores.matricula }}
-                        </div>
-                      </el-table-column>
-                      <el-table-column
-                        min-width="80"
-                        prop="codigo_organizador"
-                        align="left"
-                        label="Cod. Organizador"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        min-width="80"
-                        align="left"
-                        label="Activo"
-                      >
-                        <div slot-scope="{ row }">
-                          <div v-if="row.activo == true">SI</div>
-                          <div v-else>NO</div>
-                        </div>
-                      </el-table-column>
-                      <el-table-column
-                        min-width="80"
-                        header-align="right"
-                        align="left"
-                        label="Edicion"
-                      >
-                        <div
-                          slot-scope="props"
-                          class="text-right table-actions"
-                        >
-                          <el-tooltip
-                            content="Editar"
-                            effect="light"
-                            :open-delay="300"
-                            placement="top"
-                          >
-                            <base-button
-                              @click.native="handleEdit(props.row.id)"
-                              class="edit btn-link"
-                              type="warning"
-                              size="sm"
-                              icon
-                            >
-                              <i class="tim-icons icon-pencil"></i>
-                            </base-button>
-                          </el-tooltip>
-                          <el-tooltip
-                            content="Eliminar"
-                            effect="light"
-                            :open-delay="300"
-                            placement="top"
-                          >
-                            <base-button
-                              @click.native="borrarCO(props.row.id)"
-                              class="remove btn-link"
-                              type="danger"
-                              size="sm"
-                              icon
-                            >
-                              <i class="tim-icons icon-simple-remove"></i>
-                            </base-button>
-                          </el-tooltip>
-                        </div>
-                      </el-table-column>
-                    </el-table>
-                  </div>
-                </div>
-                <div
-                  slot="footer"
-                  class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-                >
-                  <div class>
-                    <p class="card-category">
-                      Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
-                    </p>
-                  </div>
-                  <el-select
-                    class="select-primary mb-3 pagination-select"
-                    v-model="pagination.perPage"
-                    placeholder="Per page"
-                  >
-                    <el-option
-                      class="select-primary"
-                      v-for="item in pagination.perPageOptions"
-                      :key="item"
-                      :label="item"
-                      :value="item"
-                    ></el-option>
-                  </el-select>
-                  <base-pagination
-                    class="pagination-no-border"
-                    v-model="pagination.currentPage"
-                    :per-page="pagination.perPage"
-                    :total="total"
-                  ></base-pagination>
-                </div>
-              </card>
-              <!-- !ACA TERMINA LA TABLA DE CODIGO ORGANIZADOR -->
+              <tabla-co v-if="dataLoaded" :compania="compania" />
               <!-- ACA EMPIEZA LA TABLA DE CODIGO PRODUCTOR -->
               <card>
                 <div slot="header">
@@ -568,10 +428,8 @@ import { BaseSwitch, ImageUpload } from 'src/components/index';
 import http from '../../../API/http-request.js';
 import { mixin } from '../../../mixins/mixin.js';
 import { EventBus } from '../../../main.js';
+import TablaCo from './CodigoOrganizador/TablaCo';
 
-// import ModalCoberturas from './Modales/ModalCoberturas';
-// import ModalCodigoOrganizadores from './Modales/ModalCodigoOrganizadores';
-// import ModalCodigoProductores from './Modales/ModalCodigoProductores';
 export default {
   mixins: [mixin],
   components: {
@@ -582,12 +440,13 @@ export default {
     ImageUpload,
     BaseSwitch,
     BaseAlert,
-    BasePagination
+    BasePagination,
+    TablaCo
   },
   data() {
     return {
       urlcompanias: 'administracion/companias',
-      urlCodigoOrg: 'codigoorganizador/compania',
+      // urlCodigoOrg: 'codigoorganizador/compania',
       urlCodigoProd: 'codigoproductor/compania',
       urlCob: 'cobertura/compania',
       urlLocalidades: 'localidades',
@@ -614,9 +473,8 @@ export default {
           email: true
         }
       },
-      compania: {
-        activo: true
-      },
+      compania: {},
+      dataLoaded: false,
       localidades: {},
       images: {
         regular: null
@@ -635,30 +493,31 @@ export default {
     cargar() {
       http.loadOne(this.urlcompanias, this.$route.params.nombre).then(r => {
         this.compania = r.data.data[0];
-        http
-          .loadOne(this.urlCodigoOrg, this.compania.id)
-          .then(r => {
-            this.codigoOrganizadoresTable = r.data.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        http
-          .loadOne(this.urlCodigoProd, this.compania.id)
-          .then(r => {
-            this.codigoProductoresTable = r.data.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        http
-          .loadOne(this.urlCob, this.compania.id)
-          .then(r => {
-            this.coberturasTable = r.data.data;
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        this.dataLoaded = true;
+        // http
+        //   .loadOne(this.urlCodigoOrg, this.compania.id)
+        //   .then(r => {
+        //     this.codigoOrganizadoresTable = r.data.data;
+        //   })
+        //   .catch(err => {
+        //     console.log(err);
+        //   });
+        //   http
+        //     .loadOne(this.urlCodigoProd, this.compania.id)
+        //     .then(r => {
+        //       this.codigoProductoresTable = r.data.data;
+        //     })
+        //     .catch(err => {
+        //       console.log(err);
+        //     });
+        //   http
+        //     .loadOne(this.urlCob, this.compania.id)
+        //     .then(r => {
+        //       this.coberturasTable = r.data.data;
+        //     })
+        //     .catch(err => {
+        //       console.log(err);
+        //     });
       });
     },
     actualizar() {
@@ -668,12 +527,14 @@ export default {
             .update(this.urlcompanias, this.compania.id, this.compania)
             .then(() => {
               EventBus.$emit('resetInput', false);
-              // this.$validator.reset();
-              // this.errors.clear();
               this.notifyVue(
                 'success',
                 'La compañia ha sido actualizado con exito'
               );
+              this.$router.push({
+                name: 'Editar Compania',
+                params: { nombre: this.compania.nombre }
+              });
             });
         }
       });
@@ -706,26 +567,7 @@ export default {
     },
     //FIN - FUNCIONES COMPANIA //
     // ----------------------------------------------------------------
-    // FUNCIONES CODIGO ORGANIZADOR //
-    showModalCodigoOrg() {
-      this.vaciarForm();
-      this.isModalVisibleCodOrganizador = true;
-    },
-    closeModalCodigoOrg() {
-      this.vaciarForm();
-      this.isModalVisibleCodOrganizador = false;
-    },
-    borrarCO(id) {
-      this.dangerSwal().then(r => {
-        if (r.value) {
-          http.delete(this.urlCodigoOrg, id).then(() => {
-            this.notifyVue('danger', 'El codigo organizador ha sido eliminado');
-            this.cargar();
-          });
-        }
-      });
-    },
-    // ACA PONER LAS FUNCIONES EDITAR Y BORRAR !!!!!!!!!!!!!!!!!!!!!!!!
+
     // FIN FUNCIONES CODIGO ORGANIZADOR //
     // ----------------------------------------------------------------
     // FUNCIONES CODIGO PRODUCTOR //
