@@ -25,6 +25,12 @@ export default {
     matricula: {
       required: 'Este campo es obligatorio',
       numeric: 'Este campo debe ser numerico'
+    },
+    email_siniestros: {
+      required: 'Este campo es obligatorio'
+    },
+    email_emision: {
+      required: 'Este campo es obligatorio'
     }
   }
 };

@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <form @submit.prevent="updateCompania()">
+    <form @submit.prevent="actualizar">
       <div class="block">
         <div class="block-body">
           <div class="row">
@@ -21,6 +21,9 @@
                       type="text"
                       placeholder="Nombre de la Compañia"
                       v-model="compania.nombre"
+                      v-validate="modelValidations.nombre"
+                      :error="getError('nombre')"
+                      name="nombre"
                     >
                     </base-input>
                     <base-input
@@ -28,6 +31,11 @@
                       type="text"
                       placeholder="Cuit"
                       v-model="compania.cuit"
+                      v-validate="modelValidations.cuit"
+                      :class="{ 'has-danger': cuitUsed }"
+                      :error="getErrorCuit('cuit', cuitUsed)"
+                      name="cuit"
+                      @change="buscarCuit"
                     >
                     </base-input>
                   </div>
@@ -144,14 +152,18 @@
                       label="Email Emision"
                       placeholder="Email"
                       v-model="compania.email_emision"
-                      :error="getError('email')"
+                      v-validate="modelValidations.email_emision"
+                      :error="getError('email_emision')"
+                      name="email_emision"
                     >
                     </base-input>
                     <base-input
                       label="Email Siniestros"
                       placeholder="Email"
                       v-model="compania.email_siniestros"
-                      :error="getError('email')"
+                      v-validate="modelValidations.email_siniestros"
+                      :error="getError('email_siniestros')"
+                      name="email_siniestros"
                     >
                     </base-input>
                   </div>
@@ -233,41 +245,37 @@
                         label="Edicion"
                       >
                         <div
-                          slot-scope="{ row, $index }"
+                          slot-scope="props"
                           class="text-right table-actions"
                         >
                           <el-tooltip
-                            content="Refresh"
+                            content="Editar"
                             effect="light"
                             :open-delay="300"
                             placement="top"
                           >
                             <base-button
-                              @click.native="
-                                handleEdit(props.$nombre, props.row)
-                              "
-                              :type="$index > 2 ? 'success' : 'neutral'"
-                              icon
+                              @click.native="handleEdit(props.row.id)"
+                              class="edit btn-link"
+                              type="warning"
                               size="sm"
-                              class="btn-link"
+                              icon
                             >
                               <i class="tim-icons icon-pencil"></i>
                             </base-button>
                           </el-tooltip>
                           <el-tooltip
-                            content="Delete"
+                            content="Eliminar"
                             effect="light"
                             :open-delay="300"
                             placement="top"
                           >
                             <base-button
-                              @click.native="
-                                handleDelete(props.$index, props.row)
-                              "
-                              :type="$index > 2 ? 'danger' : 'neutral'"
-                              icon
+                              @click.native="borrarCO(props.row.id)"
+                              class="remove btn-link"
+                              type="danger"
                               size="sm"
-                              class="btn-link"
+                              icon
                             >
                               <i class="tim-icons icon-simple-remove"></i>
                             </base-button>
@@ -276,6 +284,35 @@
                       </el-table-column>
                     </el-table>
                   </div>
+                </div>
+                <div
+                  slot="footer"
+                  class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+                >
+                  <div class>
+                    <p class="card-category">
+                      Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+                    </p>
+                  </div>
+                  <el-select
+                    class="select-primary mb-3 pagination-select"
+                    v-model="pagination.perPage"
+                    placeholder="Per page"
+                  >
+                    <el-option
+                      class="select-primary"
+                      v-for="item in pagination.perPageOptions"
+                      :key="item"
+                      :label="item"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
+                  <base-pagination
+                    class="pagination-no-border"
+                    v-model="pagination.currentPage"
+                    :per-page="pagination.perPage"
+                    :total="total"
+                  ></base-pagination>
                 </div>
               </card>
               <!-- !ACA TERMINA LA TABLA DE CODIGO ORGANIZADOR -->
@@ -356,35 +393,37 @@
                         label="Edicion"
                       >
                         <div
-                          slot-scope="{ row, $index }"
+                          slot-scope="props"
                           class="text-right table-actions"
                         >
                           <el-tooltip
-                            content="Refresh"
+                            content="Editar"
                             effect="light"
                             :open-delay="300"
                             placement="top"
                           >
                             <base-button
-                              :type="$index > 2 ? 'success' : 'neutral'"
-                              icon
+                              @click.native="handleEdit(props.row.id)"
+                              class="edit btn-link"
+                              type="warning"
                               size="sm"
-                              class="btn-link"
+                              icon
                             >
                               <i class="tim-icons icon-pencil"></i>
                             </base-button>
                           </el-tooltip>
                           <el-tooltip
-                            content="Delete"
+                            content="Eliminar"
                             effect="light"
                             :open-delay="300"
                             placement="top"
                           >
                             <base-button
-                              :type="$index > 2 ? 'danger' : 'neutral'"
-                              icon
+                              @click.native="borrarCP(props.row.id)"
+                              class="remove btn-link"
+                              type="danger"
                               size="sm"
-                              class="btn-link"
+                              icon
                             >
                               <i class="tim-icons icon-simple-remove"></i>
                             </base-button>
@@ -466,35 +505,37 @@
                         label="Edicion"
                       >
                         <div
-                          slot-scope="{ row, $index }"
+                          slot-scope="props"
                           class="text-right table-actions"
                         >
                           <el-tooltip
-                            content="Refresh"
+                            content="Editar"
                             effect="light"
                             :open-delay="300"
                             placement="top"
                           >
                             <base-button
-                              :type="$index > 2 ? 'success' : 'neutral'"
-                              icon
+                              @click.native="handleEdit(props.row.id)"
+                              class="edit btn-link"
+                              type="warning"
                               size="sm"
-                              class="btn-link"
+                              icon
                             >
                               <i class="tim-icons icon-pencil"></i>
                             </base-button>
                           </el-tooltip>
                           <el-tooltip
-                            content="Delete"
+                            content="Eliminar"
                             effect="light"
                             :open-delay="300"
                             placement="top"
                           >
                             <base-button
-                              :type="$index > 2 ? 'danger' : 'neutral'"
-                              icon
+                              @click.native="borrarCob(props.row.id)"
+                              class="remove btn-link"
+                              type="danger"
                               size="sm"
-                              class="btn-link"
+                              icon
                             >
                               <i class="tim-icons icon-simple-remove"></i>
                             </base-button>
@@ -522,21 +563,26 @@
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
-import axios from 'axios';
-import swal from 'sweetalert2';
 import { BaseAlert } from 'src/components';
 import { BaseSwitch, ImageUpload } from 'src/components/index';
 import http from '../../../API/http-request.js';
+import { mixin } from '../../../mixins/mixin.js';
+import { EventBus } from '../../../main.js';
 
 // import ModalCoberturas from './Modales/ModalCoberturas';
 // import ModalCodigoOrganizadores from './Modales/ModalCodigoOrganizadores';
 // import ModalCodigoProductores from './Modales/ModalCodigoProductores';
 export default {
+  mixins: [mixin],
   components: {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
+    [Select.name]: Select,
+    [Option.name]: Option,
     ImageUpload,
-    BaseSwitch
+    BaseSwitch,
+    BaseAlert,
+    BasePagination
   },
   data() {
     return {
@@ -548,16 +594,26 @@ export default {
       codigoOrganizadoresTable: [],
       codigoProductoresTable: [],
       coberturasTable: [],
-      // modelValidations: {
-      //   email: {
-      //     required: true,
-      //     email: true
-      //   },
-      //   phone: {
-      //     required: true,
-      //     numeric: true
-      //   }
-      // },
+      cuitUsed: false,
+      usedError: '',
+      cuits: [],
+      modelValidations: {
+        nombre: {
+          required: true
+        },
+        cuit: {
+          required: true,
+          numeric: true,
+          max: 11,
+          min: 11
+        },
+        email_siniestros: {
+          email: true
+        },
+        email_emision: {
+          email: true
+        }
+      },
       compania: {
         activo: true
       },
@@ -605,30 +661,49 @@ export default {
           });
       });
     },
-    updateCompania() {
-      axios
-        .put(
-          'http://127.0.0.1:8000/api/administracion/companias/' +
-            this.compania.id,
-          this.compania
-        )
-        .then(() => {
-          swal({
-            title: `Cambios guardados!`,
-            // text: 'You clicked the button!',
-            buttonsStyling: false,
-            confirmButtonClass: 'btn btn-success btn-fill',
-            type: 'success'
-          });
-          console.log('update ok');
-          // window.location.replace(
-          //   'http://127.0.0.1:8000/administracion/companias/' +
-          //     this.compania.nombre +
-          //     '/edit'
-          // );
+    actualizar() {
+      this.$validator.validateAll().then(isValid => {
+        if (isValid && !this.cuitUsed) {
+          http
+            .update(this.urlcompanias, this.compania.id, this.compania)
+            .then(() => {
+              EventBus.$emit('resetInput', false);
+              // this.$validator.reset();
+              // this.errors.clear();
+              this.notifyVue(
+                'success',
+                'La compañia ha sido actualizado con exito'
+              );
+            });
+        }
+      });
+    },
+    getErrorCuit(fieldName, cuitUsed) {
+      if (!cuitUsed) {
+        return this.errors.first(fieldName);
+      } else {
+        return 'Este CUIT ya esta en uso';
+      }
+    },
+    buscarCuit() {
+      let query = this.compania.cuit;
+      let cuits = [];
+      http
+        .search('companias/busquedaCuit?q=' + query)
+        .then(r => {
+          console.log(r);
+          cuits = r.data.data;
+          if (cuits.length > 0) {
+            this.cuitUsed = true;
+            this.usedError = 'Este CUIT ya esta en uso';
+          } else {
+            this.cuitUsed = false;
+          }
+        })
+        .catch(e => {
+          console.log(e);
         });
     },
-
     //FIN - FUNCIONES COMPANIA //
     // ----------------------------------------------------------------
     // FUNCIONES CODIGO ORGANIZADOR //
@@ -639,6 +714,16 @@ export default {
     closeModalCodigoOrg() {
       this.vaciarForm();
       this.isModalVisibleCodOrganizador = false;
+    },
+    borrarCO(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete(this.urlCodigoOrg, id).then(() => {
+            this.notifyVue('danger', 'El codigo organizador ha sido eliminado');
+            this.cargar();
+          });
+        }
+      });
     },
     // ACA PONER LAS FUNCIONES EDITAR Y BORRAR !!!!!!!!!!!!!!!!!!!!!!!!
     // FIN FUNCIONES CODIGO ORGANIZADOR //
@@ -652,6 +737,16 @@ export default {
       this.vaciarForm();
       this.isModalVisibleCodProductor = false;
     },
+    borrarCP(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete(this.urlCodigoProd, id).then(() => {
+            this.notifyVue('danger', 'El codigo productor ha sido eliminado');
+            this.cargar();
+          });
+        }
+      });
+    },
     // ACA PONER LAS FUNCIONES EDITAR Y BORRAR !!!!!!!!!!!!!!!!!!!!!!!!
     // FIN FUNCIONES CODIGO PRODUCTOR //
     // ----------------------------------------------------------------
@@ -663,6 +758,16 @@ export default {
     closeModalCobertura() {
       this.vaciarForm();
       this.isModalVisibleCobertura = false;
+    },
+    borrarCob(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete(this.urlCob, id).then(() => {
+            this.notifyVue('danger', 'La cobertura ha sido eliminada');
+            this.cargar();
+          });
+        }
+      });
     },
     // ACA PONER LAS FUNCIONES EDITAR Y BORRAR !!!!!!!!!!!!!!!!!!!!!!!!
     // FIN FUNCIONES COBERTURA //

@@ -63,24 +63,38 @@
               </el-table-column>
               <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
-                  <base-button
-                    @click.native="editar(url, props.row.id)"
-                    class="edit btn-link"
-                    type="warning"
-                    size="sm"
-                    icon
+                  <el-tooltip
+                    content="Editar"
+                    effect="light"
+                    :open-delay="300"
+                    placement="top"
                   >
-                    <i class="tim-icons icon-pencil"></i>
-                  </base-button>
-                  <base-button
-                    @click.native="borrar(props.row.id)"
-                    class="remove btn-link"
-                    type="danger"
-                    size="sm"
-                    icon
+                    <base-button
+                      @click.native="editar(url, props.row.id)"
+                      class="edit btn-link"
+                      type="warning"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-pencil"></i>
+                    </base-button>
+                  </el-tooltip>
+                  <el-tooltip
+                    content="Eliminar"
+                    effect="light"
+                    :open-delay="300"
+                    placement="top"
                   >
-                    <i class="tim-icons icon-simple-remove"></i>
-                  </base-button>
+                    <base-button
+                      @click.native="borrar(props.row.id)"
+                      class="remove btn-link"
+                      type="danger"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-simple-remove"></i>
+                    </base-button>
+                  </el-tooltip>
                 </div>
               </el-table-column>
             </el-table>
