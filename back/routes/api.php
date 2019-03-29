@@ -35,3 +35,5 @@ Route::get('/cobertura/compania/{id}', 'CoberturaController@indexFiltrado');
 Route::get('/companias/busquedaCuit', 'CompaniaController@search');
 Route::get('/organizadores/busquedaCuit', 'OrganizadorController@searchCuit');
 Route::get('/organizadores/busquedaMatricula', 'OrganizadorController@searchMatricula');
+Route::get('/productores/busquedaCuit', 'OrganizadorController@searchCuit');
+Route::get('/productores/busquedaMatricula', 'OrganizadorController@searchMatricula');
