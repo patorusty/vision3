@@ -38,15 +38,15 @@ class ProductorController extends Controller
      */
     public function store(Request $request)
     {        
-        $this->validate($request, [
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'cuit' => 'required',
-            'matricula' => 'required',
-            'email' => 'required',
+        // $this->validate($request, [
+            // 'nombre' => 'required',
+            // 'apellido' => 'required',
+            // 'cuit' => 'required',
+            // 'matricula' => 'required',
+            // 'email' => 'required',
             // 'telefono_1' => 'required',
             // 'telefono_2' => 'required',
-        ]);
+        // ]);
 
         $productor = Productores::create([
             'nombre' => $request->input('nombre'),
@@ -107,6 +107,29 @@ class ProductorController extends Controller
             'telefono_2' => $request->input('telefono_2'),
             'activo' => $request->input('activo'),
         ]);
+    }
+    public function searchCuit()
+    {
+        if ($search = \Request::get('q')) {
+            $cuits = Productores::where(function ($query) use ($search) {
+                $query->where('cuit', 'LIKE', "%$search%");
+            })->get();
+        } else {
+            $cuits = 'Algo fallo';
+        }
+        return ProductoresResource::collection($cuits);
+    }
+
+    public function searchMatricula()
+    {
+        if ($search = \Request::get('q')) {
+            $matriculas = Productores::where(function ($query) use ($search) {
+                $query->where('matricula', 'LIKE', "%$search%");
+            })->get();
+        } else {
+            $matriculas = 'Algo fallo';
+        }
+        return ProductoresResource::collection($matriculas);
     }
 
     /**
