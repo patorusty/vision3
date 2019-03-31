@@ -190,13 +190,12 @@ export default {
       this.errors.clear();
     },
     crear(value) {
-      this.showModal();
+      this.closeModal();
       http
         .create(this.url, value)
         .then(() => {
           this.notifyVue('success', 'El organizador ha sido creado con exito');
           this.cargar();
-          this.closeModal();
         })
         .catch(e => console.log(e));
     },

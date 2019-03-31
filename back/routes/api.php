@@ -37,3 +37,5 @@ Route::get('/organizadores/busquedaCuit', 'OrganizadorController@searchCuit');
 Route::get('/organizadores/busquedaMatricula', 'OrganizadorController@searchMatricula');
 Route::get('/productores/busquedaCuit', 'ProductorController@searchCuit');
 Route::get('/productores/busquedaMatricula', 'ProductorController@searchMatricula');
+Route::get('/codigo_organizadores/busquedaCO', 'CodigoOrganizadorController@searchCO');
+Route::get('/codigo_productores/busquedaCP', 'CodigoProductorController@searchCP');

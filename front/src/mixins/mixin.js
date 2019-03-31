@@ -78,6 +78,9 @@ export const mixin = {
         confirmButtonText: 'Sí, borrar!',
         buttonsStyling: false
       });
+    },
+    getError(fieldName) {
+      return this.errors.first(fieldName);
     }
   }
 };

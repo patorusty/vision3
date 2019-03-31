@@ -31,6 +31,21 @@ export default {
     },
     email_emision: {
       required: 'Este campo es obligatorio'
+    },
+    codigo_organizador: {
+      required: 'Este campo es obligatorio'
+    },
+    organizador_id: {
+      required: 'Este campo es obligatorio'
+    },
+    codigo_productor: {
+      required: 'Este campo es obligatorio'
+    },
+    productor_id: {
+      required: 'Este campo es obligatorio'
+    },
+    codigo_organizador_id: {
+      required: 'Este campo es obligatorio'
     }
   }
 };

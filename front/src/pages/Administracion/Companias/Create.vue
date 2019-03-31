@@ -22,14 +22,14 @@
                       name="nombre"
                     ></base-input>
                     <base-input
-                      label="Cuit"
+                      label="CUIT"
                       type="text"
                       v-validate="modelValidations.cuit"
                       v-model.lazy="compania.cuit"
-                      :class="{ 'has-danger': used }"
-                      :error="getError('cuit', used)"
+                      :class="{ 'has-danger': cuitUsed }"
+                      :error="getError('cuit', cuitUsed)"
                       name="cuit"
-                      @change="buscarCuit"
+                      @keyup="buscarCuit"
                     ></base-input>
                   </div>
                   <div class="col-md-4">
@@ -161,7 +161,8 @@
 </template>
 <script>
 import { BaseSwitch, ImageUpload } from 'src/components/index';
-import { HTTP } from '../../../API/http-request';
+import http from '../../../API/http-request.js';
+import debounce from '../../../debounce.js';
 export default {
   components: {
     ImageUpload,
@@ -169,7 +170,8 @@ export default {
   },
   data() {
     return {
-      used: false,
+      cuitUsed: false,
+      cuit: '',
       usedError: '',
       modelValidations: {
         nombre: {
@@ -192,8 +194,8 @@ export default {
     };
   },
   methods: {
-    getError(fieldName, used = false) {
-      if (!used) {
+    getError(fieldName, cuitUsed) {
+      if (!cuitUsed) {
         return this.errors.first(fieldName);
       } else {
         return 'Este CUIT ya esta en uso';
@@ -201,8 +203,9 @@ export default {
     },
     crearCompania() {
       this.$validator.validateAll().then(isValid => {
-        if (isValid && !this.used) {
-          HTTP.post('administracion/companias', this.compania)
+        if (isValid && !this.cuitUsed) {
+          http
+            .create('administracion/companias', this.compania)
             .then(() => {
               this.compania = {};
               this.$router.push({ name: 'Companias' });
@@ -217,27 +220,24 @@ export default {
       this.images.regular = file;
     },
     cargarLocalidades() {
-      HTTP.get('localidades').then(response => {
+      http.load('localidades').then(response => {
         this.localidades = response.data.data;
       });
     },
-    buscarCuit() {
-      let query = this.compania.cuit;
-      let cuits = [];
-      HTTP.get('companias/busquedaCuit?q=' + query)
-        .then(response => {
-          cuits = response.data.data;
-          if (cuits.length > 0) {
-            this.used = true;
-            this.usedError = 'Este CUIT ya esta en uso';
-          } else {
-            this.used = false;
-          }
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
+    buscarCuit: debounce(function() {
+      if (this.compania.cuit.length == 11) {
+        http
+          .search('companias/busquedaCuit?q=' + this.compania.cuit)
+          .then(r => {
+            this.cuit = r.data.data;
+            if (this.cuit.length > 0) {
+              this.cuitUsed = true;
+            } else {
+              this.cuitUsed = false;
+            }
+          });
+      }
+    }, 1000)
   },
   created() {
     this.cargarLocalidades();

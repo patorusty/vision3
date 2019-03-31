@@ -32,10 +32,8 @@ class CodigoProductorController extends Controller
     }
 
     public function store(Request $request)
-    {        
-        $this->validate($request, [
-
-        ]);
+    {
+        $this->validate($request, []);
 
         $codigo_productores = CodigoProductor::create([
             'codigo_productor' => $request->input('codigo_productor'),
@@ -46,7 +44,6 @@ class CodigoProductorController extends Controller
         ]);
 
         return (['message' => 'guardado']);
-
     }
 
     public function update(Request $request, $id)
@@ -61,20 +58,20 @@ class CodigoProductorController extends Controller
         ]);
     }
 
+    public function searchCP()
+    {
+        if ($search = \Request::get('q')) {
+            $cp = CodigoProductor::where('codigo_productor', $search)->get();
+        }
+        return CodigoProductorsResource::collection($cp);
+    }
+
     public function destroy($id)
     {
         $codigo_productores = CodigoProductor::find($id);
-        
+
         $codigo_productores->delete();
 
-        return ['message'=> 'Eliminado'];
+        return ['message' => 'Eliminado'];
     }
-
-
-
-
-
-
-
-
 }

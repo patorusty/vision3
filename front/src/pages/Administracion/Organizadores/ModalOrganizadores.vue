@@ -1,9 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
     <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop class="div-stop">
-        <div style="width:50%;">
-          <div class="">
+        <div @click.stop style="width:50%;">
             <card>
               <form>
                 <div class="d-flex justify-content-between">
@@ -41,13 +39,13 @@
                     </base-input>
                     <base-input
                       label="CUIT"
-                      placeholder="Cuit"
+                      placeholder="CUIT"
                       v-model="organizador.cuit"
                       v-validate="modelValidations.cuit"
                       :class="{ 'has-danger': cuitUsed }"
                       :error="getErrorCuit('cuit', cuitUsed)"
                       name="cuit"
-                      @change="buscarCuit"
+                      @keyup="buscarCuit"
                     >
                     </base-input>
                     <base-input
@@ -58,7 +56,7 @@
                       :class="{ 'has-danger': matriculaUsed }"
                       :error="getErrorMatricula('matricula', matriculaUsed)"
                       name="matricula"
-                      @change="buscarMatricula"
+                      @keyup="buscarMatricula"
                     >
                     </base-input>
                   </div>
@@ -74,7 +72,7 @@
                     </base-input>
                     <base-input
                       label="Telefono"
-                      placeholder="Phone"
+                      placeholder="Telefono"
                       v-model="organizador.telefono_1"
                       v-validate="modelValidations.telefono_1"
                       :error="getError('telefono_1')"
@@ -83,7 +81,7 @@
                     </base-input>
                     <base-input
                       label="Celular"
-                      placeholder="Phone"
+                      placeholder="Celular"
                       v-model="organizador.telefono_2"
                       v-validate="modelValidations.telefono_2"
                       :error="getError('telefono_2')"
@@ -120,10 +118,8 @@
                 </div>
               </form>
             </card>
-          </div>
         </div>
       </div>
-    </div>
   </SlideYUpTransition>
 </template>
 
@@ -135,6 +131,7 @@ import { BaseSwitch } from 'src/components/index';
 import http from '../../../API/http-request.js';
 import { EventBus } from '../../../main.js';
 import { mixin } from '../../../mixins/mixin.js';
+import debounce from '../../../debounce.js';
 
 export default {
   props: ['organizador', 'modo'],
@@ -144,8 +141,8 @@ export default {
       cuitUsed: false,
       matriculaUsed: false,
       usedError: '',
-      cuits: [],
-      matriculas: [],
+      cuit: [],
+      matricula: [],
       url: 'administracion/organizadores',
       modelValidations: {
         nombre: {
@@ -186,12 +183,12 @@ export default {
   methods: {
     close() {
       EventBus.$emit('resetInput', false);
+      this.$emit('close');
       this.cuitUsed = false;
       this.matriculaUsed = false;
       this.usedError = '';
       this.$validator.reset();
       this.errors.clear();
-      this.$emit('close');
     },
     crear() {
       this.$validator.validateAll().then(isValid => {
@@ -219,9 +216,6 @@ export default {
         }
       });
     },
-    getError(fieldName) {
-      return this.errors.first(fieldName);
-    },
     getErrorCuit(fieldName, cuitUsed) {
       if (!cuitUsed) {
         return this.errors.first(fieldName);
@@ -236,42 +230,40 @@ export default {
         return 'Esta matricula ya esta en uso';
       }
     },
-    buscarCuit() {
-      let query = this.organizador.cuit;
-      let cuits = [];
-      http
-        .search('organizadores/busquedaCuit?q=' + query)
-        .then(r => {
-          cuits = r.data.data;
-          if (cuits.length > 0) {
-            this.cuitUsed = true;
-            this.usedError = 'Este CUIT ya esta en uso';
-          } else {
-            this.cuitUsed = false;
-          }
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    buscarMatricula() {
-      let query = this.organizador.matricula;
-      let matriculas = [];
-      http
-        .search('organizadores/busquedaMatricula?q=' + query)
-        .then(r => {
-          matriculas = r.data.data;
-          if (matriculas.length > 0) {
-            this.matriculaUsed = true;
-            this.usedError = 'Esta matricula ya esta en uso';
-          } else {
-            this.matriculaUsed = false;
-          }
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
+    buscarCuit: debounce(function() {
+      if (this.organizador.cuit.length == 11) {
+        http
+          .search('organizadores/busquedaCuit?q=' + this.organizador.cuit)
+          .then(r => {
+            this.cuit = r.data.data;
+            if (this.cuit.length > 0) {
+              this.cuitUsed = true;
+              // this.usedError = 'Este CUIT ya esta en uso';
+            } else {
+              this.cuitUsed = false;
+            }
+          })
+          .catch(e => console.log(e));
+      }
+    }, 1000),
+    buscarMatricula: debounce(function() {
+      if (this.organizador.matricula) {
+        http
+          .search(
+            'organizadores/busquedaMatricula?q=' + this.organizador.matricula
+          )
+          .then(r => {
+            this.matricula = r.data.data;
+            if (this.matricula.length > 0) {
+              this.matriculaUsed = true;
+              // this.usedError = 'Esta matricula ya esta en uso';
+            } else {
+              this.matriculaUsed = false;
+            }
+          })
+          .catch(e => console.log(e));
+      }
+    }, 1000)
   }
 };
 </script>
@@ -283,13 +275,6 @@ export default {
   left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.3);
-}
-.div-stop {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;

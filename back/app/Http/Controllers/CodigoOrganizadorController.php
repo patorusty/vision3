@@ -13,14 +13,12 @@ class CodigoOrganizadorController extends Controller
     public function index()
     {
         $codigo_organizadores = CodigoOrganizador::with('organizadores')->get();
-
         return CodigoOrganizadorsResource::collection($codigo_organizadores);
     }
 
     public function show($id)
     {
         $codigo_organizadores = CodigoOrganizador::findOrFail($id);
-
         return new CodigoOrganizadorsResource($codigo_organizadores);
     }
 
@@ -28,17 +26,12 @@ class CodigoOrganizadorController extends Controller
     public function indexFiltrado($compania_id)
     {
         $codigo_organizadores = CodigoOrganizador::with('organizadores')->where('compania_id', $compania_id)->get();
-
-
         return CodigoOrganizadorsResource::collection($codigo_organizadores);
     }
 
     public function store(Request $request)
-    {        
-        $this->validate($request, [
-
-        ]);
-
+    {
+        $this->validate($request, []);
         $codigo_organizador = CodigoOrganizador::create([
             'codigo_organizador' => $request->input('codigo_organizador'),
             'organizador_id' => $request->input('organizador_id'),
@@ -47,7 +40,6 @@ class CodigoOrganizadorController extends Controller
         ]);
 
         return (['message' => 'guardado']);
-
     }
 
     public function update(Request $request, $id)
@@ -64,9 +56,15 @@ class CodigoOrganizadorController extends Controller
     public function destroy($id)
     {
         $codigo_organizador = CodigoOrganizador::find($id);
-        
         $codigo_organizador->delete();
+        return ['message' => 'Eliminado'];
+    }
 
-        return ['message'=> 'Eliminado'];
+    public function searchCO()
+    {
+        if ($search = \Request::get('q')) {
+            $cos = CodigoOrganizador::where('codigo_organizador', $search)->get();
+        }
+        return CodigoOrganizadorsResource::collection($cos);
     }
 }

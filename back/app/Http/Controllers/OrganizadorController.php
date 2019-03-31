@@ -111,26 +111,28 @@ class OrganizadorController extends Controller
 
     public function searchCuit()
     {
-        if ($search = \Request::get('q')) {
-            $cuits = Organizadores::where(function ($query) use ($search) {
-                $query->where('cuit', 'LIKE', "%$search%");
-            })->get();
-        } else {
-            $cuits = 'Algo fallo';
+
+        if ($searchC = \Request::get('q')){
+            $cuit = Organizadores::where('cuit', $searchC)->get();
         }
-        return OrganizadoresResource::collection($cuits);
-    }
+        return OrganizadoresResource::collection($cuit);
+}
 
     public function searchMatricula()
     {
-        if ($search = \Request::get('q')) {
-            $matriculas = Organizadores::where(function ($query) use ($search) {
-                $query->where('matricula', 'LIKE', "%$search%");
-            })->get();
-        } else {
-            $matriculas = 'Algo fallo';
+        if ($searchC = \Request::get('q')){
+            $matricula = Organizadores::where('matricula', $searchC)->get();
         }
-        return OrganizadoresResource::collection($matriculas);
+        return OrganizadoresResource::collection($matricula);
+        
+        // return CodigoOrganizadorsResource::collection($cos);
+        // if ($search = \Request::get('q')) {
+        //     $matriculas = Organizadores::where(function ($query) use ($search) {
+        //         $query->where('matricula', 'LIKE', "%$search%");
+        //     })->get();
+        // } else {
+        //     $matriculas = 'Algo fallo';
+        // }
     }
 
     /**

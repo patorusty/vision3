@@ -1,30 +1,31 @@
 <template>
   <card>
-    <div class="col-sm-12" slot="header">
-      <h4 class="d-inline align-bottom text-primary">CODIGOS ORGANIZADOR</h4>
+    <div slot="header">
+      <h4 class="d-inline align-bottom text-primary">CODIGOS PRODUCTOR</h4>
       <base-button type="primary" size="sm" class="float-right" @click="showModal">Crear</base-button>
     </div>
     <div class="row">
       <div class="col-sm-12">
         <el-table :data="queriedData">
-          <el-table-column
-            min-width="80"
-            prop="organizadores.apellido"
-            label="Apellido"
-            align="left"
-          ></el-table-column>
-          <el-table-column min-width="80" prop="organizadores.nombre" label="Nombre" align="left"></el-table-column>
+          <el-table-column min-width="80" label="Apellido" align="left" prop="productores.apellido"></el-table-column>
+          <el-table-column min-width="80" label="Nombre" align="left" prop="productores.nombre"></el-table-column>
           <el-table-column
             min-width="80"
             align="left"
             label="Matricula"
-            prop="organizadores.matricula"
+            prop="productores.matricula"
           ></el-table-column>
           <el-table-column
             min-width="80"
-            prop="codigo_organizador"
+            prop="codigo_productor"
+            align="left"
+            label="Cod. Productor"
+          ></el-table-column>
+          <el-table-column
+            min-width="90"
             align="left"
             label="Cod. Organizador"
+            prop="codigo_organizador.codigo_organizador"
           ></el-table-column>
           <el-table-column min-width="80" align="left" label="Activo">
             <div slot-scope="{ row }">
@@ -88,13 +89,14 @@
         :total="total"
       ></base-pagination>
     </div>
-    <modal-co
-      v-show="isModalVisibleCO"
+        <modal-cp
+      v-show="isModalVisibleCP"
       :modo="modoEditar"
       @close="closeModal"
-      @crear="crear"
-      :codigo_organizador="codigo_organizador"
+      :codigo_productor="codigo_productor"
+      :compania="compania"
       @recargar="cargar"
+      @crear="crear"
     />
   </card>
 </template>
@@ -106,11 +108,11 @@ import { BaseSwitch } from 'src/components/index';
 import http from '../../../../API/http-request.js';
 import { mixin } from '../../../../mixins/mixin.js';
 import { EventBus } from '../../../../main.js';
-import ModalCo from './ModalCo';
+import ModalCp from './ModalCp';
 
 export default {
   mixins: [mixin],
-  name: 'tabla-co',
+  name: 'tabla-cp',
   components: {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
@@ -119,7 +121,7 @@ export default {
     BaseSwitch,
     BaseAlert,
     BasePagination,
-    ModalCo
+    ModalCp
   },
   props: {
     compania: {
@@ -128,14 +130,11 @@ export default {
       default: null
     }
   },
-  data() {
-    return {
-      organizadores: {},
-      url: 'codigoorganizador/compania',
-      isModalVisibleCO: false,
-      codigo_organizador: {}
-    };
-  },
+  data: () => ({
+    url: 'codigoproductor/compania',
+    isModalVisibleCP: false,
+    codigo_productor: {}
+  }),
   methods: {
     cargar() {
       http.loadOne(this.url, this.compania.id).then(r => {
@@ -144,7 +143,7 @@ export default {
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);
-      this.codigo_organizador = {
+      this.codigo_productor = {
         activo: true,
         compania_id: this.compania.id
       };
@@ -152,27 +151,24 @@ export default {
     },
     showModal() {
       this.vaciarForm();
-      this.isModalVisibleCO = true;
+      this.isModalVisibleCP = true;
     },
     closeModal() {
       this.vaciarForm();
-      this.isModalVisibleCO = false;
+      this.isModalVisibleCP = false;
     },
     editar(id) {
       this.showModal();
       this.modoEditar = true;
-      http
-        .loadOne('codigoorganizador', id)
-        .then(r => {
-          this.codigo_organizador = r.data.data;
-        })
-        .catch(e => console.log(e));
+      http.loadOne('codigoproductor', id).then(r => {
+        this.codigo_productor = r.data.data;
+      });
     },
     borrar(id) {
       this.dangerSwal().then(r => {
         if (r.value) {
-          http.delete('codigoorganizador', id).then(() => {
-            this.notifyVue('danger', 'El codigo organizador ha sido eliminado');
+          http.delete('codigoproductor', id).then(() => {
+            this.notifyVue('danger', 'El codigo productor ha sido eliminado');
             this.cargar();
           });
         }
@@ -180,16 +176,13 @@ export default {
     },
     crear(value) {
       this.closeModal();
-      http
-        .create('codigoorganizador', value)
-        .then(() => {
-          this.notifyVue(
-            'success',
-            'El codigo organizador ha sido creado con exito'
-          );
-          this.cargar();
-        })
-        .catch(e => console.log(e));
+      http.create('codigoproductor', value).then(() => {
+        this.notifyVue(
+          'success',
+          'El codigo productor ha sido creado con exito'
+        );
+        this.cargar();
+      });
     }
   },
   mounted() {
