@@ -27,11 +27,7 @@
               </router-link>
             </div>
             <el-table :data="queriedData">
-              <el-table-column
-                label="Nombre"
-                :min-width="100"
-                prop="apellido"
-              >
+              <el-table-column label="Nombre" :min-width="100" prop="apellido">
                 <div slot-scope="{ row }">
                   {{ row.apellido }} {{ row.nombre }}
                 </div>
@@ -58,33 +54,38 @@
               </el-table-column>
               <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
-                  <base-button
-                    @click.native="handleLike(props.$index, props.row)"
-                    class="remove btn-link"
-                    type="info"
-                    size="sm"
-                    icon
+                  <el-tooltip
+                    content="Editar"
+                    effect="light"
+                    :open-delay="300"
+                    placement="top"
                   >
-                    <i class="tim-icons icon-heart-2"></i>
-                  </base-button>
-                  <base-button
-                    @click.native="handleEdit(props.$index, props.row)"
-                    class="edit btn-link"
-                    type="warning"
-                    size="sm"
-                    icon
+                    <base-button
+                      @click.native="editar(url, props.row.id)"
+                      class="edit btn-link"
+                      type="warning"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-pencil"></i>
+                    </base-button>
+                  </el-tooltip>
+                  <el-tooltip
+                    content="Eliminar"
+                    effect="light"
+                    :open-delay="300"
+                    placement="top"
                   >
-                    <i class="tim-icons icon-pencil"></i>
-                  </base-button>
-                  <base-button
-                    @click.native="handleDelete(props.$index, props.row)"
-                    class="remove btn-link"
-                    type="danger"
-                    size="sm"
-                    icon
-                  >
-                    <i class="tim-icons icon-simple-remove"></i>
-                  </base-button>
+                    <base-button
+                      @click.native="borrar(props.row.id)"
+                      class="remove btn-link"
+                      type="danger"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-simple-remove"></i>
+                    </base-button>
+                  </el-tooltip>
                 </div>
               </el-table-column>
             </el-table>
@@ -126,10 +127,11 @@
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
-import Fuse from 'fuse.js';
-import axios from 'axios';
+import { mixin } from '../../mixins/mixin.js';
+import http from '../../API/http-request.js';
 
 export default {
+  mixins: [mixin],
   components: {
     BasePagination,
     [Select.name]: Select,
@@ -137,78 +139,29 @@ export default {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
-  computed: {
-    /***
-     * Returns a page from the searched data or the whole data. Search is performed in the watch section below
-     */
-    queriedData() {
-      let result = this.tableData;
-      if (this.searchedData.length > 0) {
-        result = this.searchedData;
-      }
-      return result.slice(this.from, this.to);
-    },
-    to() {
-      let highBound = this.from + this.pagination.perPage;
-      if (this.total < highBound) {
-        highBound = this.total;
-      }
-      return highBound;
-    },
-    from() {
-      return this.pagination.perPage * (this.pagination.currentPage - 1);
-    },
-    total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length;
-    }
-  },
   data() {
-    return {
-      pagination: {
-        perPage: 5,
-        currentPage: 1,
-        perPageOptions: [5, 10, 25, 50],
-        total: 0
-      },
-      searchQuery: '',
-      propsToSearch: [],
-      tableData: [],
-      searchedData: [],
-      fuseSearch: null
-    };
+    return {};
   },
   methods: {
-    cargaPolizas() {
-      axios.get('http://127.0.0.1:8000/api/clientes/').then(response => {
-        console.log(response.data.data);
+    cargar() {
+      http.load('clientes').then(r => {
         this.dataLoaded = true;
-        this.tableData = response.data.data;
+        this.tableData = r.data.data;
+      });
+    },
+    borrar(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete('clientes', id).then(() => {
+            this.notifyVue('danger', 'El cliente ha sido eliminado');
+            this.cargar();
+          });
+        }
       });
     }
   },
-  mounted() {
-    this.fuseSearch = new Fuse(this.tableData, {
-      keys: [],
-      threshold: 0.3
-    });
-
-    this.cargaPolizas();
-  },
-  watch: {
-    /**
-     * Searches through the table data by a given query.
-     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
-     * @param value of the query
-     */
-    searchQuery(value) {
-      let result = this.tableData;
-      if (value !== '') {
-        result = this.fuseSearch.search(this.searchQuery);
-      }
-      this.searchedData = result;
-    }
+  created() {
+    this.cargar();
   }
 };
 </script>

@@ -6,7 +6,12 @@
           <form>
             <div class="d-flex justify-content-between mb-2">
               <h4>Codigo Productor</h4>
-              <button class="close" type="button" aria-label="Close" @click="close">
+              <button
+                class="close"
+                type="button"
+                aria-label="Close"
+                @click="close"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -26,12 +31,20 @@
                         v-for="productor in productores"
                         :key="productor.id"
                         :value="productor.id"
-                        :label="productor.apellido+' '+productor.nombre+' (Matricula: '+
-                    productor.matricula+')'"
+                        :label="
+                          productor.apellido +
+                            ' ' +
+                            productor.nombre +
+                            ' (Matricula: ' +
+                            productor.matricula +
+                            ')'
+                        "
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect1">Debe seleccionar un Productor</p>
+                    <p class="errorSelect" v-show="errorSelect1">
+                      Debe seleccionar un Productor
+                    </p>
                   </div>
                   <div class="mb-3">
                     <el-select
@@ -46,15 +59,20 @@
                         v-for="codigo_organizador in codigo_organizadores"
                         :key="codigo_organizador.id"
                         :value="codigo_organizador.id"
-                        :label="codigo_organizador.organizadores.apellido+' '+codigo_organizador.organizadores.nombre+' (C.Org: '+
-                    codigo_organizador.codigo_organizador+')'"
+                        :label="
+                          codigo_organizador.organizadores.apellido +
+                            ' ' +
+                            codigo_organizador.organizadores.nombre +
+                            ' (C.Org: ' +
+                            codigo_organizador.codigo_organizador +
+                            ')'
+                        "
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect2"
-                    >Debe seleccionar un Codigo Organizador</p>
+                    <p class="errorSelect" v-show="errorSelect2">
+                      Debe seleccionar un Codigo Organizador
+                    </p>
                   </div>
                   <base-input
                     placeholder="Codigo Productor"
@@ -81,13 +99,15 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>
@@ -157,19 +177,28 @@ export default {
       this.errorSelect2 = false;
     },
     crear() {
-      if (!this.selected1) {
+      if (
+        !this.selected1 &&
+        !this.selected2 &&
+        this.$validator.validateAll().then(r => r)
+      ) {
         this.errorSelect1 = true;
-      } else if (!this.selected2) {
         this.errorSelect2 = true;
+      } else if (
+        this.selected1 &&
+        !this.selected2 &&
+        this.$validator.validateAll().then(r => r)
+      ) {
+        this.errorSelect2 = true;
+      } else if (
+        !this.selected1 &&
+        this.selected2 &&
+        this.$validator.validateAll().then(r => r)
+      ) {
+        this.errorSelect1 = true;
       } else {
-        this.$validator.validateAll().then(isValid => {
-          if (
-            isValid &&
-            !this.CPUsed &&
-            this.selected1 &&
-            this.selected2 &&
-            this.CP <= 0
-          ) {
+        this.$validator.validateAll().then(r => {
+          if (r && !this.CPUsed && this.CP <= 0) {
             this.$emit('crear', this.codigo_productor);
             this.$validator.reset();
             this.errors.clear();

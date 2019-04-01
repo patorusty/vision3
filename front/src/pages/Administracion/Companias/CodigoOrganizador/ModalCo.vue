@@ -6,7 +6,12 @@
           <form>
             <div class="d-flex justify-content-between mb-2">
               <h4>Codigo Organizador</h4>
-              <button class="close" type="button" aria-label="Close" @click="close">
+              <button
+                class="close"
+                type="button"
+                aria-label="Close"
+                @click="close"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -14,25 +19,33 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="mb-3">
-                  <el-select
-                    class="select-primary"
-                    placeholder="Seleccionar Organizador"
-                    v-model="codigo_organizador.organizador_id"
-                    v-validate="modelValidations.organizador_id"
-                    name="organizador_id"
-                    @change='touchSelect'
-                  >
-                    <el-option
-                      v-for="organizador in organizadores"
-                      :key="organizador.id"
-                      :value="organizador.id"
-                      :label="organizador.apellido+' '+organizador.nombre+' (Matricula: '+
-                      organizador.matricula+')'"
+                    <el-select
                       class="select-primary"
+                      placeholder="Seleccionar Organizador"
+                      v-model="codigo_organizador.organizador_id"
+                      v-validate="modelValidations.organizador_id"
+                      name="organizador_id"
+                      @change="touchSelect"
                     >
-                    </el-option>
-                  </el-select>
-                  <p class="errorSelect" v-show="errorSelect">Debe seleccionar un Organizador</p>
+                      <el-option
+                        v-for="organizador in organizadores"
+                        :key="organizador.id"
+                        :value="organizador.id"
+                        :label="
+                          organizador.apellido +
+                            ' ' +
+                            organizador.nombre +
+                            ' (Matricula: ' +
+                            organizador.matricula +
+                            ')'
+                        "
+                        class="select-primary"
+                      >
+                      </el-option>
+                    </el-select>
+                    <p class="errorSelect" v-show="errorSelect">
+                      Debe seleccionar un Organizador
+                    </p>
                   </div>
                   <base-input
                     placeholder="Codigo Organizador"
@@ -44,12 +57,12 @@
                     @keyup="buscarCO"
                   ></base-input>
                   <p class="category">Activo?</p>
-                    <base-switch
-                      v-model="codigo_organizador.activo"
-                      type="primary"
-                      on-text="ON"
-                      off-text="OFF"
-                    ></base-switch>
+                  <base-switch
+                    v-model="codigo_organizador.activo"
+                    type="primary"
+                    on-text="ON"
+                    off-text="OFF"
+                  ></base-switch>
                 </div>
               </div>
             </div>
@@ -59,13 +72,15 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>
@@ -127,11 +142,11 @@ export default {
       this.errorSelect = false;
     },
     crear() {
-      if (!this.selected) {
+      if (!this.selected && this.$validator.validateAll().then(r => r)) {
         this.errorSelect = true;
       } else {
-        this.$validator.validateAll().then(isValid => {
-          if (isValid && !this.COUsed && this.selected && this.COS <= 0) {
+        this.$validator.validateAll().then(r => {
+          if (r && !this.COUsed && this.selected && this.COS <= 0) {
             this.$emit('crear', this.codigo_organizador);
             this.$validator.reset();
             this.errors.clear();

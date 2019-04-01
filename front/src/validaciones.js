@@ -50,6 +50,15 @@ export default {
     nro_dni: {
       required: 'Este campo es obligatorio',
       numeric: 'Este campo debe ser numerico'
+    },
+    direccion: {
+      required: 'Este campo es obligatorio'
+    },
+    direccion_nro: {
+      required: 'Este campo es obligatorio'
+    },
+    celular: {
+      required: 'Este campo es obligatorio'
     }
   }
 };

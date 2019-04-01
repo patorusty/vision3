@@ -2,7 +2,13 @@
   <card>
     <div class="col-sm-12" slot="header">
       <h4 class="d-inline align-bottom text-primary">CODIGOS ORGANIZADOR</h4>
-      <base-button type="primary" size="sm" class="float-right" @click="showModal">Crear</base-button>
+      <base-button
+        type="primary"
+        size="sm"
+        class="float-right"
+        @click="showModal"
+        >Crear</base-button
+      >
     </div>
     <div class="row">
       <div class="col-sm-12">
@@ -13,7 +19,12 @@
             label="Apellido"
             align="left"
           ></el-table-column>
-          <el-table-column min-width="80" prop="organizadores.nombre" label="Nombre" align="left"></el-table-column>
+          <el-table-column
+            min-width="80"
+            prop="organizadores.nombre"
+            label="Nombre"
+            align="left"
+          ></el-table-column>
           <el-table-column
             min-width="80"
             align="left"
@@ -32,9 +43,19 @@
               <div v-else>NO</div>
             </div>
           </el-table-column>
-          <el-table-column min-width="80" header-align="right" align="left" label="Edicion">
+          <el-table-column
+            min-width="80"
+            header-align="right"
+            align="left"
+            label="Edicion"
+          >
             <div slot-scope="props" class="text-right table-actions">
-              <el-tooltip content="Editar" effect="light" :open-delay="300" placement="top">
+              <el-tooltip
+                content="Editar"
+                effect="light"
+                :open-delay="300"
+                placement="top"
+              >
                 <base-button
                   @click.native="editar(props.row.id)"
                   class="edit btn-link"
@@ -45,7 +66,12 @@
                   <i class="tim-icons icon-pencil"></i>
                 </base-button>
               </el-tooltip>
-              <el-tooltip content="Eliminar" effect="light" :open-delay="300" placement="top">
+              <el-tooltip
+                content="Eliminar"
+                effect="light"
+                :open-delay="300"
+                placement="top"
+              >
                 <base-button
                   @click.native="borrar(props.row.id)"
                   class="remove btn-link"
@@ -66,7 +92,9 @@
       class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
     >
       <div class>
-        <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
+        <p class="card-category">
+          Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+        </p>
       </div>
       <el-select
         class="select-primary mb-3 pagination-select"

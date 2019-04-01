@@ -149,6 +149,22 @@ class ClienteController extends Controller
         ]);
     }
 
+    public function searchDNI()
+    {
+        if ($search = \Request::get('q')) {
+            $dni = Clientes::where('nro_dni', $search)->get();
+        } 
+        return ClientesResource::collection($dni);
+    }
+
+    public function searchCuit()
+    {
+        if ($search = \Request::get('q')) {
+            $cuit = Clientes::where('cuit', $search)->get();
+        } 
+        return ClientesResource::collection($cuit);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -1,125 +1,125 @@
 <template>
   <SlideYUpTransition :duration="500">
     <div class="modal-backdrop" @keydown.esc="close" @click="close">
-        <div @click.stop style="width:50%;">
-            <card>
-              <form>
-                <div class="d-flex justify-content-between">
-                  <!-- ACA VA EL TITULO -->
-                  <h4>Organizador</h4>
-                  <button
-                    class="close"
-                    type="button"
-                    aria-label="Close"
-                    @click="close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <!-- ACA VA EL FORMULARIO -->
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Nombre</label>
-                    <base-input
-                      placeholder="Nombre"
-                      v-model="organizador.nombre"
-                      v-validate="modelValidations.nombre"
-                      :error="getError('nombre')"
-                      name="nombre"
-                    >
-                    </base-input>
-                    <base-input
-                      label="Apellido"
-                      placeholder="Apellido"
-                      v-model="organizador.apellido"
-                      v-validate="modelValidations.apellido"
-                      :error="getError('apellido')"
-                      name="apellido"
-                    >
-                    </base-input>
-                    <base-input
-                      label="CUIT"
-                      placeholder="CUIT"
-                      v-model="organizador.cuit"
-                      v-validate="modelValidations.cuit"
-                      :class="{ 'has-danger': cuitUsed }"
-                      :error="getErrorCuit('cuit', cuitUsed)"
-                      name="cuit"
-                      @keyup="buscarCuit"
-                    >
-                    </base-input>
-                    <base-input
-                      label="Matricula"
-                      placeholder="Matricula"
-                      v-model="organizador.matricula"
-                      v-validate="modelValidations.matricula"
-                      :class="{ 'has-danger': matriculaUsed }"
-                      :error="getErrorMatricula('matricula', matriculaUsed)"
-                      name="matricula"
-                      @keyup="buscarMatricula"
-                    >
-                    </base-input>
-                  </div>
-                  <div class="col-md-6">
-                    <base-input
-                      label="Email"
-                      placeholder="Email"
-                      v-model="organizador.email"
-                      v-validate="modelValidations.email"
-                      :error="getError('email')"
-                      name="email"
-                    >
-                    </base-input>
-                    <base-input
-                      label="Telefono"
-                      placeholder="Telefono"
-                      v-model="organizador.telefono_1"
-                      v-validate="modelValidations.telefono_1"
-                      :error="getError('telefono_1')"
-                      name="telefono_1"
-                    >
-                    </base-input>
-                    <base-input
-                      label="Celular"
-                      placeholder="Celular"
-                      v-model="organizador.telefono_2"
-                      v-validate="modelValidations.telefono_2"
-                      :error="getError('telefono_2')"
-                      name="telefono_2"
-                    >
-                    </base-input>
-                    <label>Organizador Activo?</label>
-                    <base-input>
-                      <base-switch
-                        v-model="organizador.activo"
-                        type="primary"
-                        on-text="ON"
-                        off-text="OFF"
-                      ></base-switch>
-                    </base-input>
-                    &nbsp;
-                  </div>
-                </div>
-                <div class="modal-pie pull-right mt-3">
-                  <base-button
-                    v-if="modo == true"
-                    class="btn btn-primary ladda-button"
-                    type="submit"
-                    @click="actualizar"
-                    >Guardar</base-button
-                  >
-                  <base-button
-                    v-else
-                    class="btn btn-primary ladda-button"
-                    type="submit"
-                    @click="crear"
-                    >Crear</base-button
-                  >
-                </div>
-              </form>
-            </card>
-        </div>
+      <div @click.stop style="width:50%;">
+        <card>
+          <form>
+            <div class="d-flex justify-content-between">
+              <!-- ACA VA EL TITULO -->
+              <h4>Organizador</h4>
+              <button
+                class="close"
+                type="button"
+                aria-label="Close"
+                @click="close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- ACA VA EL FORMULARIO -->
+            <div class="row">
+              <div class="col-md-6">
+                <label>Nombre</label>
+                <base-input
+                  placeholder="Nombre"
+                  v-model="organizador.nombre"
+                  v-validate="modelValidations.nombre"
+                  :error="getError('nombre')"
+                  name="nombre"
+                >
+                </base-input>
+                <base-input
+                  label="Apellido"
+                  placeholder="Apellido"
+                  v-model="organizador.apellido"
+                  v-validate="modelValidations.apellido"
+                  :error="getError('apellido')"
+                  name="apellido"
+                >
+                </base-input>
+                <base-input
+                  label="CUIT"
+                  placeholder="CUIT"
+                  v-model="organizador.cuit"
+                  v-validate="modelValidations.cuit"
+                  :class="{ 'has-danger': cuitUsed }"
+                  :error="getErrorCuit('cuit', cuitUsed)"
+                  name="cuit"
+                  @keyup="buscarCuit"
+                >
+                </base-input>
+                <base-input
+                  label="Matricula"
+                  placeholder="Matricula"
+                  v-model="organizador.matricula"
+                  v-validate="modelValidations.matricula"
+                  :class="{ 'has-danger': matriculaUsed }"
+                  :error="getErrorMatricula('matricula', matriculaUsed)"
+                  name="matricula"
+                  @keyup="buscarMatricula"
+                >
+                </base-input>
+              </div>
+              <div class="col-md-6">
+                <base-input
+                  label="Email"
+                  placeholder="Email"
+                  v-model="organizador.email"
+                  v-validate="modelValidations.email"
+                  :error="getError('email')"
+                  name="email"
+                >
+                </base-input>
+                <base-input
+                  label="Telefono"
+                  placeholder="Telefono"
+                  v-model="organizador.telefono_1"
+                  v-validate="modelValidations.telefono_1"
+                  :error="getError('telefono_1')"
+                  name="telefono_1"
+                >
+                </base-input>
+                <base-input
+                  label="Celular"
+                  placeholder="Celular"
+                  v-model="organizador.telefono_2"
+                  v-validate="modelValidations.telefono_2"
+                  :error="getError('telefono_2')"
+                  name="telefono_2"
+                >
+                </base-input>
+                <label>Organizador Activo?</label>
+                <base-input>
+                  <base-switch
+                    v-model="organizador.activo"
+                    type="primary"
+                    on-text="ON"
+                    off-text="OFF"
+                  ></base-switch>
+                </base-input>
+                &nbsp;
+              </div>
+            </div>
+            <div class="modal-pie pull-right mt-3">
+              <base-button
+                v-if="modo == true"
+                class="btn btn-primary ladda-button"
+                type="submit"
+                @click="actualizar"
+                >Guardar</base-button
+              >
+              <base-button
+                v-else
+                class="btn btn-primary ladda-button"
+                type="submit"
+                @click="crear"
+                >Crear</base-button
+              >
+            </div>
+          </form>
+        </card>
       </div>
+    </div>
   </SlideYUpTransition>
 </template>
 
