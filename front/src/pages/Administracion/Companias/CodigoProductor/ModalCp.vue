@@ -19,7 +19,7 @@
                       placeholder="Seleccionar Productor"
                       v-model="codigo_productor.productor_id"
                       v-validate="modelValidations.productor_id"
-                      name="organizador_id"
+                      name="productor_id"
                       @change="touchSelect1"
                     >
                       <el-option

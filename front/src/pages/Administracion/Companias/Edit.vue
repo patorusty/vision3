@@ -3,7 +3,7 @@
     <div class="page-header no-margin-bottom">
       <div class="container-fluid">
         <div class="row">
-          <h4 class="text-primary">EDITAR /</h4>
+          <h4 class="text-primary">EDITAR /</h4>&nbsp;
           <h4 class>{{ compania.nombre }}</h4>
         </div>
       </div>
@@ -14,7 +14,7 @@
           <div class="block-body">
             <div class="row">
               <div class="col-md-12">
-                <card class>
+                <card>
                   <div class="row">
                     <div class="col-md-4">
                       <base-input

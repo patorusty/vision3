@@ -46,6 +46,10 @@ export default {
     },
     codigo_organizador_id: {
       required: 'Este campo es obligatorio'
+    },
+    nro_dni: {
+      required: 'Este campo es obligatorio',
+      numeric: 'Este campo debe ser numerico'
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="fileinput text-center">
-    <div
+    <!-- <div
       class="fileinput-new thumbnail"
       :class="{ 'img-circle': type === 'avatar' }"
     >
@@ -8,9 +8,9 @@
         :src="image"
         alt="preview"
       />
-    </div>
+    </div> -->
     <div>
-      <span class="btn btn-primary btn-simple btn-file">
+      <span class="btn btn-primary btn-simple btn-file mt-0">
         <span class="fileinput-new">{{
           fileExists ? changeText : selectText
           }}</span>
@@ -96,4 +96,5 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+</style>

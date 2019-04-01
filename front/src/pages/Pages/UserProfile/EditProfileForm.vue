@@ -99,6 +99,7 @@
         <div class="col-md-12">
           <base-input label="About Me">
             <textarea
+              rows="1"
               class="form-control"
               placeholder="ZIP Code"
               v-model="user.aboutMe"
@@ -139,4 +140,5 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+</style>

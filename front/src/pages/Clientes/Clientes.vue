@@ -3,28 +3,10 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <router-link slot="header" to="">
-            <base-button class="animation-on-hover pull-right" type="primary"
-              >Crear</base-button
-            >
-          </router-link>
           <div>
             <div
               class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
             >
-              <el-select
-                class="select-primary mb-3 pagination-select"
-                v-model="pagination.perPage"
-                placeholder="Per page"
-              >
-                <el-option
-                  class="select-primary"
-                  v-for="item in pagination.perPageOptions"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
               <base-input>
                 <el-input
                   type="search"
@@ -36,12 +18,19 @@
                   aria-controls="datatables"
                 ></el-input>
               </base-input>
+              <router-link slot="header" to="clientes/create">
+                <base-button
+                  class="animation-on-hover pull-right"
+                  type="primary"
+                  >Crear</base-button
+                >
+              </router-link>
             </div>
             <el-table :data="queriedData">
               <el-table-column
-                label="Apellido / Nombre"
-                sortable
-                :min-width="80"
+                label="Nombre"
+                :min-width="100"
+                prop="apellido"
               >
                 <div slot-scope="{ row }">
                   {{ row.apellido }} {{ row.nombre }}
@@ -60,9 +49,9 @@
               <el-table-column
                 label="Email"
                 prop="email"
-                :min-width="100"
+                :min-width="120"
               ></el-table-column>
-              <el-table-column label="Productor" :min-width="80">
+              <el-table-column label="Productor" :min-width="70">
                 <div slot-scope="{ row }">
                   {{ row.productores.apellido }} {{ row.productores.nombre }}
                 </div>
@@ -108,8 +97,20 @@
               <p class="card-category">
                 Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
               </p>
-              Ï
             </div>
+            <el-select
+              class="select-primary mb-3 pagination-select"
+              v-model="pagination.perPage"
+              placeholder="Per page"
+            >
+              <el-option
+                class="select-primary"
+                v-for="item in pagination.perPageOptions"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
+            </el-select>
             <base-pagination
               class="pagination-no-border"
               v-model="pagination.currentPage"

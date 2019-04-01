@@ -148,6 +148,16 @@ const routes = [
         path: 'clientes',
         name: 'Clientes',
         component: require('../pages/Clientes/Clientes.vue').default
+      },
+      {
+        path: 'clientes/create',
+        name: 'Crear Cliente',
+        component: require('../pages/Clientes/Create.vue').default
+      },
+      {
+        path: 'clientes/:id/edit',
+        name: 'Editar Cliente',
+        component: require('../pages/Clientes/Edit.vue').default
       }
     ]
   }

@@ -57,7 +57,7 @@
               <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
                   <base-button
-                    @click.native="handleEdit(props.$index, props.row)"
+                    @click.native="editar(props.row.nombre)"
                     class="edit btn-link"
                     type="warning"
                     size="sm"
@@ -144,9 +144,9 @@ export default {
         }
       });
     },
-    handleEdit(index, row) {
+    editar(nombre) {
       this.$router.push({
-        path: `/administracion/companias/${row.nombre}/edit`
+        path: `/administracion/companias/${nombre}/edit`
       });
     },
     cargar() {
