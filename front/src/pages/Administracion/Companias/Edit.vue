@@ -70,7 +70,10 @@
                     <div class="col-md-4">
                       <label>Logo de la Compañia</label>
                       <div class="col-md-4 col-sm-4">
-                        <image-upload @change="onImageChange" select-text="Seleccionar Imagen"/>
+                        <image-upload
+                          @change="onImageChange"
+                          select-text="Seleccionar Imagen"
+                        />
                       </div>
                     </div>
                   </div>
@@ -162,12 +165,25 @@
           </div>
         </div>
         <div class="mb-4">
-          <button type="submit" class="btn btn-primary ladda-button">Guardar</button>
+          <button
+            type="submit"
+            class="btn btn-primary ladda-button"
+          >Guardar</button>
         </div>
       </div>
     </form>
-    <tabla-co v-if="dataLoaded" :compania="compania"/>
-    <tabla-cp v-if="dataLoaded" :compania="compania"/>
+    <tabla-co
+      v-if="dataLoaded"
+      :compania="compania"
+    />
+    <tabla-cp
+      v-if="dataLoaded"
+      :compania="compania"
+    />
+    <tabla-cob
+      v-if="dataLoaded"
+      :compania="compania"
+    />
   </div>
 </template>
 <script>
@@ -180,6 +196,7 @@ import { mixin } from '../../../mixins/mixin.js';
 import { EventBus } from '../../../main.js';
 import TablaCo from './CodigoOrganizador/TablaCo';
 import TablaCp from './CodigoProductor/TablaCp';
+import TablaCob from './../Companias/Coberturas/TablaCob';
 import debounce from '../../../debounce.js';
 
 export default {
@@ -194,7 +211,8 @@ export default {
     BaseAlert,
     BasePagination,
     TablaCo,
-    TablaCp
+    TablaCp,
+    TablaCob
   },
   data() {
     return {
@@ -283,27 +301,6 @@ export default {
     }, 500),
     //FIN - FUNCIONES COMPANIA //
     // ----------------------------------------------------------------
-    // FUNCIONES COBERTURA //
-    showModalCobertura() {
-      this.vaciarForm();
-      this.isModalVisibleCobertura = true;
-    },
-    closeModalCobertura() {
-      this.vaciarForm();
-      this.isModalVisibleCobertura = false;
-    },
-    borrarCob(id) {
-      this.dangerSwal().then(r => {
-        if (r.value) {
-          http.delete(this.urlCob, id).then(() => {
-            this.notifyVue('danger', 'La cobertura ha sido eliminada');
-            this.cargar();
-          });
-        }
-      });
-    },
-    // ACA PONER LAS FUNCIONES EDITAR Y BORRAR !!!!!!!!!!!!!!!!!!!!!!!!
-    // FIN FUNCIONES COBERTURA //
     cargarLocalidades() {
       http.load(this.urlLocalidades).then(r => {
         this.localidades = r.data.data;
