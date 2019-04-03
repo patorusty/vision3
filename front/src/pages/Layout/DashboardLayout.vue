@@ -61,16 +61,16 @@
               path: '/administracion/productores'
             }"></sidebar-item>
           <sidebar-item :link="{
+              name: 'marca / modelo / version',
+              path: '/administracion/marcamodeloversion/edit'
+            }"></sidebar-item>
+          <sidebar-item :link="{
               name: 'libros rubricados',
               path: '/administracion/librosrubricados'
             }"></sidebar-item>
           <sidebar-item :link="{
               name: 'estadisticas',
               path: '/administracion/estadisticas'
-            }"></sidebar-item>
-          <sidebar-item :link="{
-              name: 'marcamodelo',
-              path: '/administracion/marcamodelos'
             }"></sidebar-item>
         </sidebar-item>
         <sidebar-item :link="{ name: 'configuracion', icon: 'tim-icons icon-settings-gear-63' }">

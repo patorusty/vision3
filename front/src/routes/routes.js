@@ -68,6 +68,11 @@ let administracion = {
         .default
     },
     {
+      path: 'marcamodeloversion/edit',
+      name: 'Marca Modelo Version',
+      component: require('../pages/Administracion/MarcaModeloVersion/Edit.vue').default
+    },
+    {
       path: 'librosrubricados',
       name: 'libros Rubricados',
       component: require('../pages/Administracion/LibrosRubricados.vue').default
@@ -77,11 +82,6 @@ let administracion = {
       name: 'Estadisticas',
       component: require('../pages/Administracion/Estadisticas.vue').default
     },
-    {
-      path: 'marcamodelos',
-      name: 'Marca Modelos',
-      component: require('../pages/Administracion/MarcaModelos.vue').default
-    }
   ]
 };
 
