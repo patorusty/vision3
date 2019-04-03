@@ -16,7 +16,7 @@ class CodigoOrganizadors extends Migration
         Schema::create('codigo_organizadors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('codigo_organizador')->nullable();
-            $table->string('organizador_id')->nullable();
+            $table->integer('organizador_id')->nullable();
             $table->integer('compania_id')->nullable();
             $table->boolean('activo')->nullable();
             $table->timestamps();
