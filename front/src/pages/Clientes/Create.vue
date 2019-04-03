@@ -78,7 +78,7 @@
                     </div>
                     <div
                       class="col-md-4"
-                      v-if="cliente.tipo_persona === 'Persona Fisica'"
+                      v-show="cliente.tipo_persona === 'Persona Fisica'"
                     >
                       <base-input
                         label="DNI"
@@ -94,14 +94,14 @@
                     </div>
                     <div
                       class="col-md-4"
-                      v-if="cliente.tipo_persona === 'Persona Juridica'"
+                      v-show="cliente.tipo_persona === 'Persona Juridica'"
                     >
                       <base-input
                         label="CUIT"
                         type="text"
                         placeholder="CUIT"
                         v-model="cliente.cuit"
-                        v-validate="validations.cuit"
+                        v-validate="cliente.tipo_persona === 'Persona Juridica' ? 'required|numeric|max: 11|min: 11' : '' "
                         :class="{ 'has-danger': cuitUsed }"
                         :error="getErrorCuit('cuit', cuitUsed)"
                         name="cuit"
@@ -132,7 +132,7 @@
                           value-format="yyyy-MM-dd"
                           @change="touchSelect('nacimiento')"
                         ></el-date-picker>
-                        <p class="errorSelect" v-show="errorSelect1">
+                        <p class="errorSelect" v-show="errorSelect.nacimiento">
                           Este campo es obligatorio
                         </p>
                       </base-input>
@@ -193,6 +193,7 @@
                         type="text"
                         placeholder="numero"
                         v-model="cliente.direccion_nro"
+                        v-validate="validations.direccion_nro"
                         :error="getError('direccion_nro')"
                         name="direccion_nro"
                       ></base-input>
@@ -237,7 +238,7 @@
                           class="select-primary"
                         ></el-option>
                       </el-select>
-                      <p class="errorSelect" v-show="errorSelect2">
+                      <p class="errorSelect" v-show="errorSelect.localidad">
                         Este campo es obligatorio
                       </p>
                     </div>
@@ -271,6 +272,7 @@
                         placeholder="Celular"
                         v-model="cliente.celular"
                         :error="getError('celular')"
+                        v-validate="validations.celular"
                         name="celular"
                       ></base-input>
                     </div>
@@ -328,7 +330,7 @@
                           class="select-primary"
                         ></el-option>
                       </el-select>
-                      <p class="errorSelect" v-show="errorSelect3">
+                      <p class="errorSelect" v-show="errorSelect.productor">
                         Debe seleccionar un Productor
                       </p>
                     </div>
@@ -340,7 +342,6 @@
                             type="text"
                             placeholder="Numero"
                             v-model="cliente.registro"
-                            :error="getError('registro')"
                             name="registro"
                           ></base-input>
                         </div>
@@ -366,6 +367,7 @@
                       <base-button
                         class="animation-on-hover pull-left"
                         type="primary"
+                        @click="crear"
                         >Crear</base-button
                       >
                     </div>
@@ -419,11 +421,6 @@ export default {
       localidad: false,
       productor: false
     },
-    errorSelect1: false,
-    selected2: false,
-    errorSelect2: false,
-    selected3: false,
-    errorSelect3: false,
     dni: '',
     cuit: '',
     localidades: [],
@@ -442,12 +439,6 @@ export default {
       nro_dni: {
         required: true,
         numeric: true
-      },
-      cuit: {
-        required: true,
-        numeric: true,
-        max: 11,
-        min: 11
       },
       email: {
         email: true
@@ -475,7 +466,7 @@ export default {
       }
     },
     buscarCuit: debounce(function() {
-      if (this.cliente.cuit.length == 11) {
+      if (this.cliente.nro_dni && this.cliente.cuit.length == 11) {
         http.search('cliente/busquedaCuit?q=' + this.cliente.cuit).then(r => {
           this.cuit = r.data.data;
           if (this.cuit.length > 0) {
@@ -494,7 +485,7 @@ export default {
       }
     },
     buscarDNI: debounce(function() {
-      if (this.cliente.nro_dni.length >= 6) {
+      if (this.cliente.nro_dni && this.cliente.nro_dni.length >= 6) {
         http.search('cliente/busquedaDNI?q=' + this.cliente.nro_dni).then(r => {
           this.dni = r.data.data;
           if (this.dni.length > 0) {
@@ -517,41 +508,32 @@ export default {
         .then(r => (this.productores = r.data.data));
     },
     touchSelect(val) {
-      console.log(val);
-      return (this.selected[val] = true);
-      console.log()
+      this.selected[val] = true;
+      this.errorSelect[val] = false;
+    },
+    checkSelect() {
+      let valor = true;
+      Object.entries(this.selected).forEach(select => {
+        if (select[1] == false) {
+          this.errorSelect[`${select[0]}`] = true;
+          valor = false;
+        } else if (!this.cliente.nacimiento) {
+          this.errorSelect.nacimiento = true;
+          this.selected.nacimiento = false;
+          valor = false;
+        }
+      });
+      return valor;
     },
     crear() {
       if (
-        !this.selected1 &&
-        !this.selected2 &&
-        !this.selected3 &&
-        this.$validator.validateAll().then(r => r)
+        this.$validator.validateAll().then(r => r) &&
+        this.checkSelect() &&
+        !this.dniUsed &&
+        !this.cuitUsed
       ) {
-        this.errorSelect1 = true;
-        this.errorSelect2 = true;
-        this.errorSelect3 = true;
-      } else if (
-        this.selected1 &&
-        !this.selected2 &&
-        this.$validator.validateAll().then(r => r)
-      ) {
-        this.errorSelect2 = true;
-      } else if (
-        !this.selected1 &&
-        this.selected2 &&
-        this.$validator.validateAll().then(r => r)
-      ) {
-        this.errorSelect1 = true;
-      } else {
-        this.$validator.validateAll().then(r => {
-          if (r && !this.CPUsed && this.CP <= 0) {
-            this.$emit('crear', this.codigo_productor);
-            this.$validator.reset();
-            this.errors.clear();
-            this.selected1 = false;
-            this.selected2 = false;
-          }
+        http.create('clientes', this.cliente).then(() => {
+          this.$router.push({ name: 'Clientes' });
         });
       }
     }

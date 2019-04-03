@@ -60,15 +60,18 @@
                     :open-delay="300"
                     placement="top"
                   >
-                    <base-button
-                      @click.native="editar(url, props.row.id)"
-                      class="edit btn-link"
-                      type="warning"
-                      size="sm"
-                      icon
+                    <router-link
+                    :to="{ name: 'Editar Cliente', params: { id: props.row.id }}"
                     >
-                      <i class="tim-icons icon-pencil"></i>
-                    </base-button>
+                      <base-button
+                        class="edit btn-link"
+                        type="warning"
+                        size="sm"
+                        icon
+                      >
+                        <i class="tim-icons icon-pencil"></i>
+                      </base-button>
+                    </router-link>
                   </el-tooltip>
                   <el-tooltip
                     content="Eliminar"
