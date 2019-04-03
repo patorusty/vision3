@@ -76,10 +76,7 @@
                         name="apellido"
                       ></base-input>
                     </div>
-                    <div
-                      class="col-md-4"
-                      v-show="cliente.tipo_persona === 'Persona Fisica'"
-                    >
+                    <div class="col-md-2">
                       <base-input
                         label="DNI"
                         type="text"
@@ -92,16 +89,18 @@
                         @keyup="buscarDNI"
                       ></base-input>
                     </div>
-                    <div
-                      class="col-md-4"
-                      v-show="cliente.tipo_persona === 'Persona Juridica'"
-                    >
+                    <div class="col-md-2">
                       <base-input
                         label="CUIT"
                         type="text"
                         placeholder="CUIT"
                         v-model="cliente.cuit"
-                        v-validate="cliente.tipo_persona === 'Persona Juridica' ? 'required|numeric|max: 11|min: 11' : '' "
+                        v-validate="
+                          cliente.tipo_persona === 'Persona Juridica' ||
+                          cliente.condicion_fiscal === 'Resp. Inscripto'
+                            ? 'required|numeric|max: 11|min: 11'
+                            : ''
+                        "
                         :class="{ 'has-danger': cuitUsed }"
                         :error="getErrorCuit('cuit', cuitUsed)"
                         name="cuit"
@@ -110,7 +109,24 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                      <label>Condicion Fiscal</label>
+                      <el-select
+                        filterable
+                        class="select-primary"
+                        v-model="cliente.condicion_fiscal"
+                        name="condicion_fiscal"
+                      >
+                        <el-option
+                          v-for="condicion in condiciones"
+                          :key="condicion.value"
+                          :label="condicion.label"
+                          :value="condicion.value"
+                          class="select-primary"
+                        ></el-option>
+                      </el-select>
+                    </div>
+                    <div class="col-md-3">
                       <label>Sexo</label>
                       <div class="d-flex flex-row">
                         <base-radio class="mr-5" v-model="cliente.sexo" name="M"
@@ -121,13 +137,13 @@
                         >
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                       <label>Fecha de Nacimiento</label>
                       <base-input>
                         <el-date-picker
                           v-model="cliente.nacimiento"
                           type="date"
-                          placeholder="Fecha de Nacimiento"
+                          placeholder="Nacimiento"
                           format="d/M/yyyy"
                           value-format="yyyy-MM-dd"
                           @change="touchSelect('nacimiento')"
@@ -191,7 +207,7 @@
                       <base-input
                         label="Numero"
                         type="text"
-                        placeholder="numero"
+                        placeholder="Numero"
                         v-model="cliente.direccion_nro"
                         v-validate="validations.direccion_nro"
                         :error="getError('direccion_nro')"
@@ -408,6 +424,20 @@ export default {
         labe: 'Persona Juridica'
       }
     ],
+    condiciones: [
+      {
+        value: 'Consumidor Final',
+        label: 'Consumidor Final'
+      },
+      {
+        value: 'Monotributo',
+        labe: 'Monotributo'
+      },
+      {
+        value: 'Resp. Inscripto',
+        labe: 'Resp. Inscripto'
+      }
+    ],
     cuitUsed: false,
     dniUsed: false,
     selected1: false,
@@ -427,7 +457,8 @@ export default {
     productores: [],
     cliente: {
       tipo_persona: 'Persona Fisica',
-      sexo: 'M'
+      sexo: 'M',
+      condicion_fiscal: 'Consumidor Final'
     },
     validations: {
       nombre: {

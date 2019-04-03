@@ -20,12 +20,12 @@ class Clientes extends Migration
             $table->string('apellido')->nullable();
             $table->string('razon_social')->nullable();
             $table->string('tipo_doc')->nullable();
-            $table->integer('nro_dni')->nullable();
+            $table->string('nro_dni')->nullable();
             $table->string('sexo')->nullable();
             $table->string('nacimiento')->nullable();
             $table->string('condicion_fiscal')->nullable();
             $table->string('cuit')->nullable();
-            $table->integer('registro')->nullable();
+            $table->string('registro')->nullable();
             $table->string('vencimiento_registro')->nullable();
             $table->string('email')->nullable();
             $table->string('email_alt')->nullable();
