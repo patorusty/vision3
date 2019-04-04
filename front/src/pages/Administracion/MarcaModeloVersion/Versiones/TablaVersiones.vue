@@ -1,19 +1,57 @@
 <template>
   <div>
     <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
-      <base-input>
-
-        <el-input
-          type="search"
-          class="mb-3 search-input"
-          clearable
-          prefix-icon="el-icon-search"
-          placeholder="Buscar"
-          v-model="searchQuery"
-          aria-controls="datatables"
-        ></el-input>
-      </base-input>
-      <div>
+      <div class="row justify-content-start ml-1">
+        <div class="col-md-4">
+          <el-select
+            v-model="marca_id"
+            class="select-primary"
+            @change="filtrarMarca"
+            filterable
+          >
+            <el-option
+              v-for="marca in marcas"
+              :key="marca.id"
+              :value="marca.id"
+              :label="marca.nombre"
+              class="select-primary"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div class="col-md-4">
+          <el-select
+            v-model="modelo_id"
+            class="select-primary"
+            @change="filtrarModelo"
+            filterable
+          >
+            <el-option
+              v-for="modelo in modelos"
+              :key="modelo.id"
+              :value="modelo.id"
+              :label="modelo.nombre"
+              class="select-primary"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div class="col-md-4">
+          <base-input>
+            <el-input
+              type="search"
+              class="mb-3 search-input"
+              clearable
+              prefix-icon="el-icon-search"
+              placeholder="Buscar"
+              v-model="searchQuery"
+              aria-controls="datatables"
+            >
+            </el-input>
+          </base-input>
+        </div>
+      </div>
+      <div class="mr-3">
         <base-button
           slot="header"
           class="animation-on-hover "
@@ -23,7 +61,17 @@
     </div>
     <el-table :data="queriedData">
       <el-table-column
-        label="Nombre"
+        label="Marca"
+        value="marca"
+        :min-width="80"
+      ></el-table-column>
+      <el-table-column
+        label="Modelo"
+        prop="automotor_modelo.nombre"
+        :min-width="80"
+      ></el-table-column>
+      <el-table-column
+        label="Version"
         prop="nombre"
         :min-width="80"
       ></el-table-column>
@@ -96,6 +144,9 @@
         :total="total"
       ></base-pagination>
     </div>
+    <!-- <modal-marcas>
+    
+  </modal-marcas> -->
   </div>
 
 </template>
@@ -104,13 +155,13 @@ import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import { BaseAlert } from 'src/components';
 import { BaseSwitch } from 'src/components/index';
-import http from '../../../API/http-request.js';
-import { mixin } from '../../../mixins/mixin.js';
-import { EventBus } from '../../../main.js';
+import http from '../../../../API/http-request.js';
+import { mixin } from '../../../../mixins/mixin.js';
+import { EventBus } from '../../../../main.js';
 
 export default {
   mixins: [mixin],
-  name: 'tabla-marcas',
+  name: 'tabla-versiones',
   components: {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
@@ -121,16 +172,40 @@ export default {
   },
   data() {
     return {
-      url: 'administracion/marcas'
+      url: 'administracion/versiones',
+      automotor_marcas: {},
+      marcas: {},
+      marca_id: '',
+      automotor_modelos: {},
+      modelos: {},
+      modelo_id: '',
+      versiones: [],
+      version_id: ''
     };
   },
   methods: {
-    cargar() {
-      http.load(this.url).then(r => (this.tableData = r.data.data));
+    cargarMarcas() {
+      http.load('administracion/marcas', this.marca_id).then(r => {
+        this.marcas = r.data.data;
+        console.log(this.marcas);
+      });
+    },
+    filtrarMarca() {
+      http
+        .loadOne('/modelos/filtrar', this.marca_id)
+        .then(r => (this.modelos = r.data.data));
+    },
+    filtrarModelo() {
+      http
+        .loadOne('/versiones/filtrar', this.modelo_id)
+        .then(r => (this.tableData = r.data.data));
     }
   },
   created() {
-    this.cargar();
+    this.cargarMarcas();
   }
 };
 </script>
+
+
+

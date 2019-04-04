@@ -1,57 +1,19 @@
 <template>
   <div>
     <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
-      <div class="row justify-content-start ml-1">
-        <div class="col-md-4">
-          <el-select
-            v-model="marca_id"
-            class="select-primary"
-            @change="filtrarMarca"
-            filterable
-          >
-            <el-option
-              v-for="marca in marcas"
-              :key="marca.id"
-              :value="marca.id"
-              :label="marca.nombre"
-              class="select-primary"
-            >
-            </el-option>
-          </el-select>
-        </div>
-        <div class="col-md-4">
-          <el-select
-            v-model="modelo_id"
-            class="select-primary"
-            @change="filtrarModelo"
-            filterable
-          >
-            <el-option
-              v-for="modelo in modelos"
-              :key="modelo.id"
-              :value="modelo.id"
-              :label="modelo.nombre"
-              class="select-primary"
-            >
-            </el-option>
-          </el-select>
-        </div>
-        <div class="col-md-4">
-          <base-input>
-            <el-input
-              type="search"
-              class="mb-3 search-input"
-              clearable
-              prefix-icon="el-icon-search"
-              placeholder="Buscar"
-              v-model="searchQuery"
-              aria-controls="datatables"
-            >
-            </el-input>
-          </base-input>
-        </div>
-      </div>
-      <div class="mr-3">
+      <base-input>
+
+        <el-input
+          type="search"
+          class="mb-3 search-input"
+          clearable
+          prefix-icon="el-icon-search"
+          placeholder="Buscar"
+          v-model="searchQuery"
+          aria-controls="datatables"
+        ></el-input>
+      </base-input>
+      <div>
         <base-button
           slot="header"
           class="animation-on-hover "
@@ -61,17 +23,7 @@
     </div>
     <el-table :data="queriedData">
       <el-table-column
-        label="Marca"
-        value="marca"
-        :min-width="80"
-      ></el-table-column>
-      <el-table-column
-        label="Modelo"
-        prop="automotor_modelo.nombre"
-        :min-width="80"
-      ></el-table-column>
-      <el-table-column
-        label="Version"
+        label="Nombre"
         prop="nombre"
         :min-width="80"
       ></el-table-column>
@@ -144,6 +96,15 @@
         :total="total"
       ></base-pagination>
     </div>
+    <modal-marca
+      v-show="isModalVisibleMarcas"
+      :modo="modoEditar"
+      @close="closeModal"
+      @crear="crear"
+      :marcas="marcas"
+      @recargar="cargar"
+    >
+    </modal-marca>
   </div>
 
 </template>
@@ -152,57 +113,79 @@ import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import { BaseAlert } from 'src/components';
 import { BaseSwitch } from 'src/components/index';
-import http from '../../../API/http-request.js';
-import { mixin } from '../../../mixins/mixin.js';
-import { EventBus } from '../../../main.js';
+import http from '../../../../API/http-request.js';
+import { mixin } from '../../../../mixins/mixin.js';
+import { EventBus } from '../../../../main.js';
+import { ModalMarca } from './ModalMarcas.vue';
 
 export default {
   mixins: [mixin],
-  name: 'tabla-versiones',
+  name: 'tabla-marcas',
   components: {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
     [Select.name]: Select,
     [Option.name]: Option,
     BaseAlert,
-    BasePagination
+    BasePagination,
+    ModalMarca
   },
   data() {
     return {
-      url: 'administracion/versiones',
-      automotor_marcas: {},
-      marcas: {},
-      marca_id: '',
-      automotor_modelos: {},
-      modelos: {},
-      modelo_id: '',
-      versiones: [],
-      version_id: ''
+      url: 'administracion/marcas',
+      isModalVisibleMarcas: false
     };
   },
   methods: {
-    cargarMarcas() {
-      http.load('administracion/marcas', this.marca_id).then(r => {
-        this.marcas = r.data.data;
-        console.log(this.marcas);
+    cargar() {
+      http.load(this.url).then(r => (this.tableData = r.data.data));
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
+      this.marca = {};
+      this.modoEditar = false;
+    },
+    showModal() {
+      this.vaciarForm();
+      this.isModalVisibleMarcas = true;
+    },
+    closeModal() {
+      this.vaciarForm();
+      this.isModalVisibleMarcas = false;
+    },
+    editar(id) {
+      this.showModal();
+      this.modoEditar = true;
+      http
+        .loadOne('marca', id)
+        .then(r => {
+          this.marca = r.data.data;
+        })
+        .catch(e => console.log(e));
+    },
+    borrar(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete('marca', id).then(() => {
+            this.notifyVue('danger', 'La Marca ha sido eliminado');
+            this.cargar();
+          });
+        }
       });
     },
-    filtrarMarca() {
+    crear(value) {
+      this.closeModal();
       http
-        .loadOne('/modelos/filtrar', this.marca_id)
-        .then(r => (this.modelos = r.data.data));
-    },
-    filtrarModelo() {
-      http
-        .loadOne('/versiones/filtrar', this.modelo_id)
-        .then(r => (this.tableData = r.data.data));
+        .create('marca', value)
+        .then(() => {
+          this.notifyVue('success', 'La Marca ha sido creado con exito');
+          this.cargar();
+        })
+        .catch(e => console.log(e));
     }
   },
   created() {
-    this.cargarMarcas();
+    this.cargar();
   }
 };
 </script>
-
-
-

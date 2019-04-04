@@ -27,9 +27,9 @@ import { BaseAlert } from 'src/components';
 import http from '../../../API/http-request.js';
 import { mixin } from '../../../mixins/mixin.js';
 import { EventBus } from '../../../main.js';
-import TablaMarcas from './TablaMarcas';
-import TablaModelos from './TablaModelos';
-import TablaVersiones from './TablaVersiones';
+import TablaMarcas from './Marcas/TablaMarcas';
+import TablaModelos from './Modelos/TablaModelos';
+import TablaVersiones from './Versiones/TablaVersiones';
 
 export default {
   mixins: [mixin],

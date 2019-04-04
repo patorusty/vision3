@@ -47,4 +47,5 @@ class AutomotorMarcaController extends Controller
 
         return ['message' => 'Eliminado'];
     }
+    
 }
