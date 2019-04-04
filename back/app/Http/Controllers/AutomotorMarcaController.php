@@ -11,7 +11,7 @@ class AutomotorMarcaController extends Controller
 {
     public function index()
     {
-        $automotor_marca = AutomotorMarca::all();
+        $automotor_marca = AutomotorMarca::with('automotor_modelos')->get();
 
         return AutomotorMarcasResource::collection($automotor_marca);
     }

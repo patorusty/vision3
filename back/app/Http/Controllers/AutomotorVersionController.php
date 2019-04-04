@@ -22,7 +22,7 @@ class AutomotorVersionController extends Controller
     }
     public function filtro($id)
     {
-        $versiones = AutomotorVersion::with('automotor_marca', 'automotor_modelo')->where('automotor_modelo_id', $id)->get();
+        $versiones = AutomotorVersion::with('automotor_modelo')->where('automotor_modelo_id', $id)->get();
         return AutomotorVersionsResource::collection($versiones);
     }
     

@@ -23,7 +23,7 @@
           <el-select
             v-model="modelo_id"
             class="select-primary"
-            @change="filtrarVersion"
+            @change="filtrarModelo"
             filterable
           >
             <el-option
@@ -62,7 +62,7 @@
     <el-table :data="queriedData">
       <el-table-column
         label="Marca"
-        prop="automotor_marca.automotor_modelo.nombre"
+        value="marca"
         :min-width="80"
       ></el-table-column>
       <el-table-column
@@ -71,7 +71,7 @@
         :min-width="80"
       ></el-table-column>
       <el-table-column
-        label="Nombre"
+        label="Version"
         prop="nombre"
         :min-width="80"
       ></el-table-column>
@@ -184,6 +184,7 @@ export default {
     cargarMarcas() {
       http.load('administracion/marcas', this.marca_id).then(r => {
         this.marcas = r.data.data;
+        console.log(this.marcas);
       });
     },
     filtrarMarca() {
@@ -191,7 +192,7 @@ export default {
         .loadOne('/modelos/filtrar', this.marca_id)
         .then(r => (this.modelos = r.data.data));
     },
-    filtrarVersion() {
+    filtrarModelo() {
       http
         .loadOne('/versiones/filtrar', this.modelo_id)
         .then(r => (this.tableData = r.data.data));
