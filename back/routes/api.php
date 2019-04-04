@@ -21,6 +21,9 @@ Route::Resource('/clientes', 'ClienteController');
 Route::Resource('/administracion/companias', 'CompaniaController');
 Route::Resource('/administracion/organizadores', 'OrganizadorController');
 Route::Resource('/administracion/productores', 'ProductorController');
+Route::Resource('/administracion/marcas', 'AutomotorMarcaController');
+Route::Resource('/administracion/modelos', 'AutomotorModeloController');
+Route::Resource('/administracion/versiones', 'AutomotorVersionController');
 Route::Resource('/localidades', 'LocalidadController');
 Route::Resource('/codigoorganizador', 'CodigoOrganizadorController');
 Route::Resource('/codigoproductor', 'CodigoProductorController');
@@ -41,4 +44,6 @@ Route::get('/codigo_organizadores/busquedaCO', 'CodigoOrganizadorController@sear
 Route::get('/codigo_productores/busquedaCP', 'CodigoProductorController@searchCP');
 Route::get('/cliente/busquedaDNI', 'ClienteController@searchDNI');
 Route::get('/cliente/busquedaCuit', 'ClienteController@searchCuit');
+Route::get('/modelos/filtrar/{id}', 'AutomotorModeloController@filtro');
+Route::get('/versiones/filtrar/{id}', 'AutomotorVersionController@filtro');
 

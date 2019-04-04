@@ -2,14 +2,14 @@
 
 namespace App;
 
-use App\AutomotorVersiones;
+use App\AutomotorVersion;
 use Illuminate\Database\Eloquent\Model;
 
-class AutomotorAnios extends Model
+class AutomotorAnio extends Model
 {
     protected $guarded = [];
 
     public function automotor_versiones() {
-       return $this->belongsTo(AutomotorVersiones::class, 'automotor_version_id');
+       return $this->belongsTo(AutomotorVersion::class, 'automotor_version_id');
     }
 }

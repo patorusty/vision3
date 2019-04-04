@@ -6,38 +6,50 @@
 
     <tabs type="primary">
       <tab-pane label="Marca">
-        Collaboratively administrate empowered markets via plug-and-play
-        networks. Dynamically procrastinate B2C users after installed base
-        benefits. <br /><br />
-        Dramatically visualize customer directed convergence without
-        revolutionary ROI.
+        <tabla-marcas />
       </tab-pane>
 
-      <tab-pane label="Modelo">
-        Efficiently unleash cross-media information without cross-media
-        value. Quickly maximize timely deliverables for real-time schemas.
-        <br /><br />Dramatically maintain clicks-and-mortar solutions
-        without functional solutions.
+      <tab-pane label="Modelos">
+        <tabla-modelos />
       </tab-pane>
 
-      <tab-pane label="Version">
-        Completely synergize resource taxing relationships via premier
-        niche markets. Professionally cultivate one-to-one customer
-        service with robust ideas. <br /><br />Dynamically innovate
-        resource-leveling customer service for state of the art customer
-        service.
+      <tab-pane label="Versiones">
+        <tabla-versiones />
       </tab-pane>
     </tabs>
   </card>
 </template>
 
 <script>
-import { TabPane, Tabs } from 'src/components';
+import { Table, TableColumn, Select, Option } from 'element-ui';
+import { BasePagination, TabPane, Tabs } from 'src/components';
+import { BaseAlert } from 'src/components';
+import http from '../../../API/http-request.js';
+import { mixin } from '../../../mixins/mixin.js';
+import { EventBus } from '../../../main.js';
+import TablaMarcas from './TablaMarcas';
+import TablaModelos from './TablaModelos';
+import TablaVersiones from './TablaVersiones';
 
 export default {
+  mixins: [mixin],
   components: {
+    BasePagination,
+    [Select.name]: Select,
+    [Option.name]: Option,
+    [Table.name]: Table,
+    [TableColumn.name]: TableColumn,
+    BaseAlert,
     TabPane,
-    Tabs
+    Tabs,
+    TablaMarcas,
+    TablaModelos,
+    TablaVersiones
+  },
+  data() {
+    return {
+      dataLoaded: false
+    };
   }
 };
 </script>

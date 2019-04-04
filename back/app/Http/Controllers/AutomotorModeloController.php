@@ -20,6 +20,11 @@ class AutomotorModeloController extends Controller
 
         return new AutomotorModelosResource($automotor_modelo);
     }
+    public function filtro($id)
+    {
+        $modelos = AutomotorModelo::with('automotor_marca')->where('automotor_marca_id', $id)->get();
+        return AutomotorModelosResource::collection($modelos);
+    }
     public function store(Request $request)
     {
         $this->validate($request, []);
