@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:35%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:35%;">
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -30,6 +23,8 @@
                       placeholder="Nombre de la Cobertura"
                       type="text"
                       v-model="cobertura.nombre"
+                      v-validate="'required'"
+                      :error="getError('nombre')"
                       name="nombre"
                     ></base-input>
                     <div class="row">
@@ -84,8 +79,12 @@
                             :key="ajuste"
                             :value="ajuste"
                             :label="ajuste"
-                          > </el-option>
+                          >
+                          </el-option>
                         </el-select>
+                        <p class="errorSelect" v-show="errorSelect">
+                          Debe seleccionar un ajuste
+                        </p>
                       </div>
                     </div>
                     <base-input label="Detalle">
@@ -111,13 +110,15 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>
@@ -133,7 +134,7 @@ import { BaseButton } from 'src/components';
 import { BaseSwitch } from 'src/components/index';
 import http from '../../../../API/http-request.js';
 import { EventBus } from '../../../../main.js';
-import debounce from '../../../../debounce.js';
+// import debounce from '../../../../debounce.js';
 import { mixin } from '../../../../mixins/mixin.js';
 
 export default {
@@ -153,7 +154,8 @@ export default {
       url: 'cobertura',
       ajustes: ['0 %', '10 %', '20 %', '30 %'],
       coberturas: [],
-      selected: false
+      selected: false,
+      errorSelect: false
     };
   },
 
@@ -168,18 +170,18 @@ export default {
       this.errorSelect = false;
     },
     crear() {
-      //   if (!this.selected && this.$validator.validateAll().then(r => r)) {
-      //     this.errorSelect = true;
-      //   } else {
-      //   this.$validator.validateAll().then(r => {
-      //     if (r && this.selected <= 0) {
-      this.$emit('crear', this.cobertura);
-      this.$validator.reset();
-      this.errors.clear();
-      this.selected = false;
-      //     }
-      //   });
-      //   }
+      if (!this.selected && this.$validator.validateAll().then(r => r)) {
+        this.errorSelect = true;
+      } else {
+        this.$validator.validateAll().then(r => {
+          if (r) {
+            this.$emit('crear', this.cobertura);
+            this.$validator.reset();
+            this.errors.clear();
+            this.selected = false;
+          }
+        });
+      }
     },
     cargar() {
       http.load(this.url).then(r => (this.coberturas = r.data.data));

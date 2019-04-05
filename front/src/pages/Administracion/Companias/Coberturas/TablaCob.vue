@@ -1,16 +1,14 @@
 <template>
   <card>
-    <div
-      class="col-sm-12"
-      slot="header"
-    >
+    <div class="col-sm-12" slot="header">
       <h4 class="d-inline align-bottom text-primary">COBERTURAS</h4>
       <base-button
         type="primary"
         size="sm"
         class="float-right"
         @click="showModal"
-      >Crear</base-button>
+        >Crear</base-button
+      >
     </div>
     <div class="row">
       <div class="col-sm-12">
@@ -29,11 +27,7 @@
             align="left"
           >
           </el-table-column>
-          <el-table-column
-            min-width="80"
-            align="left"
-            label="Todo Riesgo"
-          >
+          <el-table-column min-width="80" align="left" label="Todo Riesgo">
             <div slot-scope="{ row }">
               <div v-if="row.todo_riesgo == true">SI</div>
               <div v-else>NO</div>
@@ -53,11 +47,7 @@
             label="Ajuste"
           >
           </el-table-column>
-          <el-table-column
-            min-width="80"
-            align="left"
-            label="Activa"
-          >
+          <el-table-column min-width="80" align="left" label="Activa">
             <div slot-scope="{ row }">
               <div v-if="row.activa == true">SI</div>
               <div v-else>NO</div>
@@ -69,10 +59,7 @@
             align="right"
             label="Edicion"
           >
-            <div
-              slot-scope="props"
-              class="text-right table-actions"
-            >
+            <div slot-scope="props" class="text-right table-actions">
               <el-tooltip
                 content="Editar"
                 effect="light"
@@ -201,6 +188,7 @@ export default {
     },
     showModal() {
       this.vaciarForm();
+      this.cobertura.activa = true;
       this.isModalVisibleCob = true;
     },
     closeModal() {

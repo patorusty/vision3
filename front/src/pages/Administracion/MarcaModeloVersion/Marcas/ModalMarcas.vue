@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:25%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:25%;">
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -34,20 +27,23 @@
                   </div>
                 </div>
               </div>
-              <div class="modal-pie pull-right mt-3">
-                <base-button
-                  v-if="modo == true"
-                  class="btn btn-primary ladda-button"
-                  type="submit"
-                  @click="actualizar"
-                >Guardar</base-button>
-                <base-button
-                  v-else
-                  class="btn btn-primary ladda-button"
-                  type="submit"
-                  @click="crear"
-                >Crear</base-button>
-              </div>
+            </div>
+            <div class="modal-pie pull-right mt-3">
+              <base-button
+                v-if="modo == true"
+                class="btn btn-primary ladda-button"
+                type="submit"
+                @click="actualizar"
+                >Guardar</base-button
+              >
+              <base-button
+                v-else
+                class="btn btn-primary ladda-button"
+                type="submit"
+                @click="crear"
+                >Crear</base-button
+              >
+            </div>
           </form>
         </card>
       </div>
@@ -60,7 +56,7 @@ import { Card } from 'src/components';
 import { BaseButton } from 'src/components';
 import http from '../../../../API/http-request.js';
 import { EventBus } from '../../../../main.js';
-import debounce from '../../../../debounce.js';
+// import debounce from '../../../../debounce.js';
 import { mixin } from '../../../../mixins/mixin.js';
 
 export default {

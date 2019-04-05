@@ -25,7 +25,7 @@
                       v-model="codigo_productor.productor_id"
                       v-validate="modelValidations.productor_id"
                       name="productor_id"
-                      @change="touchSelect1"
+                      @change="touchSelect('productor')"
                     >
                       <el-option
                         v-for="productor in productores"
@@ -42,7 +42,7 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect1">
+                    <p class="errorSelect" v-show="errorSelect.productor">
                       Debe seleccionar un Productor
                     </p>
                   </div>
@@ -53,7 +53,7 @@
                       v-model="codigo_productor.codigo_organizador_id"
                       v-validate="modelValidations.codigo_organizador_id"
                       name="organizador_id"
-                      @change="touchSelect2"
+                      @change="touchSelect('codigoOrganizador')"
                     >
                       <el-option
                         v-for="codigo_organizador in codigo_organizadores"
@@ -70,7 +70,10 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect2">
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.codigoOrganizador"
+                    >
                       Debe seleccionar un Codigo Organizador
                     </p>
                   </div>
@@ -141,10 +144,14 @@ export default {
   },
   data: () => ({
     url: 'administracion/productores',
-    selected1: false,
-    selected2: false,
-    errorSelect1: false,
-    errorSelect2: false,
+    selected: {
+      productor: false,
+      codigoOrganizador: false
+    },
+    errorSelect: {
+      productor: false,
+      codigoOrganizador: false
+    },
     CPUsed: false,
     CP: '',
     usedError: '',
@@ -171,41 +178,20 @@ export default {
       this.errors.clear();
       this.CPUsed = false;
       this.usedError = '';
-      this.selected1 = false;
-      this.selected2 = false;
-      this.errorSelect1 = false;
-      this.errorSelect2 = false;
+      this.selected.productor = false;
+      this.selected.codigoOrganizador = false;
+      this.selected.codigoOrganizador = false;
+      this.selected.productor = false;
     },
     crear() {
-      if (
-        !this.selected1 &&
-        !this.selected2 &&
-        this.$validator.validateAll().then(r => r)
-      ) {
-        this.errorSelect1 = true;
-        this.errorSelect2 = true;
-      } else if (
-        this.selected1 &&
-        !this.selected2 &&
-        this.$validator.validateAll().then(r => r)
-      ) {
-        this.errorSelect2 = true;
-      } else if (
-        !this.selected1 &&
-        this.selected2 &&
-        this.$validator.validateAll().then(r => r)
-      ) {
-        this.errorSelect1 = true;
-      } else {
-        this.$validator.validateAll().then(r => {
-          if (r && !this.CPUsed && this.CP <= 0) {
-            this.$emit('crear', this.codigo_productor);
-            this.$validator.reset();
-            this.errors.clear();
-            this.selected1 = false;
-            this.selected2 = false;
-          }
-        });
+      if (this.$validator.validateAll().then(r => r) && this.checkSelect()) {
+        if (!this.CPUsed && this.CP <= 0) {
+          this.$emit('crear', this.codigo_productor);
+          this.$validator.reset();
+          this.errors.clear();
+          this.selected.codigoOrganizador = false;
+          this.selected.productor = false;
+        }
       }
     },
     cargar() {
@@ -241,13 +227,19 @@ export default {
         }
       });
     },
-    touchSelect1() {
-      this.selected1 = true;
-      this.errorSelect1 = false;
+    touchSelect(val) {
+      this.selected[val] = true;
+      this.errorSelect[val] = false;
     },
-    touchSelect2() {
-      this.selected2 = true;
-      this.errorSelect2 = false;
+    checkSelect() {
+      let valor = true;
+      Object.entries(this.selected).forEach(select => {
+        if (select[1] == false) {
+          this.errorSelect[`${select[0]}`] = true;
+          valor = false;
+        }
+      });
+      return valor;
     },
     buscarCP: debounce(function() {
       if (this.codigo_productor.codigo_productor) {
