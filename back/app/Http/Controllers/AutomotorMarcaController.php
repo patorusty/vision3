@@ -11,8 +11,8 @@ class AutomotorMarcaController extends Controller
 {
     public function index()
     {
-        $automotor_marca = AutomotorMarca::with('automotor_modelos')->get();
-
+        $automotor_marca = AutomotorMarca::all();
+        
         return AutomotorMarcasResource::collection($automotor_marca);
     }
     public function show($id)
@@ -46,6 +46,14 @@ class AutomotorMarcaController extends Controller
         $automotor_marca->delete();
 
         return ['message' => 'Eliminado'];
+    }
+
+    public function searchMarca()
+    {
+        if ($search = \Request::get('q')) {
+            $marca = AutomotorMarca::where('nombre', $search)->get();
+        }
+        return AutomotorMarcasResource::collection($marca);
     }
     
 }

@@ -46,4 +46,6 @@ Route::get('/cliente/busquedaDNI', 'ClienteController@searchDNI');
 Route::get('/cliente/busquedaCuit', 'ClienteController@searchCuit');
 Route::get('/modelos/filtrar/{id}', 'AutomotorModeloController@filtro');
 Route::get('/versiones/filtrar/{id}', 'AutomotorVersionController@filtro');
+Route::get('/marcas/busquedaMarca', 'AutomotorMarcaController@searchMarca');
+Route::get('/marcas/busquedaModelo', 'AutomotorModeloController@searchModelo');
 

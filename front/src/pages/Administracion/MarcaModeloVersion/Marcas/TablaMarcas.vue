@@ -18,6 +18,7 @@
           slot="header"
           class="animation-on-hover "
           type="primary"
+          @click="showModal"
         >Crear</base-button>
       </div>
     </div>
@@ -96,27 +97,25 @@
         :total="total"
       ></base-pagination>
     </div>
-    <modal-marca
+    <modal-marcas
       v-show="isModalVisibleMarcas"
       :modo="modoEditar"
       @close="closeModal"
       @crear="crear"
-      :marcas="marcas"
+      :marca="marca"
       @recargar="cargar"
     >
-    </modal-marca>
+    </modal-marcas>
   </div>
-
 </template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import { BaseAlert } from 'src/components';
-import { BaseSwitch } from 'src/components/index';
 import http from '../../../../API/http-request.js';
 import { mixin } from '../../../../mixins/mixin.js';
 import { EventBus } from '../../../../main.js';
-import { ModalMarca } from './ModalMarcas.vue';
+import ModalMarcas from './ModalMarcas';
 
 export default {
   mixins: [mixin],
@@ -128,12 +127,13 @@ export default {
     [Option.name]: Option,
     BaseAlert,
     BasePagination,
-    ModalMarca
+    ModalMarcas
   },
   data() {
     return {
       url: 'administracion/marcas',
-      isModalVisibleMarcas: false
+      isModalVisibleMarcas: false,
+      marca: {}
     };
   },
   methods: {
@@ -167,7 +167,7 @@ export default {
       this.dangerSwal().then(r => {
         if (r.value) {
           http.delete('marca', id).then(() => {
-            this.notifyVue('danger', 'La Marca ha sido eliminado');
+            this.notifyVue('danger', 'La Marca ha sido eliminada');
             this.cargar();
           });
         }
@@ -178,7 +178,7 @@ export default {
       http
         .create('marca', value)
         .then(() => {
-          this.notifyVue('success', 'La Marca ha sido creado con exito');
+          this.notifyVue('success', 'La Marca ha sido creada con exito');
           this.cargar();
         })
         .catch(e => console.log(e));

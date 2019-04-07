@@ -21,8 +21,12 @@
                   <div class="mb-3">
                     <base-input
                       placeholder="Nombre de la Marca"
-                      v-model="automotor_marca.nombre"
-                      name="marca"
+                      v-model="marca.nombre"
+                      name="nombre"
+                      v-validate="'required'"
+                    :class="{ 'has-danger': marcaUsed }"
+                    :error="getErrorMarca('nombre', marcaUsed)"
+                    @keyup="buscarMarca"
                     ></base-input>
                   </div>
                 </div>
@@ -56,17 +60,19 @@ import { Card } from 'src/components';
 import { BaseButton } from 'src/components';
 import http from '../../../../API/http-request.js';
 import { EventBus } from '../../../../main.js';
-// import debounce from '../../../../debounce.js';
+import debounce from '../../../../debounce.js';
 import { mixin } from '../../../../mixins/mixin.js';
 
 export default {
   props: ['marca', 'modo'],
-  name: 'modal-marca',
+  name: 'modal-marcas',
   mixins: [mixin],
   data() {
     return {
       url: 'administracion/marcas',
-      marcas: []
+      nombreDeMarca: '',
+      marcaUsed: false,
+      usedError: ''
     };
   },
   components: {
@@ -78,13 +84,20 @@ export default {
   methods: {
     close() {
       this.$emit('close');
+      this.$validator.reset();
+      this.errors.clear();
+      this.marcaUsed = false;
+      this.usedError = '';
       EventBus.$emit('resetInput', false);
     },
     crear() {
-      this.$emit('crear', this.marca);
-      this.$validator.reset();
-      this.errors.clear();
-      //   this.selected = false;
+      this.$validator.validateAll().then(r => {
+        if (r && !this.marcaUsed) {
+          this.$emit('crear', this.marca);
+          this.$validator.reset();
+          this.errors.clear();
+        }
+      });
     },
 
     actualizar() {
@@ -96,6 +109,26 @@ export default {
           this.notifyVue('success', 'La Marca ha sido actualizado con exito');
         })
         .catch(e => console.log(e));
+    },
+    buscarMarca: debounce(function() {
+      if (this.marca.nombre) {
+        http.search('marcas/busquedaMarca?q=' + this.marca.nombre).then(r => {
+          this.nombreDeMarca = r.data.data;
+          if (this.nombreDeMarca.length > 0) {
+            this.marcaUsed = true;
+            // this.usedError = 'Esta marca ya existe';
+          } else {
+            this.marcaUsed = false;
+          }
+        });
+      }
+    }, 500),
+    getErrorMarca(fieldName, marcaUsed) {
+      if (!marcaUsed) {
+        return this.errors.first(fieldName);
+      } else {
+        return 'Esta marca ya existe';
+      }
     }
   },
   created() {

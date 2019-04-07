@@ -154,7 +154,6 @@
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import { BaseAlert } from 'src/components';
-import { BaseSwitch } from 'src/components/index';
 import http from '../../../../API/http-request.js';
 import { mixin } from '../../../../mixins/mixin.js';
 import { EventBus } from '../../../../main.js';
@@ -187,7 +186,6 @@ export default {
     cargarMarcas() {
       http.load('administracion/marcas', this.marca_id).then(r => {
         this.marcas = r.data.data;
-        console.log(this.marcas);
       });
     },
     filtrarMarca() {

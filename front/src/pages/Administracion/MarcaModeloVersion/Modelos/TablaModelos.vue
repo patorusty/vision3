@@ -39,6 +39,7 @@
           slot="header"
           class="animation-on-hover "
           type="primary"
+          @click="showModal"
         >Crear</base-button>
       </div>
     </div>
@@ -122,17 +123,25 @@
         :total="total"
       ></base-pagination>
     </div>
+  <modal-modelos
+      v-show="isModalVisible"
+      :modo="modoEditar"
+      @close="closeModal"
+      @crear="crear"
+      :modelo="modelo"
+      @recargar="cargarMarcas"
+    >
+    </modal-modelos>
   </div>
-
 </template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import { BaseAlert } from 'src/components';
-import { BaseSwitch } from 'src/components/index';
 import http from '../../../../API/http-request.js';
 import { mixin } from '../../../../mixins/mixin.js';
 import { EventBus } from '../../../../main.js';
+import ModalModelos from './ModalModelos';
 
 export default {
   mixins: [mixin],
@@ -143,14 +152,16 @@ export default {
     [Select.name]: Select,
     [Option.name]: Option,
     BaseAlert,
-    BasePagination
+    BasePagination,
+    ModalModelos
   },
   data() {
     return {
       url: 'administracion/modelos',
       automotor_marcas: {},
       marcas: {},
-      marca_id: ''
+      marca_id: '',
+      modelo: {}
     };
   },
   methods: {
@@ -163,6 +174,43 @@ export default {
       http
         .loadOne('/modelos/filtrar', this.marca_id)
         .then(r => (this.tableData = r.data.data));
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
+      this.modelo = {};
+      this.modoEditar = false;
+    },
+    showModal() {
+      this.vaciarForm();
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.vaciarForm();
+      this.isModalVisible = false;
+    },
+    editar(id) {
+      this.showModal();
+      this.modoEditar = true;
+      http.loadOne('modelo', id).then(r => {
+        this.modelo = r.data.data;
+      });
+    },
+    borrar(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete('modelo', id).then(() => {
+            this.notifyVue('danger', 'El Modelo ha sido eliminado');
+            this.cargarMarcas();
+          });
+        }
+      });
+    },
+    crear(value) {
+      this.closeModal();
+      http.create('modelo', value).then(() => {
+        this.notifyVue('success', 'El Modelo ha sido creado con exito');
+        this.cargarMarcas();
+      });
     }
   },
   created() {
@@ -170,4 +218,3 @@ export default {
   }
 };
 </script>
-
