@@ -1,7 +1,14 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop style="width:25%;">
+    <div
+      class="modal-backdrop"
+      @keydown.esc="close"
+      @click="close"
+    >
+      <div
+        @click.stop
+        style="width:25%;"
+      >
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -19,44 +26,18 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="mb-3">
-                    <el-select
-                      class="select-primary"
-                      placeholder="Seleccionar Marca"
-                      v-model="marca"
-                      filterable
+                    <base-input
+                      v-model="marcaSeleccionada.nombre"
+                      name="nombre"
                       disabled
-                    >
-                      <el-option
-                        v-for="marca in marcas"
-                        :key="marca.id"
-                        :value="marca.id"
-                        :label="marca.nombre"
-                        class="select-primary"
-                      ></el-option>
-                    </el-select>
-                    <p class="errorSelect" v-show="errorSelect">
-                      Debe seleccionar una marca
-                    </p>
-                  </div>
-                  <div class="mb-3">
-                    <el-select
-                      class="select-primary"
-                      v-model="modeloSeleccionado"
-                      name="modelo.marca_id"
-                      @change="touchSelect"
-                      filterable
-                    >
-                      <el-option
-                        v-for="modelo in modelos"
-                        :key="modelo.id"
-                        :value="modelo.id"
-                        :label="modelo.nombre"
-                        class="select-primary"
-                      ></el-option>
-                    </el-select>
-                    <p class="errorSelect" v-show="errorSelect">
-                      Debe seleccionar un modelo
-                    </p>
+                    ></base-input>
+                    <base-input
+                      v-if="modeloSeleccionado"
+                      name="nombre"
+                      v-model="modeloSeleccionado.automotor_modelo.nombre"
+                      disabled
+                    ></base-input>
+
                   </div>
 
                   <div class="mb-3">
@@ -104,15 +85,13 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-                >Guardar</base-button
-              >
+              >Guardar</base-button>
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-                >Crear</base-button
-              >
+              >Crear</base-button>
             </div>
           </form>
         </card>
@@ -131,7 +110,13 @@ import debounce from '../../../../debounce.js';
 import { mixin } from '../../../../mixins/mixin.js';
 
 export default {
-  props: ['version', 'marca', 'modeloSeleccionado', 'modo'],
+  props: [
+    'version',
+    'marca',
+    'modeloSeleccionado',
+    'modo',
+    'marcaSeleccionada'
+  ],
   name: 'modal-versiones',
   mixins: [mixin],
   data() {
@@ -141,7 +126,7 @@ export default {
       versionUsed: false,
       usedError: '',
       marcas: {},
-      modelos: {},
+      modelo: {},
       anios: {},
       errorSelect: false,
       selected: false
@@ -216,42 +201,21 @@ export default {
         return 'Esta version ya existe';
       }
     },
-    cargarMarcas() {
-      http.load('administracion/marcas', this.marca_id).then(r => {
-        this.marcas = r.data.data;
-      });
-    },
     cargarAnios() {
       http.load('anios', this.anio_id).then(r => {
         this.anios = r.data.data;
         this.anios.reverse();
       });
     },
-    filtrarModeloPorMarca(val) {
-      console.log(val);
-      http
-        .loadOne('/modelos/filtrar', val)
-        .then(r => (this.modelos = r.data.data));
-    },
-    // filtrarModelo() {
-    //   http
-    //     .loadOne('/versiones/filtrar', this.modelo_id)
-    //     .then(r => (this.tableData = r.data.data));
-    // },
     touchSelect() {
       this.selected = true;
       this.errorSelect = false;
     }
   },
   created() {
-    this.cargarMarcas();
     this.cargarAnios();
   },
-  mounted() {
-    EventBus.$on('filtrarModeloPorMarca', val =>
-      this.filtrarModeloPorMarca(val)
-    );
-  }
+  mounted() {}
 };
 </script>
 <style>

@@ -60,5 +60,6 @@ class AutomotorVersionController extends Controller
             $version = AutomotorVersion::where('nombre', $search)->get();
         }
         return AutomotorVersionsResource::collection($version);
+
     }
 }

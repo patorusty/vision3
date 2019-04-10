@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="col-12 row justify-content-center justify-content-sm-between flex-wrap"
-    >
+    <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
       <div class="row justify-content-start ml-1">
         <div class="col-md-4">
           <el-select
@@ -59,8 +57,7 @@
           class="animation-on-hover "
           type="primary"
           @click="showModal"
-          >Crear</base-button
-        >
+        >Crear</base-button>
       </div>
     </div>
     <el-table :data="queriedData">
@@ -79,7 +76,10 @@
         prop="nombre"
         :min-width="80"
       ></el-table-column>
-      <el-table-column align="right" label="Actions">
+      <el-table-column
+        align="right"
+        label="Actions"
+      >
         <div slot-scope="props">
           <el-tooltip
             content="Editar"
@@ -153,7 +153,8 @@
       :version="version"
       @recargar="cargarMarcas"
       :marca="marca_id"
-      :modeloSeleccionado="modelo"
+      :modeloSeleccionado="modeloSeleccionado"
+      :marcaSeleccionada="marcaSeleccionada"
     >
     </modal-versiones>
   </div>
@@ -189,24 +190,33 @@ export default {
       modelos: {},
       modelo_id: '',
       version: {},
-      modelo: {}
+      modelo: {},
+      modeloSeleccionado: {},
+      marcaSeleccionada: {}
     };
   },
   methods: {
     cargarMarcas() {
-      http.load('administracion/marcas', this.marca_id).then(r => {
+      http.load('administracion/marcas').then(r => {
         this.marcas = r.data.data;
       });
     },
+    buscarMarca() {
+      http.loadOne('administracion/marcas', this.marca_id).then(r => {
+        this.marcaSeleccionada = r.data.data;
+      });
+    },
     filtrarModelosDeMarca() {
+      this.modelos = [];
       http
         .loadOne('/modelos/filtrar', this.marca_id)
-        .then(r => (this.modelos = r.data.data));
+        .then(r => (this.modelos = r.data.data))
+        .then(this.buscarMarca());
     },
     filtrarVersionesDeModelo() {
       http.loadOne('/versiones/filtrar', this.modelo_id).then(r => {
         this.tableData = r.data.data;
-        this.modelo = this.tableData[0];
+        this.modeloSeleccionado = this.tableData[0];
       });
     },
     vaciarForm() {
