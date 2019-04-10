@@ -99,7 +99,6 @@ export default {
     onInput(evt) {
       if (!this.touched) {
         this.touched = true;
-        // this.resetTouched = true;
       }
       this.$emit('input', evt.target.value);
     },
