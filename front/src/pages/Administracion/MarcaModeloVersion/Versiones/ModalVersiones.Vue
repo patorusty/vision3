@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:25%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:25%;">
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -29,9 +22,9 @@
                     <el-select
                       class="select-primary"
                       placeholder="Seleccionar Marca"
-                      v-model="marca_id"
-                      @change="filtrarMarca"
+                      v-model="marca"
                       filterable
+                      disabled
                     >
                       <el-option
                         v-for="marca in marcas"
@@ -41,16 +34,14 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect"
-                    >Debe seleccionar una marca</p>
+                    <p class="errorSelect" v-show="errorSelect">
+                      Debe seleccionar una marca
+                    </p>
                   </div>
                   <div class="mb-3">
                     <el-select
                       class="select-primary"
-                      v-model="version.automotor_modelo_id"
-                      :label="version.automotor_modelo_nombre"
+                      v-model="modeloSeleccionado"
                       name="modelo.marca_id"
                       @change="touchSelect"
                       filterable
@@ -58,15 +49,14 @@
                       <el-option
                         v-for="modelo in modelos"
                         :key="modelo.id"
-                        :value="automotor_modelo.nombre"
-                        :label="automotor_modelo.nombre"
+                        :value="modelo.id"
+                        :label="modelo.nombre"
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect"
-                    >Debe seleccionar un modelo</p>
+                    <p class="errorSelect" v-show="errorSelect">
+                      Debe seleccionar un modelo
+                    </p>
                   </div>
 
                   <div class="mb-3">
@@ -81,7 +71,7 @@
                     ></base-input>
                   </div>
 
-                  <div class="mb-3">
+                  <!-- <div class="mb-3">
                     <el-select
                       multiple
                       class="select-info selectpicker"
@@ -101,12 +91,10 @@
                         class="select-info"
                       ></el-option>
                     </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect"
-                    >Debe seleccionar un modelo</p>
-                  </div>
-
+                    <p class="errorSelect" v-show="errorSelect">
+                      Debe seleccionar un modelo
+                    </p>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -116,13 +104,15 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>
@@ -141,7 +131,7 @@ import debounce from '../../../../debounce.js';
 import { mixin } from '../../../../mixins/mixin.js';
 
 export default {
-  props: ['version', 'modo'],
+  props: ['version', 'marca', 'modeloSeleccionado', 'modo'],
   name: 'modal-versiones',
   mixins: [mixin],
   data() {
@@ -154,9 +144,7 @@ export default {
       modelos: {},
       anios: {},
       errorSelect: false,
-      selected: false,
-      marca_id: '',
-      modelo_id: ''
+      selected: false
     };
   },
   components: {
@@ -239,16 +227,17 @@ export default {
         this.anios.reverse();
       });
     },
-    filtrarMarca() {
+    filtrarModeloPorMarca(val) {
+      console.log(val);
       http
-        .loadOne('/modelos/filtrar', this.marca_id)
+        .loadOne('/modelos/filtrar', val)
         .then(r => (this.modelos = r.data.data));
     },
-    filtrarModelo() {
-      http
-        .loadOne('/versiones/filtrar', this.modelo_id)
-        .then(r => (this.tableData = r.data.data));
-    },
+    // filtrarModelo() {
+    //   http
+    //     .loadOne('/versiones/filtrar', this.modelo_id)
+    //     .then(r => (this.tableData = r.data.data));
+    // },
     touchSelect() {
       this.selected = true;
       this.errorSelect = false;
@@ -257,6 +246,11 @@ export default {
   created() {
     this.cargarMarcas();
     this.cargarAnios();
+  },
+  mounted() {
+    EventBus.$on('filtrarModeloPorMarca', val =>
+      this.filtrarModeloPorMarca(val)
+    );
   }
 };
 </script>

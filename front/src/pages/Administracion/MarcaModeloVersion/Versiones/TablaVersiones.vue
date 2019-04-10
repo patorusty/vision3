@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
+    <div
+      class="col-12 row justify-content-center justify-content-sm-between flex-wrap"
+    >
       <div class="row justify-content-start ml-1">
         <div class="col-md-4">
           <el-select
             v-model="marca_id"
             class="select-primary"
-            @change="filtrarMarca"
+            @change="filtrarModelosDeMarca"
             filterable
           >
             <el-option
@@ -23,7 +25,7 @@
           <el-select
             v-model="modelo_id"
             class="select-primary"
-            @change="filtrarModelo"
+            @change="filtrarVersionesDeModelo"
             filterable
           >
             <el-option
@@ -57,7 +59,8 @@
           class="animation-on-hover "
           type="primary"
           @click="showModal"
-        >Crear</base-button>
+          >Crear</base-button
+        >
       </div>
     </div>
     <el-table :data="queriedData">
@@ -76,10 +79,7 @@
         prop="nombre"
         :min-width="80"
       ></el-table-column>
-      <el-table-column
-        align="right"
-        label="Actions"
-      >
+      <el-table-column align="right" label="Actions">
         <div slot-scope="props">
           <el-tooltip
             content="Editar"
@@ -152,6 +152,8 @@
       @crear="crear"
       :version="version"
       @recargar="cargarMarcas"
+      :marca="marca_id"
+      :modeloSeleccionado="modelo"
     >
     </modal-versiones>
   </div>
@@ -186,7 +188,8 @@ export default {
       automotor_modelos: {},
       modelos: {},
       modelo_id: '',
-      version: {}
+      version: {},
+      modelo: {}
     };
   },
   methods: {
@@ -195,15 +198,16 @@ export default {
         this.marcas = r.data.data;
       });
     },
-    filtrarMarca() {
+    filtrarModelosDeMarca() {
       http
         .loadOne('/modelos/filtrar', this.marca_id)
         .then(r => (this.modelos = r.data.data));
     },
-    filtrarModelo() {
-      http
-        .loadOne('/versiones/filtrar', this.modelo_id)
-        .then(r => (this.tableData = r.data.data));
+    filtrarVersionesDeModelo() {
+      http.loadOne('/versiones/filtrar', this.modelo_id).then(r => {
+        this.tableData = r.data.data;
+        this.modelo = this.tableData[0];
+      });
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);
@@ -219,6 +223,7 @@ export default {
       this.isModalVisible = false;
     },
     editar(url, id) {
+      EventBus.$emit('filtrarModeloPorMarca', this.marca_id);
       this.showModal();
       this.modoEditar = true;
       http.loadOne(this.url, id).then(r => {
@@ -248,6 +253,3 @@ export default {
   }
 };
 </script>
-
-
-

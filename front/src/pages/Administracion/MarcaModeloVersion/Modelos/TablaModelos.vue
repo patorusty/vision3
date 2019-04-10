@@ -6,7 +6,7 @@
           <el-select
             v-model="marca_id"
             class="select-primary"
-            @change="filtrarMarca"
+            @change="filtrarModeloPorMarca"
             filterable
           >
             <el-option
@@ -170,7 +170,7 @@ export default {
         this.marcas = r.data.data;
       });
     },
-    filtrarMarca() {
+    filtrarModeloPorMarca() {
       http
         .loadOne('/modelos/filtrar', this.marca_id)
         .then(r => (this.tableData = r.data.data));
