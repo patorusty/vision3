@@ -56,13 +56,14 @@
           slot="header"
           class="animation-on-hover "
           type="primary"
+          @click="showModal"
         >Crear</base-button>
       </div>
     </div>
     <el-table :data="queriedData">
       <el-table-column
         label="Marca"
-        value="marca"
+        prop="modelo.nombre"
         :min-width="80"
       ></el-table-column>
       <el-table-column
@@ -144,11 +145,16 @@
         :total="total"
       ></base-pagination>
     </div>
-    <!-- <modal-marcas>
-    
-  </modal-marcas> -->
+    <modal-versiones
+      v-show="isModalVisible"
+      :modo="modoEditar"
+      @close="closeModal"
+      @crear="crear"
+      :version="version"
+      @recargar="cargarMarcas"
+    >
+    </modal-versiones>
   </div>
-
 </template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
@@ -157,6 +163,7 @@ import { BaseAlert } from 'src/components';
 import http from '../../../../API/http-request.js';
 import { mixin } from '../../../../mixins/mixin.js';
 import { EventBus } from '../../../../main.js';
+import ModalVersiones from './ModalVersiones';
 
 export default {
   mixins: [mixin],
@@ -167,7 +174,8 @@ export default {
     [Select.name]: Select,
     [Option.name]: Option,
     BaseAlert,
-    BasePagination
+    BasePagination,
+    ModalVersiones
   },
   data() {
     return {
@@ -178,8 +186,7 @@ export default {
       automotor_modelos: {},
       modelos: {},
       modelo_id: '',
-      versiones: [],
-      version_id: ''
+      version: {}
     };
   },
   methods: {
@@ -197,6 +204,43 @@ export default {
       http
         .loadOne('/versiones/filtrar', this.modelo_id)
         .then(r => (this.tableData = r.data.data));
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
+      this.version = {};
+      this.modoEditar = false;
+    },
+    showModal() {
+      this.vaciarForm();
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.vaciarForm();
+      this.isModalVisible = false;
+    },
+    editar(url, id) {
+      this.showModal();
+      this.modoEditar = true;
+      http.loadOne(this.url, id).then(r => {
+        this.version = r.data.data;
+      });
+    },
+    borrar(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete(this.url, id).then(() => {
+            this.notifyVue('danger', 'La version ha sido eliminado');
+            this.cargarMarcas();
+          });
+        }
+      });
+    },
+    crear(value) {
+      this.closeModal();
+      http.create(this.url, value).then(() => {
+        this.notifyVue('success', 'La version ha sido creado con exito');
+        this.cargarMarcas();
+      });
     }
   },
   created() {

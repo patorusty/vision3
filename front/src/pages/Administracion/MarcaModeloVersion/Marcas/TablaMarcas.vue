@@ -24,7 +24,7 @@
     </div>
     <el-table :data="queriedData">
       <el-table-column
-        label="Nombre"
+        label="Marca"
         prop="nombre"
         :min-width="80"
       ></el-table-column>
@@ -153,11 +153,11 @@ export default {
       this.vaciarForm();
       this.isModalVisibleMarcas = false;
     },
-    editar(id) {
+    editar(url, id) {
       this.showModal();
       this.modoEditar = true;
       http
-        .loadOne('marca', id)
+        .loadOne(this.url, id)
         .then(r => {
           this.marca = r.data.data;
         })
@@ -166,7 +166,7 @@ export default {
     borrar(id) {
       this.dangerSwal().then(r => {
         if (r.value) {
-          http.delete('marca', id).then(() => {
+          http.delete(this.url, id).then(() => {
             this.notifyVue('danger', 'La Marca ha sido eliminada');
             this.cargar();
           });
@@ -176,7 +176,7 @@ export default {
     crear(value) {
       this.closeModal();
       http
-        .create('marca', value)
+        .create(this.url, value)
         .then(() => {
           this.notifyVue('success', 'La Marca ha sido creada con exito');
           this.cargar();

@@ -54,4 +54,11 @@ class AutomotorVersionController extends Controller
 
         return ['message' => 'Eliminado'];
     }
+    public function searchVersion()
+    {
+        if ($search = \Request::get('q')) {
+            $version = AutomotorVersion::where('nombre', $search)->get();
+        }
+        return AutomotorVersionsResource::collection($version);
+    }
 }

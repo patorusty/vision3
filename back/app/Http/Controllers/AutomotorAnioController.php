@@ -20,13 +20,18 @@ class AutomotorAnioController extends Controller
 
         return new AutomotorAniosResource($automotor_anio);
     }
+    public function filtro($id)
+    {
+        $automotor_anio = AutomotorAnio::with('automotor_version')->where('automotor_version_id', $id)->get();
+        return AutomotorAniosResource::collection($automotor_anio);
+    }
     public function store(Request $request)
     {
         $this->validate($request, []);
 
         $automotor_anio = AutomotorAnio::create([
             'automotor_version_id' => $request->input('automotor_version_id'),
-            'anio' => $request->input('anio'),
+            'anio_id' => $request->input('anio_id'),
         ]);
 
         return (['message' => 'guardado']);
@@ -37,7 +42,7 @@ class AutomotorAnioController extends Controller
         $automotor_anio = AutomotorAnio::find($id);
         $automotor_anio->update([
             'automotor_version_id' => $request->input('automotor_version_id'),
-            'anio' => $request->input('anio'),
+            'anio_id' => $request->input('anio_id'),
         ]);
     }
     public function destroy($id)

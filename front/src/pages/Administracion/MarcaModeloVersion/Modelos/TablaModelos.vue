@@ -50,7 +50,7 @@
         :min-width="80"
       ></el-table-column>
       <el-table-column
-        label="Nombre"
+        label="Modelo"
         prop="nombre"
         :min-width="80"
       ></el-table-column>
@@ -123,7 +123,7 @@
         :total="total"
       ></base-pagination>
     </div>
-  <modal-modelos
+    <modal-modelos
       v-show="isModalVisible"
       :modo="modoEditar"
       @close="closeModal"
@@ -188,17 +188,17 @@ export default {
       this.vaciarForm();
       this.isModalVisible = false;
     },
-    editar(id) {
+    editar(url, id) {
       this.showModal();
       this.modoEditar = true;
-      http.loadOne('modelo', id).then(r => {
+      http.loadOne(this.url, id).then(r => {
         this.modelo = r.data.data;
       });
     },
     borrar(id) {
       this.dangerSwal().then(r => {
         if (r.value) {
-          http.delete('modelo', id).then(() => {
+          http.delete(this.url, id).then(() => {
             this.notifyVue('danger', 'El Modelo ha sido eliminado');
             this.cargarMarcas();
           });
@@ -207,7 +207,7 @@ export default {
     },
     crear(value) {
       this.closeModal();
-      http.create('modelo', value).then(() => {
+      http.create(this.url, value).then(() => {
         this.notifyVue('success', 'El Modelo ha sido creado con exito');
         this.cargarMarcas();
       });

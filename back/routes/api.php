@@ -25,6 +25,7 @@ Route::Resource('/administracion/marcas', 'AutomotorMarcaController');
 Route::Resource('/administracion/modelos', 'AutomotorModeloController');
 Route::Resource('/administracion/versiones', 'AutomotorVersionController');
 Route::Resource('/localidades', 'LocalidadController');
+Route::Resource('/anios', 'AnioController');
 Route::Resource('/codigoorganizador', 'CodigoOrganizadorController');
 Route::Resource('/codigoproductor', 'CodigoProductorController');
 Route::Resource('/cobertura', 'CoberturaController');
@@ -48,4 +49,5 @@ Route::get('/modelos/filtrar/{id}', 'AutomotorModeloController@filtro');
 Route::get('/versiones/filtrar/{id}', 'AutomotorVersionController@filtro');
 Route::get('/marcas/busquedaMarca', 'AutomotorMarcaController@searchMarca');
 Route::get('/marcas/busquedaModelo', 'AutomotorModeloController@searchModelo');
+Route::get('/marcas/busquedaVersion', 'AutomotorVersionController@searchVersion');
 

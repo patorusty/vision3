@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AutomotorAnios extends Migration
+class Anios extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AutomotorAnios extends Migration
      */
     public function up()
     {
-        Schema::create('automotor_anios', function (Blueprint $table) {
+        Schema::create('anios', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('automotor_version_id')->nullable();
-            $table->integer('anio_id')->nullable();
+            $table->integer('anio')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class AutomotorAnios extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('automotor_anios');
+        Schema::dropIfExists('anios');
     }
 }

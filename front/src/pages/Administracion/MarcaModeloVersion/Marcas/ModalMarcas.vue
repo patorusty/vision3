@@ -1,7 +1,14 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop style="width:25%;">
+    <div
+      class="modal-backdrop"
+      @keydown.esc="close"
+      @click="close"
+    >
+      <div
+        @click.stop
+        style="width:25%;"
+      >
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -24,9 +31,9 @@
                       v-model="marca.nombre"
                       name="nombre"
                       v-validate="'required'"
-                    :class="{ 'has-danger': marcaUsed }"
-                    :error="getErrorMarca('nombre', marcaUsed)"
-                    @keyup="buscarMarca"
+                      :class="{ 'has-danger': marcaUsed }"
+                      :error="getErrorMarca('nombre', marcaUsed)"
+                      @keyup="buscarMarca"
                     ></base-input>
                   </div>
                 </div>
@@ -38,15 +45,13 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-                >Guardar</base-button
-              >
+              >Guardar</base-button>
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-                >Crear</base-button
-              >
+              >Crear</base-button>
             </div>
           </form>
         </card>
@@ -101,14 +106,21 @@ export default {
     },
 
     actualizar() {
-      http
-        .update('marca', this.marca.id, this.marca)
-        .then(() => {
-          this.close();
-          this.$emit('recargar');
-          this.notifyVue('success', 'La Marca ha sido actualizado con exito');
-        })
-        .catch(e => console.log(e));
+      this.$validator.validateAll().then(isValid => {
+        if (isValid && !this.marcaUsed) {
+          http
+            .update(this.url, this.marca.id, this.marca)
+            .then(() => {
+              this.close();
+              this.$emit('recargar');
+              this.notifyVue(
+                'success',
+                'La Marca ha sido actualizado con exito'
+              );
+            })
+            .catch(e => console.log(e));
+        }
+      });
     },
     buscarMarca: debounce(function() {
       if (this.marca.nombre) {

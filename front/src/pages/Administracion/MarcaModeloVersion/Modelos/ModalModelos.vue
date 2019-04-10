@@ -1,12 +1,24 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop style="width:25%;">
+    <div
+      class="modal-backdrop"
+      @keydown.esc="close"
+      @click="close"
+    >
+      <div
+        @click.stop
+        style="width:25%;"
+      >
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
               <h4>Modelo</h4>
-              <button class="close" type="button" aria-label="Close" @click="close">
+              <button
+                class="close"
+                type="button"
+                aria-label="Close"
+                @click="close"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -17,9 +29,10 @@
                     <el-select
                       class="select-primary"
                       placeholder="Seleccionar Marca"
-                      v-model="modelo.marca_id"
+                      v-model="modelo.automotor_marca_id"
                       name="modelo.marca_id"
                       @change="touchSelect"
+                      filterable
                     >
                       <el-option
                         v-for="marca in marcas"
@@ -29,7 +42,10 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect">Debe seleccionar una marca</p>
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect"
+                    >Debe seleccionar una marca</p>
                   </div>
                   <div class="mb-3">
                     <base-input
@@ -122,10 +138,20 @@ export default {
       }
     },
     actualizar() {
-      http.update('modelo', this.modelo.id, this.modelo).then(() => {
-        this.close();
-        this.$emit('recargar');
-        this.notifyVue('success', 'El Modelo ha sido actualizado con exito');
+      this.$validator.validateAll().then(isValid => {
+        if (isValid && !this.modeloUsed) {
+          http
+            .update(this.url, this.modelo.id, this.modelo)
+            .then(() => {
+              this.close();
+              this.$emit('recargar');
+              this.notifyVue(
+                'success',
+                'El Modelo ha sido actualizado con exito'
+              );
+            })
+            .catch(e => console.log(e));
+        }
       });
     },
     buscarModelo: debounce(function() {
