@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:25%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:25%;">
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -32,12 +25,10 @@
                       disabled
                     ></base-input>
                     <base-input
-                      v-if="modeloSeleccionado"
                       name="nombre"
                       v-model="modeloSeleccionado.automotor_modelo.nombre"
                       disabled
                     ></base-input>
-
                   </div>
 
                   <div class="mb-3">
@@ -85,13 +76,15 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>
