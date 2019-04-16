@@ -1,21 +1,21 @@
 <template>
   <SlideYUpTransition :duration="500">
-  <card>
-    <template slot="header">
-      <h3 class="card-title">Edicion Marca Modelo Version de Autos</h3>
-    </template>
-    <tabs type="primary">
-      <tab-pane label="Marca">
-        <tabla-marcas />
-      </tab-pane>
-      <tab-pane label="Modelos">
-        <tabla-modelos />
-      </tab-pane>
-      <tab-pane label="Versiones">
-        <tabla-versiones />
-      </tab-pane>
-    </tabs>
-  </card>
+    <card>
+      <template slot="header">
+        <h3 class="card-title">Edicion Marca Modelo Version de Autos</h3>
+      </template>
+      <tabs type="primary">
+        <tab-pane label="Marca">
+          <tabla-marcas />
+        </tab-pane>
+        <tab-pane label="Modelos">
+          <tabla-modelos />
+        </tab-pane>
+        <tab-pane label="Versiones">
+          <tabla-versiones />
+        </tab-pane>
+      </tabs>
+    </card>
   </SlideYUpTransition>
 </template>
 

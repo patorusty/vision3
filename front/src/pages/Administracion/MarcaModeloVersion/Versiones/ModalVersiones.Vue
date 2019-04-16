@@ -176,7 +176,7 @@ export default {
     buscarVersion: debounce(function() {
       if (this.version.nombre) {
         http
-          .search('marcas/busquedaVersion?q=' + this.version.nombre)
+          .search('versiones/busquedaVersion?q=' + this.version.nombre)
           .then(r => {
             this.nombreDeVersion = r.data.data;
             if (this.nombreDeVersion.length > 0) {

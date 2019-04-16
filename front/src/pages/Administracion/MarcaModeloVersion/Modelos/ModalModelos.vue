@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:25%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:25%;">
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -26,26 +19,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="mb-3">
-                    <el-select
-                      class="select-primary"
-                      placeholder="Seleccionar Marca"
-                      v-model="modelo.automotor_marca_id"
-                      name="modelo.marca_id"
-                      @change="touchSelect"
-                      filterable
-                    >
-                      <el-option
-                        v-for="marca in marcas"
-                        :key="marca.id"
-                        :value="marca.id"
-                        :label="marca.nombre"
-                        class="select-primary"
-                      ></el-option>
-                    </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect"
-                    >Debe seleccionar una marca</p>
+                    <base-input v-model="marca.nombre" disabled></base-input>
                   </div>
                   <div class="mb-3">
                     <base-input
@@ -67,13 +41,15 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>
@@ -92,7 +68,7 @@ import debounce from '../../../../debounce.js';
 import { mixin } from '../../../../mixins/mixin.js';
 
 export default {
-  props: ['modelo', 'modo'],
+  props: ['modelo', 'modo', 'marca'],
   name: 'modal-modelos',
   mixins: [mixin],
   data() {
@@ -101,9 +77,7 @@ export default {
       nombreDeModelo: '',
       modeloUsed: false,
       usedError: '',
-      marcas: [],
-      errorSelect: false,
-      selected: false
+      marcas: []
     };
   },
   components: {
@@ -125,17 +99,15 @@ export default {
       EventBus.$emit('resetInput', false);
     },
     crear() {
-      if (!this.selected && this.$validator.validateAll().then(r => r)) {
-        this.errorSelect = true;
-      } else {
-        this.$validator.validateAll().then(r => {
-          if (r && !this.modeloUsed) {
-            this.$emit('crear', this.modelo);
-            this.$validator.reset();
-            this.errors.clear();
-          }
-        });
-      }
+      this.$validator.validateAll().then(r => {
+        if (r && !this.modeloUsed) {
+          this.modelo.automotor_marca_id = this.marca.id;
+          this.$emit('crear', this.modelo);
+          // this.$emit('recargar');
+          this.$validator.reset();
+          this.errors.clear();
+        }
+      });
     },
     actualizar() {
       this.$validator.validateAll().then(isValid => {
@@ -156,14 +128,16 @@ export default {
     },
     buscarModelo: debounce(function() {
       if (this.modelo.nombre) {
-        http.search('modelo/busquedaModelo?q=' + this.modelo.nombre).then(r => {
-          this.nombreDeModelo = r.data.data;
-          if (this.nombreDeModelo.length > 0) {
-            this.modeloUsed = true;
-          } else {
-            this.modeloUsed = false;
-          }
-        });
+        http
+          .search('modelos/busquedaModelo?q=' + this.modelo.nombre)
+          .then(r => {
+            this.nombreDeModelo = r.data.data;
+            if (this.nombreDeModelo.length > 0) {
+              this.modeloUsed = true;
+            } else {
+              this.modeloUsed = false;
+            }
+          });
       }
     }, 500),
     getErrorModelo(fieldName, modeloUsed) {
@@ -177,10 +151,6 @@ export default {
       http.load('administracion/marcas', this.marca_id).then(r => {
         this.marcas = r.data.data;
       });
-    },
-    touchSelect() {
-      this.selected = true;
-      this.errorSelect = false;
     }
   },
   created() {

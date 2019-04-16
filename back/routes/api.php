@@ -48,7 +48,7 @@ Route::get('/cliente/busquedaCuit', 'ClienteController@searchCuit');
 Route::get('/modelos/filtrar/{id}', 'AutomotorModeloController@filtro');
 Route::get('/versiones/filtrar/{id}', 'AutomotorVersionController@filtro');
 Route::get('/marcas/busquedaMarca', 'AutomotorMarcaController@searchMarca');
-Route::get('/marcas/busquedaModelo', 'AutomotorModeloController@searchModelo');
-Route::get('/marcas/busquedaVersion', 'AutomotorVersionController@searchVersion');
+Route::get('/modelos/busquedaModelo', 'AutomotorModeloController@searchModelo');
+Route::get('/versiones/busquedaVersion', 'AutomotorVersionController@searchVersion');
 Route::get('/prueba/{id}', 'AutomotorModeloController@prueba');
 
