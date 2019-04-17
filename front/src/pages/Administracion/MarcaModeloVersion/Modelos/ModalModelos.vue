@@ -103,7 +103,6 @@ export default {
         if (r && !this.modeloUsed) {
           this.modelo.automotor_marca_id = this.marca.id;
           this.$emit('crear', this.modelo);
-          // this.$emit('recargar');
           this.$validator.reset();
           this.errors.clear();
         }

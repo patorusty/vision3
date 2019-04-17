@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:25%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:25%;">
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -45,13 +38,15 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>
@@ -128,7 +123,6 @@ export default {
           this.nombreDeMarca = r.data.data;
           if (this.nombreDeMarca.length > 0) {
             this.marcaUsed = true;
-            // this.usedError = 'Esta marca ya existe';
           } else {
             this.marcaUsed = false;
           }
@@ -142,9 +136,6 @@ export default {
         return 'Esta marca ya existe';
       }
     }
-  },
-  created() {
-    // this.cargar();
   }
 };
 </script>

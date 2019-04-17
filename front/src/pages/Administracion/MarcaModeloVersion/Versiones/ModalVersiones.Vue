@@ -42,8 +42,7 @@
                       @keyup="buscarVersion"
                     ></base-input>
                   </div>
-
-                  <!-- <div class="mb-3">
+                  <div class="mb-3">
                     <el-select
                       multiple
                       class="select-info selectpicker"
@@ -66,7 +65,7 @@
                     <p class="errorSelect" v-show="errorSelect">
                       Debe seleccionar un modelo
                     </p>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -120,9 +119,7 @@ export default {
       usedError: '',
       marcas: {},
       modelo: {},
-      anios: {},
-      errorSelect: false,
-      selected: false
+      anios: {}
     };
   },
   components: {
@@ -144,17 +141,13 @@ export default {
       EventBus.$emit('resetInput', false);
     },
     crear() {
-      if (!this.selected && this.$validator.validateAll().then(r => r)) {
-        this.errorSelect = true;
-      } else {
-        this.$validator.validateAll().then(r => {
-          if (r && !this.versionUsed) {
-            this.$emit('crear', this.version);
-            this.$validator.reset();
-            this.errors.clear();
-          }
-        });
-      }
+      this.$validator.validateAll().then(r => {
+        if (r && !this.versionUsed) {
+          this.$emit('crear', this.version);
+          this.$validator.reset();
+          this.errors.clear();
+        }
+      });
     },
     actualizar() {
       this.$validator.validateAll().then(isValid => {
@@ -195,7 +188,7 @@ export default {
       }
     },
     cargarAnios() {
-      http.load('anios', this.anio_id).then(r => {
+      http.load('anios').then(r => {
         this.anios = r.data.data;
         this.anios.reverse();
       });
