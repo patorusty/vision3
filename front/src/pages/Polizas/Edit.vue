@@ -379,136 +379,7 @@
         </div>
       </div>
     </form>
-    <!-- TABLA RIESGO -->
-    <div class="col-md-12">
-      <card class="mt-4 ">
-        <div
-          class="col-sm-12 row align-items-center"
-          slot="header"
-        >
-          <div class="col">
-            <h4 class="d-inline text-primary ">RIESGO</h4>
-          </div>
-          <div class="center row ">
-            <p class="">
-              Flota </p>
-            <base-switch
-              v-model="poliza.flota"
-              type="primary"
-              on-text="NO"
-              off-text="SI"
-            ></base-switch>
-          </div>
-          <div class="col">
-            <base-button
-              type="primary"
-              size="sm"
-              class=" d-inline float-right "
-            >Agregar</base-button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <el-table>
-              <el-table-column
-                min-width="150"
-                prop=""
-                label="Marca / Modelo / Version"
-                align="left"
-              >
-
-              </el-table-column>
-              <el-table-column
-                min-width="80"
-                prop=""
-                label="Patente"
-                align="left"
-              >
-
-              </el-table-column>
-              <el-table-column
-                min-width="80"
-                align="left"
-                label="Motor"
-              >
-              </el-table-column>
-              <el-table-column
-                min-width="80"
-                prop=""
-                align="left"
-                label="Chasis"
-              >
-              </el-table-column>
-              <el-table-column
-                min-width="80"
-                align="left"
-                label="Tipo"
-              >
-              </el-table-column>
-              <el-table-column
-                min-width="80"
-                align="left"
-                label="Cobertura"
-              >
-              </el-table-column>
-              <el-table-column
-                min-width="80"
-                align="left"
-                label="Franquicia"
-              >
-              </el-table-column>
-              <el-table-column
-                min-width="80"
-                header-align="right"
-                align="left"
-                label="Edicion"
-              >
-                <div
-                  slot-scope="{
-                  row,
-                  $index
-                }"
-                  class="text-right table-actions"
-                >
-                  <el-tooltip
-                    content="Refresh"
-                    effect="light"
-                    :open-delay="300"
-                    placement="top"
-                  >
-                    <base-button
-                      :type="$index > 2 ? 'success' : 'neutral'"
-                      icon
-                      size="sm"
-                      class="btn-link"
-                    >
-                      <i class="tim-icons icon-pencil"></i>
-                    </base-button>
-                  </el-tooltip>
-                  <el-tooltip
-                    content="Delete"
-                    effect="light"
-                    :open-delay="300"
-                    placement="top"
-                  >
-                    <base-button
-                      :type="$index > 2 ? 'danger' : 'neutral'"
-                      icon
-                      size="sm"
-                      class="btn-link"
-                    >
-                      <i class="tim-icons icon-simple-remove"></i>
-                    </base-button>
-                  </el-tooltip>
-                </div>
-              </el-table-column>
-            </el-table>
-          </div>
-        </div>
-      </card>
-    </div>
-    <!-- !TABLA RIESGO -->
-
+    <!-- aca deberia mostrar la tabla segun el tipo de riesgo -->
   </div>
 
 </template>
@@ -557,8 +428,7 @@ export default {
         medio_pago: '',
         plan_pago: '',
         cantidad_cuotas: '',
-        detalle_medio_pago: '',
-        flota: ''
+        detalle_medio_pago: ''
       },
       cliente: {},
       clientes: {},
