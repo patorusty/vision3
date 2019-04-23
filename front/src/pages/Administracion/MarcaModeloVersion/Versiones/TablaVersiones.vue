@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
+    <div
+      class="col-12 row justify-content-center justify-content-sm-between flex-wrap"
+    >
       <div class="row justify-content-start ml-1">
         <div class="col-md-4">
           <el-select
@@ -57,15 +59,12 @@
           class="animation-on-hover "
           type="primary"
           @click="showModal"
-        >Crear</base-button>
+          >Crear</base-button
+        >
       </div>
     </div>
     <el-table :data="queriedData">
-      <el-table-column
-        label="Marca"
-        prop="modelo.nombre"
-        :min-width="80"
-      ></el-table-column>
+      <el-table-column label="Marca" :min-width="30"></el-table-column>
       <el-table-column
         label="Modelo"
         prop="automotor_modelo.nombre"
@@ -76,10 +75,7 @@
         prop="nombre"
         :min-width="80"
       ></el-table-column>
-      <el-table-column
-        align="right"
-        label="Actions"
-      >
+      <el-table-column align="right" label="Actions">
         <div slot-scope="props">
           <el-tooltip
             content="Editar"
@@ -146,6 +142,7 @@
       ></base-pagination>
     </div>
     <modal-versiones
+      v-if="modalListo"
       v-show="isModalVisible"
       :modo="modoEditar"
       @close="closeModal"
@@ -187,12 +184,13 @@ export default {
       marcas: {},
       marca_id: '',
       automotor_modelos: {},
-      modelos: {},
+      modelos: [],
       modelo_id: '',
       version: {},
       modelo: {},
       modeloSeleccionado: {},
-      marcaSeleccionada: {}
+      marcaSeleccionada: {},
+      modalListo: false
     };
   },
   methods: {
@@ -207,7 +205,8 @@ export default {
       });
     },
     filtrarModelosDeMarca() {
-      this.modelos = [];
+      this.modelo_id = '';
+      this.tableData = [];
       http
         .loadOne('/modelos/filtrar', this.marca_id)
         .then(r => (this.modelos = r.data.data))
@@ -217,6 +216,7 @@ export default {
       http.loadOne('/versiones/filtrar', this.modelo_id).then(r => {
         this.tableData = r.data.data;
         this.modeloSeleccionado = this.tableData[0];
+        this.modalListo = true;
       });
     },
     vaciarForm() {

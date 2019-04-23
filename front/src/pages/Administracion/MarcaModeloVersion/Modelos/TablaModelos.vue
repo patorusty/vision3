@@ -40,7 +40,8 @@
           class="animation-on-hover "
           type="primary"
           @click="showModal"
-        >Crear</base-button>
+          >Crear</base-button
+        >
       </div>
     </div>
     <el-table :data="queriedData">
@@ -54,10 +55,7 @@
         prop="nombre"
         :min-width="80"
       ></el-table-column>
-      <el-table-column
-        align="right"
-        label="Actions"
-      >
+      <el-table-column align="right" label="Actions">
         <div slot-scope="props">
           <el-tooltip
             content="Editar"
@@ -124,12 +122,14 @@
       ></base-pagination>
     </div>
     <modal-modelos
+      v-if="modalListo"
       v-show="isModalVisible"
       :modo="modoEditar"
       @close="closeModal"
       @crear="crear"
       :modelo="modelo"
-      @recargar="cargarMarcas"
+      @recargar="filtrarModeloPorMarca"
+      :marca="marca"
     >
     </modal-modelos>
   </div>
@@ -161,19 +161,29 @@ export default {
       automotor_marcas: {},
       marcas: {},
       marca_id: '',
-      modelo: {}
+      modelo: {},
+      modalListo: false,
+      marca: {}
     };
   },
   methods: {
     cargarMarcas() {
-      http.load('administracion/marcas', this.marca_id).then(r => {
+      http.load('administracion/marcas').then(r => {
         this.marcas = r.data.data;
       });
     },
+    buscarMarca() {
+      http.loadOne('administracion/marcas', this.marca_id).then(r => {
+        this.marca = r.data.data;
+      });
+    },
     filtrarModeloPorMarca() {
-      http
-        .loadOne('/modelos/filtrar', this.marca_id)
-        .then(r => (this.tableData = r.data.data));
+      http.loadOne('/modelos/filtrar', this.marca_id).then(r => {
+        this.tableData = r.data.data;
+        this.buscarMarca();
+        this.modalListo = true;
+        console.log('dlskjfdsf')
+      });
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);
@@ -200,7 +210,7 @@ export default {
         if (r.value) {
           http.delete(this.url, id).then(() => {
             this.notifyVue('danger', 'El Modelo ha sido eliminado');
-            this.cargarMarcas();
+            this.filtrarModeloPorMarca();
           });
         }
       });
@@ -209,7 +219,7 @@ export default {
       this.closeModal();
       http.create(this.url, value).then(() => {
         this.notifyVue('success', 'El Modelo ha sido creado con exito');
-        this.cargarMarcas();
+        this.filtrarModeloPorMarca();
       });
     }
   },

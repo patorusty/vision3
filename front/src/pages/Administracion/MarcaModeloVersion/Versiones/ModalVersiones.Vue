@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:25%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:25%;">
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -32,12 +25,10 @@
                       disabled
                     ></base-input>
                     <base-input
-                      v-if="modeloSeleccionado"
                       name="nombre"
                       v-model="modeloSeleccionado.automotor_modelo.nombre"
                       disabled
                     ></base-input>
-
                   </div>
 
                   <div class="mb-3">
@@ -51,8 +42,7 @@
                       @keyup="buscarVersion"
                     ></base-input>
                   </div>
-
-                  <!-- <div class="mb-3">
+                  <div class="mb-3">
                     <el-select
                       multiple
                       class="select-info selectpicker"
@@ -75,7 +65,7 @@
                     <p class="errorSelect" v-show="errorSelect">
                       Debe seleccionar un modelo
                     </p>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -85,13 +75,15 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>
@@ -127,9 +119,7 @@ export default {
       usedError: '',
       marcas: {},
       modelo: {},
-      anios: {},
-      errorSelect: false,
-      selected: false
+      anios: {}
     };
   },
   components: {
@@ -151,17 +141,13 @@ export default {
       EventBus.$emit('resetInput', false);
     },
     crear() {
-      if (!this.selected && this.$validator.validateAll().then(r => r)) {
-        this.errorSelect = true;
-      } else {
-        this.$validator.validateAll().then(r => {
-          if (r && !this.versionUsed) {
-            this.$emit('crear', this.version);
-            this.$validator.reset();
-            this.errors.clear();
-          }
-        });
-      }
+      this.$validator.validateAll().then(r => {
+        if (r && !this.versionUsed) {
+          this.$emit('crear', this.version);
+          this.$validator.reset();
+          this.errors.clear();
+        }
+      });
     },
     actualizar() {
       this.$validator.validateAll().then(isValid => {
@@ -183,7 +169,7 @@ export default {
     buscarVersion: debounce(function() {
       if (this.version.nombre) {
         http
-          .search('marcas/busquedaVersion?q=' + this.version.nombre)
+          .search('versiones/busquedaVersion?q=' + this.version.nombre)
           .then(r => {
             this.nombreDeVersion = r.data.data;
             if (this.nombreDeVersion.length > 0) {
@@ -202,7 +188,7 @@ export default {
       }
     },
     cargarAnios() {
-      http.load('anios', this.anio_id).then(r => {
+      http.load('anios').then(r => {
         this.anios = r.data.data;
         this.anios.reverse();
       });
