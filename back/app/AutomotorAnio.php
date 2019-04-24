@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Anio;
 use App\AutomotorVersion;
+use App\RiesgoAutomotor;
 use Illuminate\Database\Eloquent\Model;
 
 class AutomotorAnio extends Model
@@ -13,7 +13,8 @@ class AutomotorAnio extends Model
     public function automotor_versiones() {
        return $this->belongsTo(AutomotorVersion::class, 'automotor_version_id');
     }
-    public function anios() {
-        return $this->belongsTo(Anio::class, 'anio_id');
-     }
+    
+    public function riesgo_automotor(){
+      return $this->hasMany(RiesgoAutomotor::class, 'automotor_anio_id', 'id');
+  }
 }

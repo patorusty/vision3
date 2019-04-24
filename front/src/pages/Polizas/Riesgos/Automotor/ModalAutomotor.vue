@@ -419,7 +419,33 @@
   </SlideYUpTransition>
 </template>
 <script>
+import { Table, TableColumn, Select, Option } from 'element-ui';
+import { Collapse, CollapseItem } from 'src/components';
+import { BaseAlert } from 'src/components';
+import { SlideYUpTransition } from 'vue2-transitions';
+import { Card } from 'src/components';
+import { BaseButton } from 'src/components';
+import http from '../../../../API/http-request.js';
+import { EventBus } from '../../../../main.js';
+import { mixin } from '../../../../mixins/mixin.js';
+import debounce from '../../../../debounce.js';
+
 export default {
+  props: ['riesgo_automotor'],
+  mixins: [mixin],
+  methods: {
+    close() {
+      EventBus.$emit('resetInput', false);
+      this.$emit('close');
+    }
+  },
+  componens: {
+    [Select.name]: Select,
+    [Option.name]: Option,
+    BaseAlert,
+    Collapse,
+    CollapseItem
+  },
   data: () => ({
     tipo_vehiculos: [
       {
@@ -568,3 +594,16 @@ export default {
   })
 };
 </script>
+<style>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

@@ -1,7 +1,10 @@
 <template>
   <div class="col-md-12">
     <card class="mt-4 ">
-      <div class="col-sm-12 row align-items-center" slot="header">
+      <div
+        class="col-sm-12 row align-items-center"
+        slot="header"
+      >
         <div class="col">
           <h4 class="d-inline text-primary ">DETALLE DEL RIESGO</h4>
         </div>
@@ -20,7 +23,7 @@
               min-width="150"
               label="Marca / Modelo / Version"
               align="left"
-              prop="automotor_marca"
+              prop="automotor_marca.nombre"
             >
             </el-table-column>
             <el-table-column
@@ -68,6 +71,7 @@
                   placement="top"
                 >
                   <base-button
+                    @click.native="editar(url, props.row.id)"
                     :type="$index > 2 ? 'success' : 'neutral'"
                     icon
                     size="sm"
@@ -97,6 +101,13 @@
         </div>
       </div>
     </card>
+    <modal-automotor
+      v-show="isModalVisible"
+      :riesgo_automotor="riesgo_automotor"
+      :modo="modoEditar"
+      @close="closeModal"
+      @recargar="cargar"
+    ></modal-automotor>
   </div>
 </template>
 <script>
@@ -139,6 +150,34 @@ export default {
         console.log(r.data.data);
         this.tableData = r.data.data;
       });
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
+      // this.organizador = {
+      //   activo: true
+      // };
+    },
+    showModal() {
+      this.vaciarForm();
+      // this.$validator.reset();
+      // this.errors.clear();
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+      this.vaciarForm();
+      // this.$validator.reset();
+      // this.errors.clear();
+    },
+    editar(url, id) {
+      this.showModal();
+      this.modoEditar = true;
+      http
+        .loadOne(this.url, id)
+        .then(r => {
+          this.organizador = r.data.data;
+        })
+        .catch(e => console.log(e));
     }
   },
   mounted() {
