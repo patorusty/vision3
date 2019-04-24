@@ -1,57 +1,54 @@
 <template>
   <div class="col-md-12">
     <card class="mt-4 ">
-      <div
-        class="col-sm-12 row align-items-center"
-        slot="header"
-      >
+      <div class="col-sm-12 row align-items-center" slot="header">
         <div class="col">
           <h4 class="d-inline text-primary ">DETALLE DEL RIESGO</h4>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <el-table>
+          <el-table :data="queriedData">
             <el-table-column
               min-width="80"
               align="left"
               label="Tipo"
-              prop="riesgo_automotor.automotor_tipo"
+              prop="automotor_tipo"
             >
             </el-table-column>
             <el-table-column
               min-width="150"
               label="Marca / Modelo / Version"
               align="left"
-              prop="riesgo_automotor.automotor_marca"
+              prop="automotor_marca"
             >
             </el-table-column>
             <el-table-column
               min-width="80"
               label="Patente"
               align="left"
-              prop="riesgo_automotor.patente"
+              prop="patente"
             >
             </el-table-column>
             <el-table-column
               min-width="80"
               align="left"
               label="Suma Asegurada"
-              prop="riesgo_automotor.valor_total"
+              prop="valor_total"
             >
             </el-table-column>
             <el-table-column
               min-width="80"
               align="left"
               label="Cobertura"
-              prop="riesgo_automotor.cobertura_id"
+              prop="cobertura_id"
             >
             </el-table-column>
             <el-table-column
               min-width="80"
               align="left"
               label="Franquicia"
-              prop="riesgo_automotor.franquicia"
+              prop="franquicia"
             >
             </el-table-column>
             <el-table-column
@@ -61,10 +58,7 @@
               label="Edicion"
             >
               <div
-                slot-scope="{
-                  row,
-                  $index
-                }"
+                slot-scope="{ row, $index }"
                 class="text-right table-actions"
               >
                 <el-tooltip
@@ -142,6 +136,7 @@ export default {
   methods: {
     cargar() {
       http.loadOne(this.url, this.poliza.id).then(r => {
+        console.log(r.data.data);
         this.tableData = r.data.data;
       });
     }
@@ -151,4 +146,3 @@ export default {
   }
 };
 </script>
-

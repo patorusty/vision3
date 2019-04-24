@@ -389,6 +389,7 @@
                       v-model="riesgo_automotor.valor_total"
                       name="valor_total"
                     >
+                    </base-input>
                   </div>
                   <div class="col-md-4">
                     {{ riesgo_automotor.vigencia_desde}}
