@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="col-12 row justify-content-center justify-content-sm-between flex-wrap">
+    <div
+      class="col-12 row justify-content-center justify-content-sm-between flex-wrap"
+    >
       <div class="row justify-content-start ml-1">
         <div class="col-md-4">
           <el-select
@@ -57,14 +59,12 @@
           class="animation-on-hover "
           type="primary"
           @click="showModal"
-        >Crear</base-button>
+          >Crear</base-button
+        >
       </div>
     </div>
     <el-table :data="queriedData">
-      <el-table-column
-        label="Marca"
-        :min-width="30"
-      ></el-table-column>
+      <el-table-column label="Marca" :min-width="30"></el-table-column>
       <el-table-column
         label="Modelo"
         prop="automotor_modelo.nombre"
@@ -75,10 +75,7 @@
         prop="nombre"
         :min-width="80"
       ></el-table-column>
-      <el-table-column
-        align="right"
-        label="Actions"
-      >
+      <el-table-column align="right" label="Actions">
         <div slot-scope="props">
           <el-tooltip
             content="Editar"

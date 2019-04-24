@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        class="div-stop"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop class="div-stop">
         <div style="width:50%;">
           <div class="">
             <card>
@@ -48,14 +41,14 @@
                       label="Año"
                       filterable
                       class="select-primary"
-                      v-model="riesgo_automotor.automotor_anio_id"
+                      v-model="riesgo_automotor.automotor_anio"
                       name="automotor_anio_id"
                     >
                       <el-option
-                        v-for="automotor_anio in automotor_anios"
-                        :key="automotor_anio.value"
-                        :label="automotor_anio.label"
-                        :value="automotor_anio.value"
+                        v-for="anio in anios"
+                        :key="anio.id"
+                        :label="anio.nombre"
+                        :id="anio.value"
                         class="select-primary"
                       ></el-option>
                     </el-select>
@@ -63,14 +56,14 @@
                       label="Marca"
                       filterable
                       class="select-primary"
-                      v-model="riesgo_automotor.automotor_marca_id"
+                      v-model="riesgo_automotor.automotor_marca"
                       name="automotor_marca_id"
                     >
                       <el-option
-                        v-for="automotor_marca in automotor_marcas"
-                        :key="automotor_marca.value"
-                        :label="automotor_marca.label"
-                        :value="automotor_marca.value"
+                        v-for="marca in marcas"
+                        :key="marca.id"
+                        :label="marca.nombre"
+                        :id="marca.value"
                         class="select-primary"
                       ></el-option>
                     </el-select>
@@ -78,14 +71,14 @@
                       label="Modelo"
                       filterable
                       class="select-primary"
-                      v-model="riesgo_automotor.automotor_modelo_id"
+                      v-model="riesgo_automotor.automotor_modelo"
                       name="automotor_modelo_id"
                     >
                       <el-option
-                        v-for="automotor_modelo in automotor_modelos"
-                        :key="automotor_modelo.value"
-                        :label="automotor_modelo.label"
-                        :value="automotor_modelo.value"
+                        v-for="modelo in modelos"
+                        :key="modelo.id"
+                        :label="modelo.nombre"
+                        :value="modelo.id"
                         class="select-primary"
                       ></el-option>
                     </el-select>
@@ -97,10 +90,10 @@
                       name="automotor_version_id"
                     >
                       <el-option
-                        v-for="automotor_version in automotor_versiones"
-                        :key="automotor_version.value"
-                        :label="automotor_version.label"
-                        :value="automotor_version.value"
+                        v-for="version in versiones"
+                        :key="version.id"
+                        :label="version.nombre"
+                        :value="version.id"
                         class="select-primary"
                       ></el-option>
                     </el-select>
@@ -207,10 +200,7 @@
                     </base-input>
                   </div>
                 </div>
-                <collapse
-                  :multiple-active="false"
-                  :active-index="0"
-                >
+                <!-- <collapse :multiple-active="false" :active-index="0">
                   <collapse-item title="GNC">
                     <div>
                       <div class="row">
@@ -291,7 +281,6 @@
                             name="cubiertas_medidas"
                           >
                           </base-input>
-
                         </div>
                         <div class="col-md-4">
                           <base-input
@@ -355,7 +344,7 @@
                       ></textarea>
                     </base-input>
                   </collapse-item>
-                </collapse>
+                </collapse> -->
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
@@ -392,23 +381,17 @@
                     </base-input>
                   </div>
                   <div class="col-md-4">
-                    {{ riesgo_automotor.vigencia_desde}}
-                    {{ riesgo_automotor.vigencia_hasta}}
+                    {{ riesgo_automotor.vigencia_desde }}
+                    {{ riesgo_automotor.vigencia_hasta }}
                   </div>
                 </div>
                 <div class="modal-pie pull-right mt-3">
                   <base-button
-                    v-if="modo == true"
                     class="btn btn-primary ladda-button"
                     type="submit"
-                    @click="actualizar"
-                  >Guardar</base-button>
-                  <base-button
-                    v-else
-                    class="btn btn-primary ladda-button"
-                    type="submit"
-                    @click="crear"
-                  >Crear</base-button>
+                    >Guardar</base-button
+                  >
+                  >
                 </div>
               </form>
             </card>
@@ -419,34 +402,67 @@
   </SlideYUpTransition>
 </template>
 <script>
-import { Table, TableColumn, Select, Option } from 'element-ui';
+import { SlideYUpTransition } from 'vue2-transitions';
+import { Select, Option } from 'element-ui';
 import { Collapse, CollapseItem } from 'src/components';
 import { BaseAlert } from 'src/components';
-import { SlideYUpTransition } from 'vue2-transitions';
 import { Card } from 'src/components';
 import { BaseButton } from 'src/components';
 import http from '../../../../API/http-request.js';
 import { EventBus } from '../../../../main.js';
 import { mixin } from '../../../../mixins/mixin.js';
-import debounce from '../../../../debounce.js';
+// import debounce from '../../../../debounce.js';
 
 export default {
+  componens: {
+    SlideYUpTransition,
+    [Select.name]: Select,
+    [Option.name]: Option,
+    BaseAlert,
+    Collapse,
+    CollapseItem,
+    BaseButton,
+    Card
+  },
   props: ['riesgo_automotor'],
   mixins: [mixin],
   methods: {
     close() {
       EventBus.$emit('resetInput', false);
       this.$emit('close');
+    },
+    cargarMarcas() {
+      http.load('administracion/marcas').then(r => {
+        this.marcas = r.data.data;
+      });
+    },
+    cargarAnios() {
+      http.load('administracion/anios').then(r => {
+        this.anios = r.data.data;
+      });
+    },
+    filtrarModelosDeMarca() {
+      this.modelo_id = '';
+      this.tableData = [];
+      http
+        .loadOne('/modelos/filtrar', this.marca_id)
+        .then(r => (this.modelos = r.data.data));
+    },
+    filtrarVersionesDeModelo() {
+      http.loadOne('/versiones/filtrar', this.modelo_id).then(r => {
+        this.versiones = r.data.data;
+        // this.modeloSeleccionado = this.tableData[0];
+      });
     }
   },
-  componens: {
-    [Select.name]: Select,
-    [Option.name]: Option,
-    BaseAlert,
-    Collapse,
-    CollapseItem
+  created() {
+    this.cargarMarcas();
   },
   data: () => ({
+    marcas: [],
+    modelos: [],
+    versiones: [],
+    anios: [],
     tipo_vehiculos: [
       {
         value: 'Automotor',

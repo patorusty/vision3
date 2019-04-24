@@ -1,10 +1,7 @@
 <template>
   <div class="col-md-12">
     <card class="mt-4 ">
-      <div
-        class="col-sm-12 row align-items-center"
-        slot="header"
-      >
+      <div class="col-sm-12 row align-items-center" slot="header">
         <div class="col">
           <h4 class="d-inline text-primary ">DETALLE DEL RIESGO</h4>
         </div>

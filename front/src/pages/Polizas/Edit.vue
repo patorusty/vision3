@@ -373,19 +373,12 @@
 <script>
 import axios from 'axios';
 import { Table, TableColumn, Select, Option } from 'element-ui';
-import { BasePagination } from 'src/components';
-import { BaseAlert } from 'src/components';
 import { mixin } from './../../mixins/mixin.js';
 import { EventBus } from './../../../src/main.js';
 import http from '../../../../front/src/API/http-request.js';
 import TablaRiesgoAutomotor from './Riesgos/Automotor/TablaAutomotor';
 
-import {
-  BaseProgress,
-  BaseSwitch,
-  ImageUpload,
-  TagsInput
-} from 'src/components/index';
+import { BaseSwitch, ImageUpload } from 'src/components/index';
 
 export default {
   mixins: [mixin],
@@ -394,7 +387,9 @@ export default {
     [TableColumn.name]: TableColumn,
     ImageUpload,
     BaseSwitch,
-    TablaRiesgoAutomotor
+    TablaRiesgoAutomotor,
+    [Select.name]: Select,
+    [Option.name]: Option
   },
   data() {
     return {
@@ -436,33 +431,33 @@ export default {
     };
   },
   methods: {
-    sumarMes(mes) {
-      var mes;
+    // sumarMes(mes) {
+    //   var mes;
 
-      switch (this.poliza.tipo_vigencia_id) {
-        case 6:
-          var mes = 12;
-          break;
-        case 5:
-          var mes = 6;
-          break;
-        case 4:
-          var mes = 4;
-          break;
-        case 3:
-          var mes = 3;
-          break;
-        case 2:
-          var mes = 2;
-          break;
-        case 1:
-          var mes = 1;
-          break;
-      }
-      this.poliza.vigencia_hasta = addMonths(this.poliza.vigencia_desde, mes)
-        .toISOString()
-        .slice(0, 10);
-    },
+    //   switch (this.poliza.tipo_vigencia_id) {
+    //     case 6:
+    //       var mes = 12;
+    //       break;
+    //     case 5:
+    //       var mes = 6;
+    //       break;
+    //     case 4:
+    //       var mes = 4;
+    //       break;
+    //     case 3:
+    //       var mes = 3;
+    //       break;
+    //     case 2:
+    //       var mes = 2;
+    //       break;
+    //     case 1:
+    //       var mes = 1;
+    //       break;
+    //   }
+    //   this.poliza.vigencia_hasta = addMonths(this.poliza.vigencia_desde, mes)
+    //     .toISOString()
+    //     .slice(0, 10);
+    // },
 
     //     sumarSoloMes(mes){
     //        this.poliza.vigencia_hasta = addMonths(this.poliza.vigencia_desde, mes)
@@ -487,25 +482,25 @@ export default {
               this.codigo_productores = response.data.data;
             })
             .catch(err => {
-              // console.log(err);
+              console.log(err);
             });
         });
     },
-    updatePoliza() {
-      axios
-        .put(
-          'http://127.0.0.1:8000/api/polizas/' + this.numeroSolicitud,
-          this.poliza
-        )
-        .then(() => {
-          console.log('update ok');
-          windows.location.replace(
-            'http://127.0.0.1:8000/api/polizas/' +
-              this.numeroSolicitud +
-              '/edit'
-          );
-        });
-    },
+    // updatePoliza() {
+    //   axios
+    //     .put(
+    //       'http://127.0.0.1:8000/api/polizas/' + this.numeroSolicitud,
+    //       this.poliza
+    //     )
+    //     .then(() => {
+    //       console.log('update ok');
+    //       windows.location.replace(
+    //         'http://127.0.0.1:8000/api/polizas/' +
+    //           this.numeroSolicitud +
+    //           '/edit'
+    //       );
+    //     });
+    // },
     cargarClientes() {
       axios.get('http://127.0.0.1:8000/api/clientes').then(response => {
         this.clientes = response.data.data;
@@ -536,7 +531,7 @@ export default {
           this.codigo_productores = response.data.data;
         })
         .catch(err => {
-          // console.log(err);
+          console.log(err);
         });
     }
   },
