@@ -8,6 +8,13 @@
         <div class="col">
           <h4 class="d-inline text-primary ">DETALLE DEL RIESGO</h4>
         </div>
+        <div class="col">
+          <base-button
+            type="primary"
+            size="sm"
+            class=" d-inline float-right "
+          >Agregar</base-button>
+        </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
@@ -16,42 +23,44 @@
               min-width="80"
               align="left"
               label="Tipo"
-              prop="riesgo_automotor.automotor_tipo"
+              v-model="riesgo_automotor.automotor_tipo"
             >
             </el-table-column>
             <el-table-column
               min-width="150"
+              prop=""
               label="Marca / Modelo / Version"
               align="left"
-              prop="riesgo_automotor.automotor_marca"
+              v-model="riesgo_automotor.automotor_marca"
             >
             </el-table-column>
             <el-table-column
               min-width="80"
+              prop=""
               label="Patente"
               align="left"
-              prop="riesgo_automotor.patente"
+              v-model="riesgo_automotor.patente"
             >
             </el-table-column>
             <el-table-column
               min-width="80"
               align="left"
               label="Suma Asegurada"
-              prop="riesgo_automotor.valor_total"
+              v-model="riesgo_automotor.valor_total"
             >
             </el-table-column>
             <el-table-column
               min-width="80"
               align="left"
               label="Cobertura"
-              prop="riesgo_automotor.cobertura_id"
+              v-model="riesgo_automotor.cobertura_id"
             >
             </el-table-column>
             <el-table-column
               min-width="80"
               align="left"
               label="Franquicia"
-              prop="riesgo_automotor.franquicia"
+              v-model="riesgo_automotor.franquicia"
             >
             </el-table-column>
             <el-table-column
@@ -128,26 +137,12 @@ export default {
     BasePagination,
     ModalAutomotor
   },
-  props: {
-    poliza: {
-      type: Object
-    }
-  },
+  props: {},
   data() {
     return {
-      url: 'riesgo_automotor',
+      isModalVisibleCO: false,
       riesgo_automotor: {}
     };
-  },
-  methods: {
-    cargar() {
-      http.loadOne(this.url, this.poliza.id).then(r => {
-        this.tableData = r.data.data;
-      });
-    }
-  },
-  mounted() {
-    this.cargar();
   }
 };
 </script>

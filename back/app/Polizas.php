@@ -8,6 +8,7 @@ use App\CodigoProductor;
 use App\TipoRiesgo;
 use App\EstadoPoliza;
 use App\TipoVigencia;
+use App\RiesgoAutomotor;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,5 +39,9 @@ class Polizas extends Model
 
     public function tipo_vigencias() {
         return $this->belongsTo(TipoVigencia::class, 'tipo_vigencia_id');
+    }
+    
+    public function riesgo_automotor(){
+        return $this->hasMany(RiesgoAutomotor::class, 'poliza_id', 'id');
     }
 }

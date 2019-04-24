@@ -16,7 +16,7 @@ class AutomotorAnios extends Migration
         Schema::create('automotor_anios', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('automotor_version_id')->nullable();
-            $table->integer('anio_id')->nullable();
+            $table->integer('anio')->nullable();
             $table->timestamps();
         });
     }

@@ -125,12 +125,12 @@ const routes = [
         name: 'Automotor'
       },
       {
-        path: '/polizas/automotor/create',
+        path: '/polizas/create',
         component: require('../pages/Polizas/Create.vue').default,
         name: 'Poliza Automotor'
       },
       {
-        path: '/polizas/automotor/:numero_solicitud/edit',
+        path: '/polizas/:numero_solicitud/edit',
         component: require('../pages/Polizas/Edit.vue').default,
         name: 'Editar Poliza Automotor'
       },

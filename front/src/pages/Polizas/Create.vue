@@ -383,8 +383,12 @@
 </template>
 <script>
 import axios from 'axios';
+import { Table, TableColumn, Select, Option } from 'element-ui';
+import { BasePagination } from 'src/components';
+import { BaseAlert } from 'src/components';
 
 export default {
+  components: {},
   data() {
     return {
       poliza: {

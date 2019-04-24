@@ -380,12 +380,23 @@
       </div>
     </form>
     <!-- aca deberia mostrar la tabla segun el tipo de riesgo -->
+    <!-- aca meter la tabla -->
+    <tabla-riesgo-automotor
+      v-if="poliza.tipo_riesgo_id = 1"
+      :poliza="poliza"
+    />
   </div>
 
 </template>
 <script>
 import axios from 'axios';
-import { Table, TableColumn } from 'element-ui';
+import { Table, TableColumn, Select, Option } from 'element-ui';
+import { BasePagination } from 'src/components';
+import { BaseAlert } from 'src/components';
+import { mixin } from './../../mixins/mixin.js';
+import { EventBus } from './../../../src/main.js';
+// import http from '../../../../front/src/API/http-request.js';
+import TablaRiesgoAutomotor from './Riesgos/Automotor/TablaAutomotor';
 
 import {
   BaseProgress,
@@ -395,15 +406,16 @@ import {
 } from 'src/components/index';
 
 export default {
+  mixins: [mixin],
   components: {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
     ImageUpload,
-    BaseSwitch
+    BaseSwitch,
+    TablaRiesgoAutomotor
   },
   data() {
     return {
-      tipo_riesgosTable: [],
       poliza: {
         cliente_id: '',
         tipo_riesgo_id: '',
