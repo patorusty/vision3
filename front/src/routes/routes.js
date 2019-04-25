@@ -16,14 +16,12 @@ let otrosRiesgos = {
     {
       path: 'accidentepersonal',
       name: 'Accidente Personal',
-      component: require('../pages/Polizas/HomeAccidentePersonal.vue')
-        .default
+      component: require('../pages/Polizas/HomeAccidentePersonal.vue').default
     },
     {
       path: 'combinadofamiliar',
       name: 'Combinado Familiar',
-      component: require('../pages/Polizas/HomeCombinadoFamiliar.vue')
-        .default
+      component: require('../pages/Polizas/HomeCombinadoFamiliar.vue').default
     },
     {
       path: 'otros',
@@ -70,7 +68,8 @@ let administracion = {
     {
       path: 'marcamodeloversion/edit',
       name: 'Marca Modelo Version',
-      component: require('../pages/Administracion/MarcaModeloVersion/Edit.vue').default
+      component: require('../pages/Administracion/MarcaModeloVersion/Edit.vue')
+        .default
     },
     {
       path: 'librosrubricados',
@@ -81,7 +80,7 @@ let administracion = {
       path: 'estadisticas',
       name: 'Estadisticas',
       component: require('../pages/Administracion/Estadisticas.vue').default
-    },
+    }
   ]
 };
 
@@ -125,12 +124,12 @@ const routes = [
         name: 'Automotor'
       },
       {
-        path: '/polizas/create',
+        path: '/polizas/automotor/create',
         component: require('../pages/Polizas/Create.vue').default,
         name: 'Poliza Automotor'
       },
       {
-        path: '/polizas/:numero_solicitud/edit',
+        path: '/polizas/automotor/:numero_solicitud/edit',
         component: require('../pages/Polizas/Edit.vue').default,
         name: 'Editar Poliza Automotor'
       },

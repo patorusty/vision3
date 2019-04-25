@@ -3,24 +3,8 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <router-link slot="header" to="/polizas/automotor/create">
-            <base-button class="animation-on-hover pull-right" type="primary">Crear</base-button>
-          </router-link>
           <div>
             <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
-              <el-select
-                class="select-primary mb-3 pagination-select"
-                v-model="pagination.perPage"
-                placeholder="Per page"
-              >
-                <el-option
-                  class="select-primary"
-                  v-for="item in pagination.perPageOptions"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
               <base-input>
                 <el-input
                   type="search"
@@ -32,79 +16,99 @@
                   aria-controls="datatables"
                 ></el-input>
               </base-input>
+              <router-link
+                slot="header"
+                to="/polizas/automotor/create"
+              >
+                <base-button
+                  class="animation-on-hover pull-right"
+                  type="primary"
+                >Crear</base-button>
+              </router-link>
             </div>
             <el-table :data="queriedData">
-              <el-table-column label="Poliza" prop="numero" sortable :min-width="50"></el-table-column>
+              <el-table-column
+                label="Poliza"
+                prop="numero"
+                sortable
+                :min-width="50"
+              ></el-table-column>
               <!-- <el-table-column label="Patente"></el-table-column> -->
               <el-table-column label="Compania">
-                <div
-                  slot-scope="{ row }"
-                >{{row.companias.nombre}} ({{row.codigo_productor.codigo_productor}})</div>
+                <div slot-scope="{ row }">{{row.companias.nombre}} ({{row.codigo_productor.codigo_productor}})</div>
               </el-table-column>
-              <el-table-column label="Cliente" sortable :min-width="100">
+              <el-table-column
+                label="Cliente"
+                sortable
+                :min-width="100"
+              >
                 <div slot-scope="{ row }">
                   <router-link
                     v-if="row.clientes.razon_social === null"
                     to="#"
                   >{{ row.clientes.nombre }} {{ row.clientes.apellido }}</router-link>
-                  <router-link v-else to="#">{{ row.clientes.razon_social }}</router-link>
+                  <router-link
+                    v-else
+                    to="#"
+                  >{{ row.clientes.razon_social }}</router-link>
                 </div>
               </el-table-column>
-              <el-table-column label="Vigencia" :min-width="60" prop="tipo_vigencias.vigencia"></el-table-column>
-              <el-table-column label="Desde / Hasta" :min-width="90">
+              <el-table-column
+                label="Vigencia"
+                :min-width="60"
+                prop="tipo_vigencias.vigencia"
+              ></el-table-column>
+              <el-table-column
+                label="Desde / Hasta"
+                :min-width="90"
+              >
                 <div slot-scope="{ row }">{{row.vigencia_desde}} / {{row.vigencia_hasta}}</div>
               </el-table-column>
-              <el-table-column label="Estado" prop="estado_polizas.nombre" :min-width="100"></el-table-column>
+              <el-table-column
+                label="Estado"
+                prop="estado_polizas.nombre"
+                :min-width="100"
+              ></el-table-column>
               <el-table-column label="Envio">
                 <div slot-scope="{ row }">
-                  <div
-                    v-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null"
-                  >Recibida</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null"
-                  >Entregada</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null"
-                  >Correo</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null"
-                  >Email</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null"
-                  >Entregada / Correo</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null"
-                  >Entregada / Email</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null"
-                  >Correo / Email</div>
-                  <div
-                    v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null"
-                  >Entregada / Correo / Email</div>
+                  <div v-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null">Recibida</div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null">Entregada</div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null">Correo</div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null">Email</div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null">Entregada / Correo</div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null">Entregada / Email</div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null">Correo / Email</div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null">Entregada / Correo / Email</div>
                   <div v-else>No recibida</div>
                 </div>
               </el-table-column>
-              <el-table-column label="F. Pago" prop="medio_pago" :min-width="50"></el-table-column>
-              <el-table-column align="right" label="Actions">
+              <el-table-column
+                label="F. Pago"
+                prop="medio_pago"
+                :min-width="50"
+              ></el-table-column>
+              <el-table-column
+                align="right"
+                label="Actions"
+              >
                 <div slot-scope="props">
-                  <base-button
-                    @click.native="handleLike(props.$index, props.row);"
-                    class="remove btn-link"
-                    type="info"
-                    size="sm"
-                    icon
+                  <el-tooltip
+                    content="Editar"
+                    effect="light"
+                    :open-delay="300"
+                    placement="top"
                   >
-                    <i class="tim-icons icon-heart-2"></i>
-                  </base-button>
-                  <base-button
-                    @click.native="handleEdit(props.$index, props.row);"
-                    class="edit btn-link"
-                    type="warning"
-                    size="sm"
-                    icon
-                  >
-                    <i class="tim-icons icon-pencil"></i>
-                  </base-button>
+                    <router-link :to="{ name: 'Editar Poliza Automotor', params: { numero_solicitud: props.row.numero_solicitud }}">
+                      <base-button
+                        class="edit btn-link"
+                        type="warning"
+                        size="sm"
+                        icon
+                      >
+                        <i class="tim-icons icon-pencil"></i>
+                      </base-button>
+                    </router-link>
+                  </el-tooltip>
                   <base-button
                     @click.native="handleDelete(props.$index, props.row);"
                     class="remove btn-link"
@@ -125,6 +129,19 @@
             <div class>
               <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
             </div>
+            <el-select
+              class="select-primary mb-3 pagination-select"
+              v-model="pagination.perPage"
+              placeholder="Per page"
+            >
+              <el-option
+                class="select-primary"
+                v-for="item in pagination.perPageOptions"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
+            </el-select>
             <base-pagination
               class="pagination-no-border"
               v-model="pagination.currentPage"
@@ -140,10 +157,11 @@
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
-import Fuse from 'fuse.js';
-import axios from 'axios';
+import { mixin } from '../../mixins/mixin.js';
+import http from '../../API/http-request.js';
 
 export default {
+  mixins: [mixin],
   components: {
     BasePagination,
     [Select.name]: Select,
@@ -151,105 +169,23 @@ export default {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
-  computed: {
-    /***
-     * Returns a page from the searched data or the whole data. Search is performed in the watch section below
-     */
-    queriedData() {
-      let result = this.tableData;
-      if (this.searchedData.length > 0) {
-        result = this.searchedData;
-      }
-      return result.slice(this.from, this.to);
-    },
-    to() {
-      let highBound = this.from + this.pagination.perPage;
-      if (this.total < highBound) {
-        highBound = this.total;
-      }
-      return highBound;
-    },
-    from() {
-      return this.pagination.perPage * (this.pagination.currentPage - 1);
-    },
-    total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length;
-    },
-    searchedData() {
-      // Filter results
-      // return this.tableData.filter(data => {
-      //   return (
-      //     data.clientes.apellido
-      //       .toLowerCase()
-      //       .indexOf(this.searchQuery.toLowerCase()) > -1 ||
-      //     data.clientes.nombre
-      //       .toLowerCase()
-      //       .indexOf(this.searchQuery.toLowerCase()) > -1 ||
-      //     data.numero.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1
-      //   );
-      // });
-      var options = {
-        shouldSort: true,
-        threshold: 0.0,
-        location: 0,
-        distance: 100,
-        maxPatternLength: 32,
-        minMatchCharLength: 1,
-        keys: ['numero', 'clientes.nombre']
-      };
-      var fuse = new Fuse(this.tableData, options);
-      return fuse.search(this.searchQuery);
-    }
-  },
 
   data() {
-    return {
-      pagination: {
-        perPage: 5,
-        currentPage: 1,
-        perPageOptions: [5, 10, 25, 50],
-        total: 0
-      },
-      searchQuery: '',
-      tableData: [],
-      // searchedData: [],
-      fuseSearch: null
-    };
+    return {};
   },
   methods: {
     cargaPolizas() {
-      axios
-        .get('http://127.0.0.1:8000/api/polizas')
-        .then(response => {
-          // console.log(response.data.data);
+      http
+        .load('http://127.0.0.1:8000/api/polizas')
+        .then(r => {
           this.dataLoaded = true;
-          this.tableData = response.data.data;
+          this.tableData = r.data.data;
         })
         .catch(e => console.log(e));
     }
   },
-  mounted() {
-    this.fuseSearch = new Fuse(this.tableData, {
-      keys: ['numero'],
-      threshold: 0.3
-    });
+  created() {
     this.cargaPolizas();
-  },
-  watch: {
-    /**
-     * Searches through the table data by a given query.
-     * NOTE: If you have a lot of data, it's recommended to do the search on the Server Side and only display the results here.
-     * @param value of the query
-     */
-    // searchQuery(value) {
-    //   let result = this.tableData;
-    //   if (value !== '') {
-    //     result = this.fuseSearch.search(this.searchQuery);
-    //   }
-    //   this.searchedData = result;
-    // }
   }
 };
 </script>
