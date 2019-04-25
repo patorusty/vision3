@@ -1,29 +1,45 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop class="div-stop">
-        <div style="width:50%;">
-          <div class="">
-            <card>
-              <form>
-                <div class="d-flex justify-content-between">
-                  <!-- ACA VA EL TITULO -->
-                  <h4>Automotor</h4>
-                  <button
-                    class="close"
-                    type="button"
-                    aria-label="Close"
-                    @click="close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <!-- ACA VA EL FORMULARIO -->
+    <div
+      class="modal-backdrop"
+      @keydown.esc="close"
+      @click="close"
+    >
+      <div
+        @click.stop
+        style="width:75%;"
+      >
+        <card>
+          <form>
+            <div class="d-flex justify-content-between">
+              <!-- ACA VA EL TITULO -->
+              <h4>Automotor</h4>
+              <button
+                class="close"
+                type="button"
+                aria-label="Close"
+                @click="close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <tabs
+              type="primary"
+              tabNavWrapperClasses="col-lg-2 col-md-2"
+              tabContentClasses="col-md-10"
+              vertical
+              square
+              class="row"
+            >
+              <tab-pane>
+                <span slot="label">
+                  <i class="tim-icons icon-settings"></i>Riesgo
+                </span>
                 <div class="row">
                   <!-- PRIMER COLUMNA -->
                   <div class="col-md-4">
+                    <label>Tipo de Vehiculo</label>
                     <el-select
-                      label="Tipo Vehiculo"
                       filterable
                       class="select-primary"
                       v-model="riesgo_automotor.automotor_tipo"
@@ -34,11 +50,11 @@
                         :key="tipo_vehiculo.value"
                         :label="tipo_vehiculo.label"
                         :value="tipo_vehiculo.value"
-                        class="select-primary"
+                        class="select-primary "
                       ></el-option>
                     </el-select>
+                    <label class="mt-2">Año</label>
                     <el-select
-                      label="Año"
                       filterable
                       class="select-primary"
                       v-model="riesgo_automotor.automotor_anio"
@@ -46,94 +62,93 @@
                     >
                       <el-option
                         v-for="anio in anios"
-                        :key="anio.id"
-                        :label="anio.nombre"
-                        :id="anio.value"
+                        :key="anio.value"
+                        :label="anio.label"
+                        :value="anio.value"
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                    <label class="mt-2">Marca</label>
                     <el-select
-                      label="Marca"
-                      filterable
+                      v-model="marca_id"
                       class="select-primary"
-                      v-model="riesgo_automotor.automotor_marca"
-                      name="automotor_marca_id"
+                      filterable
                     >
                       <el-option
                         v-for="marca in marcas"
                         :key="marca.id"
+                        :value="marca.id"
                         :label="marca.nombre"
-                        :id="marca.value"
                         class="select-primary"
-                      ></el-option>
+                      >
+                      </el-option>
                     </el-select>
+                    <label class="mt-2">Modelo</label>
                     <el-select
-                      label="Modelo"
-                      filterable
+                      v-model="automotor_modelo_id"
                       class="select-primary"
-                      v-model="riesgo_automotor.automotor_modelo"
-                      name="automotor_modelo_id"
+                      filterable
                     >
                       <el-option
                         v-for="modelo in modelos"
                         :key="modelo.id"
-                        :label="modelo.nombre"
                         :value="modelo.id"
+                        :label="modelo.nombre"
                         class="select-primary"
-                      ></el-option>
+                      >
+                      </el-option>
                     </el-select>
+                    <label class="mt-2">Version</label>
                     <el-select
-                      label="Version"
-                      filterable
+                      v-model="automotot_version_id"
                       class="select-primary"
-                      v-model="riesgo_automotor.automotor_version_id"
-                      name="automotor_version_id"
+                      filterable
                     >
                       <el-option
                         v-for="version in versiones"
                         :key="version.id"
-                        :label="version.nombre"
                         :value="version.id"
+                        :label="version.nombre"
                         class="select-primary"
-                      ></el-option>
+                      >
+                      </el-option>
                     </el-select>
                   </div>
                   <!-- SEGUNDA COLUMNA -->
                   <div class="col-md-4">
+                    <label>Patente</label>
                     <base-input
-                      label="Patente"
                       v-model="riesgo_automotor.patente"
                       name="patente"
                     >
                     </base-input>
+                    <label>Motor</label>
                     <base-input
-                      label="Motor"
                       v-model="riesgo_automotor.nro_motor"
                       name="motor"
                     >
                     </base-input>
+                    <label>Chasis</label>
                     <base-input
-                      label="Chasis"
                       v-model="riesgo_automotor.nro_chasis"
                       name="chasis"
                     >
                     </base-input>
-                    <base-checkbox
-                      label="0km"
-                      v-model="riesgo_automotor.okm"
-                      name="0km"
-                    ></base-checkbox>
+                    <label>Valor Vehiculo</label>
                     <base-input
-                      label="Valor Vehiculo"
                       v-model="riesgo_automotor.valor_vehiculo"
                       name="valor_vehiculo"
                     >
                     </base-input>
+                    <div class="mt-4">
+                      <base-checkbox v-model="riesgo_automotor.okm">0km</base-checkbox>
+                    </div>
+
                   </div>
                   <!-- TERCER COLUMNA -->
                   <div class="col-md-4">
+                    <label>Uso</label>
                     <el-select
-                      label="Uso"
                       filterable
                       class="select-primary"
                       v-model="riesgo_automotor.uso"
@@ -147,8 +162,8 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                    <label class="mt-2">Tipo Carroceria</label>
                     <el-select
-                      label="Tipo Carroceria"
                       filterable
                       class="select-primary"
                       v-model="riesgo_automotor.tipo_carroceria"
@@ -162,8 +177,8 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                    <label class="mt-2">Combustible</label>
                     <el-select
-                      label="Combustible"
                       filterable
                       class="select-primary"
                       v-model="riesgo_automotor.combustible"
@@ -177,8 +192,8 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                    <label class="mt-2">Estado General</label>
                     <el-select
-                      label="Estado General"
                       filterable
                       class="select-primary"
                       v-model="riesgo_automotor.estado_general"
@@ -192,180 +207,57 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                    <label class="mt-2">Color</label>
                     <base-input
-                      label="Color"
                       v-model="riesgo_automotor.color"
                       name="color"
                     >
                     </base-input>
                   </div>
                 </div>
-                <!-- <collapse :multiple-active="false" :active-index="0">
-                  <collapse-item title="GNC">
-                    <div>
-                      <div class="row">
-                        <div class="col-md-4">
-                          <base-input
-                            label="Nro Oblea"
-                            v-model="riesgo_automotor.gnc_nro_oblea"
-                            name="color"
-                          >
-                          </base-input>
-                          <base-input
-                            label="Vencimiento Oblea"
-                            v-model="riesgo_automotor.gnc_venc_oblea"
-                            name="color"
-                          >
-                          </base-input>
-                          <base-input
-                            label="Valor GNC"
-                            v-model="riesgo_automotor.valor_gnc"
-                            name="color"
-                          >
-                          </base-input>
-                        </div>
-                        <div class="col-md-4">
-                          <base-input
-                            label="Valor GNC"
-                            v-model="riesgo_automotor.gnc_marca_cilindro"
-                            name="color"
-                          >
-                          </base-input>
-                          <base-input
-                            label="Valor GNC"
-                            v-model="riesgo_automotor.gnc_nro_cilindro"
-                            name="color"
-                          >
-                          </base-input>
-                        </div>
-                        <div class="col-md-4">
-                          <base-input
-                            label="Valor GNC"
-                            v-model="riesgo_automotor.gnc_marca_regulador"
-                            name="color"
-                          >
-                          </base-input>
-                          <base-input
-                            label="Valor GNC"
-                            v-model="riesgo_automotor.gnc_nro_regulador"
-                            name="color"
-                          >
-                          </base-input>
-                        </div>
-                      </div>
-                    </div>
-                  </collapse-item>
-
-                  <collapse-item title="Cubiertas / Accesorios">
-                    <div>
-                      <div class="row">
-                        <div class="col-md-4">
-                          <el-select
-                            label="Marca Cubiertas"
-                            filterable
-                            class="select-primary"
-                            v-model="riesgo_automotor.cubiertas_marca"
-                            name="cubiertas_marca"
-                          >
-                            <el-option
-                              v-for="cubiertas_marca in cubiertas_marcas"
-                              :key="cubiertas_marca.value"
-                              :label="cubiertas_marca.label"
-                              :value="cubiertas_marca.value"
-                              class="select-primary"
-                            ></el-option>
-                          </el-select>
-                          <base-input
-                            label="Medida Cubiertas"
-                            v-model="riesgo_automotor.cubiertas_medidas"
-                            name="cubiertas_medidas"
-                          >
-                          </base-input>
-                        </div>
-                        <div class="col-md-4">
-                          <base-input
-                            label="Accesorio Nro 1"
-                            v-model="riesgo_automotor.accesorio_1"
-                            name="accesorio_1"
-                          >
-                          </base-input>
-                          <base-input
-                            label="Valor Accesorio 1"
-                            v-model="riesgo_automotor.valor_accesorio_1"
-                            name="valor_accesorio_1"
-                          >
-                          </base-input>
-                        </div>
-                        <div class="col-md-4">
-                          <base-input
-                            label="Accesorio Nro 2"
-                            v-model="riesgo_automotor.accesorio_2"
-                            name="accesorio_2"
-                          >
-                          </base-input>
-                          <base-input
-                            label="Valor Accesorio 2"
-                            v-model="riesgo_automotor.valor_accesorio_2"
-                            name="valor_accesorio_2"
-                          >
-                          </base-input>
-                        </div>
-                      </div>
-                    </div>
-                  </collapse-item>
-
-                  <collapse-item title="Acreedor Prendario">
-                    <div>
-                      <div class="row">
-                        <div class="col-md-4">
-                          <base-input
-                            label="Razon Social"
-                            v-model="riesgo_automotor.acreedor_rc"
-                            name="acreedor_rc"
-                          >
-                          </base-input>
-                        </div>
-                        <div class="col-md-4">
-                          <base-input
-                            label="CUIT"
-                            v-model="riesgo_automotor.acreedor_cuit"
-                            name="acreedor_cuit"
-                          >
-                          </base-input>
-                        </div>
-                      </div>
-                    </div>
-                  </collapse-item>
-                  <collapse-item title="Observaciones">
-                    <base-input label="Observaciones">
-                      <textarea
-                        class="form-control"
-                        v-model="riesgo_automotor.observaciones"
-                      ></textarea>
-                    </base-input>
-                  </collapse-item>
-                </collapse> -->
                 <div class="row">
                   <div class="col-md-4">
-                    <base-input
-                      label="Cobertura"
+                    <label>Cobertura</label>
+                    <el-select
+                      filterable
+                      class="select-primary"
                       v-model="riesgo_automotor.cobertura_id"
-                      name="cobertura_id"
+                      name="estado_general"
                     >
-                    </base-input>
+                      <el-option
+                        v-for="cobertura in coberturas"
+                        :key="cobertura.value"
+                        :label="cobertura.label"
+                        :value="cobertura.value"
+                        class="select-primary"
+                      ></el-option>
+                    </el-select>
                     <base-input
+                      class="mt-3"
                       label="Franquicia"
                       v-model="riesgo_automotor.franquicia"
                       name="franquicia"
                     >
                     </base-input>
-                    <base-input
-                      label="Ajuste"
+                  </div>
+                  <div class="col-md-4">
+                    <label>Ajuste</label>
+                    <el-select
+                      filterable
+                      class="select-primary"
                       v-model="riesgo_automotor.ajuste"
                       name="ajuste"
                     >
-                    </base-input>
+                      <el-option
+                        v-for="ajuste in ajustes"
+                        :key="ajuste.value"
+                        :label="ajuste.label"
+                        :value="ajuste.value"
+                        class="select-primary"
+                      ></el-option>
+                    </el-select>
                     <base-input
+                      class="mt-3"
                       label="Equipo de Rastreo"
                       v-model="riesgo_automotor.equipo_rastreo"
                       name="equipo_rastreo"
@@ -379,232 +271,414 @@
                       name="valor_total"
                     >
                     </base-input>
+                    <base-input label="Observaciones">
+                      <textarea
+                        class="form-control"
+                        v-model="riesgo_automotor.observaciones"
+                      ></textarea>
+                    </base-input>
+
+                    <!-- {{ riesgo_automotor.vigencia_desde }}
+                    {{ riesgo_automotor.vigencia_hasta }} -->
+                  </div>
+                </div>
+              </tab-pane>
+
+              <tab-pane>
+                <span slot="label">
+                  <i class="tim-icons icon-settings"></i>GNC
+                </span>
+                <base-checkbox
+                  class="mb-3"
+                  v-model="riesgo_automotor.gnc"
+                >Tiene GNC?</base-checkbox>
+                <div class="row">
+
+                  <div class="col-md-4">
+                    <base-input
+                      label="Nro Oblea"
+                      v-model="riesgo_automotor.gnc_nro_oblea"
+                      name="gnc_nro_oblea"
+                    >
+                    </base-input>
+                    <base-input label="Vencimiento Oblea">
+                      <el-date-picker
+                        type="date"
+                        placeholder="Date Picker"
+                        v-model="riesgo_automotor.gnc_venc_oblea"
+                      >
+                      </el-date-picker>
+                    </base-input>
+
+                    <base-input
+                      label="Valor GNC"
+                      v-model="riesgo_automotor.valor_gnc"
+                      name="valor_gnc"
+                    >
+                    </base-input>
                   </div>
                   <div class="col-md-4">
-                    {{ riesgo_automotor.vigencia_desde }}
-                    {{ riesgo_automotor.vigencia_hasta }}
+                    <base-input
+                      label="Marca Cilindro"
+                      v-model="riesgo_automotor.gnc_marca_cilindro"
+                      name="gnc_marca_cilindro"
+                    >
+                    </base-input>
+                    <base-input
+                      label="Nro Cilindro"
+                      v-model="riesgo_automotor.gnc_nro_cilindro"
+                      name="gnc_nro_cilindro"
+                    >
+                    </base-input>
+                  </div>
+                  <div class="col-md-4">
+                    <base-input
+                      label="Marca Regulador"
+                      v-model="riesgo_automotor.gnc_marca_regulador"
+                      name="gnc_marca_regulador"
+                    >
+                    </base-input>
+                    <base-input
+                      label="Nro Regulador"
+                      v-model="riesgo_automotor.gnc_nro_regulador"
+                      name="gnc_nro_regulador"
+                    >
+                    </base-input>
                   </div>
                 </div>
-                <div class="modal-pie pull-right mt-3">
-                  <base-button
-                    class="btn btn-primary ladda-button"
-                    type="submit"
-                    >Guardar</base-button
-                  >
-                  >
+              </tab-pane>
+              <tab-pane>
+                <span slot="label">
+                  <i class="tim-icons icon-settings"></i>Cubiertas / Accesorios
+                </span>
+                <div class="row">
+                  <div class="col-md-4">
+                    <label>Marca Cubiertas</label>
+                    <el-select
+                      filterable
+                      class="select-primary"
+                      v-model="riesgo_automotor.cubiertas_marca"
+                      name="cubiertas_marca"
+                    >
+                      <el-option
+                        v-for="cubiertas_marca in cubiertas_marcas"
+                        :key="cubiertas_marca.value"
+                        :label="cubiertas_marca.label"
+                        :value="cubiertas_marca.value"
+                        class="select-primary"
+                      ></el-option>
+                    </el-select>
+                    <base-input
+                      class="mt-3"
+                      label="Medida Cubiertas"
+                      v-model="riesgo_automotor.cubiertas_medidas"
+                      name="cubiertas_medidas"
+                    >
+                    </base-input>
+                  </div>
+                  <div class="col-md-4">
+                    <base-input
+                      label="Accesorio Nro 1"
+                      v-model="riesgo_automotor.accesorio_1"
+                      name="accesorio_1"
+                    >
+                    </base-input>
+                    <base-input
+                      label="Valor Accesorio 1"
+                      v-model="riesgo_automotor.valor_accesorio_1"
+                      name="valor_accesorio_1"
+                    >
+                    </base-input>
+                  </div>
+                  <div class="col-md-4">
+                    <base-input
+                      label="Accesorio Nro 2"
+                      v-model="riesgo_automotor.accesorio_2"
+                      name="accesorio_2"
+                    >
+                    </base-input>
+                    <base-input
+                      label="Valor Accesorio 2"
+                      v-model="riesgo_automotor.valor_accesorio_2"
+                      name="valor_accesorio_2"
+                    >
+                    </base-input>
+                  </div>
                 </div>
-              </form>
-            </card>
-          </div>
-        </div>
+              </tab-pane>
+              <tab-pane>
+                <span slot="label">
+                  <i class="tim-icons icon-notes"></i>Acreedor Prendario
+                </span>
+                <base-checkbox
+                  class="mb-3"
+                  v-model="riesgo_automotor.acreedor_prendario"
+                >Tiene Acreedor Prendario?</base-checkbox>
+                <div class="row">
+                  <div class="col-md-4">
+                    <base-input
+                      label="Razon Social"
+                      v-model="riesgo_automotor.acreedor_rc"
+                      name="acreedor_rc"
+                    >
+                    </base-input>
+                  </div>
+                  <div class="col-md-4">
+                    <base-input
+                      label="CUIT"
+                      v-model="riesgo_automotor.acreedor_cuit"
+                      name="acreedor_cuit"
+                    >
+                    </base-input>
+                  </div>
+                </div>
+              </tab-pane>
+            </tabs>
+            <div class="col-md-12">
+              <base-button
+                class="animation-on-hover center"
+                type="primary"
+              >Guardar</base-button>
+            </div>
+
+          </form>
+        </card>
       </div>
     </div>
   </SlideYUpTransition>
 </template>
 <script>
 import { SlideYUpTransition } from 'vue2-transitions';
-import { Select, Option } from 'element-ui';
-import { Collapse, CollapseItem } from 'src/components';
-import { BaseAlert } from 'src/components';
 import { Card } from 'src/components';
-import { BaseButton } from 'src/components';
-import http from '../../../../API/http-request.js';
 import { EventBus } from '../../../../main.js';
-import { mixin } from '../../../../mixins/mixin.js';
-// import debounce from '../../../../debounce.js';
+import { Select, Option, DatePicker } from 'element-ui';
+import http from '../../../../API/http-request.js';
+import { TabPane, Tabs, Collapse, CollapseItem } from 'src/components';
 
 export default {
-  componens: {
+  props: ['riesgo_automotor'],
+  components: {
     SlideYUpTransition,
     [Select.name]: Select,
     [Option.name]: Option,
-    BaseAlert,
+    [DatePicker.name]: DatePicker,
     Collapse,
     CollapseItem,
-    BaseButton,
-    Card
+    TabPane,
+    Tabs
   },
-  props: ['riesgo_automotor'],
-  mixins: [mixin],
   methods: {
     close() {
       EventBus.$emit('resetInput', false);
       this.$emit('close');
     },
     cargarMarcas() {
-      http.load('administracion/marcas').then(r => {
+      http.load('administracion/marcas', this.marca_id).then(r => {
         this.marcas = r.data.data;
       });
     },
-    cargarAnios() {
-      http.load('administracion/anios').then(r => {
-        this.anios = r.data.data;
+    buscarMarca() {
+      http.loadOne('administracion/marcas', this.marca_id).then(r => {
+        this.marca = r.data.data;
       });
     },
-    filtrarModelosDeMarca() {
-      this.modelo_id = '';
-      this.tableData = [];
-      http
-        .loadOne('/modelos/filtrar', this.marca_id)
-        .then(r => (this.modelos = r.data.data));
+    filtrarModeloPorMarca() {
+      http.loadOne('/modelos/filtrar', this.marca_id).then(r => {
+        this.tableData = r.data.data;
+        this.buscarMarca();
+        this.modalListo = true;
+        console.log('dlskjfdsf');
+      });
     },
-    filtrarVersionesDeModelo() {
-      http.loadOne('/versiones/filtrar', this.modelo_id).then(r => {
-        this.versiones = r.data.data;
-        // this.modeloSeleccionado = this.tableData[0];
+    cargarCoberturas() {
+      http.load('cobertura/compania/1', '1').then(r => {
+        this.coberturas = r.data.data;
       });
     }
   },
   created() {
     this.cargarMarcas();
+    this.cargarCoberturas();
   },
   data: () => ({
-    marcas: [],
+    riesgo_automotor: {},
+    marcas: {},
+    marca: {},
+    marca_id: '',
+    automotor_marcas: {},
+    automotor_modelos: {},
+    coberturas: {},
     modelos: [],
-    versiones: [],
-    anios: [],
     tipo_vehiculos: [
       {
         value: 'Automotor',
-        labe: 'Automotor'
+        label: 'Automotor'
       },
       {
         value: 'Camion',
-        labe: 'Camion'
+        label: 'Camion'
       },
       {
         value: 'Trailer',
-        labe: 'Trailer'
+        label: 'Trailer'
+      }
+    ],
+    anios: [
+      {
+        value: '2019',
+        label: '2019'
+      },
+      {
+        value: '2018',
+        label: '2018'
       }
     ],
     usos: [
       {
         value: 'Particular',
-        labe: 'Particular'
+        label: 'Particular'
       },
       {
         value: 'Comercial',
-        labe: 'Comercial'
+        label: 'Comercial'
       },
       {
         value: 'Particular / Comercial',
-        labe: 'Particular / Comercial'
+        label: 'Particular / Comercial'
       },
       {
         value: 'Remise',
-        labe: 'Remise'
+        label: 'Remise'
       },
       {
         value: 'Cabify / Uber',
-        labe: 'Cabify / Uber'
+        label: 'Cabify / Uber'
       }
     ],
     tipo_carrocerias: [
       {
         value: 'Sedan 3 Puertas',
-        labe: 'Sedan 3 Puertas'
+        label: 'Sedan 3 Puertas'
       },
       {
         value: 'Sedan 4 Puertas',
-        labe: 'Sedan 4 Puertas'
+        label: 'Sedan 4 Puertas'
       },
       {
         value: 'Sedan 5 Puertas',
-        labe: 'Sedan 5 Puertas'
+        label: 'Sedan 5 Puertas'
       },
       {
         value: 'Rural',
-        labe: 'Rural'
+        label: 'Rural'
       },
       {
         value: 'Utilitario',
-        labe: 'Utilitario'
+        label: 'Utilitario'
       },
       {
         value: 'Berlina',
-        labe: 'Berlina'
+        label: 'Berlina'
       },
       {
         value: 'Coupe',
-        labe: 'Coupe'
+        label: 'Coupe'
       },
       {
         value: 'Cabriolet',
-        labe: 'Cabriolet'
+        label: 'Cabriolet'
       }
     ],
     combustibles: [
       {
         value: 'Nafta',
-        labe: 'Nafta'
+        label: 'Nafta'
       },
       {
         value: 'Diesel',
-        labe: 'Diesel'
+        label: 'Diesel'
       },
       {
         value: 'GNC',
-        labe: 'GNC'
+        label: 'GNC'
       }
     ],
     estados: [
       {
         value: 'Muy Bueno',
-        labe: 'Muy Bueno'
+        label: 'Muy Bueno'
       },
       {
         value: 'Bueno',
-        labe: 'Bueno'
+        label: 'Bueno'
       },
       {
         value: 'Regular',
-        labe: 'Regular'
+        label: 'Regular'
       }
     ],
     cubiertas_marcas: [
       {
         value: 'Pirelli',
-        labe: 'Pirelli'
+        label: 'Pirelli'
       },
       {
         value: 'Fate',
-        labe: 'Fate'
+        label: 'Fate'
       },
       {
         value: 'Continental',
-        labe: 'Continental'
+        label: 'Continental'
       },
       {
         value: 'Michelin',
-        labe: 'Michelin'
+        label: 'Michelin'
       },
       {
         value: 'Dunlop',
-        labe: 'Dunlop'
+        label: 'Dunlop'
       },
       {
         value: 'Goodyear',
-        labe: 'Goodyear'
+        label: 'Goodyear'
       },
       {
         value: 'Hankook',
-        labe: 'Hankook'
+        label: 'Hankook'
       },
       {
         value: 'Firestone',
-        labe: 'Firestone'
+        label: 'Firestone'
       },
       {
         value: 'Bridgestone',
-        labe: 'Bridgestone'
+        label: 'Bridgestone'
       },
       {
         value: 'Yokohama',
-        labe: 'Yokohama'
+        label: 'Yokohama'
       },
       {
         value: 'Otro',
-        labe: 'Otro'
+        label: 'Otro'
+      }
+    ],
+    ajustes: [
+      {
+        value: '0%',
+        label: '0%'
+      },
+      {
+        value: '10%',
+        label: '10%'
+      },
+      {
+        value: '20%',
+        label: '20%'
+      },
+      {
+        value: '30%',
+        label: '30%'
       }
     ]
   })
@@ -618,8 +692,25 @@ export default {
   left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.3);
+}
+.div-stop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.el-select {
+  display: block;
+}
+.errorSelect {
+  color: #ec250d !important;
+  font-size: 0.75rem;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
 </style>
+

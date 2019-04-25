@@ -1,7 +1,10 @@
 <template>
   <div class="col-md-12">
     <card class="mt-4 ">
-      <div class="col-sm-12 row align-items-center" slot="header">
+      <div
+        class="col-sm-12 row align-items-center"
+        slot="header"
+      >
         <div class="col">
           <h4 class="d-inline text-primary ">DETALLE DEL RIESGO</h4>
         </div>
@@ -55,24 +58,21 @@
               min-width="80"
               header-align="right"
               align="left"
-              label="Edicion"
+              label="Actions"
             >
-              <div
-                slot-scope="{ row, $index }"
-                class="text-right table-actions"
-              >
+              <div slot-scope="props">
                 <el-tooltip
-                  content="Refresh"
+                  content="Editar"
                   effect="light"
                   :open-delay="300"
                   placement="top"
                 >
                   <base-button
                     @click.native="editar(url, props.row.id)"
-                    :type="$index > 2 ? 'success' : 'neutral'"
+                    type="warning"
                     icon
                     size="sm"
-                    class="btn-link"
+                    class="edit btn-link"
                   >
                     <i class="tim-icons icon-pencil"></i>
                   </base-button>

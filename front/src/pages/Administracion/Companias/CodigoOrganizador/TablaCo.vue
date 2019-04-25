@@ -1,14 +1,16 @@
 <template>
   <card>
-    <div class="col-sm-12" slot="header">
+    <div
+      class="col-sm-12"
+      slot="header"
+    >
       <h4 class="d-inline align-bottom text-primary">CODIGOS ORGANIZADOR</h4>
       <base-button
         type="primary"
         size="sm"
         class="float-right"
         @click="showModal"
-        >Crear</base-button
-      >
+      >Crear</base-button>
     </div>
     <div class="row">
       <div class="col-sm-12">
@@ -37,7 +39,11 @@
             align="left"
             label="Cod. Organizador"
           ></el-table-column>
-          <el-table-column min-width="80" align="left" label="Activo">
+          <el-table-column
+            min-width="80"
+            align="left"
+            label="Activo"
+          >
             <div slot-scope="{ row }">
               <div v-if="row.activo == true">SI</div>
               <div v-else>NO</div>
@@ -49,7 +55,10 @@
             align="left"
             label="Edicion"
           >
-            <div slot-scope="props" class="text-right table-actions">
+            <div
+              slot-scope="props"
+              class="text-right table-actions"
+            >
               <el-tooltip
                 content="Editar"
                 effect="light"
@@ -57,7 +66,7 @@
                 placement="top"
               >
                 <base-button
-                  @click.native="editar(props.row.id)"
+                  @click.native="editar(url, props.row.id)"
                   class="edit btn-link"
                   type="warning"
                   size="sm"
