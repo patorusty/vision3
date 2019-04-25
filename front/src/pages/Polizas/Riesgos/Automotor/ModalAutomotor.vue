@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:75%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:75%;">
         <card>
           <form>
             <div class="d-flex justify-content-between">
@@ -141,9 +134,10 @@
                     >
                     </base-input>
                     <div class="mt-4">
-                      <base-checkbox v-model="riesgo_automotor.okm">0km</base-checkbox>
+                      <base-checkbox v-model="riesgo_automotor.okm"
+                        >0km</base-checkbox
+                      >
                     </div>
-
                   </div>
                   <!-- TERCER COLUMNA -->
                   <div class="col-md-4">
@@ -208,10 +202,7 @@
                       ></el-option>
                     </el-select>
                     <label class="mt-2">Color</label>
-                    <base-input
-                      v-model="riesgo_automotor.color"
-                      name="color"
-                    >
+                    <base-input v-model="riesgo_automotor.color" name="color">
                     </base-input>
                   </div>
                 </div>
@@ -226,9 +217,9 @@
                     >
                       <el-option
                         v-for="cobertura in coberturas"
-                        :key="cobertura.value"
-                        :label="cobertura.label"
-                        :value="cobertura.value"
+                        :key="cobertura.id"
+                        :label="cobertura.nombre"
+                        :value="cobertura.id"
                         class="select-primary"
                       ></el-option>
                     </el-select>
@@ -288,12 +279,10 @@
                 <span slot="label">
                   <i class="tim-icons icon-settings"></i>GNC
                 </span>
-                <base-checkbox
-                  class="mb-3"
-                  v-model="riesgo_automotor.gnc"
-                >Tiene GNC?</base-checkbox>
+                <base-checkbox class="mb-3" v-model="riesgo_automotor.gnc"
+                  >Tiene GNC?</base-checkbox
+                >
                 <div class="row">
-
                   <div class="col-md-4">
                     <base-input
                       label="Nro Oblea"
@@ -413,7 +402,8 @@
                 <base-checkbox
                   class="mb-3"
                   v-model="riesgo_automotor.acreedor_prendario"
-                >Tiene Acreedor Prendario?</base-checkbox>
+                  >Tiene Acreedor Prendario?</base-checkbox
+                >
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
@@ -435,12 +425,10 @@
               </tab-pane>
             </tabs>
             <div class="col-md-12">
-              <base-button
-                class="animation-on-hover center"
-                type="primary"
-              >Guardar</base-button>
+              <base-button class="animation-on-hover center" type="primary"
+                >Guardar</base-button
+              >
             </div>
-
           </form>
         </card>
       </div>
@@ -456,7 +444,14 @@ import http from '../../../../API/http-request.js';
 import { TabPane, Tabs, Collapse, CollapseItem } from 'src/components';
 
 export default {
-  props: ['riesgo_automotor'],
+  props: {
+    riesgo_automotor: {
+      type: Object
+    },
+    compania_id: {
+      type: Number
+    }
+  },
   components: {
     SlideYUpTransition,
     [Select.name]: Select,
@@ -491,8 +486,9 @@ export default {
       });
     },
     cargarCoberturas() {
-      http.load('cobertura/compania/1', '1').then(r => {
+      http.loadOne('cobertura/compania', this.compania_id).then(r => {
         this.coberturas = r.data.data;
+        console.log(this.coberturas);
       });
     }
   },
@@ -501,13 +497,12 @@ export default {
     this.cargarCoberturas();
   },
   data: () => ({
-    riesgo_automotor: {},
     marcas: {},
     marca: {},
     marca_id: '',
     automotor_marcas: {},
     automotor_modelos: {},
-    coberturas: {},
+    coberturas: [],
     modelos: [],
     tipo_vehiculos: [
       {
@@ -713,4 +708,3 @@ export default {
   margin-top: 5px;
 }
 </style>
-

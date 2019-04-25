@@ -1,10 +1,7 @@
 <template>
   <div class="col-md-12">
     <card class="mt-4 ">
-      <div
-        class="col-sm-12 row align-items-center"
-        slot="header"
-      >
+      <div class="col-sm-12 row align-items-center" slot="header">
         <div class="col">
           <h4 class="d-inline text-primary ">DETALLE DEL RIESGO</h4>
         </div>
@@ -68,7 +65,7 @@
                   placement="top"
                 >
                   <base-button
-                    @click.native="editar(url, props.row.id)"
+                    @click.native="editar(props.row.poliza_id)"
                     type="warning"
                     icon
                     size="sm"
@@ -83,12 +80,7 @@
                   :open-delay="300"
                   placement="top"
                 >
-                  <base-button
-                    :type="$index > 2 ? 'danger' : 'neutral'"
-                    icon
-                    size="sm"
-                    class="btn-link"
-                  >
+                  <base-button type="danger" icon size="sm" class="btn-link">
                     <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </el-tooltip>
@@ -102,6 +94,7 @@
       v-show="isModalVisible"
       :riesgo_automotor="riesgo_automotor"
       :modo="modoEditar"
+      :compania_id="poliza.compania_id"
       @close="closeModal"
       @recargar="cargar"
     ></modal-automotor>
@@ -166,13 +159,12 @@ export default {
       // this.$validator.reset();
       // this.errors.clear();
     },
-    editar(url, id) {
+    editar(id) {
       this.showModal();
-      this.modoEditar = true;
       http
         .loadOne(this.url, id)
         .then(r => {
-          this.organizador = r.data.data;
+          this.riesgo_automotor = r.data.data[0];
         })
         .catch(e => console.log(e));
     }
