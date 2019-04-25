@@ -371,7 +371,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { mixin } from './../../mixins/mixin.js';
 import { EventBus } from './../../../src/main.js';
@@ -393,32 +392,7 @@ export default {
   },
   data() {
     return {
-      poliza: {
-        cliente_id: '',
-        tipo_riesgo_id: '',
-        compania_id: '',
-        codigo_productor_id: '',
-        numero: '',
-        tipo_vigencia_id: '',
-        vigencia_desde: '',
-        vigencia_hasta: '',
-        numero_solicitud: '',
-        estado_poliza_id: '',
-        fecha_solicitud: '',
-        fecha_emision: '',
-        fecha_recepcion: '',
-        fecha_entrega_original: '',
-        fecha_entrega_email: '',
-        fecha_entrega_correo: '',
-        premio: '',
-        prima: '',
-        comision: '',
-        descuento: '',
-        medio_pago: '',
-        plan_pago: '',
-        cantidad_cuotas: '',
-        detalle_medio_pago: ''
-      },
+      poliza: {},
       cliente: {},
       clientes: {},
       companias: {},
@@ -466,16 +440,16 @@ export default {
     //     },
 
     cargarPoliza() {
-      axios
-        .get('http://127.0.0.1:8000/api/polizas/' + this.numeroSolicitud)
+      http
+        .loadOne('http://127.0.0.1:8000/api/polizas', this.numeroSolicitud)
         .then(response => {
           this.poliza = response.data.data[0];
           this.dataLoaded = true;
-          //   console.log(this.poliza.compania_id);
-          axios
-            .get(
-              'http://127.0.0.1:8000/api/codigoproductor/compania/' +
-                this.poliza.compania_id
+          EventBus.$emit('poliza_id', this.poliza.id);
+          http
+            .loadOne(
+              'http://127.0.0.1:8000/api/codigoproductor/compania',
+              this.poliza.compania_id
             )
             .then(response => {
               // console.log(response.data.data);
@@ -487,7 +461,7 @@ export default {
         });
     },
     // updatePoliza() {
-    //   axios
+    //   http
     //     .put(
     //       'http://127.0.0.1:8000/api/polizas/' + this.numeroSolicitud,
     //       this.poliza
@@ -502,32 +476,31 @@ export default {
     //     });
     // },
     cargarClientes() {
-      axios.get('http://127.0.0.1:8000/api/clientes').then(response => {
+      http.load('http://127.0.0.1:8000/api/clientes').then(response => {
         this.clientes = response.data.data;
       });
     },
     cargarTipo_Riesgos() {
-      axios.get('http://127.0.0.1:8000/api/tiporiesgo').then(response => {
+      http.load('http://127.0.0.1:8000/api/tiporiesgo').then(response => {
         this.tipo_riesgos = response.data.data;
       });
     },
     cargarTipo_Vigencias() {
-      axios.get('http://127.0.0.1:8000/api/tipovigencia').then(response => {
+      http.load('http://127.0.0.1:8000/api/tipovigencia').then(response => {
         this.tipo_vigencias = response.data.data;
       });
     },
     cargarCompanias() {
-      axios
-        .get('http://127.0.0.1:8000/api/administracion/companias')
+      http
+        .load('http://127.0.0.1:8000/api/administracion/companias')
         .then(response => {
           this.companias = response.data.data;
         });
     },
     cargarCodigos_ProductorOnChange(id) {
-      axios
-        .get('http://127.0.0.1:8000/api/codigoproductor/compania/' + id)
+      http
+        .loadOne('http://127.0.0.1:8000/api/codigoproductor/compania', id)
         .then(response => {
-          // console.log(response.data.data);
           this.codigo_productores = response.data.data;
         })
         .catch(err => {

@@ -64,7 +64,11 @@
       </div>
     </div>
     <el-table :data="queriedData">
-      <el-table-column label="Marca" :min-width="30"></el-table-column>
+      <el-table-column
+        label="Marca"
+        prop="automotor_modelo.automotor_marca.nombre"
+        :min-width="30"
+      ></el-table-column>
       <el-table-column
         label="Modelo"
         prop="automotor_modelo.nombre"
@@ -180,10 +184,8 @@ export default {
   data() {
     return {
       url: 'administracion/versiones',
-      automotor_marcas: {},
       marcas: {},
       marca_id: '',
-      automotor_modelos: {},
       modelos: [],
       modelo_id: '',
       version: {},
