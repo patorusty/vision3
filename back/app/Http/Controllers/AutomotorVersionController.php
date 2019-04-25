@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AutomotorVersion;
+use App\AutomotorModelo;
 use Illuminate\Http\Request;
 use App\Http\Resources\AutomotorVersion as AutomotorVersionsResource;
 
@@ -22,7 +23,8 @@ class AutomotorVersionController extends Controller
     }
     public function filtro($id)
     {
-        $versiones = AutomotorVersion::with('automotor_modelo')->where('automotor_modelo_id', $id)->get();
+        // $modelo = AutomotorModelo::with('automotor_marca');
+        $versiones = AutomotorVersion::where('automotor_modelo_id', $id)->with('automotor_modelo.automotor_marca')->get();
         return AutomotorVersionsResource::collection($versiones);
     }
     

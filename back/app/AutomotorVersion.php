@@ -17,9 +17,9 @@ class AutomotorVersion extends Model
     return $this->belongsTo(AutomotorModelo::class, 'automotor_modelo_id');
     }
     
-    public function automotor_marca() {
-    return $this->belongsTo(AutomotorMarca::class, 'automotor_marca_id');
-    }
+    // public function automotor_marca() {
+    // return $this->belongsTo(AutomotorMarca::class, 'automotor_marca_id');
+    // }
 
     public function automotor_anios()
     {
