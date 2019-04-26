@@ -70,7 +70,7 @@
                     </el-select>
                     <label class="mt-2">Marca</label>
                     <el-select
-                      v-model="riesgo_automotor.marca_id"
+                      v-model="riesgo_automotor.automotor_marca_id"
                       class="select-primary"
                       filterable
                     >
@@ -85,7 +85,7 @@
                     </el-select>
                     <label class="mt-2">Modelo</label>
                     <el-select
-                      v-model="automotor_modelo_id"
+                      v-model="riesgo_automotor.automotor_modelo_id"
                       class="select-primary"
                       filterable
                     >
@@ -100,7 +100,7 @@
                     </el-select>
                     <label class="mt-2">Version</label>
                     <el-select
-                      v-model="automotor_version_id"
+                      v-model="riesgo_automotor.automotor_version_id"
                       class="select-primary"
                       filterable
                     >
@@ -512,13 +512,18 @@ export default {
         this.tableData = r.data.data;
         this.buscarMarca();
         this.modalListo = true;
-        console.log('dlskjfdsf');
+      });
+    },
+    filtrarVersionesDeModelo() {
+      http.loadOne('/versiones/filtrar', this.modelo_id).then(r => {
+        this.tableData = r.data.data;
+        this.modeloSeleccionado = this.tableData[0];
+        this.modalListo = true;
       });
     },
     cargarCoberturas() {
       http.loadOne('cobertura/compania', this.compania_id).then(r => {
         this.coberturas = r.data.data;
-        console.log(this.coberturas);
       });
     }
   },
@@ -534,6 +539,7 @@ export default {
     automotor_modelos: {},
     coberturas: [],
     modelos: [],
+    versiones: {},
     tipo_vehiculos: [
       {
         value: 'Automotor',
