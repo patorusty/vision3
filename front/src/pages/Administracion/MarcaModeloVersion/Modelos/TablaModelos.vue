@@ -40,7 +40,8 @@
           class="animation-on-hover "
           type="primary"
           @click="showModal"
-        >Crear</base-button>
+          >Crear</base-button
+        >
       </div>
     </div>
     <el-table :data="queriedData">
@@ -54,10 +55,7 @@
         prop="nombre"
         :min-width="80"
       ></el-table-column>
-      <el-table-column
-        align="right"
-        label="Actions"
-      >
+      <el-table-column align="right" label="Actions">
         <div slot-scope="props">
           <el-tooltip
             content="Editar"
@@ -184,7 +182,6 @@ export default {
         this.tableData = r.data.data;
         this.buscarMarca();
         this.modalListo = true;
-        console.log('dlskjfdsf');
       });
     },
     vaciarForm() {

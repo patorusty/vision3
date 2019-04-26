@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:25%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:25%;">
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -69,12 +62,12 @@
                         class="select-info"
                       ></el-option>
                     </el-select> -->
-                    <p
+                    <!-- <p
                       class="errorSelect"
                       v-show="errorSelect"
                     >
                       Debe seleccionar un modelo
-                    </p>
+                    </p> -->
                   </div>
                 </div>
               </div>
@@ -85,13 +78,15 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-              >Guardar</base-button>
+                >Guardar</base-button
+              >
               <base-button
                 v-else
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="crear"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>

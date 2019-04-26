@@ -94,7 +94,7 @@
       </div>
     </card>
     <modal-automotor
-      v-show="isModalVisible"
+      v-if="isModalVisible"
       :riesgo_automotor="riesgo_automotor"
       :modo="modoEditar"
       :compania_id="poliza.compania_id"

@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:75%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:75%;">
         <card>
           <form>
             <div class="d-flex justify-content-between">
@@ -141,7 +134,9 @@
                     >
                     </base-input>
                     <div class="mt-4">
-                      <base-checkbox v-model="riesgo_automotor.okm">0km</base-checkbox>
+                      <base-checkbox v-model="riesgo_automotor.okm"
+                        >0km</base-checkbox
+                      >
                     </div>
                   </div>
                   <!-- TERCER COLUMNA -->
@@ -207,10 +202,7 @@
                       ></el-option>
                     </el-select>
                     <label class="mt-2">Color</label>
-                    <base-input
-                      v-model="riesgo_automotor.color"
-                      name="color"
-                    >
+                    <base-input v-model="riesgo_automotor.color" name="color">
                     </base-input>
                   </div>
                 </div>
@@ -231,7 +223,7 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <div v-if="riesgo_automotor.cobertura.todo_riesgo = 1">
+                    <div v-if="riesgo_automotor.cobertura.todo_riesgo == 1">
                       <base-input
                         class="mt-3"
                         label="Franquicia"
@@ -308,10 +300,9 @@
                 <span slot="label">
                   <i class="tim-icons icon-settings"></i>GNC
                 </span>
-                <base-checkbox
-                  class="mb-3"
-                  v-model="riesgo_automotor.gnc"
-                >Tiene GNC?</base-checkbox>
+                <base-checkbox class="mb-3" v-model="riesgo_automotor.gnc"
+                  >Tiene GNC?</base-checkbox
+                >
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
@@ -432,7 +423,8 @@
                 <base-checkbox
                   class="mb-3"
                   v-model="riesgo_automotor.acreedor_prendario"
-                >Tiene Acreedor Prendario?</base-checkbox>
+                  >Tiene Acreedor Prendario?</base-checkbox
+                >
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
@@ -454,10 +446,9 @@
               </tab-pane>
             </tabs>
             <div class="col-md-12">
-              <base-button
-                class="animation-on-hover center"
-                type="primary"
-              >Guardar</base-button>
+              <base-button class="animation-on-hover center" type="primary"
+                >Guardar</base-button
+              >
             </div>
           </form>
         </card>
