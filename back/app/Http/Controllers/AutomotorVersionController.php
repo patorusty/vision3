@@ -16,7 +16,7 @@ class AutomotorVersionController extends Controller
     }
     public function show($id)
     {
-        $automotor_version = AutomotorVersion::findOrFail($id);
+        $automotor_version = AutomotorVersion::with('automotor_anios')->find($id);
 
         return new AutomotorVersionsResource($automotor_version);
     }

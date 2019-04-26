@@ -55,19 +55,13 @@
                       size="large"
                     >
                       <el-option
-                        v-for="anio in anios"
+                        v-for="anio in version.automotor_anios"
                         :key="anio.id"
                         :value="anio.id"
                         :label="anio.anio"
                         class="select-info"
                       ></el-option>
                     </el-select> -->
-                    <!-- <p
-                      class="errorSelect"
-                      v-show="errorSelect"
-                    >
-                      Debe seleccionar un modelo
-                    </p> -->
                   </div>
                 </div>
               </div>
