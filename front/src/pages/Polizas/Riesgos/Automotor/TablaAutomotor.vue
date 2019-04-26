@@ -1,7 +1,10 @@
 <template>
   <div class="col-md-12">
     <card class="mt-4 ">
-      <div class="col-sm-12 row align-items-center" slot="header">
+      <div
+        class="col-sm-12 row align-items-center"
+        slot="header"
+      >
         <div class="col">
           <h4 class="d-inline text-primary ">DETALLE DEL RIESGO</h4>
         </div>
@@ -17,12 +20,14 @@
             >
             </el-table-column>
             <el-table-column
-              min-width="150"
-              label="Marca / Modelo / Version"
-              align="left"
-              prop="automotor_marca.nombre"
+              min-width="200"
+              label="marca"
             >
+              <div slot-scope="{ row }">
+                {{ row.automotor_marca.nombre }} {{ row.automotor_version.nombre }} {{ row.automotor_anio.anio }}
+              </div>
             </el-table-column>
+
             <el-table-column
               min-width="80"
               label="Patente"
@@ -31,7 +36,7 @@
             >
             </el-table-column>
             <el-table-column
-              min-width="80"
+              min-width="90"
               align="left"
               label="Suma Asegurada"
               prop="valor_total"
@@ -41,20 +46,13 @@
               min-width="80"
               align="left"
               label="Cobertura"
-              prop="cobertura_id"
-            >
-            </el-table-column>
-            <el-table-column
-              min-width="80"
-              align="left"
-              label="Franquicia"
-              prop="franquicia"
+              prop="cobertura.nombre"
             >
             </el-table-column>
             <el-table-column
               min-width="80"
               header-align="right"
-              align="left"
+              align="right"
               label="Actions"
             >
               <div slot-scope="props">
@@ -80,7 +78,12 @@
                   :open-delay="300"
                   placement="top"
                 >
-                  <base-button type="danger" icon size="sm" class="btn-link">
+                  <base-button
+                    type="danger"
+                    icon
+                    size="sm"
+                    class="btn-link"
+                  >
                     <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </el-tooltip>
@@ -137,27 +140,19 @@ export default {
   methods: {
     cargar() {
       http.loadOne(this.url, this.poliza.id).then(r => {
-        console.log(r.data.data);
         this.tableData = r.data.data;
       });
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);
-      // this.organizador = {
-      //   activo: true
-      // };
     },
     showModal() {
       this.vaciarForm();
-      // this.$validator.reset();
-      // this.errors.clear();
       this.isModalVisible = true;
     },
     closeModal() {
       this.isModalVisible = false;
       this.vaciarForm();
-      // this.$validator.reset();
-      // this.errors.clear();
     },
     editar(id) {
       this.showModal();

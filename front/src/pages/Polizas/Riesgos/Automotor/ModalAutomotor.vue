@@ -1,7 +1,14 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop style="width:75%;">
+    <div
+      class="modal-backdrop"
+      @keydown.esc="close"
+      @click="close"
+    >
+      <div
+        @click.stop
+        style="width:75%;"
+      >
         <card>
           <form>
             <div class="d-flex justify-content-between">
@@ -63,7 +70,7 @@
                     </el-select>
                     <label class="mt-2">Marca</label>
                     <el-select
-                      v-model="marca_id"
+                      v-model="riesgo_automotor.marca_id"
                       class="select-primary"
                       filterable
                     >
@@ -93,7 +100,7 @@
                     </el-select>
                     <label class="mt-2">Version</label>
                     <el-select
-                      v-model="automotot_version_id"
+                      v-model="automotor_version_id"
                       class="select-primary"
                       filterable
                     >
@@ -134,9 +141,7 @@
                     >
                     </base-input>
                     <div class="mt-4">
-                      <base-checkbox v-model="riesgo_automotor.okm"
-                        >0km</base-checkbox
-                      >
+                      <base-checkbox v-model="riesgo_automotor.okm">0km</base-checkbox>
                     </div>
                   </div>
                   <!-- TERCER COLUMNA -->
@@ -202,7 +207,10 @@
                       ></el-option>
                     </el-select>
                     <label class="mt-2">Color</label>
-                    <base-input v-model="riesgo_automotor.color" name="color">
+                    <base-input
+                      v-model="riesgo_automotor.color"
+                      name="color"
+                    >
                     </base-input>
                   </div>
                 </div>
@@ -223,13 +231,25 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <base-input
-                      class="mt-3"
-                      label="Franquicia"
-                      v-model="riesgo_automotor.franquicia"
-                      name="franquicia"
-                    >
-                    </base-input>
+                    <div v-if="riesgo_automotor.cobertura.todo_riesgo = 1">
+                      <base-input
+                        class="mt-3"
+                        label="Franquicia"
+                        v-model="riesgo_automotor.franquicia"
+                        name="franquicia"
+                      >
+                      </base-input>
+                    </div>
+                    <div v-else>
+                      <base-input
+                        disabled
+                        class="mt-3"
+                        label="Franquicia"
+                        v-model="riesgo_automotor.franquicia"
+                        name="franquicia"
+                      >
+                      </base-input>
+                    </div>
                   </div>
                   <div class="col-md-4">
                     <label>Ajuste</label>
@@ -247,13 +267,22 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <base-input
-                      class="mt-3"
-                      label="Equipo de Rastreo"
+
+                    <label class="mt-3">Equipo de Rastreo</label>
+                    <el-select
+                      filterable
+                      class="select-primary"
                       v-model="riesgo_automotor.equipo_rastreo"
                       name="equipo_rastreo"
                     >
-                    </base-input>
+                      <el-option
+                        v-for="equipo in equipo_rastros"
+                        :key="equipo.value"
+                        :label="equipo.label"
+                        :value="equipo.value"
+                        class="select-primary"
+                      ></el-option>
+                    </el-select>
                   </div>
                   <div class="col-md-4">
                     <base-input
@@ -279,9 +308,10 @@
                 <span slot="label">
                   <i class="tim-icons icon-settings"></i>GNC
                 </span>
-                <base-checkbox class="mb-3" v-model="riesgo_automotor.gnc"
-                  >Tiene GNC?</base-checkbox
-                >
+                <base-checkbox
+                  class="mb-3"
+                  v-model="riesgo_automotor.gnc"
+                >Tiene GNC?</base-checkbox>
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
@@ -360,35 +390,35 @@
                     <base-input
                       class="mt-3"
                       label="Medida Cubiertas"
-                      v-model="riesgo_automotor.cubiertas_medidas"
-                      name="cubiertas_medidas"
+                      v-model="riesgo_automotor.cubiertas_medida"
+                      name="cubiertas_medida"
                     >
                     </base-input>
                   </div>
                   <div class="col-md-4">
                     <base-input
                       label="Accesorio Nro 1"
-                      v-model="riesgo_automotor.accesorio_1"
+                      v-model="riesgo_automotor.accesorio_01"
                       name="accesorio_1"
                     >
                     </base-input>
                     <base-input
-                      label="Valor Accesorio 1"
-                      v-model="riesgo_automotor.valor_accesorio_1"
-                      name="valor_accesorio_1"
+                      label="Accesorio Nro 2"
+                      v-model="riesgo_automotor.accesorio_02"
+                      name="accesorio_2"
                     >
                     </base-input>
                   </div>
                   <div class="col-md-4">
                     <base-input
-                      label="Accesorio Nro 2"
-                      v-model="riesgo_automotor.accesorio_2"
-                      name="accesorio_2"
+                      label="Valor Accesorio 1"
+                      v-model="riesgo_automotor.valor_accesorio_01"
+                      name="valor_accesorio_1"
                     >
                     </base-input>
                     <base-input
                       label="Valor Accesorio 2"
-                      v-model="riesgo_automotor.valor_accesorio_2"
+                      v-model="riesgo_automotor.valor_accesorio_02"
                       name="valor_accesorio_2"
                     >
                     </base-input>
@@ -402,13 +432,12 @@
                 <base-checkbox
                   class="mb-3"
                   v-model="riesgo_automotor.acreedor_prendario"
-                  >Tiene Acreedor Prendario?</base-checkbox
-                >
+                >Tiene Acreedor Prendario?</base-checkbox>
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
                       label="Razon Social"
-                      v-model="riesgo_automotor.acreedor_rc"
+                      v-model="riesgo_automotor.acreedor_rs"
                       name="acreedor_rc"
                     >
                     </base-input>
@@ -425,9 +454,10 @@
               </tab-pane>
             </tabs>
             <div class="col-md-12">
-              <base-button class="animation-on-hover center" type="primary"
-                >Guardar</base-button
-              >
+              <base-button
+                class="animation-on-hover center"
+                type="primary"
+              >Guardar</base-button>
             </div>
           </form>
         </card>
@@ -674,6 +704,24 @@ export default {
       {
         value: '30%',
         label: '30%'
+      }
+    ],
+    equipo_rastros: [
+      {
+        value: 'NO',
+        label: 'NO'
+      },
+      {
+        value: 'LO JACK',
+        label: 'LO JACK'
+      },
+      {
+        value: 'ITURAN',
+        label: 'ITURAN'
+      },
+      {
+        value: 'OTRO',
+        label: 'OTRO'
       }
     ]
   })

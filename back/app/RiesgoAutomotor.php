@@ -7,6 +7,7 @@ use App\AutomotorAnio;
 use App\AutomotorMarca;
 use App\AutomotorModelo;
 use App\AutomotorVersion;
+use App\Coberturas;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,4 +34,8 @@ class RiesgoAutomotor extends Model
      public function automotor_version() {
         return $this->belongsTo(AutomotorVersion::class, 'automotor_version_id');
      }
+
+     public function cobertura() {
+         return $this->belongsTo(Coberturas::class, 'cobertura_id');
+   }
 }

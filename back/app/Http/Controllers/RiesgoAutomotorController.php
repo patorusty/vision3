@@ -107,7 +107,7 @@ class RiesgoAutomotorController extends Controller
 
     public function indexFiltrado($poliza_id)
     {
-        $riesgo_automotor = RiesgoAutomotor::with(['automotor_marca', 'automotor_modelo', 'automotor_version'])->where('poliza_id', $poliza_id)->get();
+        $riesgo_automotor = RiesgoAutomotor::with(['automotor_marca', 'automotor_modelo', 'automotor_version', 'automotor_anio', 'cobertura'])->where('poliza_id', $poliza_id)->get();
 
 
         return RiesgoAutomotorsResource::collection($riesgo_automotor);
