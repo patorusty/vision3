@@ -1,503 +1,457 @@
 <template>
   <div>
-    <form @submit.prevent="crearPoliza">
-      <div class="page-header no-margin-bottom">
-        <div class="container-fluid">
-          <div class="row">
-            <h4 class="text-primary pl-3">CREAR POLIZA </h4>
-          </div>
+    <div class="page-header no-margin-bottom">
+      <div class="container-fluid">
+        <div class="row">
+          <h4 class="text-primary pl-3">POLIZA /</h4>
+          <h4 class="">{{ poliza.numero }}</h4>
         </div>
       </div>
-      <div class="container-fluid">
-        <div class="block">
-          <div class="block-body">
-            <div class="row">
-              <div class="col-md-12">
-                <card class="stacked-form">
-                  <form @submit.prevent>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label
-                              for="cliente"
-                              class="control-label"
-                            >Cliente</label>
-                            <select
-                              name='cliente_id'
-                              class="form-control form-control-sm mb-1"
-                              value="cliente_id"
-                              v-model="poliza.cliente_id"
-                            >
-                              <option
-                                class="form-control form-control-sm mb-1"
-                                v-for="cliente in clientes"
-                                :key="cliente.id"
-                                v-bind:value="cliente.id"
-                              >{{cliente.apellido}}
-                                {{cliente.nombre}} //DNI:{{cliente.nro_dni}}</option>
-                            </select>
-                            <label
-                              for="riesgo"
-                              class=" control-label"
-                            >Riesgo</label>
-                            <select
-                              name='tipo_riesgo_id'
-                              class="form-control form-control-sm select2"
-                              value="tipo_riesgo_id"
-                              v-model="poliza.tipo_riesgo_id"
-                            >
-                              <option
-                                v-for="tipo_riesgo in tipo_riesgos"
-                                :key="tipo_riesgo.id"
-                                v-bind:value="tipo_riesgo.id"
-                              >{{tipo_riesgo.nombre}}</option>
-                            </select>
-                            <label
-                              for="compania"
-                              class=" control-label"
-                            >Compañia</label>
-                            <select
-                              name='compania_id'
-                              class="form-control form-control-sm select2"
-                              value="compania_id"
-                              id="compania_id"
-                              v-model="poliza.compania_id"
-                              @change='cargarCodigos_Productor(poliza.compania_id)'
-                            >
-                              <option
-                                v-for="compania in companias"
-                                :key="compania.id"
-                                v-bind:value="compania.id"
-                              >{{compania.nombre}}</option>
-                            </select>
-
-                          </div>
-                          <div class="col-md-6">
-                            <label
-                              for="codigo_productor_id"
-                              class=" control-label"
-                            >Codigo Productor</label>
-                            <select
-                              name='codigo_productor_id'
-                              class="form-control form-control-sm select2"
-                              value="codigo_productor_id"
-                              v-model="poliza.codigo_productor_id"
-                            >
-                              <option
-                                v-for="codigo_productor in codigo_productores"
-                                :key="codigo_productor.id"
-                                v-bind:value="codigo_productor.id"
-                              >{{codigo_productor.productores.apellido}}
-                                {{codigo_productor.productores.nombre}}
-                                ((Cod.{{codigo_productor.codigo_productor}}))</option>
-                            </select>
-                            <label
-                              for="numero"
-                              class=" control-label"
-                            >Poliza N:</label>
-                            <input
-                              type="text"
-                              class="form-control form-control-sm"
-                              id="numero"
-                              name="numero"
-                              v-model="poliza.numero"
-                              placeholder=""
-                            >
-
-                            <label
-                              for="numero_solicitud"
-                              class=""
-                            >Nro de Solicitud:</label>
-                            <p>{{poliza.numero_solicitud}}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="row">
-                          <div class="col-md-4">
-                            <label
-                              for="tipo_vigencia_id"
-                              class=" control-label"
-                            >Vigencia</label>
-                            <select
-                              name='tipo_vigencia_id'
-                              class="form-control form-control-sm "
-                              value="tipo_vigencia_id"
-                              v-model="poliza.tipo_vigencia_id"
-                              @change='sumarMes(poliza.tipo_vigencia_id)'
-                            >
-                              <option
-                                v-for="tipo_vigencia in tipo_vigencias"
-                                :key="tipo_vigencia.id"
-                                v-bind:value="tipo_vigencia.id"
-                              >{{tipo_vigencia.vigencia}}</option>
-                            </select>
-                            <label
-                              for="vigencia_desde"
-                              class=" control-label"
-                            >Desde:</label>
-                            <input
-                              type="date"
-                              class="form-control form-control-sm"
-                              id="vigencia_desde"
-                              name="vigencia_desde"
-                              v-model="poliza.vigencia_desde"
-                            >
-                            <label
-                              for="vigencia_hasta"
-                              class=" control-label"
-                            >Hasta:</label>
-                            <input
-                              type="date"
-                              class="form-control form-control-sm"
-                              id="vigencia_hasta"
-                              name="vigencia_hasta"
-                              v-model="poliza.vigencia_hasta"
-                            >
-                          </div>
-
-                          <div class="col-md-4">
-                            <label
-                              for="fecha_solicitud"
-                              class=" control-label"
-                            >Fecha de Solicitud:</label>
-                            <input
-                              type="date"
-                              class="form-control form-control-sm"
-                              id="fecha_solicitud"
-                              name="fecha_solicitud"
-                              v-model="poliza.fecha_solicitud"
-                            >
-                            <label
-                              for="fecha_emision"
-                              class=" control-label"
-                            >Emision:</label>
-                            <input
-                              type="date"
-                              class="form-control form-control-sm"
-                              id="fecha_emision"
-                              name="fecha_emision"
-                              v-model="poliza.fecha_emision"
-                            >
-                            <label
-                              for="fecha_recepcion"
-                              class=" control-label"
-                            >Recepcion:</label>
-                            <input
-                              type="date"
-                              class="form-control form-control-sm"
-                              id="fecha_recepcion"
-                              name="fecha_recepcion"
-                              v-model="poliza.fecha_recepcion"
-                            >
-
-                          </div>
-
-                          <div class="col-md-4">
-                            <label
-                              for="fecha_entrega_original"
-                              class=" control-label"
-                            >Entrega de Original:</label>
-                            <input
-                              type="date"
-                              class="form-control form-control-sm"
-                              id="fecha_entrega_original"
-                              name="fecha_entrega_original"
-                              v-model="poliza.fecha_entrega_original"
-                            >
-                            <label
-                              for="fecha_entrega_email"
-                              class=" control-label"
-                            >Envio x Email:</label>
-                            <input
-                              type="date"
-                              class="form-control form-control-sm"
-                              id="fecha_entrega_email"
-                              name="fecha_entrega_email"
-                              v-model="poliza.fecha_entrega_email"
-                            >
-                            <label
-                              for="fecha_entrega_correo"
-                              class=" control-label"
-                            >Envio x Correo:</label>
-                            <input
-                              type="date"
-                              class="form-control form-control-sm"
-                              id="fecha_entrega_correo"
-                              name="fecha_entrega_correo"
-                              v-model="poliza.fecha_entrega_correo"
-                            >
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </card>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row ">
-          <div class="col-md-4">
-            <div class="card p-3">
-              <div class="row">
-                <div class="col-md-6">
-                  <label
-                    for="premio"
-                    class="control-label"
-                  >Premio:</label>
-                  <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="premio"
-                    name="premio"
-                    v-model="poliza.premio"
-                  >
-                </div>
-                <div class="col-md-6">
-                  <label
-                    for="prima"
-                    class="control-label"
-                  >Prima:</label>
-                  <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="prima"
-                    name="prima"
-                    v-model="poliza.prima"
-                  >
-                </div>
-              </div>
-              <div class="row">
-
-                <div class="col-md-6">
-                  <label
-                    for="prima"
-                    class="control-label"
-                  >Comision:</label>
-                  <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="comision"
-                    value="0"
-                    name="comision"
-                    v-model="poliza.comision"
-                  >
-                </div>
-                <div class="col-md-6">
-                  <label
-                    for="descuento"
-                    class="control-label"
-                  >Descuento:</label>
-                  <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="descuento"
-                    name="descuento"
-                    v-model="poliza.descuento"
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 ">
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                >Crear</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <div class="card p-3">
-              <div class="row">
-                <div class="col-6">
-                  <label
-                    for="medio_pago"
-                    class=" control-label"
-                  >Medio de Pago:</label>
-                  <select
-                    name='medio_pago'
-                    class="form-control form-control-sm "
-                    v-model="poliza.medio_pago"
-                  >
-                    <option value='TC'>TARJETA DE CREDITO</option>
-                    <option value='DC'>DEBITO EN CUENTA</option>
-                    <option value='EFT'>PAGO EFECTIVO / PAGO FACIL</option>
-                  </select>
+    </div>
+    <div>
+      <div class="block">
+        <div class="block-body">
+          <div class="row">
+            <div class="col-md-12">
+              <form @submit.prevent="crearPoliza">
+                <card>
                   <div class="row">
-                    <div class="col-md-8">
-                      <label
-                        for="plan_pago"
-                        class=" control-label"
-                      >Plan de Pago:</label>
-                      <select
-                        name='plan_pago'
-                        class="form-control form-control-sm"
-                        v-model="poliza.plan_pago"
-                      >
-                        <option value='MENSUAL'>MENSUAL</option>
-                        <option value='TRIMESTRAL'>TRIMESTRAL</option>
-                        <option value='SEMESTRAL'>SEMESTRAL</option>
-                        <option value='TOTAL'>TOTAL</option>
-                      </select>
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Cliente</label>
+                          <el-select
+                            filterable
+                            name="cliente_id"
+                            class="select-primary"
+                            value="cliente_id"
+                            v-model="poliza.cliente_id"
+                          >
+                            <el-option
+                              v-for="cliente in clientes"
+                              class="select-primary"
+                              :key="cliente.id"
+                              :value="cliente.id"
+                              :label="cliente.apellido + ' ' + cliente.nombre + ' | DNI: ' + cliente.nro_dni"
+                            ></el-option>
+                          </el-select>
+                          <label>Tipo Riesgo</label>
+                          <el-select
+                            filterable
+                            name="tipo_riesgo"
+                            class="select-primary"
+                            value="tipo_riesgo_id"
+                            v-model="poliza.tipo_riesgo_id"
+                          >
+                            <el-option
+                              v-for="tipo_riesgo in tipo_riesgos"
+                              class="select-primary"
+                              :key="tipo_riesgo.id"
+                              :value="tipo_riesgo.id"
+                              :label="tipo_riesgo.nombre"
+                            > {{tipo_riesgo.nombre}}
+                            </el-option>
+                          </el-select>
+                          <label>Compañia</label>
+                          <el-select
+                            name="compania"
+                            class="select-primary"
+                            value="compania_id"
+                            v-model="poliza.compania_id"
+                            @change="
+                                cargarCodigos_Productor(poliza.compania_id)
+                              "
+                          >
+                            <el-option
+                              class="select-primary"
+                              v-for="compania in companias"
+                              :key="compania.id"
+                              :value="compania.id"
+                              :label="compania.nombre"
+                            >{{ compania.nombre }}</el-option>
+                          </el-select>
+                        </div>
+                        <div class="col-md-6">
+                          <label>Codigo Productor</label>
+                          <el-select
+                            name="codigo_productor"
+                            class="select-primary"
+                            value="codigo_productor_id"
+                            v-model="poliza.codigo_productor_id"
+                          >
+                            <el-option
+                              class="select-primary"
+                              v-for="codigo_productor in codigo_productores"
+                              :key="codigo_productor.id"
+                              :value="codigo_productor.id"
+                              :label="codigo_productor.productores.apellido + ' ' + codigo_productor.productores.nombre + ' | Cod. (' + codigo_productor.codigo_productor + ')'"
+                            ></el-option>
+                          </el-select>
+                          <label>Poliza N:</label>
+                          <base-input
+                            type="text"
+                            name="numero"
+                            v-model="poliza.numero"
+                            placeholder=""
+                          ></base-input>
+                          <label for="numero_solicitud">Nro de Solicitud:</label>
+                          <p class="text-primary">{{ poliza.numero_solicitud }}</p>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-md-4">
-                      <label
-                        for="cantidad_cuotas"
-                        class=" control-label"
-                      >Cant. Cuotas:</label>
-                      <input
-                        type="text"
-                        class=" form-control form-control-sm"
-                        id="cantidad_cuotas"
-                        name="cantidad_cuotas"
-                        v-model="poliza.cantidad_cuotas"
-                      >
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label>Vigencia</label>
+                          <el-select
+                            name="tipo_vigencia"
+                            class="select-primary"
+                            value="tipo_vigencia_id"
+                            v-model="poliza.tipo_vigencia_id"
+                          >
+                            <el-option
+                              class="select-primary"
+                              v-for="tipo_vigencia in tipo_vigencias"
+                              :key="tipo_vigencia.id"
+                              :value="tipo_vigencia.id"
+                              :label="tipo_vigencia.vigencia"
+                            ></el-option>
+                          </el-select>
+                          <label>Desde</label>
+                          <base-input class="mb-0">
+                            <el-date-picker
+                              v-model="poliza.vigencia_desde"
+                              type="date"
+                              format="d/M/yyyy"
+                              value-format="yyyy-MM-dd"
+                            ></el-date-picker>
+                          </base-input>
+                          <label>Hasta:</label>
+                          <base-input>
+                            <el-date-picker
+                              v-model="poliza.vigencia_hasta"
+                              type="date"
+                              format="d/M/yyyy"
+                              value-format="yyyy-MM-dd"
+                            ></el-date-picker>
+                          </base-input>
+
+                        </div>
+
+                        <div class="col-md-4">
+                          <label>Solicitud:</label>
+                          <base-input class="mb-0">
+                            <el-date-picker
+                              v-model="poliza.fecha_solicitud"
+                              type="date"
+                              format="d/M/yyyy"
+                              value-format="yyyy-MM-dd"
+                            ></el-date-picker>
+                          </base-input>
+                          <label>Emision:</label>
+                          <base-input class="mb-0">
+                            <el-date-picker
+                              v-model="poliza.fecha_emision"
+                              type="date"
+                              format="d/M/yyyy"
+                              value-format="yyyy-MM-dd"
+                            ></el-date-picker>
+                          </base-input>
+                          <label>Recepcion:</label>
+                          <base-input class="mb-0">
+                            <el-date-picker
+                              v-model="poliza.fecha_recepcion"
+                              type="date"
+                              format="d/M/yyyy"
+                              value-format="yyyy-MM-dd"
+                            ></el-date-picker>
+                          </base-input>
+
+                        </div>
+
+                        <div class="col-md-4">
+                          <label>Entrega Original:</label>
+                          <base-input class="mb-0">
+                            <el-date-picker
+                              v-model="poliza.entrega_original"
+                              type="date"
+                              format="d/M/yyyy"
+                              value-format="yyyy-MM-dd"
+                            ></el-date-picker>
+                          </base-input>
+                          <label>Enviado x Email:</label>
+                          <base-input class="mb-0">
+                            <el-date-picker
+                              v-model="poliza.entrega_email"
+                              type="date"
+                              format="d/M/yyyy"
+                              value-format="yyyy-MM-dd"
+                            ></el-date-picker>
+                          </base-input>
+                          <label>Entrega Correo:</label>
+                          <base-input class="mb-0">
+                            <el-date-picker
+                              v-model="poliza.fecha_entrega_correo"
+                              type="date"
+                              format="d/M/yyyy"
+                              value-format="yyyy-MM-dd"
+                            ></el-date-picker>
+                          </base-input>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <label
-                    for="detalle_medio_pago"
-                    class="control-label"
-                  >Detalle:</label>
-                  <textarea
-                    class="form-control form-control"
-                    rows="3"
-                    id="detalle_medio_pago"
-                    name='detalle_medio_pago'
-                    v-model="poliza.detalle_medio_pago"
-                  ></textarea>
-                </div>
-              </div>
+                  <div class="row mt-4">
+                    <div class="col-md-3">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Premio:</label>
+                          <base-input
+                            type="text"
+                            v-model="poliza.premio"
+                            placeholder=""
+                          ></base-input>
+                        </div>
+                        <div class="col-md-6">
+                          <label>Prima:</label>
+                          <base-input
+                            type="text"
+                            v-model="poliza.prima"
+                            placeholder=""
+                          ></base-input>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Comision:</label>
+                          <base-input
+                            type="text"
+                            v-model="poliza.comision"
+                            placeholder=""
+                          ></base-input>
+                        </div>
+                        <div class="col-md-6">
+                          <label>Descuento:</label>
+                          <base-input
+                            type="text"
+                            v-model="poliza.descuento"
+                            placeholder=""
+                          ></base-input>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label>Medio de Pago:</label>
+                      <el-select
+                        filterable
+                        name="medio_pago"
+                        class="select-primary"
+                        v-model="poliza.medio_pago"
+                      >
+                        <el-option
+                          v-for="medio_pago in medio_pagos"
+                          :key="medio_pago.value"
+                          :label="medio_pago.label"
+                          :value="medio_pago.value"
+                          class="select-primary"
+                        >
+                        </el-option>
+                      </el-select>
+                      <div class="row">
+                        <div class="col-md-8 mt-2">
+                          <label>Plan de Pago:</label>
+                          <el-select
+                            filterable
+                            name="medio_pago"
+                            class="select-primary"
+                            v-model="poliza.plan_pago"
+                          >
+                            <el-option
+                              v-for="plan_pago in plan_pagos"
+                              :key="plan_pago.value"
+                              :label="plan_pago.label"
+                              :value="plan_pago.value"
+                              class="select-primary"
+                            >
+                            </el-option>
+                          </el-select>
+                        </div>
+                        <div class="col-md-4 mt-2">
+                          <label>Cuotas:</label>
+                          <base-input
+                            type="text"
+                            v-model="poliza.cantidad_cuotas"
+                            placeholder=""
+                          ></base-input>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <label>Detalle:</label>
+                      <textarea
+                        class="form-control form-control"
+                        rows="6"
+                        id="detalle_medio_pago"
+                        name="detalle_medio_pago"
+                        v-model="poliza.detalle_medio_pago"
+                      ></textarea>
+                    </div>
+                    <div class="col-md-3 d-flex justify-content-end align-items-end">
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                      >Crear</button>
+                    </div>
+                  </div>
+                </card>
+              </form>
             </div>
           </div>
         </div>
       </div>
-    </form>
+    </div>
   </div>
-
 </template>
 <script>
-import axios from 'axios';
-import { Table, TableColumn, Select, Option } from 'element-ui';
-import { BasePagination } from 'src/components';
-import { BaseAlert } from 'src/components';
+import { Table, TableColumn, Select, Option, DatePicker } from 'element-ui';
+import { mixin } from './../../mixins/mixin.js';
+import { EventBus } from './../../../src/main.js';
+import http from '../../../../front/src/API/http-request.js';
+import TablaRiesgoAutomotor from './Riesgos/Automotor/TablaAutomotor';
+import { BaseSwitch, ImageUpload } from 'src/components/index';
 
 export default {
-  components: {},
+  mixins: [mixin],
+  components: {
+    [Table.name]: Table,
+    [TableColumn.name]: TableColumn,
+    ImageUpload,
+    BaseSwitch,
+    TablaRiesgoAutomotor,
+    [Select.name]: Select,
+    [Option.name]: Option,
+    [DatePicker.name]: DatePicker
+  },
   data() {
     return {
-      poliza: {
-        cliente_id: '',
-        tipo_riesgo_id: '',
-        compania_id: '',
-        codigo_productor_id: '',
-        numero: '',
-        tipo_vigencia_id: '',
-        vigencia_desde: new Date().toISOString().slice(0, 10),
-        vigencia_hasta: '',
-        numero_solicitud: '',
-        estado_poliza_id: 1,
-        fecha_solicitud: new Date().toISOString().slice(0, 10),
-        fecha_emision: '',
-        fecha_recepcion: '',
-        fecha_entrega_original: '',
-        fecha_entrega_email: '',
-        fecha_entrega_correo: '',
-        premio: '',
-        prima: '',
-        comision: '0',
-        descuento: '0',
-        medio_pago: '',
-        plan_pago: '',
-        cantidad_cuotas: '12',
-        detalle_medio_pago: ''
-      },
-      //   cliente: {},
+      poliza: {},
       clientes: {},
       companias: {},
-      compania: {},
       tipo_riesgos: {},
       codigo_productores: {},
       tipo_vigencias: {},
-      codigo_productor: {}
+      plan_pagos: [
+        {
+          value: 'MENSUAL',
+          label: 'MENSUAL'
+        },
+        {
+          value: 'TRIMESTRAL',
+          label: 'TRIMESTRAL'
+        },
+        {
+          value: 'SEMESTRAL',
+          label: 'SEMESTRAL'
+        },
+        {
+          value: 'ANUAL',
+          label: 'ANUAL'
+        },
+        {
+          value: 'TOTAL',
+          label: 'TOTAL'
+        }
+      ],
+      medio_pagos: [
+        {
+          value: 'TARJETA DE CREDITO',
+          label: 'TARJETA DE CREDITO'
+        },
+        {
+          value: 'DEBITO EN CUENTA',
+          label: 'DEBITO EN CUENTA'
+        },
+        {
+          value: 'RAPIPAGO / PAGOFACIL',
+          label: 'RAPIPAGO / PAGOFACIL'
+        }
+      ],
+      dataLoaded: false
     };
   },
   methods: {
-    sumarMes(mes) {
-      var mes;
+    // sumarMes(mes) {
+    //   var mes;
 
-      switch (this.poliza.tipo_vigencia_id) {
-        case 6:
-          var mes = 12;
-          break;
-        case 5:
-          var mes = 6;
-          break;
-        case 4:
-          var mes = 4;
-          break;
-        case 3:
-          var mes = 3;
-          break;
-        case 2:
-          var mes = 2;
-          break;
-        case 1:
-          var mes = 1;
-          break;
-      }
-      this.poliza.vigencia_hasta = addMonths(this.poliza.vigencia_desde, mes)
-        .toISOString()
-        .slice(0, 10);
-    },
+    //   switch (this.poliza.tipo_vigencia_id) {
+    //     case 6:
+    //       var mes = 12;
+    //       break;
+    //     case 5:
+    //       var mes = 6;
+    //       break;
+    //     case 4:
+    //       var mes = 4;
+    //       break;
+    //     case 3:
+    //       var mes = 3;
+    //       break;
+    //     case 2:
+    //       var mes = 2;
+    //       break;
+    //     case 1:
+    //       var mes = 1;
+    //       break;
+    //   }
+    //   this.poliza.vigencia_hasta = addMonths(this.poliza.vigencia_desde, mes)
+    //     .toISOString()
+    //     .slice(0, 10);
+    // },
 
     cargarUltimoNumeroSolicitud() {
-      axios.get('http://127.0.0.1:8000/api/numerosolicitud').then(response => {
+      http.load('numerosolicitud').then(response => {
+        console.log(response.data.data[0].numero_solicitud);
         this.poliza.numero_solicitud =
           response.data.data[0].numero_solicitud + 1;
       });
     },
     crearPoliza() {
       this.poliza.numero_solicitud = this.poliza.numero_solicitud;
-
-      axios
-        .post('http://127.0.0.1:8000/api/polizas', this.poliza)
+      http
+        .create('polizas', this.poliza)
         .then(() => {
           this.poliza = {};
-          $router.push('http://127.0.0.1:8000/polizas');
+          this.$router.push({
+            path: `/polizas/${this.poliza.numero_solicitud}/edit`
+            // params: { numero_solicitud: this.poliza.numero_solicitud }
+          });
         })
         .catch(e => console.log(e));
     },
     cargarClientes() {
-      axios.get('http://127.0.0.1:8000/api/clientes').then(response => {
+      http.load('clientes').then(response => {
         this.clientes = response.data.data;
       });
     },
     cargarTipo_Riesgos() {
-      axios.get('http://127.0.0.1:8000/api/tiporiesgo').then(response => {
+      http.load('tiporiesgo').then(response => {
         this.tipo_riesgos = response.data.data;
       });
     },
     cargarTipo_Vigencias() {
-      axios.get('http://127.0.0.1:8000/api/tipovigencia').then(response => {
+      http.load('tipovigencia').then(response => {
         this.tipo_vigencias = response.data.data;
       });
     },
     cargarCompanias() {
-      axios
-        .get('http://127.0.0.1:8000/api/administracion/companias')
-        .then(response => {
-          this.companias = response.data.data;
-        });
+      http.load('administracion/companias').then(response => {
+        this.companias = response.data.data;
+      });
     },
     cargarCodigos_Productor(id) {
-      axios
-        .get('http://127.0.0.1:8000/api/codigoproductor/compania/' + id)
+      http
+        .loadOne('codigoproductor/compania', id)
         .then(response => {
           this.codigo_productores = response.data.data;
         })
@@ -508,12 +462,12 @@ export default {
   },
 
   created() {
+    this.cargarUltimoNumeroSolicitud();
     this.cargarClientes();
     this.cargarTipo_Riesgos();
     this.cargarCompanias();
     this.cargarTipo_Vigencias();
-    this.cargarUltimoNumeroSolicitud();
-    this.sumarMes();
+    // this.sumarMes();
   }
 };
 </script>

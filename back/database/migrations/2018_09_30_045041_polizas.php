@@ -42,7 +42,6 @@ class Polizas extends Migration
             $table->string('comision')->nullable();
             $table->string('descuento')->nullable();
             $table->string('archivada')->nullable();
-            $table->boolean('flota')->nullable();
             $table->timestamps();
         });
     }
