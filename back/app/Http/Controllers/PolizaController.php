@@ -79,7 +79,6 @@ class PolizaController extends Controller
             'comision' => $request->input('comision'),
             'descuento' => $request->input('descuento'),
             'archivada' => $request->input('archivada'),
-            'flota' => $request->input('flota'),
         ]);
 
         return (['message' => 'guardado']);
@@ -148,7 +147,6 @@ class PolizaController extends Controller
             'comision' => $request->input('comision'),
             'descuento' => $request->input('descuento'),
             'archivada' => $request->input('archivada'),
-            'flota' => $request->input('flota'),
         ]);
     }
 

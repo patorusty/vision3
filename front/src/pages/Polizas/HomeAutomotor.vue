@@ -18,7 +18,7 @@
               </base-input>
               <router-link
                 slot="header"
-                to="/polizas/automotor/create"
+                to="/polizas/create"
               >
                 <base-button
                   class="animation-on-hover pull-right"
@@ -98,7 +98,7 @@
                     :open-delay="300"
                     placement="top"
                   >
-                    <router-link :to="{ name: 'Editar Poliza Automotor', params: { numero_solicitud: props.row.numero_solicitud }}">
+                    <router-link :to="{ name: 'Editar Poliza', params: { numero_solicitud: props.row.numero_solicitud }}">
                       <base-button
                         class="edit btn-link"
                         type="warning"
