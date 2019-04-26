@@ -411,7 +411,6 @@ export default {
 
     cargarUltimoNumeroSolicitud() {
       http.load('numerosolicitud').then(response => {
-        console.log(response.data.data[0].numero_solicitud);
         this.poliza.numero_solicitud =
           response.data.data[0].numero_solicitud + 1;
       });

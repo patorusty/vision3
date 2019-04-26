@@ -93,9 +93,9 @@ class PolizaController extends Controller
      */
     public function show($numero_solicitud)
     {
-        $poliza = Polizas::where('numero_solicitud', $numero_solicitud)->get();
+        $numero_solicitud = Polizas::where('numero_solicitud', $numero_solicitud)->get();
 
-        return new PolizasResource($poliza);
+        return new PolizasResource($numero_solicitud);
     }
 
     /**
