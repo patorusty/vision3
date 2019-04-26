@@ -27,17 +27,6 @@ class AutomotorModeloController extends Controller
         return AutomotorModelosResource::collection($modelos);
     }
 
-    public function prueba($id)
-    {
-        $autos = DB::table('automotor_marcas')
-        ->join('automotor_modelos', 'automotor_modelos.automotor_marca_id', '=', 'automotor_marcas.id')
-        ->join('automotor_versions', 'automotor_versions.automotor_modelo_id', '=', 'automotor_modelos.id')
-        ->where('automotor_marcas.id', '=', $id)
-        ->select('automotor_modelos.*')
-        ->get();
-        dd($autos);
-    }
-
     public function store(Request $request)
     {
         $this->validate($request, []);

@@ -79,11 +79,6 @@
         prop="nombre"
         :min-width="80"
       ></el-table-column>
-      <el-table-column
-        label="Años"
-        prop='v-for="anios.anio in automotor_anios" '
-        :min-width="80"
-      ></el-table-column>
       <el-table-column align="right" label="Actions">
         <div slot-scope="props">
           <el-tooltip
@@ -198,7 +193,6 @@ export default {
       modeloSeleccionado: {},
       marcaSeleccionada: {},
       modalListo: false,
-      anios: ''
     };
   },
   methods: {
@@ -224,13 +218,6 @@ export default {
       http.loadOne('/versiones/filtrar', this.modelo_id).then(r => {
         this.tableData = r.data.data;
         this.modeloSeleccionado = this.tableData[0];
-        this.tableData.forEach(version => {
-          // console.log(version.automotor_anios);
-          version.automotor_anios
-          // version.automotor_anios.forEach(anios => {
-          // });
-          // this.anios = element.automotor_anios.anios.join();
-        });
         this.modalListo = true;
       });
     },
@@ -248,7 +235,6 @@ export default {
       this.isModalVisible = false;
     },
     editar(url, id) {
-      EventBus.$emit('filtrarModeloPorMarca', this.marca_id);
       this.showModal();
       this.modoEditar = true;
       http.loadOne(this.url, id).then(r => {
