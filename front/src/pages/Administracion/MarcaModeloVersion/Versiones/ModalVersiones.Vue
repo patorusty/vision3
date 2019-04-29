@@ -43,25 +43,22 @@
                     ></base-input>
                   </div>
                   <div class="mb-3">
-                    <!-- <el-select
+                    <el-select
                       multiple
-                      class="select-info selectpicker"
-                      v-model="version.automotor_anio_id"
-                      :label="version.automotor_anio_id"
-                      @change="touchSelect"
+                      class="select-primary selectpicker"
                       placeholder="Seleccionar Años"
                       filterable
                       collapse-tags
                       size="large"
                     >
                       <el-option
-                        v-for="anio in version.automotor_anios"
+                        v-for="anio in anios"
                         :key="anio.id"
                         :value="anio.id"
                         :label="anio.anio"
                         class="select-info"
                       ></el-option>
-                    </el-select> -->
+                    </el-select>
                   </div>
                 </div>
               </div>
@@ -115,7 +112,8 @@ export default {
       versionUsed: false,
       usedError: '',
       marcas: {},
-      modelo: {}
+      modelo: {},
+      anios: []
     };
   },
   components: {
@@ -126,6 +124,11 @@ export default {
     [Select.name]: Select
   },
   methods: {
+    cargarAnios() {
+      http.load('anios').then(r => {
+        this.anios = r.data.data;
+      });
+    },
     close() {
       this.$emit('close');
       this.$validator.reset();
@@ -188,7 +191,9 @@ export default {
       this.errorSelect = false;
     }
   },
-  created() {},
+  created() {
+    this.cargarAnios();
+  },
   mounted() {}
 };
 </script>

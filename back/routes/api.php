@@ -32,6 +32,7 @@ Route::Resource('/cobertura', 'CoberturaController');
 Route::Resource('/tiporiesgo', 'TipoRiesgoController');
 Route::Resource('/tipovigencia', 'TipoVigenciaController');
 Route::Resource('/polizas', 'PolizaController');
+Route::Resource('/anios', 'AnioController');
 Route::get('/numerosolicitud', 'PolizaController@numeroDeSolicitud');
 Route::get('/codigoorganizador/compania/{id}', 'CodigoOrganizadorController@indexFiltrado');
 Route::get('/codigoproductor/compania/{id}', 'CodigoProductorController@indexFiltrado');

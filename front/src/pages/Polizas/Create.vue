@@ -416,14 +416,14 @@ export default {
       });
     },
     crearPoliza() {
-      this.poliza.numero_solicitud = this.poliza.numero_solicitud;
+      var param = this.poliza.numero_solicitud;
       http
         .create('polizas', this.poliza)
         .then(() => {
           this.poliza = {};
           this.$router.push({
-            path: `/polizas/${this.poliza.numero_solicitud}/edit`
-            // params: { numero_solicitud: this.poliza.numero_solicitud }
+            name: 'Editar Poliza',
+            params: { numero_solicitud: param }
           });
         })
         .catch(e => console.log(e));
