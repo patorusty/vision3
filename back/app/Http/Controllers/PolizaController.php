@@ -148,6 +148,14 @@ class PolizaController extends Controller
             'archivada' => $request->input('archivada'),
         ]);
     }
+    public function searchPoliza()
+    {
+        if ($search = \Request::get('q')) {
+            $numero = Polizas::where('numero', $search)->get();
+        } 
+        return PolizasResource::collection($numero);
+    }
+
 
     /**
      * Remove the specified resource from storage.

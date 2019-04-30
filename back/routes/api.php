@@ -43,6 +43,7 @@ Route::get('/organizadores/busquedaCuit', 'OrganizadorController@searchCuit');
 Route::get('/organizadores/busquedaMatricula', 'OrganizadorController@searchMatricula');
 Route::get('/productores/busquedaCuit', 'ProductorController@searchCuit');
 Route::get('/productores/busquedaMatricula', 'ProductorController@searchMatricula');
+Route::get('/polizas/busquedaNumero', 'PolizaController@searchPoliza');
 Route::get('/codigo_organizadores/busquedaCO', 'CodigoOrganizadorController@searchCO');
 Route::get('/codigo_productores/busquedaCP', 'CodigoProductorController@searchCP');
 Route::get('/cliente/busquedaDNI', 'ClienteController@searchDNI');
@@ -53,4 +54,5 @@ Route::get('/marcas/busquedaMarca', 'AutomotorMarcaController@searchMarca');
 Route::get('/modelos/busquedaModelo', 'AutomotorModeloController@searchModelo');
 Route::get('/versiones/busquedaVersion', 'AutomotorVersionController@searchVersion');
 Route::get('/prueba/{id}', 'AutomotorModeloController@prueba');
+
 

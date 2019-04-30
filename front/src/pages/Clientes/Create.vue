@@ -129,12 +129,15 @@
                     <div class="col-md-3">
                       <label>Sexo</label>
                       <div class="d-flex flex-row">
-                        <base-radio class="mr-5" v-model="cliente.sexo" name="M"
-                          >Masculino</base-radio
-                        >
-                        <base-radio v-model="cliente.sexo" name="F"
-                          >Femenino</base-radio
-                        >
+                        <base-radio
+                          class="mr-5"
+                          v-model="cliente.sexo"
+                          name="M"
+                        >Masculino</base-radio>
+                        <base-radio
+                          v-model="cliente.sexo"
+                          name="F"
+                        >Femenino</base-radio>
                       </div>
                     </div>
                     <div class="col-md-2">
@@ -148,7 +151,10 @@
                           value-format="yyyy-MM-dd"
                           @change="touchSelect('nacimiento')"
                         ></el-date-picker>
-                        <p class="errorSelect" v-show="errorSelect.nacimiento">
+                        <p
+                          class="errorSelect"
+                          v-show="errorSelect.nacimiento"
+                        >
                           Este campo es obligatorio
                         </p>
                       </base-input>
@@ -254,7 +260,10 @@
                           class="select-primary"
                         ></el-option>
                       </el-select>
-                      <p class="errorSelect" v-show="errorSelect.localidad">
+                      <p
+                        class="errorSelect"
+                        v-show="errorSelect.localidad"
+                      >
                         Este campo es obligatorio
                       </p>
                     </div>
@@ -346,7 +355,10 @@
                           class="select-primary"
                         ></el-option>
                       </el-select>
-                      <p class="errorSelect" v-show="errorSelect.productor">
+                      <p
+                        class="errorSelect"
+                        v-show="errorSelect.productor"
+                      >
                         Debe seleccionar un Productor
                       </p>
                     </div>
@@ -384,8 +396,7 @@
                         class="animation-on-hover pull-left"
                         type="primary"
                         @click="crear"
-                        >Crear</base-button
-                      >
+                      >Crear</base-button>
                     </div>
                   </div>
                 </card>

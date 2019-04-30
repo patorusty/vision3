@@ -26,6 +26,7 @@
                             class="select-primary"
                             value="cliente_id"
                             v-model="poliza.cliente_id"
+                            @change="touchSelect('cliente')"
                           >
                             <el-option
                               v-for="cliente in clientes"
@@ -60,7 +61,7 @@
                             v-model="poliza.compania_id"
                             @change="
                                 cargarCodigos_Productor(poliza.compania_id)
-                              "
+                              touchSelect('compania')"
                           >
                             <el-option
                               class="select-primary"
@@ -78,6 +79,7 @@
                             class="select-primary"
                             value="codigo_productor_id"
                             v-model="poliza.codigo_productor_id"
+                            @change="touchSelect('codigo_productor')"
                           >
                             <el-option
                               class="select-primary"
@@ -93,6 +95,9 @@
                             name="numero"
                             v-model="poliza.numero"
                             placeholder=""
+                            :error="getErrorNumero('numero', numeroUsed)"
+                            :class="{ 'has-danger': numeroUsed }"
+                            @keyup="buscarNumero"
                           ></base-input>
                           <label for="numero_solicitud">Nro de Solicitud:</label>
                           <p class="text-primary">{{ poliza.numero_solicitud }}</p>
@@ -108,6 +113,7 @@
                             class="select-primary"
                             value="tipo_vigencia_id"
                             v-model="poliza.tipo_vigencia_id"
+                            @change="sumarMes"
                           >
                             <el-option
                               class="select-primary"
@@ -124,6 +130,8 @@
                               type="date"
                               format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
+                              v-validate="validations.vigencia_desde"
+                              :error="getError('vigencia_desde')"
                             ></el-date-picker>
                           </base-input>
                           <label>Hasta:</label>
@@ -133,6 +141,8 @@
                               type="date"
                               format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
+                              v-validate="validations.vigencia_hasta"
+                              :error="getError('vigencia_hasta')"
                             ></el-date-picker>
                           </base-input>
 
@@ -146,6 +156,8 @@
                               type="date"
                               format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
+                              v-validate="validations.fecha_solicitud"
+                              :error="getError('fecha_solicitud')"
                             ></el-date-picker>
                           </base-input>
                           <label>Emision:</label>
@@ -210,6 +222,8 @@
                             type="text"
                             v-model="poliza.premio"
                             placeholder=""
+                            v-validate="validations.premio"
+                            :error="getError('premio')"
                           ></base-input>
                         </div>
                         <div class="col-md-6">
@@ -228,6 +242,8 @@
                             type="text"
                             v-model="poliza.comision"
                             placeholder=""
+                            v-validate="validations.comision"
+                            :error="getError('comision')"
                           ></base-input>
                         </div>
                         <div class="col-md-6">
@@ -282,6 +298,8 @@
                             type="text"
                             v-model="poliza.cantidad_cuotas"
                             placeholder=""
+                            v-validate="validations.cantidad_cuotas"
+                            :error="getError('cantidad_cuotas')"
                           ></base-input>
                         </div>
                       </div>
@@ -320,6 +338,8 @@ import { EventBus } from './../../../src/main.js';
 import http from '../../../../front/src/API/http-request.js';
 import TablaRiesgoAutomotor from './Riesgos/Automotor/TablaAutomotor';
 import { BaseSwitch, ImageUpload } from 'src/components/index';
+import { addMonths, startOfHour, setHours } from 'date-fns';
+import debounce from '../../debounce.js';
 
 export default {
   mixins: [mixin],
@@ -340,7 +360,8 @@ export default {
         medio_pago: 'TARJETA DE CREDITO',
         tipo_riesgo_id: 1,
         plan_pago: 'MENSUAL',
-        vigencia_desde: new Date().toISOString().split('T')[0],
+        vigencia_desde: setHours(startOfHour(new Date()), 12),
+        vigencia_hasta: '',
         fecha_solicitud: new Date(),
         premio: 0,
         prima: 0,
@@ -353,6 +374,38 @@ export default {
       tipo_riesgos: {},
       codigo_productores: {},
       tipo_vigencias: {},
+      numeroUsed: false,
+      selected1: false,
+      errorSelect: {
+        cliente: false,
+        compania: false,
+        codigo_productor: false
+      },
+      selected: {
+        cliente: false,
+        compania: false,
+        codigo_productor: false
+      },
+      validations: {
+        vigencia_desde: {
+          required: true
+        },
+        vigencia_hasta: {
+          required: true
+        },
+        fecha_solicitud: {
+          required: true
+        },
+        cantidad_cuotas: {
+          required: true
+        },
+        premio: {
+          email: true
+        },
+        comision: {
+          required: true
+        }
+      },
       plan_pagos: [
         {
           value: 'MENSUAL',
@@ -394,6 +447,7 @@ export default {
   },
   methods: {
     sumarMes(mes) {
+      let vigenciaHasta = new Date();
       var desde = this.poliza.vigencia_desde;
       var mes;
 
@@ -417,7 +471,7 @@ export default {
           var mes = 1;
           break;
       }
-      this.poliza.vigencia_hasta = desde + mes;
+      this.poliza.vigencia_hasta = addMonths(this.poliza.vigencia_desde, mes);
     },
 
     cargarUltimoNumeroSolicitud() {
@@ -427,17 +481,20 @@ export default {
       });
     },
     crearPoliza() {
-      var param = this.poliza.numero_solicitud;
-      http
-        .create('polizas', this.poliza)
-        .then(() => {
+      if (
+        this.$validator.validateAll().then(r => r) &&
+        this.checkSelect() &&
+        !this.numeroUsed
+      ) {
+        var param = this.poliza.numero_solicitud;
+        http.create('polizas', this.poliza).then(() => {
           this.poliza = {};
           this.$router.push({
             name: 'Editar Poliza',
             params: { numero_solicitud: param }
           });
-        })
-        .catch(e => console.log(e));
+        });
+      }
     },
     cargarClientes() {
       http.load('clientes').then(response => {
@@ -468,6 +525,42 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    getErrorNumero(fieldName, numeroUsed) {
+      if (!numeroUsed) {
+        return this.errors.first(fieldName);
+      } else {
+        return 'Este numero de póliza esta en uso';
+      }
+    },
+    buscarNumero: debounce(function() {
+      if (this.poliza.numero) {
+        http
+          .search('polizas/busquedaNumero?q=' + this.poliza.numero)
+          .then(r => {
+            this.n = r.data.data;
+            if (this.n.length > 0) {
+              console.log('usado!');
+              this.numeroUsed = true;
+            } else {
+              this.numeroUsed = false;
+            }
+          });
+      }
+    }, 500),
+    touchSelect(val) {
+      this.selected[val] = true;
+      this.errorSelect[val] = false;
+    },
+    checkSelect() {
+      let valor = true;
+      Object.entries(this.selected).forEach(select => {
+        if (select[1] == false) {
+          this.errorSelect[`${select[0]}`] = true;
+          valor = false;
+        }
+      });
+      return valor;
     }
   },
 
