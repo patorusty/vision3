@@ -60,7 +60,7 @@
                         type="text"
                         placeholder="Nombre"
                         v-model="cliente.nombre"
-                        v-validate="validations.nombre"
+                        v-validate="'required'"
                         :error="getError('nombre')"
                         name="nombre"
                       ></base-input>
@@ -71,7 +71,7 @@
                         type="text"
                         placeholder="Apellido"
                         v-model="cliente.apellido"
-                        v-validate="validations.apellido"
+                        v-validate="'required'"
                         :error="getError('apellido')"
                         name="apellido"
                       ></base-input>
@@ -82,7 +82,7 @@
                         type="text"
                         placeholder="DNI"
                         v-model="cliente.nro_dni"
-                        v-validate="validations.nro_dni"
+                        v-validate="'required | numeric'"
                         :error="getErrorDNI('nro_dni', dniUsed)"
                         :class="{ 'has-danger': dniUsed }"
                         name="nro_dni"
@@ -165,7 +165,7 @@
                         type="text"
                         placeholder="Email"
                         v-model="cliente.email"
-                        v-validate="validations.email"
+                        v-validate="'email'"
                         :error="getError('email')"
                         name="email"
                       ></base-input>
@@ -178,7 +178,7 @@
                         type="text"
                         placeholder="Email Alternativo"
                         v-model="cliente.email_alt"
-                        v-validate="validations.email_alt"
+                        v-validate="'email'"
                         :error="getError('email_alt')"
                         name="email_alt"
                       ></base-input>
@@ -204,7 +204,7 @@
                         type="text"
                         placeholder="Calle"
                         v-model="cliente.direccion"
-                        v-validate="validations.direccion"
+                        v-validate="'required'"
                         :error="getError('direccion')"
                         name="direccion"
                       ></base-input>
@@ -215,7 +215,7 @@
                         type="text"
                         placeholder="Numero"
                         v-model="cliente.direccion_nro"
-                        v-validate="validations.direccion_nro"
+                        v-validate="'required'"
                         :error="getError('direccion_nro')"
                         name="direccion_nro"
                       ></base-input>
@@ -297,7 +297,7 @@
                         placeholder="Celular"
                         v-model="cliente.celular"
                         :error="getError('celular')"
-                        v-validate="validations.celular"
+                        v-validate="'required'"
                         name="celular"
                       ></base-input>
                     </div>
@@ -470,33 +470,6 @@ export default {
       tipo_persona: 'Persona Fisica',
       sexo: 'M',
       condicion_fiscal: 'Consumidor Final'
-    },
-    validations: {
-      nombre: {
-        required: true
-      },
-      apellido: {
-        required: true
-      },
-      nro_dni: {
-        required: true,
-        numeric: true
-      },
-      email: {
-        email: true
-      },
-      email_alt: {
-        email: true
-      },
-      direccion: {
-        required: true
-      },
-      direccion_nro: {
-        required: true
-      },
-      celular: {
-        required: true
-      }
     }
   }),
   methods: {

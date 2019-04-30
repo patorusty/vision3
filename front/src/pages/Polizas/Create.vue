@@ -36,6 +36,12 @@
                               :label="cliente.apellido + ' ' + cliente.nombre + ' | DNI: ' + cliente.nro_dni"
                             ></el-option>
                           </el-select>
+                          <p
+                          class="errorSelect"
+                          v-show="errorSelect.cliente"
+                        >
+                          Este campo es obligatorio
+                        </p>
                           <label>Tipo Riesgo</label>
                           <el-select
                             filterable
@@ -71,6 +77,12 @@
                               :label="compania.nombre"
                             >{{ compania.nombre }}</el-option>
                           </el-select>
+                          <p
+                          class="errorSelect"
+                          v-show="errorSelect.compania"
+                        >
+                          Este campo es obligatorio
+                        </p>
                         </div>
                         <div class="col-md-6">
                           <label>Codigo Productor</label>
@@ -89,6 +101,12 @@
                               :label="codigo_productor.productores.apellido + ' ' + codigo_productor.productores.nombre + ' | Cod. (' + codigo_productor.codigo_productor + ')'"
                             ></el-option>
                           </el-select>
+                          <p
+                          class="errorSelect"
+                          v-show="errorSelect.codigo_productor"
+                        >
+                          Este campo es obligatorio
+                        </p>
                           <label>Poliza N:</label>
                           <base-input
                             type="text"
@@ -130,9 +148,14 @@
                               type="date"
                               format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
-                              v-validate="validations.vigencia_desde"
-                              :error="getError('vigencia_desde')"
+                              @change="touchSelect('vigencia_desde')"
                             ></el-date-picker>
+                            <p
+                          class="errorSelect"
+                          v-show="errorSelect.vigencia_desde"
+                        >
+                          Este campo es obligatorio
+                        </p>
                           </base-input>
                           <label>Hasta:</label>
                           <base-input>
@@ -141,13 +164,16 @@
                               type="date"
                               format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
-                              v-validate="validations.vigencia_hasta"
-                              :error="getError('vigencia_hasta')"
+                              @change="touchSelect('vigencia_hasta')"
                             ></el-date-picker>
+                            <p
+                          class="errorSelect"
+                          v-show="errorSelect.vigencia_hasta"
+                        >
+                          Este campo es obligatorio
+                        </p>
                           </base-input>
-
                         </div>
-
                         <div class="col-md-4">
                           <label>Solicitud:</label>
                           <base-input class="mb-0">
@@ -156,8 +182,7 @@
                               type="date"
                               format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
-                              v-validate="validations.fecha_solicitud"
-                              :error="getError('fecha_solicitud')"
+                              @change="touchSelect('fecha_solicitud')"
                             ></el-date-picker>
                           </base-input>
                           <label>Emision:</label>
@@ -222,7 +247,8 @@
                             type="text"
                             v-model="poliza.premio"
                             placeholder=""
-                            v-validate="validations.premio"
+                            v-validate="'required'"
+                            name="premio"
                             :error="getError('premio')"
                           ></base-input>
                         </div>
@@ -242,7 +268,8 @@
                             type="text"
                             v-model="poliza.comision"
                             placeholder=""
-                            v-validate="validations.comision"
+                            v-validate="'required'"
+                            name="comision"
                             :error="getError('comision')"
                           ></base-input>
                         </div>
@@ -298,14 +325,14 @@
                             type="text"
                             v-model="poliza.cantidad_cuotas"
                             placeholder=""
-                            v-validate="validations.cantidad_cuotas"
+                            v-validate="'required'"
+                            name="cantidad_cuotas"
                             :error="getError('cantidad_cuotas')"
                           ></base-input>
                         </div>
                       </div>
                     </div>
-
-                    <div class="col-md-3">
+                    <div class="col-md-4 d-flex flex-column justify-content-between">
                       <label>Detalle:</label>
                       <textarea
                         class="form-control form-control"
@@ -315,7 +342,7 @@
                         v-model="poliza.detalle_medio_pago"
                       ></textarea>
                     </div>
-                    <div class="col-md-3 d-flex justify-content-end align-items-end">
+                    <div class="col-md-2 d-flex justify-content-end align-items-end">
                       <button
                         type="submit"
                         class="btn btn-primary"
@@ -332,22 +359,16 @@
   </div>
 </template>
 <script>
-import { Table, TableColumn, Select, Option, DatePicker } from 'element-ui';
+import { Select, Option, DatePicker } from 'element-ui';
 import { mixin } from './../../mixins/mixin.js';
-import { EventBus } from './../../../src/main.js';
 import http from '../../../../front/src/API/http-request.js';
 import TablaRiesgoAutomotor from './Riesgos/Automotor/TablaAutomotor';
-import { BaseSwitch, ImageUpload } from 'src/components/index';
 import { addMonths, startOfHour, setHours } from 'date-fns';
 import debounce from '../../debounce.js';
 
 export default {
   mixins: [mixin],
   components: {
-    [Table.name]: Table,
-    [TableColumn.name]: TableColumn,
-    ImageUpload,
-    BaseSwitch,
     TablaRiesgoAutomotor,
     [Select.name]: Select,
     [Option.name]: Option,
@@ -363,9 +384,9 @@ export default {
         vigencia_desde: setHours(startOfHour(new Date()), 12),
         vigencia_hasta: '',
         fecha_solicitud: new Date(),
-        premio: 0,
-        prima: 0,
-        comision: 0,
+        premio: '',
+        prima: '',
+        comision: '',
         descuento: 0,
         cantidad_cuotas: 12
       },
@@ -375,36 +396,19 @@ export default {
       codigo_productores: {},
       tipo_vigencias: {},
       numeroUsed: false,
-      selected1: false,
       errorSelect: {
         cliente: false,
         compania: false,
-        codigo_productor: false
+        codigo_productor: false,
+        vigencia_desde: false,
+        vigencia_hasta: false
       },
       selected: {
         cliente: false,
         compania: false,
-        codigo_productor: false
-      },
-      validations: {
-        vigencia_desde: {
-          required: true
-        },
-        vigencia_hasta: {
-          required: true
-        },
-        fecha_solicitud: {
-          required: true
-        },
-        cantidad_cuotas: {
-          required: true
-        },
-        premio: {
-          email: true
-        },
-        comision: {
-          required: true
-        }
+        codigo_productor: false,
+        vigencia_desde: false,
+        vigencia_hasta: false
       },
       plan_pagos: [
         {
@@ -447,28 +451,24 @@ export default {
   },
   methods: {
     sumarMes(mes) {
-      let vigenciaHasta = new Date();
-      var desde = this.poliza.vigencia_desde;
-      var mes;
-
       switch (this.poliza.tipo_vigencia_id) {
         case 6:
-          var mes = 12;
+          mes = 12;
           break;
         case 5:
-          var mes = 6;
+          mes = 6;
           break;
         case 4:
-          var mes = 4;
+          mes = 4;
           break;
         case 3:
-          var mes = 3;
+          mes = 3;
           break;
         case 2:
-          var mes = 2;
+          mes = 2;
           break;
         case 1:
-          var mes = 1;
+          mes = 1;
           break;
       }
       this.poliza.vigencia_hasta = addMonths(this.poliza.vigencia_desde, mes);
@@ -481,6 +481,7 @@ export default {
       });
     },
     crearPoliza() {
+      console.log('crear');
       if (
         this.$validator.validateAll().then(r => r) &&
         this.checkSelect() &&

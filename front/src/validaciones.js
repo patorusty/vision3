@@ -59,6 +59,15 @@ export default {
     },
     celular: {
       required: 'Este campo es obligatorio'
+    },
+    premio: {
+      required: 'Este campo es obligatorio'
+    },
+    comision: {
+      required: 'Este campo es obligatorio'
+    },
+    cantidad_cuotas: {
+      required: 'Este campo es obligatorio'
     }
   }
 };
