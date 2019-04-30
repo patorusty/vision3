@@ -25,7 +25,6 @@ class PolizaController extends Controller
     public function numeroDeSolicitud()
     {
         $nro_solicitud =  DB::table('polizas')->orderBy('numero_solicitud', 'DESC')->take(1)->get();
-
         // toString($nro_solicitud);
         return new PolizasResource($nro_solicitud);
     }

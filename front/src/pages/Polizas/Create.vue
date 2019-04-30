@@ -122,7 +122,7 @@
                             <el-date-picker
                               v-model="poliza.vigencia_desde"
                               type="date"
-                              format="d/M/yyyy"
+                              format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
@@ -131,7 +131,7 @@
                             <el-date-picker
                               v-model="poliza.vigencia_hasta"
                               type="date"
-                              format="d/M/yyyy"
+                              format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
@@ -144,7 +144,7 @@
                             <el-date-picker
                               v-model="poliza.fecha_solicitud"
                               type="date"
-                              format="d/M/yyyy"
+                              format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
@@ -153,7 +153,7 @@
                             <el-date-picker
                               v-model="poliza.fecha_emision"
                               type="date"
-                              format="d/M/yyyy"
+                              format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
@@ -162,7 +162,7 @@
                             <el-date-picker
                               v-model="poliza.fecha_recepcion"
                               type="date"
-                              format="d/M/yyyy"
+                              format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
@@ -175,7 +175,7 @@
                             <el-date-picker
                               v-model="poliza.entrega_original"
                               type="date"
-                              format="d/M/yyyy"
+                              format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
@@ -184,7 +184,7 @@
                             <el-date-picker
                               v-model="poliza.entrega_email"
                               type="date"
-                              format="d/M/yyyy"
+                              format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
@@ -193,7 +193,7 @@
                             <el-date-picker
                               v-model="poliza.fecha_entrega_correo"
                               type="date"
-                              format="d/M/yyyy"
+                              format="dd/MM/yyyy"
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
@@ -335,7 +335,19 @@ export default {
   },
   data() {
     return {
-      poliza: {},
+      poliza: {
+        tipo_vigencia_id: 6,
+        medio_pago: 'TARJETA DE CREDITO',
+        tipo_riesgo_id: 1,
+        plan_pago: 'MENSUAL',
+        vigencia_desde: new Date().toISOString().split('T')[0],
+        fecha_solicitud: new Date(),
+        premio: 0,
+        prima: 0,
+        comision: 0,
+        descuento: 0,
+        cantidad_cuotas: 12
+      },
       clientes: {},
       companias: {},
       tipo_riesgos: {},
@@ -381,33 +393,32 @@ export default {
     };
   },
   methods: {
-    // sumarMes(mes) {
-    //   var mes;
+    sumarMes(mes) {
+      var desde = this.poliza.vigencia_desde;
+      var mes;
 
-    //   switch (this.poliza.tipo_vigencia_id) {
-    //     case 6:
-    //       var mes = 12;
-    //       break;
-    //     case 5:
-    //       var mes = 6;
-    //       break;
-    //     case 4:
-    //       var mes = 4;
-    //       break;
-    //     case 3:
-    //       var mes = 3;
-    //       break;
-    //     case 2:
-    //       var mes = 2;
-    //       break;
-    //     case 1:
-    //       var mes = 1;
-    //       break;
-    //   }
-    //   this.poliza.vigencia_hasta = addMonths(this.poliza.vigencia_desde, mes)
-    //     .toISOString()
-    //     .slice(0, 10);
-    // },
+      switch (this.poliza.tipo_vigencia_id) {
+        case 6:
+          var mes = 12;
+          break;
+        case 5:
+          var mes = 6;
+          break;
+        case 4:
+          var mes = 4;
+          break;
+        case 3:
+          var mes = 3;
+          break;
+        case 2:
+          var mes = 2;
+          break;
+        case 1:
+          var mes = 1;
+          break;
+      }
+      this.poliza.vigencia_hasta = desde + mes;
+    },
 
     cargarUltimoNumeroSolicitud() {
       http.load('numerosolicitud').then(response => {
@@ -466,7 +477,7 @@ export default {
     this.cargarTipo_Riesgos();
     this.cargarCompanias();
     this.cargarTipo_Vigencias();
-    // this.sumarMes();
+    this.sumarMes();
   }
 };
 </script>
