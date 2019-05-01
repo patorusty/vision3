@@ -26,7 +26,7 @@
                             class="select-primary"
                             value="cliente_id"
                             v-model="poliza.cliente_id"
-                            @change="touchSelect('cliente')"
+                            @change="touchSelect('cliente_id')"
                           >
                             <el-option
                               v-for="cliente in clientes"
@@ -38,7 +38,7 @@
                           </el-select>
                           <p
                           class="errorSelect"
-                          v-show="errorSelect.cliente"
+                          v-show="errorSelect.cliente_id"
                         >
                           Este campo es obligatorio
                         </p>
@@ -67,7 +67,7 @@
                             v-model="poliza.compania_id"
                             @change="
                                 cargarCodigos_Productor(poliza.compania_id)
-                              touchSelect('compania')"
+                              touchSelect('compania_id')"
                           >
                             <el-option
                               class="select-primary"
@@ -79,7 +79,7 @@
                           </el-select>
                           <p
                           class="errorSelect"
-                          v-show="errorSelect.compania"
+                          v-show="errorSelect.compania_id"
                         >
                           Este campo es obligatorio
                         </p>
@@ -91,7 +91,7 @@
                             class="select-primary"
                             value="codigo_productor_id"
                             v-model="poliza.codigo_productor_id"
-                            @change="touchSelect('codigo_productor')"
+                            @change="touchSelect('codigo_productor_id')"
                           >
                             <el-option
                               class="select-primary"
@@ -103,7 +103,7 @@
                           </el-select>
                           <p
                           class="errorSelect"
-                          v-show="errorSelect.codigo_productor"
+                          v-show="errorSelect.codigo_productor_id"
                         >
                           Este campo es obligatorio
                         </p>
@@ -397,18 +397,18 @@ export default {
       tipo_vigencias: {},
       numeroUsed: false,
       errorSelect: {
-        cliente: false,
-        compania: false,
-        codigo_productor: false,
+        cliente_id: false,
+        compania_id: false,
+        codigo_productor_id: false,
         vigencia_desde: false,
         vigencia_hasta: false
       },
       selected: {
-        cliente: false,
-        compania: false,
-        codigo_productor: false,
-        vigencia_desde: false,
-        vigencia_hasta: false
+        cliente_id: false,
+        compania_id: false,
+        codigo_productor_id: false,
+        vigencia_desde: true,
+        vigencia_hasta: true
       },
       plan_pagos: [
         {
@@ -481,7 +481,6 @@ export default {
       });
     },
     crearPoliza() {
-      console.log('crear');
       if (
         this.$validator.validateAll().then(r => r) &&
         this.checkSelect() &&
@@ -536,22 +535,24 @@ export default {
     },
     buscarNumero: debounce(function() {
       if (this.poliza.numero) {
-        http
-          .search('polizas/busquedaNumero?q=' + this.poliza.numero)
-          .then(r => {
-            this.n = r.data.data;
-            if (this.n.length > 0) {
-              console.log('usado!');
-              this.numeroUsed = true;
-            } else {
-              this.numeroUsed = false;
-            }
-          });
+        http.search('poliza/busquedaNumero?q=' + this.poliza.numero).then(r => {
+          this.n = r.data.data;
+          if (this.n.length > 0) {
+            this.numeroUsed = true;
+          } else {
+            this.numeroUsed = false;
+          }
+        });
       }
     }, 500),
     touchSelect(val) {
-      this.selected[val] = true;
-      this.errorSelect[val] = false;
+      if (!this.poliza[`${val}`] || this.poliza[`${val}`] === undefined) {
+        this.selected[val] = false;
+        this.errorSelect[val] = true;
+      } else {
+        this.selected[val] = true;
+        this.errorSelect[val] = false;
+      }
     },
     checkSelect() {
       let valor = true;

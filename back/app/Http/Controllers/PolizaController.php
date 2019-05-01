@@ -153,6 +153,7 @@ class PolizaController extends Controller
         if ($search = \Request::get('q')) {
             $numero = Polizas::where('numero', $search)->get();
         } 
+        // dd($numero);
         return PolizasResource::collection($numero);
     }
 
