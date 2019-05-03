@@ -27,5 +27,8 @@ export default {
   },
   search(url) {
     return HTTP.get(url);
+  },
+  search2(url, param1, param2) {
+    return HTTP.get(`${url}/${param1}/${param2}`);
   }
 };

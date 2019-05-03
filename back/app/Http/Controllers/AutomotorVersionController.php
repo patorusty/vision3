@@ -26,6 +26,8 @@ class AutomotorVersionController extends Controller
         return AutomotorVersionsResource::collection($versiones);
     }
     
+   
+
     public function store(Request $request)
     {
         $this->validate($request, []);

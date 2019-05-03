@@ -53,19 +53,24 @@
                         class="select-primary "
                       ></el-option>
                     </el-select>
-
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.automotor_tipo"
+                    >
+                      Este campo es obligatorio
+                    </p>
                     <label class="mt-2">Año</label>
                     <el-select
                       filterable
                       class="select-primary"
                       v-model="riesgo_automotor.automotor_anio"
                       name="automotor_anio_id"
-                      @change="touchSelect('automotor_anio')"
                     >
                       <el-option
                         v-for="anio in anios"
-                        :key="anio.id"
-                        :value="anio.id"
+                        :key="anio.value"
+                        :label="anio.label"
+                        :value="anio.value"
                         class="select-primary"
                       ></el-option>
                     </el-select>
@@ -80,9 +85,6 @@
                       v-model="riesgo_automotor.automotor_marca_id"
                       class="select-primary"
                       filterable
-                      @change="
-                      filtrarModeloPorMarca(riesgo_automotor.automotor_marca_id)
-                      touchSelect('automotor_marca_id') "
                     >
                       <el-option
                         v-for="marca in marcas"
@@ -104,9 +106,6 @@
                       v-model="riesgo_automotor.automotor_modelo_id"
                       class="select-primary"
                       filterable
-                      @change="
-                      filtrarVersionesDeModelo(url, riesgo_automotor.automotor_anio, riesgo_automotor.automotor_modelo_id)
-                      touchSelect('automotor_modelo_id')"
                     >
                       <el-option
                         v-for="modelo in modelos"
@@ -128,13 +127,12 @@
                       v-model="riesgo_automotor.automotor_version_id"
                       class="select-primary"
                       filterable
-                      @change="touchSelect('automotor_version_id')"
                     >
                       <el-option
                         v-for="version in versiones"
-                        :key="version.automotor_version.id"
-                        :value="version.automotor_version.id"
-                        :label="version.automotor_version.nombre"
+                        :key="version.id"
+                        :value="version.id"
+                        :label="version.nombre"
                         class="select-primary"
                       >
                       </el-option>
@@ -153,23 +151,20 @@
                       v-model="riesgo_automotor.patente"
                       name="patente"
                       v-validate="'required'"
-                      :error="getError('patente')"
                     >
                     </base-input>
                     <label>Motor</label>
                     <base-input
                       v-model="riesgo_automotor.nro_motor"
-                      name="nro_motor"
+                      name="motor"
                       v-validate="'required'"
-                      :error="getError('nro_motor')"
                     >
                     </base-input>
                     <label>Chasis</label>
                     <base-input
                       v-model="riesgo_automotor.nro_chasis"
-                      name="nro_chasis"
+                      name="chasis"
                       v-validate="'required'"
-                      :error="getError('nro_chasis')"
                     >
                     </base-input>
                     <label>Valor Vehiculo</label>
@@ -177,7 +172,6 @@
                       v-model="riesgo_automotor.valor_vehiculo"
                       name="valor_vehiculo"
                       v-validate="'required'"
-                      :error="getError('valor_vehiculo')"
                     >
                     </base-input>
                     <div class="mt-4">
@@ -201,14 +195,18 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.uso"
+                    >
+                      Este campo es obligatorio
+                    </p>
                     <label class="mt-2">Tipo Carroceria</label>
                     <el-select
                       filterable
                       class="select-primary"
                       v-model="riesgo_automotor.tipo_carroceria"
                       name="tipo_carroceria"
-                      @change="touchSelect('tipo_carroceria')"
                     >
                       <el-option
                         v-for="tipo_carroceria in tipo_carrocerias"
@@ -239,6 +237,12 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.combustible"
+                    >
+                      Este campo es obligatorio
+                    </p>
                     <label class="mt-2">Estado General</label>
                     <el-select
                       filterable
@@ -254,6 +258,12 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.estado_general"
+                    >
+                      Este campo es obligatorio
+                    </p>
                     <label class="mt-2">Color</label>
                     <base-input
                       v-model="riesgo_automotor.color"
@@ -270,7 +280,6 @@
                       class="select-primary"
                       v-model="riesgo_automotor.cobertura_id"
                       name="estado_general"
-                      @change="touchSelect('cobertura_id')"
                     >
                       <el-option
                         v-for="cobertura in coberturas"
@@ -323,7 +332,12 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.ajuste"
+                    >
+                      Este campo es obligatorio
+                    </p>
                     <label class="mt-3">Equipo de Rastreo</label>
                     <el-select
                       filterable
@@ -339,14 +353,18 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.equipo_rastreo"
+                    >
+                      Este campo es obligatorio
+                    </p>
                   </div>
                   <div class="col-md-4">
                     <base-input
                       label="Valor Total"
                       v-model="riesgo_automotor.valor_total"
                       name="valor_total"
-                      :error="getError('valor_total')"
                     >
                     </base-input>
                     <base-input label="Observaciones">
@@ -355,6 +373,7 @@
                         v-model="riesgo_automotor.observaciones"
                       ></textarea>
                     </base-input>
+
                     <!-- {{ riesgo_automotor.vigencia_desde }}
                     {{ riesgo_automotor.vigencia_hasta }} -->
                   </div>
@@ -510,11 +529,7 @@
               </tab-pane>
             </tabs>
             <div class="col-md-12 d-flex justify-content-center">
-              <base-button
-                @click="crear"
-                type="submit"
-                class="btn btn-primary ladda-button"
-              >Crear</base-button>
+              <base-button type="primary">Guardar</base-button>
             </div>
           </form>
         </card>
@@ -529,19 +544,16 @@ import { EventBus } from '../../../../main.js';
 import { Select, Option, DatePicker } from 'element-ui';
 import http from '../../../../API/http-request.js';
 import { TabPane, Tabs, Collapse, CollapseItem } from 'src/components';
-import { mixin } from '../../../../mixins/mixin.js';
 
 export default {
   props: {
     // riesgo_automotor: {
     //   type: Object
     // },
-    props: ['poliza'],
     compania_id: {
       type: Number
     }
   },
-  mixins: [mixin],
   components: {
     SlideYUpTransition,
     [Select.name]: Select,
@@ -557,13 +569,6 @@ export default {
       EventBus.$emit('resetInput', false);
       this.$emit('close');
     },
-    crear() {
-      if (this.$validator.validateAll().then(r => r) && this.checkSelect()) {
-        this.$emit('crear', this.riesgo_automotor);
-        this.$validator.reset();
-        this.errors.clear();
-      }
-    },
     cargarMarcas() {
       http.load('administracion/marcas', this.marca_id).then(r => {
         this.marcas = r.data.data;
@@ -574,14 +579,18 @@ export default {
         this.marca = r.data.data;
       });
     },
-    filtrarModeloPorMarca(id) {
-      http.loadOne('/modelos/filtrar', id).then(r => {
-        this.modelos = r.data.data;
+    filtrarModeloPorMarca() {
+      http.loadOne('/modelos/filtrar', this.marca_id).then(r => {
+        this.tableData = r.data.data;
+        this.buscarMarca();
+        this.modalListo = true;
       });
     },
-    filtrarVersionesDeModelo(url, anio, modelo) {
-      http.search2(url, anio, modelo).then(r => {
-        this.versiones = r.data.data;
+    filtrarVersionesDeModelo() {
+      http.loadOne('/versiones/filtrar', this.modelo_id).then(r => {
+        this.tableData = r.data.data;
+        this.modeloSeleccionado = this.tableData[0];
+        this.modalListo = true;
       });
     },
     cargarCoberturas() {
@@ -589,12 +598,6 @@ export default {
         this.coberturas = r.data.data;
       });
     },
-    cargarAnios() {
-      http.load('anios', this.anio_id).then(r => {
-        this.anios = r.data.data;
-      });
-    },
-
     touchSelect(val) {
       if (
         !this.riesgo_automotor[`${val}`] ||
@@ -621,7 +624,6 @@ export default {
   created() {
     this.cargarMarcas();
     this.cargarCoberturas();
-    this.cargarAnios();
   },
   data: () => ({
     marcas: {},
@@ -631,25 +633,36 @@ export default {
     automotor_modelos: {},
     coberturas: [],
     modelos: [],
-    modelo: {},
-    anios: [],
     versiones: {},
-    url: '/anios/filtrar',
     errorSelect: {
+      automotor_tipo: false,
       automotor_anio: false,
       automotor_marca_id: false,
       automotor_modelo_id: false,
       automotor_version_id: false,
+      uso: false,
+      tipo_carroceria: false,
+      combustible: false,
+      estado_general: false,
       cobertura_id: false,
-      tipo_carroceria: false
+      estado_general: false,
+      ajuste: false,
+      equipo_rastreo: false
     },
     selected: {
+      automotor_tipo: false,
       automotor_anio: false,
       automotor_marca_id: false,
       automotor_modelo_id: false,
       automotor_version_id: false,
+      uso: false,
+      tipo_carroceria: false,
+      combustible: false,
+      estado_general: false,
       cobertura_id: false,
-      tipo_carroceria: false
+      estado_general: false,
+      ajuste: false,
+      equipo_rastreo: false
     },
     riesgo_automotor: {
       automotor_tipo: 'Automotor',
@@ -658,7 +671,6 @@ export default {
       ajuste: '0%',
       equipo_rastreo: 'NO',
       combustible: 'Nafta'
-      // poliza_id: this.poliza.id,
     },
     tipo_vehiculos: [
       {
@@ -674,7 +686,16 @@ export default {
         label: 'Trailer'
       }
     ],
-
+    anios: [
+      {
+        value: '2019',
+        label: '2019'
+      },
+      {
+        value: '2018',
+        label: '2018'
+      }
+    ],
     usos: [
       {
         value: 'Particular',

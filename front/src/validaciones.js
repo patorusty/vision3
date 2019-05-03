@@ -68,6 +68,18 @@ export default {
     },
     cantidad_cuotas: {
       required: 'Este campo es obligatorio'
+    },
+    petente: {
+      required: 'Este campo es obligatorio'
+    },
+    nro_motor: {
+      required: 'Este campo es obligatorio'
+    },
+    nro_chasis: {
+      required: 'Este campo es obligatorio'
+    },
+    valor_vehiculo: {
+      required: 'Este campo es obligatorio'
     }
   }
 };

@@ -97,6 +97,7 @@
       v-if="isModalVisible"
       :riesgo_automotor="riesgo_automotor"
       :modo="modoEditar"
+      :poliza="poliza"
       :compania_id="poliza.compania_id"
       @close="closeModal"
       @recargar="cargar"
