@@ -22,7 +22,7 @@ class AutomotorAnioController extends Controller
     }
     public function filtro($id)
     {
-        $automotor_anio = AutomotorAnio::with('automotor_version')->where('automotor_version_id', $id)->get();
+        $automotor_anio = AutomotorAnio::with('automotor_versiones')->where('automotor_version_id', $id)->get();
         return AutomotorAniosResource::collection($automotor_anio);
     }
     public function store(Request $request)

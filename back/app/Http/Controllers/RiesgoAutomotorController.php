@@ -21,6 +21,12 @@ class RiesgoAutomotorController extends Controller
         return RiesgoAutomotorsResource::collection($riesgo_automotor);
     }
 
+    public function searchPoliza($id)
+    {
+        $polizaId = RiesgoAutomotor::where('poliza_id', $id)->get();
+        return RiesgoAutomotorsResource::collection($polizaId);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -88,7 +88,7 @@
             placement="top"
           >
             <base-button
-              @click.native="editar(url, props.row.id)"
+              @click.native="editar(props.row.id)"
               class="edit btn-link"
               type="warning"
               size="sm"
@@ -192,7 +192,7 @@ export default {
       modelo: {},
       modeloSeleccionado: {},
       marcaSeleccionada: {},
-      modalListo: false,
+      modalListo: false
     };
   },
   methods: {
@@ -201,18 +201,12 @@ export default {
         this.marcas = r.data.data;
       });
     },
-    buscarMarca() {
-      http.loadOne('administracion/marcas', this.marca_id).then(r => {
-        this.marcaSeleccionada = r.data.data;
-      });
-    },
     filtrarModelosDeMarca() {
       this.modelo_id = '';
       this.tableData = [];
       http
         .loadOne('/modelos/filtrar', this.marca_id)
-        .then(r => (this.modelos = r.data.data))
-        .then(this.buscarMarca());
+        .then(r => (this.modelos = r.data.data));
     },
     filtrarVersionesDeModelo() {
       http.loadOne('/versiones/filtrar', this.modelo_id).then(r => {
@@ -234,12 +228,17 @@ export default {
       this.vaciarForm();
       this.isModalVisible = false;
     },
-    editar(url, id) {
+    editar(id) {
       this.showModal();
       this.modoEditar = true;
-      http.loadOne(this.url, id).then(r => {
-        this.version = r.data.data;
-      });
+      http
+        .loadOne(this.url, id)
+        .then(r => {
+          this.version = r.data.data;
+        })
+        .then(() => {
+          EventBus.$emit('filtrarAnios');
+        });
     },
     borrar(id) {
       this.dangerSwal().then(r => {

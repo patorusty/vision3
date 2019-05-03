@@ -20,7 +20,7 @@
                 <div class="col-md-12">
                   <div class="mb-3">
                     <base-input
-                      v-model="marcaSeleccionada.nombre"
+                      v-model="modeloSeleccionado.automotor_modelo.automotor_marca.nombre"
                       name="nombre"
                       disabled
                     ></base-input>
@@ -30,7 +30,6 @@
                       disabled
                     ></base-input>
                   </div>
-
                   <div class="mb-3">
                     <base-input
                       placeholder="Nombre de la Version"
@@ -43,20 +42,19 @@
                     ></base-input>
                   </div>
                   <div class="mb-3">
-                    <el-select
-                      multiple
-                      class="select-primary selectpicker"
+                    <el-select multiple
+                      class="select-primary"
                       placeholder="Seleccionar Años"
                       filterable
-                      collapse-tags
                       size="large"
+                      v-model="anios_id"
                     >
                       <el-option
                         v-for="anio in anios"
                         :key="anio.id"
                         :value="anio.id"
                         :label="anio.anio"
-                        class="select-info"
+                        class="select-primary"
                       ></el-option>
                     </el-select>
                   </div>
@@ -113,7 +111,8 @@ export default {
       usedError: '',
       marcas: {},
       modelo: {},
-      anios: []
+      anios: [],
+      anios_id: ''
     };
   },
   components: {
@@ -179,6 +178,12 @@ export default {
           });
       }
     }, 500),
+    filtrarAniosDeLaVersion() {
+      console.log(this.version.id);
+      http.loadOne('/anios/filtrar', this.version.id).then(r => {
+        this.anios_id = r.data.data;
+      });
+    },
     getErrorVersion(fieldName, versionUsed) {
       if (!versionUsed) {
         return this.errors.first(fieldName);
@@ -194,7 +199,9 @@ export default {
   created() {
     this.cargarAnios();
   },
-  mounted() {}
+  mounted() {
+    EventBus.$on('filtrarAnios', this.filtrarAniosDeLaVersion);
+  }
 };
 </script>
 <style>

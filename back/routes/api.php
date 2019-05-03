@@ -50,9 +50,10 @@ Route::get('/cliente/busquedaDNI', 'ClienteController@searchDNI');
 Route::get('/cliente/busquedaCuit', 'ClienteController@searchCuit');
 Route::get('/modelos/filtrar/{id}', 'AutomotorModeloController@filtro');
 Route::get('/versiones/filtrar/{id}', 'AutomotorVersionController@filtro');
+Route::get('/anios/filtrar/{id}', 'AutomotorAnioController@filtro');
 Route::get('/marcas/busquedaMarca', 'AutomotorMarcaController@searchMarca');
 Route::get('/modelos/busquedaModelo', 'AutomotorModeloController@searchModelo');
 Route::get('/versiones/busquedaVersion', 'AutomotorVersionController@searchVersion');
-Route::get('/prueba/{id}', 'AutomotorModeloController@prueba');
+Route::get('/polizas/busquedaPolizaId/{id}', 'RiesgoAutomotorController@searchPoliza');
 
 

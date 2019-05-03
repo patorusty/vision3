@@ -223,9 +223,10 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <div v-if="riesgo_automotor.cobertura.todo_riesgo == 1">
+                    <div v-if="riesgo_automotor.cobertura_id === 10">
                       <base-input
                         class="mt-3"
+                        placeholder="if"
                         label="Franquicia"
                         v-model="riesgo_automotor.franquicia"
                         name="franquicia"
@@ -234,7 +235,7 @@
                     </div>
                     <div v-else>
                       <base-input
-                        disabled
+                        placeholder="else"
                         class="mt-3"
                         label="Franquicia"
                         v-model="riesgo_automotor.franquicia"
@@ -445,8 +446,8 @@
                 </div>
               </tab-pane>
             </tabs>
-            <div class="col-md-12">
-              <base-button class="animation-on-hover center" type="primary"
+            <div class="col-md-12 d-flex justify-content-center">
+              <base-button type="primary"
                 >Guardar</base-button
               >
             </div>

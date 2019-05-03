@@ -142,6 +142,11 @@ export default {
       http.loadOne(this.url, this.poliza.id).then(r => {
         this.tableData = r.data.data;
       });
+      http.loadOne('/polizas/busquedaPolizaId', this.poliza.id).then(r => {
+        if (r.data.data.length < 1) {
+          this.isModalVisible = true;
+        }
+      });
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);
