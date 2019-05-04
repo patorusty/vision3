@@ -69,7 +69,7 @@ export default {
     cantidad_cuotas: {
       required: 'Este campo es obligatorio'
     },
-    petente: {
+    patente: {
       required: 'Este campo es obligatorio'
     },
     nro_motor: {

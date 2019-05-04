@@ -151,9 +151,11 @@
                     <label>Patente</label>
                     <base-input
                       v-model="riesgo_automotor.patente"
+                      placeholder="Ej: ABC123 o AB123DC"
                       name="patente"
                       v-validate="'required'"
                       :error="getError('patente')"
+                      style="text-transform:uppercase;"
                     >
                     </base-input>
                     <label>Motor</label>
@@ -286,26 +288,15 @@
                     >
                       Este campo es obligatorio
                     </p>
-                    <div v-if="riesgo_automotor.cobertura_id === 10">
-                      <base-input
-                        class="mt-3"
-                        placeholder="if"
-                        label="Franquicia"
-                        v-model="riesgo_automotor.franquicia"
-                        name="franquicia"
-                      >
-                      </base-input>
-                    </div>
-                    <div v-else>
-                      <base-input
-                        placeholder="else"
-                        class="mt-3"
-                        label="Franquicia"
-                        v-model="riesgo_automotor.franquicia"
-                        name="franquicia"
-                      >
-                      </base-input>
-                    </div>
+                    <base-input
+                      class="mt-3"
+                      label="Franquicia"
+                      v-model="riesgo_automotor.franquicia"
+                      name="franquicia"
+                      :disabled="coberturas.todo_riesgo == 0"
+                    >
+                    </base-input>
+
                   </div>
                   <div class="col-md-4">
                     <label>Ajuste</label>
@@ -372,6 +363,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
+                      :disabled="riesgo_automotor.gnc == false"
                       label="Nro Oblea"
                       v-model="riesgo_automotor.gnc_nro_oblea"
                       name="gnc_nro_oblea"
@@ -382,6 +374,7 @@
                         type="date"
                         placeholder="Date Picker"
                         v-model="riesgo_automotor.gnc_venc_oblea"
+                        :disabled="riesgo_automotor.gnc == false"
                       >
                       </el-date-picker>
                     </base-input>
@@ -389,6 +382,7 @@
                       label="Valor GNC"
                       v-model="riesgo_automotor.valor_gnc"
                       name="valor_gnc"
+                      :disabled="riesgo_automotor.gnc == false"
                     >
                     </base-input>
                   </div>
@@ -397,12 +391,14 @@
                       label="Marca Cilindro"
                       v-model="riesgo_automotor.gnc_marca_cilindro"
                       name="gnc_marca_cilindro"
+                      :disabled="riesgo_automotor.gnc == false"
                     >
                     </base-input>
                     <base-input
                       label="Nro Cilindro"
                       v-model="riesgo_automotor.gnc_nro_cilindro"
                       name="gnc_nro_cilindro"
+                      :disabled="riesgo_automotor.gnc == false"
                     >
                     </base-input>
                   </div>
@@ -411,12 +407,14 @@
                       label="Marca Regulador"
                       v-model="riesgo_automotor.gnc_marca_regulador"
                       name="gnc_marca_regulador"
+                      :disabled="riesgo_automotor.gnc == false"
                     >
                     </base-input>
                     <base-input
                       label="Nro Regulador"
                       v-model="riesgo_automotor.gnc_nro_regulador"
                       name="gnc_nro_regulador"
+                      :disabled="riesgo_automotor.gnc == false"
                     >
                     </base-input>
                   </div>
@@ -494,7 +492,8 @@
                     <base-input
                       label="Razon Social"
                       v-model="riesgo_automotor.acreedor_rs"
-                      name="acreedor_rc"
+                      name="acreedor_rs"
+                      :disabled="riesgo_automotor.acreedor_prendario == false"
                     >
                     </base-input>
                   </div>
@@ -503,6 +502,7 @@
                       label="CUIT"
                       v-model="riesgo_automotor.acreedor_cuit"
                       name="acreedor_cuit"
+                      :disabled="riesgo_automotor.acreedor_prendario == false"
                     >
                     </base-input>
                   </div>
@@ -629,7 +629,7 @@ export default {
     marca_id: '',
     automotor_marcas: {},
     automotor_modelos: {},
-    coberturas: [],
+    coberturas: {},
     modelos: [],
     modelo: {},
     anios: [],
@@ -657,7 +657,16 @@ export default {
       estado_general: 'Muy Bueno',
       ajuste: '0%',
       equipo_rastreo: 'NO',
-      combustible: 'Nafta'
+      combustible: 'Nafta',
+      okm: false,
+      gnc: false,
+      acreedor_prendario: false,
+      valor_vehiculo: '0',
+      valor_gnc: '0',
+      valor_accesorio_01: '0',
+      valor_accesorio_02: '0',
+      valor_total: '0'
+
       // poliza_id: this.poliza.id,
     },
     tipo_vehiculos: [
