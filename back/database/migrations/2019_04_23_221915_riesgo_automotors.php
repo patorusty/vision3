@@ -21,6 +21,7 @@ class RiesgoAutomotors extends Migration
             $table->integer('automotor_marca_id')->nullable();
             $table->integer('automotor_modelo_id')->nullable();
             $table->integer('automotor_version_id')->nullable();
+            $table->boolean('tipo_patente')->nullable();
             $table->string('patente')->nullable();
             $table->string('nro_motor')->nullable();
             $table->string('nro_chasis')->nullable();

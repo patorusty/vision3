@@ -149,15 +149,49 @@
                   <!-- SEGUNDA COLUMNA -->
                   <div class="col-md-4">
                     <label>Patente</label>
-                    <base-input
-                      v-model="riesgo_automotor.patente"
-                      placeholder="Ej: ABC123 o AB123DC"
-                      name="patente"
-                      v-validate="'required'"
-                      :error="getError('patente')"
-                      style="text-transform:uppercase;"
-                    >
-                    </base-input>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <el-select
+                          v-model="riesgo_automotor.tipo_patente"
+                          class="select-primary"
+                          filterable
+                        >
+                          <el-option
+                            v-for="tipo_patente in tipo_patentes"
+                            :key="tipo_patente.value"
+                            :value="tipo_patente.value"
+                            :label="tipo_patente.label"
+                            class="select-primary"
+                          >
+                          </el-option>
+                        </el-select>
+                      </div>
+                      <div class="col-md-6">
+                        <the-mask
+                          v-if="riesgo_automotor.tipo_patente == 0"
+                          v-model="riesgo_automotor.patente"
+                          placeholder="ABC123"
+                          name="patente"
+                          v-validate="'required'"
+                          :error="getError('patente')"
+                          style="text-transform:uppercase;"
+                          mask="AAA###"
+                        >
+                        </the-mask>
+                        <the-mask
+                          v-else
+                          v-model="riesgo_automotor.patente"
+                          placeholder="AB123CD"
+                          name="patente"
+                          v-validate="'required'"
+                          :error="getError('patente')"
+                          style="text-transform:uppercase;"
+                          mask="AA###AA"
+                        >
+                        </the-mask>
+
+                      </div>
+                    </div>
                     <label>Motor</label>
                     <base-input
                       v-model="riesgo_automotor.nro_motor"
@@ -530,6 +564,9 @@ import { Select, Option, DatePicker } from 'element-ui';
 import http from '../../../../API/http-request.js';
 import { TabPane, Tabs, Collapse, CollapseItem } from 'src/components';
 import { mixin } from '../../../../mixins/mixin.js';
+import { BaseSwitch } from 'src/components/index';
+import MaskedInput from 'vue-masked-input';
+import { TheMask } from 'vue-the-mask';
 
 export default {
   props: {
@@ -547,9 +584,12 @@ export default {
     [Select.name]: Select,
     [Option.name]: Option,
     [DatePicker.name]: DatePicker,
+    BaseSwitch,
     Collapse,
     CollapseItem,
     TabPane,
+    MaskedInput,
+    TheMask,
     Tabs
   },
   methods: {
@@ -654,6 +694,7 @@ export default {
     riesgo_automotor: {
       automotor_tipo: 'Automotor',
       uso: 'Particular',
+      tipo_patente: 'Mercosur',
       estado_general: 'Muy Bueno',
       ajuste: '0%',
       equipo_rastreo: 'NO',
@@ -738,6 +779,16 @@ export default {
       {
         value: 'Cabriolet',
         label: 'Cabriolet'
+      }
+    ],
+    tipo_patentes: [
+      {
+        value: 0,
+        label: 'Nacional'
+      },
+      {
+        value: 1,
+        label: 'Mercosur'
       }
     ],
     combustibles: [
