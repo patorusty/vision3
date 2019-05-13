@@ -951,12 +951,9 @@ export default {
   margin-bottom: 5px;
   margin-top: 5px;
 }
-.errorS {
+/* .errorS {
   border: 1px solid red;
   background-color: rgba(222, 222, 222, 0.1);
   border-radius: 0.4285rem;
-}
-/* .elSelect:hover {
-  border: 1px solid greenyellow !important;
 } */
 </style>

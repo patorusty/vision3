@@ -1,7 +1,6 @@
 @import "../../variables";
 @mixin select($type, $color) {
-  .select-#{$type}.el-select {
-  }
+  
   .select-#{$type}.el-select .el-input  {
     .el-input__suffix{
       display: flex;
@@ -29,6 +28,19 @@
     .el-input__icon{
       color:$color;
     }
+  }
+  .select-#{$type}.el-select .el-input .errorS{
+    input{
+      border-width: 30px;
+      border-color: red;
+      background-color: rgba(222, 222, 222, 0.1);
+      border-radius: 0.4285rem;
+  }
+  &:hover{
+    input{
+      border-color: transparent;
+    }
+  }
   }
   .select-#{$type}{
 
