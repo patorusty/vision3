@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:75%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:75%;">
         <card>
           <form>
             <div class="d-flex justify-content-between">
@@ -44,6 +37,8 @@
                       class="select-primary"
                       v-model="riesgo_automotor.automotor_tipo"
                       name="automotor_tipo"
+                      :errorSelect="true"
+                      id="1"
                     >
                       <el-option
                         v-for="tipo_vehiculo in tipo_vehiculos"
@@ -57,7 +52,8 @@
                     <label class="mt-2">Año</label>
                     <el-select
                       filterable
-                      class="select-primary"
+                      class="select-primary elSelect"
+                      :class="{ errorS: errorSelect.automotor_anio }"
                       v-model="riesgo_automotor.automotor_anio"
                       name="automotor_anio_id"
                       @change="touchSelect('automotor_anio')"
@@ -69,20 +65,21 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect.automotor_anio"
-                    >
+                    <p class="errorSelect" v-show="errorSelect.automotor_anio">
                       Este campo es obligatorio
                     </p>
                     <label class="mt-2">Marca</label>
                     <el-select
                       v-model="riesgo_automotor.automotor_marca_id"
                       class="select-primary"
+                      :class="{ errorS: errorSelect.automotor_marca_id }"
                       filterable
                       @change="
-                      filtrarModeloPorMarca(riesgo_automotor.automotor_marca_id)
-                      touchSelect('automotor_marca_id') "
+                        filtrarModeloPorMarca(
+                          riesgo_automotor.automotor_marca_id
+                        );
+                        touchSelect('automotor_marca_id');
+                      "
                     >
                       <el-option
                         v-for="marca in marcas"
@@ -103,10 +100,16 @@
                     <el-select
                       v-model="riesgo_automotor.automotor_modelo_id"
                       class="select-primary"
+                      :class="{ errorS: errorSelect.automotor_modelo_id }"
                       filterable
                       @change="
-                      filtrarVersionesDeModelo(url, riesgo_automotor.automotor_anio, riesgo_automotor.automotor_modelo_id)
-                      touchSelect('automotor_modelo_id')"
+                        filtrarVersionesDeModelo(
+                          url,
+                          riesgo_automotor.automotor_anio,
+                          riesgo_automotor.automotor_modelo_id
+                        );
+                        touchSelect('automotor_modelo_id');
+                      "
                     >
                       <el-option
                         v-for="modelo in modelos"
@@ -126,6 +129,7 @@
                     <label class="mt-2">Version</label>
                     <el-select
                       v-model="riesgo_automotor.automotor_version_id"
+                      :class="{ errorS: errorSelect.automotor_version_id }"
                       class="select-primary"
                       filterable
                       @change="touchSelect('automotor_version_id')"
@@ -167,29 +171,50 @@
                         </el-select>
                       </div>
                       <div class="col-md-6">
-                        <the-mask
+                        <div
+                          class="form-group"
+                          :class="{ 'has-danger': errors.first('patente') }"
                           v-if="riesgo_automotor.tipo_patente == 0"
-                          v-model="riesgo_automotor.patente"
-                          placeholder="ABC123"
-                          name="patente"
-                          v-validate="'required'"
-                          :error="getError('patente')"
-                          style="text-transform:uppercase;"
-                          mask="AAA###"
                         >
-                        </the-mask>
-                        <the-mask
+                          <the-mask
+                            class="form-control"
+                            v-model="riesgo_automotor.patente"
+                            name="patente"
+                            v-validate="'required'"
+                            placeholder="ABC123"
+                            style="text-transform:uppercase;"
+                            mask="AAA###"
+                          >
+                          </the-mask>
+                          <p
+                            class="errorSelect"
+                            v-show="errors.first('patente')"
+                          >
+                            Este campo es obligatorio
+                          </p>
+                        </div>
+                        <div
+                          class="form-group"
+                          :class="{ 'has-danger': errors.first('patente') }"
                           v-else
-                          v-model="riesgo_automotor.patente"
-                          placeholder="AB123CD"
-                          name="patente"
-                          v-validate="'required'"
-                          :error="getError('patente')"
-                          style="text-transform:uppercase;"
-                          mask="AA###AA"
                         >
-                        </the-mask>
-
+                          <the-mask
+                            class="form-control"
+                            v-model="riesgo_automotor.patente"
+                            placeholder="AB123CD"
+                            name="patente"
+                            v-validate="'required'"
+                            style="text-transform:uppercase;"
+                            mask="AA###AA"
+                          >
+                          </the-mask>
+                          <p
+                            class="errorSelect"
+                            v-show="errors.first('patente')"
+                          >
+                            Este campo es obligatorio
+                          </p>
+                        </div>
                       </div>
                     </div>
                     <label>Motor</label>
@@ -217,7 +242,9 @@
                     >
                     </base-input>
                     <div class="mt-4">
-                      <base-checkbox v-model="riesgo_automotor.okm">0km</base-checkbox>
+                      <base-checkbox v-model="riesgo_automotor.okm"
+                        >0km</base-checkbox
+                      >
                     </div>
                   </div>
                   <!-- TERCER COLUMNA -->
@@ -242,6 +269,7 @@
                     <el-select
                       filterable
                       class="select-primary"
+                      :class="{ errorS: errorSelect.tipo_carroceria }"
                       v-model="riesgo_automotor.tipo_carroceria"
                       name="tipo_carroceria"
                       @change="touchSelect('tipo_carroceria')"
@@ -254,10 +282,7 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect.tipo_carroceria"
-                    >
+                    <p class="errorSelect" v-show="errorSelect.tipo_carroceria">
                       Este campo es obligatorio
                     </p>
                     <label class="mt-2">Combustible</label>
@@ -291,10 +316,7 @@
                       ></el-option>
                     </el-select>
                     <label class="mt-2">Color</label>
-                    <base-input
-                      v-model="riesgo_automotor.color"
-                      name="color"
-                    >
+                    <base-input v-model="riesgo_automotor.color" name="color">
                     </base-input>
                   </div>
                 </div>
@@ -304,6 +326,7 @@
                     <el-select
                       filterable
                       class="select-primary"
+                      :class="{ errorS: errorSelect.cobertura_id }"
                       v-model="riesgo_automotor.cobertura_id"
                       name="estado_general"
                       @change="touchSelect('cobertura_id')"
@@ -316,10 +339,7 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect.cobertura_id"
-                    >
+                    <p class="errorSelect" v-show="errorSelect.cobertura_id">
                       Este campo es obligatorio
                     </p>
                     <base-input
@@ -330,7 +350,6 @@
                       :disabled="coberturas.todo_riesgo == 0"
                     >
                     </base-input>
-
                   </div>
                   <div class="col-md-4">
                     <label>Ajuste</label>
@@ -364,7 +383,6 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-
                   </div>
                   <div class="col-md-4">
                     <base-input
@@ -390,10 +408,9 @@
                 <span slot="label">
                   <i class="tim-icons icon-settings"></i>GNC
                 </span>
-                <base-checkbox
-                  class="mb-3"
-                  v-model="riesgo_automotor.gnc"
-                >Tiene GNC?</base-checkbox>
+                <base-checkbox class="mb-3" v-model="riesgo_automotor.gnc"
+                  >Tiene GNC?</base-checkbox
+                >
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
@@ -520,7 +537,8 @@
                 <base-checkbox
                   class="mb-3"
                   v-model="riesgo_automotor.acreedor_prendario"
-                >Tiene Acreedor Prendario?</base-checkbox>
+                  >Tiene Acreedor Prendario?</base-checkbox
+                >
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
@@ -548,7 +566,8 @@
                 @click="crear"
                 type="submit"
                 class="btn btn-primary ladda-button"
-              >Crear</base-button>
+                >Crear</base-button
+              >
             </div>
           </form>
         </card>
@@ -558,14 +577,12 @@
 </template>
 <script>
 import { SlideYUpTransition } from 'vue2-transitions';
-import { Card } from 'src/components';
 import { EventBus } from '../../../../main.js';
 import { Select, Option, DatePicker } from 'element-ui';
 import http from '../../../../API/http-request.js';
 import { TabPane, Tabs, Collapse, CollapseItem } from 'src/components';
 import { mixin } from '../../../../mixins/mixin.js';
 import { BaseSwitch } from 'src/components/index';
-import MaskedInput from 'vue-masked-input';
 import { TheMask } from 'vue-the-mask';
 
 export default {
@@ -588,7 +605,6 @@ export default {
     Collapse,
     CollapseItem,
     TabPane,
-    MaskedInput,
     TheMask,
     Tabs
   },
@@ -596,6 +612,9 @@ export default {
     close() {
       EventBus.$emit('resetInput', false);
       this.$emit('close');
+    },
+    checkPatente(modelo) {
+      return modelo ? true : false;
     },
     crear() {
       if (this.$validator.validateAll().then(r => r) && this.checkSelect()) {
@@ -932,4 +951,12 @@ export default {
   margin-bottom: 5px;
   margin-top: 5px;
 }
+.errorS {
+  border: 1px solid red;
+  background-color: rgba(222, 222, 222, 0.1);
+  border-radius: 0.4285rem;
+}
+/* .elSelect:hover {
+  border: 1px solid greenyellow !important;
+} */
 </style>
