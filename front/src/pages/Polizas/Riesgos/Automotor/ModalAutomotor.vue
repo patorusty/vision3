@@ -1,7 +1,14 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop style="width:75%;">
+    <div
+      class="modal-backdrop"
+      @keydown.esc="close"
+      @click="close"
+    >
+      <div
+        @click.stop
+        style="width:75%;"
+      >
         <card>
           <form>
             <div class="d-flex justify-content-between">
@@ -65,7 +72,10 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect.automotor_anio">
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.automotor_anio"
+                    >
                       Este campo es obligatorio
                     </p>
                     <label class="mt-2">Marca</label>
@@ -242,9 +252,7 @@
                     >
                     </base-input>
                     <div class="mt-4">
-                      <base-checkbox v-model="riesgo_automotor.okm"
-                        >0km</base-checkbox
-                      >
+                      <base-checkbox v-model="riesgo_automotor.okm">0km</base-checkbox>
                     </div>
                   </div>
                   <!-- TERCER COLUMNA -->
@@ -282,7 +290,10 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect.tipo_carroceria">
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.tipo_carroceria"
+                    >
                       Este campo es obligatorio
                     </p>
                     <label class="mt-2">Combustible</label>
@@ -316,7 +327,10 @@
                       ></el-option>
                     </el-select>
                     <label class="mt-2">Color</label>
-                    <base-input v-model="riesgo_automotor.color" name="color">
+                    <base-input
+                      v-model="riesgo_automotor.color"
+                      name="color"
+                    >
                     </base-input>
                   </div>
                 </div>
@@ -339,7 +353,10 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect.cobertura_id">
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.cobertura_id"
+                    >
                       Este campo es obligatorio
                     </p>
                     <base-input
@@ -405,79 +422,12 @@
               </tab-pane>
 
               <tab-pane>
-                <span slot="label">
-                  <i class="tim-icons icon-settings"></i>GNC
-                </span>
-                <base-checkbox class="mb-3" v-model="riesgo_automotor.gnc"
-                  >Tiene GNC?</base-checkbox
-                >
+                <p class="text-primary">
+                  Cubiertas
+                </p>
                 <div class="row">
                   <div class="col-md-4">
-                    <base-input
-                      :disabled="riesgo_automotor.gnc == false"
-                      label="Nro Oblea"
-                      v-model="riesgo_automotor.gnc_nro_oblea"
-                      name="gnc_nro_oblea"
-                    >
-                    </base-input>
-                    <base-input label="Vencimiento Oblea">
-                      <el-date-picker
-                        type="date"
-                        placeholder="Date Picker"
-                        v-model="riesgo_automotor.gnc_venc_oblea"
-                        :disabled="riesgo_automotor.gnc == false"
-                      >
-                      </el-date-picker>
-                    </base-input>
-                    <base-input
-                      label="Valor GNC"
-                      v-model="riesgo_automotor.valor_gnc"
-                      name="valor_gnc"
-                      :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
-                  </div>
-                  <div class="col-md-4">
-                    <base-input
-                      label="Marca Cilindro"
-                      v-model="riesgo_automotor.gnc_marca_cilindro"
-                      name="gnc_marca_cilindro"
-                      :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
-                    <base-input
-                      label="Nro Cilindro"
-                      v-model="riesgo_automotor.gnc_nro_cilindro"
-                      name="gnc_nro_cilindro"
-                      :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
-                  </div>
-                  <div class="col-md-4">
-                    <base-input
-                      label="Marca Regulador"
-                      v-model="riesgo_automotor.gnc_marca_regulador"
-                      name="gnc_marca_regulador"
-                      :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
-                    <base-input
-                      label="Nro Regulador"
-                      v-model="riesgo_automotor.gnc_nro_regulador"
-                      name="gnc_nro_regulador"
-                      :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
-                  </div>
-                </div>
-              </tab-pane>
-              <tab-pane>
-                <span slot="label">
-                  <i class="tim-icons icon-settings"></i>Cubiertas / Accesorios
-                </span>
-                <div class="row">
-                  <div class="col-md-4">
-                    <label>Marca Cubiertas</label>
+                    <label>Marca </label>
                     <el-select
                       filterable
                       class="select-primary"
@@ -492,37 +442,113 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Medida </label>
                     <base-input
-                      class="mt-3"
-                      label="Medida Cubiertas"
                       v-model="riesgo_automotor.cubiertas_medida"
                       name="cubiertas_medida"
                     >
                     </base-input>
                   </div>
+                </div>
+                <span slot="label">
+                  <i class="tim-icons icon-settings"></i>GNC
+                </span>
+                <p class="text-primary">
+                  GNC
+                </p>
+                <base-checkbox
+                  class="mb-3"
+                  v-model="riesgo_automotor.gnc"
+                >Tiene GNC?</base-checkbox>
+                <div class="row">
                   <div class="col-md-4">
+                    <label>Nro Oblea</label>
                     <base-input
-                      label="Accesorio Nro 1"
+                      :disabled="riesgo_automotor.gnc == false"
+                      v-model="riesgo_automotor.gnc_nro_oblea"
+                      name="gnc_nro_oblea"
+                    >
+                    </base-input>
+                    <label>Vencimiento Oblea</label>
+                    <base-input>
+                      <el-date-picker
+                        type="date"
+                        placeholder="Date Picker"
+                        v-model="riesgo_automotor.gnc_venc_oblea"
+                        :disabled="riesgo_automotor.gnc == false"
+                      >
+                      </el-date-picker>
+                    </base-input>
+                    <label>Valor GNC</label>
+                    <base-input
+                      v-model="riesgo_automotor.valor_gnc"
+                      name="valor_gnc"
+                      :disabled="riesgo_automotor.gnc == false"
+                    >
+                    </base-input>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Marca Cilindro</label>
+                    <base-input
+                      v-model="riesgo_automotor.gnc_marca_cilindro"
+                      name="gnc_marca_cilindro"
+                      :disabled="riesgo_automotor.gnc == false"
+                    >
+                    </base-input>
+                    <label>Nro Cilindro</label>
+                    <base-input
+                      v-model="riesgo_automotor.gnc_nro_cilindro"
+                      name="gnc_nro_cilindro"
+                      :disabled="riesgo_automotor.gnc == false"
+                    >
+                    </base-input>
+                  </div>
+                  <div class="col-md-4">
+                    <label>Marca Regulador</label>
+                    <base-input
+                      v-model="riesgo_automotor.gnc_marca_regulador"
+                      name="gnc_marca_regulador"
+                      :disabled="riesgo_automotor.gnc == false"
+                    >
+                    </base-input>
+                    <label>Nro Regulador</label>
+                    <base-input
+                      v-model="riesgo_automotor.gnc_nro_regulador"
+                      name="gnc_nro_regulador"
+                      :disabled="riesgo_automotor.gnc == false"
+                    >
+                    </base-input>
+                  </div>
+                </div>
+                <p class="text-primary">
+                  Accesorios
+                </p>
+                <div class="row">
+                  <div class="col-md-4">
+                    <label>Accesorio Nro 1</label>
+                    <base-input
                       v-model="riesgo_automotor.accesorio_01"
                       name="accesorio_1"
                     >
                     </base-input>
+                    <label>Accesorio Nro 2</label>
                     <base-input
-                      label="Accesorio Nro 2"
                       v-model="riesgo_automotor.accesorio_02"
                       name="accesorio_2"
                     >
                     </base-input>
                   </div>
                   <div class="col-md-4">
+                    <label>Valor Accesorio 1</label>
                     <base-input
-                      label="Valor Accesorio 1"
                       v-model="riesgo_automotor.valor_accesorio_01"
                       name="valor_accesorio_1"
                     >
                     </base-input>
+                    <label>Valor Accesorio 2</label>
                     <base-input
-                      label="Valor Accesorio 2"
                       v-model="riesgo_automotor.valor_accesorio_02"
                       name="valor_accesorio_2"
                     >
@@ -532,13 +558,17 @@
               </tab-pane>
               <tab-pane>
                 <span slot="label">
+                  <i class="icon-camera-18"></i>Fotos
+                </span>
+              </tab-pane>
+              <tab-pane>
+                <span slot="label">
                   <i class="tim-icons icon-notes"></i>Acreedor Prendario
                 </span>
                 <base-checkbox
                   class="mb-3"
                   v-model="riesgo_automotor.acreedor_prendario"
-                  >Tiene Acreedor Prendario?</base-checkbox
-                >
+                >Tiene Acreedor Prendario?</base-checkbox>
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
@@ -566,8 +596,7 @@
                 @click="crear"
                 type="submit"
                 class="btn btn-primary ladda-button"
-                >Crear</base-button
-              >
+              >Crear</base-button>
             </div>
           </form>
         </card>
