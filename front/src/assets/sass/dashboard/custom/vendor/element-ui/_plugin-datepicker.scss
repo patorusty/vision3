@@ -164,3 +164,10 @@ $box-shadow-lg: 0px 10px 50px 0px rgba(0, 0, 0, 0.2);
 .el-picker-panel .el-time-spinner.has-seconds .el-time-spinner__wrapper:nth-child(2) {
   margin-left: 0;
 }
+
+.el-date-editor .el-input .el-input--prefix .el-input--suffix .el-date-editor--date .errorS {
+  .el-input__inner{
+  border-color: #f33620 !important;
+    background-color: rgba(222, 222, 222, 0.1) !important;
+  }
+}

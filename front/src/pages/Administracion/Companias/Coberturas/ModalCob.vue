@@ -72,6 +72,7 @@
                           class="select-primary"
                           v-model="cobertura.ajuste"
                           name="ajuste"
+                          :class="{ errorS: errorSelect }"
                           @change="touchSelect"
                         >
                           <el-option

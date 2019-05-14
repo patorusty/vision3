@@ -129,15 +129,12 @@
                     <div class="col-md-3">
                       <label>Sexo</label>
                       <div class="d-flex flex-row">
-                        <base-radio
-                          class="mr-5"
-                          v-model="cliente.sexo"
-                          name="M"
-                        >Masculino</base-radio>
-                        <base-radio
-                          v-model="cliente.sexo"
-                          name="F"
-                        >Femenino</base-radio>
+                        <base-radio class="mr-5" v-model="cliente.sexo" name="M"
+                          >Masculino</base-radio
+                        >
+                        <base-radio v-model="cliente.sexo" name="F"
+                          >Femenino</base-radio
+                        >
                       </div>
                     </div>
                     <div class="col-md-2">
@@ -149,12 +146,10 @@
                           placeholder="Nacimiento"
                           format="d/M/yyyy"
                           value-format="yyyy-MM-dd"
+                          :class="{ errorS: errorSelect.nacimiento }"
                           @change="touchSelect('nacimiento')"
                         ></el-date-picker>
-                        <p
-                          class="errorSelect"
-                          v-show="errorSelect.nacimiento"
-                        >
+                        <p class="errorSelect" v-show="errorSelect.nacimiento">
                           Este campo es obligatorio
                         </p>
                       </base-input>
@@ -243,7 +238,8 @@
                       <el-select
                         filterable
                         class="select-primary"
-                        placeholder="Selecciones Localidad"
+                        placeholder="Seleccione Localidad"
+                        :class="{ errorS: errorSelect.localidad }"
                         v-model="cliente.localidad_id"
                         name="localidad_id"
                         @change="touchSelect('localidad')"
@@ -260,10 +256,7 @@
                           class="select-primary"
                         ></el-option>
                       </el-select>
-                      <p
-                        class="errorSelect"
-                        v-show="errorSelect.localidad"
-                      >
+                      <p class="errorSelect" v-show="errorSelect.localidad">
                         Este campo es obligatorio
                       </p>
                     </div>
@@ -336,6 +329,7 @@
                       <el-select
                         class="select-primary pl-0 col-md-12"
                         placeholder="Seleccionar Productor"
+                        :class="{ errorS: errorSelect.productor }"
                         v-model="cliente.productor_id"
                         name="productor_id"
                         @change="touchSelect('productor')"
@@ -355,10 +349,7 @@
                           class="select-primary"
                         ></el-option>
                       </el-select>
-                      <p
-                        class="errorSelect"
-                        v-show="errorSelect.productor"
-                      >
+                      <p class="errorSelect" v-show="errorSelect.productor">
                         Debe seleccionar un Productor
                       </p>
                     </div>
@@ -396,7 +387,8 @@
                         class="animation-on-hover pull-left"
                         type="primary"
                         @click="crear"
-                      >Crear</base-button>
+                        >Crear</base-button
+                      >
                     </div>
                   </div>
                 </card>

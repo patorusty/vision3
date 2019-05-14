@@ -132,6 +132,19 @@
   }
 }
 
+.errorS{
+  input{
+    border-color: #f33620 !important;
+    background-color: rgba(222, 222, 222, 0.1) !important;
+    border-radius: 0.4285rem;
+}
+&:hover{
+  input{
+    border-color: #f33620 !important;
+  }}
+}
+
+
 
 @include media-breakpoint-down(xs){
   .form-horizontal .col-form-label,

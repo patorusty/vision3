@@ -21,7 +21,7 @@
     }
     &:hover{
       input{
-        border-color: $color !important;
+        border-color: $color;
       }
     }
 
@@ -29,19 +29,7 @@
       color:$color;
     }
   }
-  .select-#{$type}.el-select .el-input .errorS{
-    input{
-      border-width: 30px;
-      border-color: red;
-      background-color: rgba(222, 222, 222, 0.1);
-      border-radius: 0.4285rem;
-  }
-  &:hover{
-    input{
-      border-color: transparent;
-    }
-  }
-  }
+
   .select-#{$type}{
 
     .el-tag, .el-tag.el-tag--info {
@@ -89,6 +77,25 @@
       color: white;
     }
   }
+}
+.errorS .el-input{
+  input{
+    border-color: #f33620 !important;
+    background-color: rgba(222, 222, 222, 0.1) !important;
+    border-radius: 0.4285rem;
+}
+&:hover{
+  input{
+    border-color: #f33620 !important;
+  }
+}
+.el-input__suffix{
+  .el-input__suffix-inner {
+    i{
+      color: #f33620 !important;
+    }
+  }
+}
 }
 
 @include select('default', $default)

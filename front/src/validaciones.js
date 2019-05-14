@@ -80,6 +80,9 @@ export default {
     },
     valor_vehiculo: {
       required: 'Este campo es obligatorio'
+    },
+    nacimiento: {
+      required: 'Este campo es obligatorio'
     }
   }
 };

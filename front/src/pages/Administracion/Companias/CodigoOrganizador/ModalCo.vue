@@ -26,6 +26,7 @@
                       v-validate="modelValidations.organizador_id"
                       name="organizador_id"
                       @change="touchSelect"
+                      :class="{ errorS: errorSelect }"
                     >
                       <el-option
                         v-for="organizador in organizadores"

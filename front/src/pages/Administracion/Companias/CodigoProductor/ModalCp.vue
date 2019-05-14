@@ -25,6 +25,7 @@
                       v-model="codigo_productor.productor_id"
                       v-validate="modelValidations.productor_id"
                       name="productor_id"
+                      :class="{ errorS: errorSelect.productor }"
                       @change="touchSelect('productor')"
                     >
                       <el-option
@@ -53,6 +54,7 @@
                       v-model="codigo_productor.codigo_organizador_id"
                       v-validate="modelValidations.codigo_organizador_id"
                       name="organizador_id"
+                      :class="{ errorS: errorSelect.codigoOrganizador }"
                       @change="touchSelect('codigoOrganizador')"
                     >
                       <el-option
