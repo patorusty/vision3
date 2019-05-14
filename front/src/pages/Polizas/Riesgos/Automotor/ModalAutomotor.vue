@@ -455,13 +455,20 @@
                 <span slot="label">
                   <i class="tim-icons icon-settings"></i>GNC
                 </span>
-                <p class="text-primary">
-                  GNC
-                </p>
-                <base-checkbox
-                  class="mb-3"
-                  v-model="riesgo_automotor.gnc"
-                >Tiene GNC?</base-checkbox>
+                <div class="row col-md-4">
+                  <p
+                    class="text-primary col-md-3"
+                    style="padding-left:0px"
+                  >
+                    GNC
+                  </p>
+                  <base-checkbox
+                    class="col-md-6"
+                    style="margin-top:-13px"
+                    v-model="riesgo_automotor.gnc"
+                  >
+                  </base-checkbox>
+                </div>
                 <div class="row">
                   <div class="col-md-4">
                     <label>Nro Oblea</label>
@@ -558,7 +565,7 @@
               </tab-pane>
               <tab-pane>
                 <span slot="label">
-                  <i class="icon-camera-18"></i>Fotos
+                  <i class="tim-icons icon-camera-18"></i>Fotos
                 </span>
               </tab-pane>
               <tab-pane>

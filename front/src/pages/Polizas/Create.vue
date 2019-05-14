@@ -37,11 +37,11 @@
                             ></el-option>
                           </el-select>
                           <p
-                          class="errorSelect"
-                          v-show="errorSelect.cliente_id"
-                        >
-                          Este campo es obligatorio
-                        </p>
+                            class="errorSelect"
+                            v-show="errorSelect.cliente_id"
+                          >
+                            Este campo es obligatorio
+                          </p>
                           <label>Tipo Riesgo</label>
                           <el-select
                             filterable
@@ -78,11 +78,11 @@
                             >{{ compania.nombre }}</el-option>
                           </el-select>
                           <p
-                          class="errorSelect"
-                          v-show="errorSelect.compania_id"
-                        >
-                          Este campo es obligatorio
-                        </p>
+                            class="errorSelect"
+                            v-show="errorSelect.compania_id"
+                          >
+                            Este campo es obligatorio
+                          </p>
                         </div>
                         <div class="col-md-6">
                           <label>Codigo Productor</label>
@@ -102,12 +102,12 @@
                             ></el-option>
                           </el-select>
                           <p
-                          class="errorSelect"
-                          v-show="errorSelect.codigo_productor_id"
-                        >
-                          Este campo es obligatorio
-                        </p>
-                          <label>Poliza N:</label>
+                            class="errorSelect"
+                            v-show="errorSelect.codigo_productor_id"
+                          >
+                            Este campo es obligatorio
+                          </p>
+                          <label>Poliza Nro:</label>
                           <base-input
                             type="text"
                             name="numero"
@@ -117,8 +117,16 @@
                             :class="{ 'has-danger': numeroUsed }"
                             @keyup="buscarNumero"
                           ></base-input>
-                          <label for="numero_solicitud">Nro de Solicitud:</label>
-                          <p class="text-primary">{{ poliza.numero_solicitud }}</p>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="numero_solicitud">Renueva Poliza Nro:</label>
+                              <p class="text-primary">{{ poliza.renueva_numero}}</p>
+                            </div>
+                            <div class="col-md-6">
+                              <label for="numero_solicitud">Nro de Solicitud:</label>
+                              <p class="text-primary">{{ poliza.numero_solicitud }}</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -151,11 +159,11 @@
                               @change="touchSelect('vigencia_desde')"
                             ></el-date-picker>
                             <p
-                          class="errorSelect"
-                          v-show="errorSelect.vigencia_desde"
-                        >
-                          Este campo es obligatorio
-                        </p>
+                              class="errorSelect"
+                              v-show="errorSelect.vigencia_desde"
+                            >
+                              Este campo es obligatorio
+                            </p>
                           </base-input>
                           <label>Hasta:</label>
                           <base-input>
@@ -167,11 +175,11 @@
                               @change="touchSelect('vigencia_hasta')"
                             ></el-date-picker>
                             <p
-                          class="errorSelect"
-                          v-show="errorSelect.vigencia_hasta"
-                        >
-                          Este campo es obligatorio
-                        </p>
+                              class="errorSelect"
+                              v-show="errorSelect.vigencia_hasta"
+                            >
+                              Este campo es obligatorio
+                            </p>
                           </base-input>
                         </div>
                         <div class="col-md-4">

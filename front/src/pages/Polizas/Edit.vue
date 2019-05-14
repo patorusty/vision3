@@ -87,15 +87,23 @@
                               :label="codigo_productor.productores.apellido + ' ' + codigo_productor.productores.nombre + ' | Cod. (' + codigo_productor.codigo_productor + ')'"
                             ></el-option>
                           </el-select>
-                          <label>Poliza N:</label>
+                          <label>Poliza Nro:</label>
                           <base-input
                             type="text"
                             name="numero"
                             v-model="poliza.numero"
                             placeholder=""
                           ></base-input>
-                          <label for="numero_solicitud">Nro de Solicitud:</label>
-                          <p class="text-primary">{{ poliza.numero_solicitud }}</p>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <label for="numero_solicitud">Renueva Poliza Nro:</label>
+                              <p class="text-primary">{{ poliza.renueva_numero}}</p>
+                            </div>
+                            <div class="col-md-6">
+                              <label for="numero_solicitud">Nro de Solicitud:</label>
+                              <p class="text-primary">{{ poliza.numero_solicitud }}</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
