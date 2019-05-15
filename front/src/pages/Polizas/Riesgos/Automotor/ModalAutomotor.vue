@@ -1,8 +1,8 @@
 <template>
   <SlideYUpTransition :duration="500">
     <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop style="width:75%; height:77%;">
-        <card style="height: 100%;">
+      <div @click.stop style="width:75%;">
+        <card style="height: 70%;">
           <form>
             <div class="d-flex justify-content-between">
               <!-- ACA VA EL TITULO -->
@@ -17,7 +17,7 @@
               </button>
             </div>
             <tabs
-            style="height:530px;"
+              style="height:530px;"
               type="primary"
               tabNavWrapperClasses="col-lg-2 col-md-2"
               tabContentClasses="col-md-10"
@@ -330,7 +330,9 @@
                       :class="{ errorS: errorSelect.cobertura_id }"
                       v-model="riesgo_automotor.cobertura_id"
                       name="estado_general"
-                      @change="touchSelect('cobertura_id')"
+                      @change="
+                        touchSelect('cobertura_id'), coberturaSeleccionada()
+                      "
                     >
                       <el-option
                         v-for="cobertura in coberturas"
@@ -348,7 +350,7 @@
                       label="Franquicia"
                       v-model="riesgo_automotor.franquicia"
                       name="franquicia"
-                      :disabled="coberturas.todo_riesgo == 0"
+                      :disabled="cobertura.todo_riesgo == 1"
                     >
                     </base-input>
                   </div>
@@ -386,10 +388,7 @@
                     </el-select>
                   </div>
                   <div class="col-md-4">
-                    <base-input
-                      label="Valor Total"
-                      v-model="suma"
-                    >
+                    <base-input label="Valor Total" v-model="suma">
                     </base-input>
                     <base-input label="Observaciones">
                       <textarea
@@ -400,7 +399,7 @@
                   </div>
                 </div>
               </tab-pane>
-              
+
               <tab-pane>
                 <p class="text-primary">
                   Cubiertas
@@ -576,7 +575,9 @@
                 </div>
               </tab-pane>
             </tabs>
-            <div class="col-md-12 d-flex justify-content-center align-items-stretch">
+            <div
+              class="col-md-12 d-flex justify-content-center align-items-stretch"
+            >
               <base-button
                 @click="crear"
                 type="submit"
@@ -690,6 +691,11 @@ export default {
         }
       });
       return valor;
+    },
+    coberturaSeleccionada() {
+      http
+        .loadOne('/cobertura', this.riesgo_automotor.cobertura_id)
+        .then(r => (this.cobertura = r.data.data));
     }
   },
   created() {
@@ -703,7 +709,8 @@ export default {
     marca_id: '',
     automotor_marcas: {},
     automotor_modelos: {},
-    coberturas: {},
+    coberturas: [],
+    cobertura: {},
     modelos: [],
     modelo: {},
     anios: [],
@@ -936,7 +943,7 @@ export default {
       }
     ]
   }),
-    computed: {
+  computed: {
     suma: function() {
       return (
         parseInt(this.riesgo_automotor.valor_vehiculo) +
@@ -945,7 +952,7 @@ export default {
         parseInt(this.riesgo_automotor.valor_accesorio_02)
       );
     }
-  },
+  }
 };
 </script>
 <style>
