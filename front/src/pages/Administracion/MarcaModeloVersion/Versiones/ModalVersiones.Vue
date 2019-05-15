@@ -20,7 +20,10 @@
                 <div class="col-md-12">
                   <div class="mb-3">
                     <base-input
-                      v-model="modeloSeleccionado.automotor_modelo.automotor_marca.nombre"
+                      v-model="
+                        modeloSeleccionado.automotor_modelo.automotor_marca
+                          .nombre
+                      "
                       name="nombre"
                       disabled
                     ></base-input>
@@ -42,7 +45,8 @@
                     ></base-input>
                   </div>
                   <div class="mb-3">
-                    <el-select multiple
+                    <el-select
+                      multiple
                       class="select-primary"
                       placeholder="Seleccionar Años"
                       filterable

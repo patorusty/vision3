@@ -2,7 +2,7 @@
   <SlideYUpTransition :duration="500">
     <div class="modal-backdrop" @keydown.esc="close" @click="close">
       <div @click.stop style="width:75%;">
-        <card style="height: 70%;">
+        <card>
           <form>
             <div class="d-flex justify-content-between">
               <!-- ACA VA EL TITULO -->
@@ -17,7 +17,6 @@
               </button>
             </div>
             <tabs
-              style="height:530px;"
               type="primary"
               tabNavWrapperClasses="col-lg-2 col-md-2"
               tabContentClasses="col-md-10"
@@ -53,11 +52,11 @@
                     <label class="mt-2">Año</label>
                     <el-select
                       filterable
-                      class="select-primary elSelect"
+                      class="select-primary"
                       :class="{ errorS: errorSelect.automotor_anio }"
                       v-model="riesgo_automotor.automotor_anio"
                       name="automotor_anio_id"
-                      @change="touchSelect('automotor_anio')"
+                      @change="touchSelect('automotor_anio'), reset()"
                     >
                       <el-option
                         v-for="anio in anios"
@@ -650,11 +649,14 @@ export default {
       });
     },
     filtrarModeloPorMarca(id) {
+      this.riesgo_automotor.automotor_modelo_id = '';
+      this.versiones = [];
       http.loadOne('/modelos/filtrar', id).then(r => {
         this.modelos = r.data.data;
       });
     },
     filtrarVersionesDeModelo(url, anio, modelo) {
+      this.versiones = [];
       http.search2(url, anio, modelo).then(r => {
         this.versiones = r.data.data;
       });
@@ -685,7 +687,7 @@ export default {
     checkSelect() {
       let valor = true;
       Object.entries(this.selected).forEach(select => {
-        if (select[1] == false) {
+        if (select[1] == false || !this.riesgo_automotor[`${select[0]}`]) {
           this.errorSelect[`${select[0]}`] = true;
           valor = false;
         }
@@ -696,6 +698,11 @@ export default {
       http
         .loadOne('/cobertura', this.riesgo_automotor.cobertura_id)
         .then(r => (this.cobertura = r.data.data));
+    },
+    reset() {
+      this.riesgo_automotor.automotor_marca_id = '';
+      this.riesgo_automotor.automotor_modelo_id = '';
+      this.riesgo_automotor.automotor_version_id = '';
     }
   },
   created() {
@@ -714,7 +721,7 @@ export default {
     modelos: [],
     modelo: {},
     anios: [],
-    versiones: {},
+    versiones: [],
     url: '/anios/filtrar',
     errorSelect: {
       automotor_anio: false,
@@ -747,9 +754,8 @@ export default {
       valor_gnc: 0,
       valor_accesorio_01: 0,
       valor_accesorio_02: 0,
-      valor_total: ''
-
-      // poliza_id: this.poliza.id,
+      valor_total: '',
+      automotor_version_id: ''
     },
     tipo_vehiculos: [
       {

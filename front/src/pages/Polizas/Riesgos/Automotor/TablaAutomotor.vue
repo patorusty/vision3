@@ -1,10 +1,7 @@
 <template>
   <div class="col-md-12">
     <card class="mt-4 ">
-      <div
-        class="col-sm-12 row align-items-center"
-        slot="header"
-      >
+      <div class="col-sm-12 row align-items-center" slot="header">
         <div class="col">
           <h4 class="d-inline text-primary ">DETALLE DEL RIESGO</h4>
         </div>
@@ -19,12 +16,10 @@
               prop="automotor_tipo"
             >
             </el-table-column>
-            <el-table-column
-              min-width="200"
-              label="marca"
-            >
+            <el-table-column min-width="200" label="marca">
               <div slot-scope="{ row }">
-                {{ row.automotor_marca.nombre }} {{ row.automotor_version.nombre }} {{ row.automotor_anio.anio }}
+                {{ row.automotor_marca.nombre }}
+                {{ row.automotor_version.nombre }} {{ row.automotor_anio.anio }}
               </div>
             </el-table-column>
 
@@ -78,12 +73,7 @@
                   :open-delay="300"
                   placement="top"
                 >
-                  <base-button
-                    type="danger"
-                    icon
-                    size="sm"
-                    class="btn-link"
-                  >
+                  <base-button type="danger" icon size="sm" class="btn-link">
                     <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </el-tooltip>
