@@ -1,8 +1,8 @@
 <template>
   <SlideYUpTransition :duration="500">
     <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop style="width:75%;">
-        <card>
+      <div @click.stop style="width:75%; height:77%;">
+        <card style="height: 100%;">
           <form>
             <div class="d-flex justify-content-between">
               <!-- ACA VA EL TITULO -->
@@ -17,6 +17,7 @@
               </button>
             </div>
             <tabs
+            style="height:530px;"
               type="primary"
               tabNavWrapperClasses="col-lg-2 col-md-2"
               tabContentClasses="col-md-10"
@@ -387,9 +388,7 @@
                   <div class="col-md-4">
                     <base-input
                       label="Valor Total"
-                      v-model="riesgo_automotor.valor_total"
-                      name="valor_total"
-                      :error="getError('valor_total')"
+                      v-model="suma"
                     >
                     </base-input>
                     <base-input label="Observaciones">
@@ -398,12 +397,10 @@
                         v-model="riesgo_automotor.observaciones"
                       ></textarea>
                     </base-input>
-                    <!-- {{ riesgo_automotor.vigencia_desde }}
-                    {{ riesgo_automotor.vigencia_hasta }} -->
                   </div>
                 </div>
               </tab-pane>
-
+              
               <tab-pane>
                 <p class="text-primary">
                   Cubiertas
@@ -579,7 +576,7 @@
                 </div>
               </tab-pane>
             </tabs>
-            <div class="col-md-12 d-flex justify-content-center">
+            <div class="col-md-12 d-flex justify-content-center align-items-stretch">
               <base-button
                 @click="crear"
                 type="submit"
@@ -739,11 +736,11 @@ export default {
       okm: false,
       gnc: false,
       acreedor_prendario: false,
-      valor_vehiculo: '0',
-      valor_gnc: '0',
-      valor_accesorio_01: '0',
-      valor_accesorio_02: '0',
-      valor_total: '0'
+      valor_vehiculo: 0,
+      valor_gnc: 0,
+      valor_accesorio_01: 0,
+      valor_accesorio_02: 0,
+      valor_total: ''
 
       // poliza_id: this.poliza.id,
     },
@@ -938,7 +935,17 @@ export default {
         label: 'OTRO'
       }
     ]
-  })
+  }),
+    computed: {
+    suma: function() {
+      return (
+        parseInt(this.riesgo_automotor.valor_vehiculo) +
+        parseInt(this.riesgo_automotor.valor_gnc) +
+        parseInt(this.riesgo_automotor.valor_accesorio_01) +
+        parseInt(this.riesgo_automotor.valor_accesorio_02)
+      );
+    }
+  },
 };
 </script>
 <style>
@@ -969,9 +976,4 @@ export default {
   margin-bottom: 5px;
   margin-top: 5px;
 }
-/* .errorS {
-  border: 1px solid red;
-  background-color: rgba(222, 222, 222, 0.1);
-  border-radius: 0.4285rem;
-} */
 </style>

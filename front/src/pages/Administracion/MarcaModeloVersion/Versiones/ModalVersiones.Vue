@@ -47,12 +47,12 @@
                       placeholder="Seleccionar Años"
                       filterable
                       size="large"
-                      v-model="anios_id"
+                      v-model="version.automotor_anios"
                     >
                       <el-option
                         v-for="anio in anios"
-                        :key="anio.id"
-                        :value="anio.id"
+                        :key="anio.anio"
+                        :value="anio.anio"
                         :label="anio.anio"
                         class="select-primary"
                       ></el-option>
@@ -182,6 +182,7 @@ export default {
       console.log(this.version.id);
       http.loadOne('/anios/filtrar', this.version.id).then(r => {
         this.anios_id = r.data.data;
+        console.log(this.anios_id);
       });
     },
     getErrorVersion(fieldName, versionUsed) {
