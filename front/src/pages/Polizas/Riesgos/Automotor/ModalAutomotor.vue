@@ -542,6 +542,21 @@
                 <span slot="label">
                   <i class="tim-icons icon-camera-18"></i>Fotos
                 </span>
+                <vue-dropzone
+                  v-model="uploads"
+                  ref="myVueDropzone"
+                  :useCustomSlot="true"
+                  :duplicateCheck="true"
+                  id="dropzone"
+                  :options="dropzoneOptions"
+                >
+                  <div class="dropzone-custom-content">
+                    <div class="texto-drop">
+                      Arrastra las fotos aquí...
+                    </div>
+                  </div>
+                </vue-dropzone>
+                <button @click.prevent="verUpload"></button>
               </tab-pane>
               <tab-pane>
                 <span slot="label">
@@ -599,6 +614,8 @@ import { TabPane, Tabs, Collapse, CollapseItem } from 'src/components';
 import { mixin } from '../../../../mixins/mixin.js';
 import { BaseSwitch } from 'src/components/index';
 import { TheMask } from 'vue-the-mask';
+import vue2Dropzone from 'vue2-dropzone';
+import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 
 export default {
   props: {
@@ -621,96 +638,11 @@ export default {
     CollapseItem,
     TabPane,
     TheMask,
-    Tabs
-  },
-  methods: {
-    close() {
-      EventBus.$emit('resetInput', false);
-      this.$emit('close');
-    },
-    checkPatente(modelo) {
-      return modelo ? true : false;
-    },
-    crear() {
-      if (this.$validator.validateAll().then(r => r) && this.checkSelect()) {
-        this.$emit('crear', this.riesgo_automotor);
-        this.$validator.reset();
-        this.errors.clear();
-      }
-    },
-    cargarMarcas() {
-      http.load('administracion/marcas', this.marca_id).then(r => {
-        this.marcas = r.data.data;
-      });
-    },
-    buscarMarca() {
-      http.loadOne('administracion/marcas', this.marca_id).then(r => {
-        this.marca = r.data.data;
-      });
-    },
-    filtrarModeloPorMarca(id) {
-      this.riesgo_automotor.automotor_modelo_id = '';
-      this.versiones = [];
-      http.loadOne('/modelos/filtrar', id).then(r => {
-        this.modelos = r.data.data;
-      });
-    },
-    filtrarVersionesDeModelo(url, anio, modelo) {
-      this.versiones = [];
-      http.search2(url, anio, modelo).then(r => {
-        this.versiones = r.data.data;
-      });
-    },
-    cargarCoberturas() {
-      http.loadOne('cobertura/compania', this.compania_id).then(r => {
-        this.coberturas = r.data.data;
-      });
-    },
-    cargarAnios() {
-      http.load('anios', this.anio_id).then(r => {
-        this.anios = r.data.data;
-      });
-    },
-
-    touchSelect(val) {
-      if (
-        !this.riesgo_automotor[`${val}`] ||
-        this.riesgo_automotor[`${val}`] === undefined
-      ) {
-        this.selected[val] = false;
-        this.errorSelect[val] = true;
-      } else {
-        this.selected[val] = true;
-        this.errorSelect[val] = false;
-      }
-    },
-    checkSelect() {
-      let valor = true;
-      Object.entries(this.selected).forEach(select => {
-        if (select[1] == false || !this.riesgo_automotor[`${select[0]}`]) {
-          this.errorSelect[`${select[0]}`] = true;
-          valor = false;
-        }
-      });
-      return valor;
-    },
-    coberturaSeleccionada() {
-      http
-        .loadOne('/cobertura', this.riesgo_automotor.cobertura_id)
-        .then(r => (this.cobertura = r.data.data));
-    },
-    reset() {
-      this.riesgo_automotor.automotor_marca_id = '';
-      this.riesgo_automotor.automotor_modelo_id = '';
-      this.riesgo_automotor.automotor_version_id = '';
-    }
-  },
-  created() {
-    this.cargarMarcas();
-    this.cargarCoberturas();
-    this.cargarAnios();
+    Tabs,
+    vueDropzone: vue2Dropzone
   },
   data: () => ({
+    uploads:[],
     marcas: {},
     marca: {},
     marca_id: '',
@@ -756,6 +688,12 @@ export default {
       valor_accesorio_02: 0,
       valor_total: '',
       automotor_version_id: ''
+    },
+    dropzoneOptions: {
+      url: 'https://httpbin.org/post',
+      thumbnailWidth: 150,
+      maxFilesize: 2,
+      addRemoveLinks: true
     },
     tipo_vehiculos: [
       {
@@ -958,6 +896,96 @@ export default {
         parseInt(this.riesgo_automotor.valor_accesorio_02)
       );
     }
+  },
+  methods: {
+    verUpload() {
+      console.log(this.$refs.myVueDropzone.dropzone.files);
+    },
+    close() {
+      EventBus.$emit('resetInput', false);
+      this.$emit('close');
+    },
+    checkPatente(modelo) {
+      return modelo ? true : false;
+    },
+    crear() {
+      if (this.$validator.validateAll().then(r => r) && this.checkSelect()) {
+        this.$emit('crear', this.riesgo_automotor);
+        this.$validator.reset();
+        this.errors.clear();
+      }
+    },
+    cargarMarcas() {
+      http.load('administracion/marcas', this.marca_id).then(r => {
+        this.marcas = r.data.data;
+      });
+    },
+    buscarMarca() {
+      http.loadOne('administracion/marcas', this.marca_id).then(r => {
+        this.marca = r.data.data;
+      });
+    },
+    filtrarModeloPorMarca(id) {
+      this.riesgo_automotor.automotor_modelo_id = '';
+      this.versiones = [];
+      http.loadOne('/modelos/filtrar', id).then(r => {
+        this.modelos = r.data.data;
+      });
+    },
+    filtrarVersionesDeModelo(url, anio, modelo) {
+      this.versiones = [];
+      http.search2(url, anio, modelo).then(r => {
+        this.versiones = r.data.data;
+      });
+    },
+    cargarCoberturas() {
+      http.loadOne('cobertura/compania', this.compania_id).then(r => {
+        this.coberturas = r.data.data;
+      });
+    },
+    cargarAnios() {
+      http.load('anios', this.anio_id).then(r => {
+        this.anios = r.data.data;
+      });
+    },
+
+    touchSelect(val) {
+      if (
+        !this.riesgo_automotor[`${val}`] ||
+        this.riesgo_automotor[`${val}`] === undefined
+      ) {
+        this.selected[val] = false;
+        this.errorSelect[val] = true;
+      } else {
+        this.selected[val] = true;
+        this.errorSelect[val] = false;
+      }
+    },
+    checkSelect() {
+      let valor = true;
+      Object.entries(this.selected).forEach(select => {
+        if (select[1] == false || !this.riesgo_automotor[`${select[0]}`]) {
+          this.errorSelect[`${select[0]}`] = true;
+          valor = false;
+        }
+      });
+      return valor;
+    },
+    coberturaSeleccionada() {
+      http
+        .loadOne('/cobertura', this.riesgo_automotor.cobertura_id)
+        .then(r => (this.cobertura = r.data.data));
+    },
+    reset() {
+      this.riesgo_automotor.automotor_marca_id = '';
+      this.riesgo_automotor.automotor_modelo_id = '';
+      this.riesgo_automotor.automotor_version_id = '';
+    }
+  },
+  created() {
+    this.cargarMarcas();
+    this.cargarCoberturas();
+    this.cargarAnios();
   }
 };
 </script>
@@ -988,5 +1016,40 @@ export default {
   font-size: 0.75rem;
   margin-bottom: 5px;
   margin-top: 5px;
+}
+
+.vue-dropzone {
+  background-color: transparent;
+  border-color: #2b3553;
+  font-family: Arial, sans-serif;
+  letter-spacing: 0.2px;
+  color: #777;
+  -webkit-transition: 0.2s linear;
+  transition: 0.2s linear;
+  border-width: 1px;
+}
+
+.vue-dropzone:hover {
+  background-color: transparent;
+  border-color: #e14eca;
+  color: #777;
+  -webkit-transition: 0.2s linear;
+  transition: 0.2s linear;
+}
+.el-input.is-disabled .el-input__inner {
+  background-color: transparent;
+  border-color: #2b3553;
+}
+
+.texto-drop {
+  color: #777;
+  text-align: center;
+  margin: 2em 0;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.vue-dropzone > .dz-preview .dz-details {
+  background-color: transparent;
 }
 </style>
