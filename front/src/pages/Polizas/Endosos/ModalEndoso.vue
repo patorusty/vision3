@@ -32,7 +32,7 @@
                         type="date"
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
-                        v-model="fecha_pedido"
+                        v-model="endoso.fecha_pedido"
                       ></el-date-picker>
                     </base-input>
                   </div>
@@ -43,30 +43,36 @@
                     <el-select
                       filterable
                       class="select-primary"
-                      name="condicion_fiscal"
+                      name="tipo_endoso_id"
+                      v-model="endoso.tipo_endoso_id"
+                      @change="
+                        filtrarModificacionPorTipo(
+                          endoso.tipo_endoso_id
+                        );
+                      "
                     >
                       <el-option
-                        v-for="condicion in condiciones"
-                        :key="condicion.value"
-                        :label="condicion.label"
-                        :value="condicion.value"
+                        v-for="tipo_endoso in tipo_endosos"
+                        :key="tipo_endoso.id"
+                        :value="tipo_endoso.id"
+                        :label="tipo_endoso.nombre"
                         class="select-primary"
                       ></el-option>
                     </el-select>
                   </div>
                   <div class="col-md-6">
-
                     <label>Detalle Endoso</label>
                     <el-select
                       filterable
                       class="select-primary"
-                      name="condicion_fiscal"
+                      v-model="endoso.detalle_endoso_id"
+                      name="detalle_endoso_id"
                     >
                       <el-option
-                        v-for="condicion in condiciones"
-                        :key="condicion.value"
-                        :label="condicion.label"
-                        :value="condicion.value"
+                        v-for="detalle in detalles"
+                        :key="detalle.id"
+                        :value="detalle.id"
+                        :label="detalle.nombre"
                         class="select-primary"
                       ></el-option>
                     </el-select>
@@ -74,7 +80,10 @@
                 </div>
                 <label class="mt-3">Detalle</label>
                 <base-input>
-                  <textarea class="form-control"></textarea>
+                  <textarea
+                    class="form-control"
+                    v-model="endoso.detalle"
+                  ></textarea>
                 </base-input>
                 <div class="row">
                   <div class="col-md-6">
@@ -84,6 +93,7 @@
                         type="date"
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
+                        v-model="endoso.fecha_emision"
                       ></el-date-picker>
                     </base-input>
                   </div>
@@ -92,11 +102,12 @@
                       label="Numero Endoso"
                       type="text"
                       name="numero_endoso"
+                      v-model="endoso.numero_endoso"
                     ></base-input>
                   </div>
                 </div>
                 <div>
-                  <base-checkbox>Completo</base-checkbox>
+                  <base-checkbox v-model="endoso.completo">Completo</base-checkbox>
                 </div>
                 <div class="modal-pie pull-right mt-3">
                   <base-button
@@ -135,7 +146,12 @@ export default {
     [DatePicker.name]: DatePicker
   },
   data: () => ({
-    fecha_pedido: new Date(),
+    endoso: {
+      detalle_endoso_id: '',
+      fecha_pedido: new Date()
+    },
+    detalles: [],
+
     condiciones: [
       {
         value: 'Consumidor Final',
@@ -149,13 +165,28 @@ export default {
         value: 'Resp. Inscripto',
         label: 'Resp. Inscripto'
       }
-    ]
+    ],
+    tipo_endosos: []
   }),
   methods: {
     close() {
       this.$emit('close');
       EventBus.$emit('resetInput', false);
+    },
+    cargarTipoEndosos() {
+      http.load('tipoendoso').then(r => {
+        this.tipo_endosos = r.data.data;
+      });
+    },
+    filtrarModificacionPorTipo(id) {
+      this.endoso.detalle_endoso_id = '';
+      http.loadOne('/detallesendosos/filtrar', id).then(r => {
+        this.detalles = r.data.data;
+      });
     }
+  },
+  created() {
+    this.cargarTipoEndosos();
   }
 };
 </script>
