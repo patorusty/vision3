@@ -32,6 +32,7 @@ Route::Resource('/cobertura', 'CoberturaController');
 Route::Resource('/tiporiesgo', 'TipoRiesgoController');
 Route::Resource('/tipovigencia', 'TipoVigenciaController');
 Route::Resource('/polizas', 'PolizaController');
+Route::Resource('/endosos', 'EndosoController');
 Route::Resource('/tipoendoso', 'TipoEndosoController');
 Route::get('/numerosolicitud', 'PolizaController@numeroDeSolicitud');
 Route::get('/codigoorganizador/compania/{id}', 'CodigoOrganizadorController@indexFiltrado');
@@ -57,5 +58,6 @@ Route::get('/modelos/busquedaModelo', 'AutomotorModeloController@searchModelo');
 Route::get('/versiones/busquedaVersion', 'AutomotorVersionController@searchVersion');
 Route::get('/polizas/busquedaPolizaId/{id}', 'RiesgoAutomotorController@searchPoliza');
 Route::get('/detallesendosos/filtrar/{id}', 'DetalleEndosoController@filtro');
+Route::get('/endosos/poliza_id/{id}', 'EndosoController@indexFiltrado');
 
 

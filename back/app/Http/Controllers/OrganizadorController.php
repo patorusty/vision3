@@ -124,15 +124,6 @@ class OrganizadorController extends Controller
             $matricula = Organizadores::where('matricula', $searchC)->get();
         }
         return OrganizadoresResource::collection($matricula);
-        
-        // return CodigoOrganizadorsResource::collection($cos);
-        // if ($search = \Request::get('q')) {
-        //     $matriculas = Organizadores::where(function ($query) use ($search) {
-        //         $query->where('matricula', 'LIKE', "%$search%");
-        //     })->get();
-        // } else {
-        //     $matriculas = 'Algo fallo';
-        // }
     }
 
     /**

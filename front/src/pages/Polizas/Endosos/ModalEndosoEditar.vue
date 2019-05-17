@@ -116,8 +116,8 @@
                   <base-button
                     class="btn btn-primary ladda-button"
                     type="submit"
-                    @click="crear"
-                  >Crear</base-button>
+                    @click="actualizar"
+                  >Guardar</base-button>
                 </div>
               </div>
             </div>
@@ -138,8 +138,9 @@ import { EventBus } from '../../../main.js';
 import { BaseCheckbox, BaseRadio } from 'src/components/index';
 
 export default {
+  props: ['endoso'],
   mixins: [mixin],
-  name: 'modal-endosos',
+  name: 'modal-endosos-editar',
   components: {
     SlideYUpTransition,
     Card,
@@ -150,18 +151,10 @@ export default {
     [DatePicker.name]: DatePicker
   },
   data: () => ({
-    endoso: {
-      detalle_endoso_id: '',
-      fecha_pedido: new Date()
-    },
     detalles: [],
     tipo_endosos: []
   }),
   methods: {
-    crear() {
-      console.log(this.endoso);
-      this.$emit('crear', this.endoso);
-    },
     close() {
       this.$emit('close');
       EventBus.$emit('resetInput', false);
@@ -176,10 +169,25 @@ export default {
       http.loadOne('/detallesendosos/filtrar', id).then(r => {
         this.detalles = r.data.data;
       });
+    },
+    actualizar() {
+      http
+        .update(this.url, this.endoso.id, this.endoso)
+        .then(() => {
+          this.close();
+          this.$emit('recargar');
+          this.notifyVue('success', 'El endoso ha sido modificado con exito');
+        })
+        .catch(e => console.log(e));
     }
   },
   created() {
     this.cargarTipoEndosos();
+  },
+  mounted() {
+    EventBus.$on('filtrarTipos', id => {
+      this.filtrarModificacionPorTipo(id);
+    });
   }
 };
 </script>

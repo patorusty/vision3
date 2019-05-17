@@ -329,7 +329,10 @@
             />
             <div class="col-md-12">
               <div class="row">
-                <tabla-endosos />
+                <tabla-endosos
+                  v-if="dataLoaded"
+                  :poliza="poliza"
+                />
                 <tabla-siniestros />
               </div>
             </div>

@@ -19,31 +19,42 @@
         <div class="col-md-12">
           <el-table :data="queriedData">
             <el-table-column
-              min-width="100"
+              min-width="95"
               align="left"
               label="Fecha"
+              prop="fecha_pedido"
             >
             </el-table-column>
             <el-table-column
-              min-width="100"
+              min-width="132"
               label="Tipo"
               align="left"
             >
+              <div slot-scope="{ row }">
+                {{ row.tipo_endosos.nombre }}
+              </div>
             </el-table-column>
             <el-table-column
-              min-width="110"
+              min-width="150"
               label="Detalle"
               align="left"
             >
+              <div slot-scope="{ row }">
+                {{ row.detalle_endosos.nombre }}
+              </div>
             </el-table-column>
             <el-table-column
-              min-width="110"
+              min-width="99"
               align="left"
               label="Completo"
             >
+              <div slot-scope="{ row }">
+                <div v-if="row.completo == true">SI</div>
+                <div v-else>NO</div>
+              </div>
             </el-table-column>
             <el-table-column
-              min-width="100"
+              min-width="90"
               header-align="right"
               align="right"
               label="Actions"
@@ -86,9 +97,16 @@
         </div>
       </div>
     </card>
-    <modal-endosos
+    <modal-endoso
       v-show="isModalVisibleEndoso"
       @close="closeModalEndoso"
+      @crear="crear"
+    />
+    <modal-endoso-editar
+      v-show="isModalVisibleEndosoEditar"
+      @close="closeModalEndosoEditar"
+      :endoso="endoso"
+      v-if="dataLoaded"
     />
   </div>
 </template>
@@ -100,7 +118,9 @@ import { BaseSwitch } from 'src/components/index';
 import http from '../../../API/http-request.js';
 import { mixin } from '../../../mixins/mixin.js';
 import { EventBus } from '../../../main.js';
-import ModalEndosos from './ModalEndoso';
+import ModalEndoso from './ModalEndoso';
+import ModalEndosoEditar from './ModalEndosoEditar';
+import { format } from 'date-fns';
 
 export default {
   mixins: [mixin],
@@ -113,20 +133,86 @@ export default {
     BaseSwitch,
     BaseAlert,
     BasePagination,
-    ModalEndosos
+    ModalEndoso,
+    ModalEndosoEditar
+  },
+  props: {
+    poliza: {
+      type: Object,
+      required: true,
+      default: null
+    }
   },
   data() {
     return {
-      isModalVisibleEndoso: false
+      url: 'endosos/poliza_id',
+      isModalVisibleEndoso: false,
+      isModalVisibleEndosoEditar: false,
+      endoso: {},
+      tableData: [],
+      dataLoaded: false
     };
   },
   methods: {
+    cargar() {
+      let endosos = [];
+      http.loadOne(this.url, this.poliza.id).then(r => {
+        endosos = r.data.data;
+        endosos.forEach(endoso => {
+          endoso.fecha_pedido = format(endoso.fecha_pedido, 'DD/MM/YYYY');
+        });
+        this.tableData = endosos;
+        this.dataLoaded = true;
+      });
+    },
+    crear(value) {
+      value.poliza_id = this.poliza.id;
+      this.closeModalEndoso();
+      http.create('endosos', value).then(() => {
+        this.notifyVue('success', 'La endoso ha sido creado con exito');
+        this.cargar();
+      });
+    },
+
     showModalEndoso() {
+      this.vaciarForm();
       this.isModalVisibleEndoso = true;
     },
+    showModalEndosoEditar(id) {
+      this.vaciarForm();
+      EventBus.$emit('filtrarTipos', id);
+      this.isModalVisibleEndosoEditar = true;
+    },
     closeModalEndoso() {
+      this.vaciarForm();
       this.isModalVisibleEndoso = false;
+    },
+    closeModalEndosoEditar() {
+      this.vaciarForm();
+      this.isModalVisibleEndosoEditar = false;
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
+    },
+    editar(id) {
+      this.showModalEndosoEditar(id);
+      http.loadOne('endosos', id).then(r => {
+        this.endoso = r.data.data;
+      });
+    },
+    borrar(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete('cobertura', id).then(() => {
+            this.notifyVue('danger', 'La cobertura ha sido eliminado');
+            this.cargar();
+          });
+        }
+      });
     }
+  },
+  created() {
+    this.cargar();
   }
 };
 </script>

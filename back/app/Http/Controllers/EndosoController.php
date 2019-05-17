@@ -20,6 +20,14 @@ class EndosoController extends Controller
     {
         
     }
+    public function indexFiltrado($poliza_id)
+    {
+        $endosos = Endosos::with(['tipo_endosos', 'detalle_endosos'])->where('poliza_id', $poliza_id)->get();
+
+        return EndososResource::collection($endosos);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -39,8 +47,8 @@ class EndosoController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-        ]);
+        // $this->validate($request, [
+        // ]);
 
         $endoso = Endosos::create([
             'poliza_id' => $request->input('poliza_id'),
@@ -65,7 +73,9 @@ class EndosoController extends Controller
      */
     public function show($id)
     {
-        
+        $endoso = Endosos::findOrFail($id);
+
+        return new EndososResource($endoso);
     }
 
     /**

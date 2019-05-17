@@ -16,11 +16,11 @@ class Endosos extends Model
         return $this->belongsTo(Polizas::class, 'poliza_id');
     }
 
-    public function tipoEndosos() {
+    public function tipo_endosos() {
         return $this->belongsTo(TipoEndosos::class, 'tipo_endoso_id');
     }
 
-    public function detalleEndosos() {
+    public function detalle_endosos() {
         return $this->belongsTo(DetalleEndosos::class, 'detalle_endoso_id');
     }
 }
