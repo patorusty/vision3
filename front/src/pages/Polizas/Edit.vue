@@ -327,6 +327,15 @@
               v-if="(poliza.tipo_riesgo_id == '1' && dataLoaded)"
               :poliza="poliza"
             />
+            <div class="col-md-12">
+              <div class="row">
+                <tabla-endosos
+                  v-if="dataLoaded"
+                  :poliza="poliza"
+                />
+                <tabla-siniestros />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -339,6 +348,8 @@ import { mixin } from './../../mixins/mixin.js';
 import { EventBus } from './../../../src/main.js';
 import http from '../../../../front/src/API/http-request.js';
 import TablaRiesgoAutomotor from './Riesgos/Automotor/TablaAutomotor';
+import TablaEndosos from './Endosos/TablaEndoso';
+import TablaSiniestros from './Siniestros/TablaSiniestro';
 import { BaseSwitch, ImageUpload } from 'src/components/index';
 
 export default {
@@ -349,6 +360,8 @@ export default {
     ImageUpload,
     BaseSwitch,
     TablaRiesgoAutomotor,
+    TablaEndosos,
+    TablaSiniestros,
     [Select.name]: Select,
     [Option.name]: Option,
     [DatePicker.name]: DatePicker

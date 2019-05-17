@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Anios extends Migration
+class DetalleEndosos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class Anios extends Migration
      */
     public function up()
     {
-        Schema::create('anios', function (Blueprint $table) {
+        Schema::create('detalle_endosos', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('anio');
+            $table->integer('tipo_endoso_id')->nullable();
+            $table->integer('tipo_riesgo_id')->nullable();
+            $table->string('nombre')->nullable();
             $table->timestamps();
-
         });
-
-
     }
 
     /**
@@ -30,6 +29,6 @@ class Anios extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('anios');
+        Schema::dropIfExists('detalle_endosos');
     }
 }
