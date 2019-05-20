@@ -45,9 +45,7 @@ class RiesgoAutomotorController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate($request, [
-        //     'nombre' => 'required',
-        // ]);
+        
 
         $riesgo_automotor = RiesgoAutomotor::create([
             'poliza_id' => $request->input('poliza_id'),
@@ -56,7 +54,7 @@ class RiesgoAutomotorController extends Controller
             'automotor_marca_id' => $request->input('automotor_marca_id'),
             'automotor_modelo_id' => $request->input('automotor_modelo_id'),
             'automotor_version_id' => $request->input('automotor_version_id'),
-            'petente' => $request->input('petente'),
+            'patente' => $request->input('patente'),
             'nro_motor' => $request->input('nro_motor'),
             'nro_chasis' => $request->input('nro_chasis'),
             'uso' => $request->input('uso'),

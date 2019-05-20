@@ -547,6 +547,7 @@
                   ref="myVueDropzone"
                   :useCustomSlot="true"
                   :duplicateCheck="true"
+                  @vdropzone-queue-complete="assignUploads"
                   id="dropzone"
                   :options="dropzoneOptions"
                 >
@@ -556,7 +557,7 @@
                     </div>
                   </div>
                 </vue-dropzone>
-                <button @click.prevent="verUpload"></button>
+                <button @click.prevent="uploadImages">Subir</button>
               </tab-pane>
               <tab-pane>
                 <span slot="label">
@@ -642,7 +643,7 @@ export default {
     vueDropzone: vue2Dropzone
   },
   data: () => ({
-    uploads:[],
+    uploads: [],
     marcas: {},
     marca: {},
     marca_id: '',
@@ -654,6 +655,7 @@ export default {
     modelo: {},
     anios: [],
     versiones: [],
+    imagenes: [],
     url: '/anios/filtrar',
     errorSelect: {
       automotor_anio: false,
@@ -674,7 +676,7 @@ export default {
     riesgo_automotor: {
       automotor_tipo: 'Automotor',
       uso: 'Particular',
-      tipo_patente: 'Mercosur',
+      tipo_patente: 1,
       estado_general: 'Muy Bueno',
       ajuste: '0%',
       equipo_rastreo: 'NO',
@@ -690,10 +692,13 @@ export default {
       automotor_version_id: ''
     },
     dropzoneOptions: {
-      url: 'https://httpbin.org/post',
+      url: 'http://127.0.0.1:8000/api/imagenes_riesgo_automotor',
       thumbnailWidth: 150,
       maxFilesize: 2,
-      addRemoveLinks: true
+      addRemoveLinks: true,
+      autoProcessQueue: false,
+      acceptedFiles: 'image/*',
+      dictRemoveFile: 'Remover imagen'
     },
     tipo_vehiculos: [
       {
@@ -898,8 +903,19 @@ export default {
     }
   },
   methods: {
-    verUpload() {
-      console.log(this.$refs.myVueDropzone.dropzone.files);
+    uploadImages() {
+      this.imagenes.forEach(imagen => {
+        // imagen.riesgo_automotor_id = 4;
+        http.create('/imagenes_riesgo_automotor', imagen);
+      });
+    },
+    sendingEvent(file) {
+      console.log('hola');
+      file.riesgo_automotor_id = 34;
+      console.log(file);
+    },
+    assignUploads() {
+      this.imagenes = this.$refs.myVueDropzone.dropzone.files;
     },
     close() {
       EventBus.$emit('resetInput', false);
@@ -910,9 +926,14 @@ export default {
     },
     crear() {
       if (this.$validator.validateAll().then(r => r) && this.checkSelect()) {
-        this.$emit('crear', this.riesgo_automotor);
-        this.$validator.reset();
-        this.errors.clear();
+        this.riesgo_automotor.poliza_id = this.$attrs.poliza.id;
+        http.create('/riesgo_automotor', this.riesgo_automotor).then(() => {
+          this.$emit('recargar');
+          this.close();
+          this.notifyVue('success', 'El riesgo ha sido actualizado con exito');
+          this.$validator.reset();
+          this.errors.clear();
+        });
       }
     },
     cargarMarcas() {

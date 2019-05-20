@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 Route::Resource('/clientes', 'ClienteController');
 Route::Resource('/administracion/companias', 'CompaniaController');
 Route::Resource('/administracion/organizadores', 'OrganizadorController');
@@ -34,11 +33,13 @@ Route::Resource('/tipovigencia', 'TipoVigenciaController');
 Route::Resource('/polizas', 'PolizaController');
 Route::Resource('/endosos', 'EndosoController');
 Route::Resource('/tipoendoso', 'TipoEndosoController');
+Route::Resource('/riesgo_automotor', 'RiesgoAutomotorController');
+Route::post('/imagenes_riesgo_automotor', 'ImagenRiesgoAutomotorController@uploadFile');
 Route::get('/numerosolicitud', 'PolizaController@numeroDeSolicitud');
 Route::get('/codigoorganizador/compania/{id}', 'CodigoOrganizadorController@indexFiltrado');
 Route::get('/codigoproductor/compania/{id}', 'CodigoProductorController@indexFiltrado');
 Route::get('/cobertura/compania/{id}', 'CoberturaController@indexFiltrado');
-Route::get('/riesgo_automotor/{id}', 'RiesgoAutomotorController@indexFiltrado');
+Route::get('/riesgo_automotores/{id}', 'RiesgoAutomotorController@indexFiltrado');
 Route::get('/companias/busquedaCuit', 'CompaniaController@search');
 Route::get('/organizadores/busquedaCuit', 'OrganizadorController@searchCuit');
 Route::get('/organizadores/busquedaMatricula', 'OrganizadorController@searchMatricula');
@@ -58,6 +59,7 @@ Route::get('/modelos/busquedaModelo', 'AutomotorModeloController@searchModelo');
 Route::get('/versiones/busquedaVersion', 'AutomotorVersionController@searchVersion');
 Route::get('/polizas/busquedaPolizaId/{id}', 'RiesgoAutomotorController@searchPoliza');
 Route::get('/detallesendosos/filtrar/{id}', 'DetalleEndosoController@filtro');
-Route::get('/endosos/poliza_id/{id}', 'EndosoController@indexFiltrado');
+Route::get('/endosos/poliza_id/{id}', 'EndosoController@indexFiltrado');    
+
 
 
