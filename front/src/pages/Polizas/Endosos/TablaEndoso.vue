@@ -22,7 +22,7 @@
               min-width="95"
               align="left"
               label="Fecha"
-              prop="fecha_pedido"
+              prop="fecha_solicitud"
             >
             </el-table-column>
             <el-table-column
@@ -67,7 +67,7 @@
                   placement="top"
                 >
                   <base-button
-                    @click.native="editar(props.row.poliza_id)"
+                    @click.native="editar(props.row.id)"
                     type="warning"
                     icon
                     size="sm"
@@ -77,6 +77,7 @@
                   </base-button>
                 </el-tooltip>
                 <el-tooltip
+                  @click.native="borrar(props.row.id)"
                   content="Delete"
                   effect="light"
                   :open-delay="300"
@@ -107,6 +108,7 @@
       @close="closeModalEndosoEditar"
       :endoso="endoso"
       v-if="dataLoaded"
+      @recargar="cargar"
     />
   </div>
 </template>
@@ -159,7 +161,7 @@ export default {
       http.loadOne(this.url, this.poliza.id).then(r => {
         endosos = r.data.data;
         endosos.forEach(endoso => {
-          endoso.fecha_pedido = format(endoso.fecha_pedido, 'DD/MM/YYYY');
+          endoso.fecha_solicitud = format(endoso.fecha_solicitud, 'DD/MM/YYYY');
         });
         this.tableData = endosos;
         this.dataLoaded = true;
@@ -203,8 +205,8 @@ export default {
     borrar(id) {
       this.dangerSwal().then(r => {
         if (r.value) {
-          http.delete('cobertura', id).then(() => {
-            this.notifyVue('danger', 'La cobertura ha sido eliminado');
+          http.delete('endosos', id).then(() => {
+            this.notifyVue('danger', 'El endoso ha sido eliminado');
             this.cargar();
           });
         }

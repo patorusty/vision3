@@ -7,7 +7,7 @@
     >
       <div
         @click.stop
-        style="width:35%;"
+        style="width:40%;"
       >
         <card>
           <form>
@@ -26,14 +26,22 @@
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-6">
-                    <label>Fecha Pedido</label>
+                    <label>Fecha Solicitud</label>
                     <base-input>
                       <el-date-picker
                         type="date"
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
-                        v-model="endoso.fecha_pedido"
+                        v-model="endoso.fecha_solicitud"
+                        @change="touchSelect('fecha_solicitud')"
+                        :class="{ errorS: errorSelect.fecha_solicitud }"
                       ></el-date-picker>
+                      <p
+                        class="errorSelect"
+                        v-show="errorSelect.fecha_solicitud"
+                      >
+                        Este campo es obligatorio
+                      </p>
                     </base-input>
                   </div>
                 </div>
@@ -45,10 +53,12 @@
                       class="select-primary"
                       name="tipo_endoso_id"
                       v-model="endoso.tipo_endoso_id"
+                      :class="{ errorS: errorSelect.tipo_endoso_id }"
                       @change="
                         filtrarModificacionPorTipo(
                           endoso.tipo_endoso_id
-                        );
+                        )
+                        touchSelect('tipo_endoso_id');
                       "
                     >
                       <el-option
@@ -59,6 +69,12 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.tipo_endoso_id"
+                    >
+                      Este campo es obligatorio
+                    </p>
                   </div>
                   <div class="col-md-6">
                     <label>Detalle Endoso</label>
@@ -66,7 +82,9 @@
                       filterable
                       class="select-primary"
                       v-model="endoso.detalle_endoso_id"
+                      :class="{ errorS: errorSelect.detalle_endoso_id }"
                       name="detalle_endoso_id"
+                      @change="touchSelect('detalle_endoso_id')"
                     >
                       <el-option
                         v-for="detalle in detalles"
@@ -76,6 +94,12 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.detalle_endoso_id"
+                    >
+                      Este campo es obligatorio
+                    </p>
                   </div>
                 </div>
                 <label class="mt-3">Detalle</label>
@@ -152,15 +176,26 @@ export default {
   data: () => ({
     endoso: {
       detalle_endoso_id: '',
-      fecha_pedido: new Date()
+      fecha_solicitud: new Date()
     },
     detalles: [],
-    tipo_endosos: []
+    tipo_endosos: [],
+    errorSelect: {
+      fecha_solicitud: false,
+      tipo_endoso_id: false,
+      detalle_endoso_id: false
+    },
+    selected: {
+      fecha_solicitud: false,
+      tipo_endoso_id: false,
+      detalle_endoso_id: false
+    }
   }),
   methods: {
     crear() {
-      console.log(this.endoso);
-      this.$emit('crear', this.endoso);
+      if (this.checkSelect()) {
+        this.$emit('crear', this.endoso);
+      }
     },
     close() {
       this.$emit('close');
@@ -176,6 +211,25 @@ export default {
       http.loadOne('/detallesendosos/filtrar', id).then(r => {
         this.detalles = r.data.data;
       });
+    },
+    touchSelect(val) {
+      if (!this.endoso[`${val}`] || this.endoso[`${val}`] === undefined) {
+        this.selected[val] = false;
+        this.errorSelect[val] = true;
+      } else {
+        this.selected[val] = true;
+        this.errorSelect[val] = false;
+      }
+    },
+    checkSelect() {
+      let valor = true;
+      Object.entries(this.selected).forEach(select => {
+        if (select[1] == false && !this.endoso[`${select[0]}`]) {
+          this.errorSelect[`${select[0]}`] = true;
+          valor = false;
+        }
+      });
+      return valor;
     }
   },
   created() {
