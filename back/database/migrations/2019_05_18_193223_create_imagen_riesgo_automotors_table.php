@@ -19,7 +19,6 @@ class CreateImagenRiesgoAutomotorsTable extends Migration
             $table->string('mime')->nullable();
             $table->string('path')->nullable();
             $table->integer('size')->nullable();
-            $table->integer('riesgo_automotor_id')->nullable();
             $table->timestamps();
         });
     }
