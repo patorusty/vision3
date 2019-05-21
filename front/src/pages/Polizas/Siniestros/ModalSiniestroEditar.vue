@@ -30,6 +30,7 @@
                       label="Numero Siniestro"
                       type="text"
                       name="numero_siniestro"
+                      v-model="siniestro.numero_siniestro"
                     ></base-input>
                   </div>
                   <div class="col-md-3">
@@ -63,7 +64,7 @@
                         type="date"
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
-                        v-model="siniestro.completo"
+                        v-model="siniestro.fecha_completo"
                       >
                       </el-date-picker>
                     </base-input>
@@ -243,8 +244,8 @@
                       <textarea
                         class="form-control form-control"
                         rows="6"
-                        name="detalle_siniestro"
-                        v-model="siniestro.detalle_siniestro"
+                        name="detalle"
+                        v-model="siniestro.detalle"
                       ></textarea>
                     </div>
                   </div>
@@ -267,7 +268,8 @@
               <base-button
                 class="btn btn-primary ladda-button"
                 type="submit"
-              >Crear</base-button>
+                @click="actualizar"
+              >Guardar</base-button>
             </div>
           </form>
         </card>
@@ -424,19 +426,17 @@ export default {
       EventBus.$emit('resetInput', false);
     },
     actualizar() {
-      if (this.checkSelect()) {
-        http
-          .update('siniestrosautomotor', this.siniestro.id, this.siniestro)
-          .then(() => {
-            this.close();
-            this.$emit('recargar');
-            this.notifyVue(
-              'success',
-              'El siniestro ha sido modificado con exito'
-            );
-          })
-          .catch(e => console.log(e));
-      }
+      http
+        .update('siniestrosautomotor', this.siniestro.id, this.siniestro)
+        .then(() => {
+          this.close();
+          this.$emit('recargar');
+          this.notifyVue(
+            'success',
+            'El siniestro ha sido modificado con exito'
+          );
+        })
+        .catch(e => console.log(e));
     }
   }
 };

@@ -30,6 +30,7 @@
                       label="Numero Siniestro"
                       type="text"
                       name="numero_siniestro"
+                      v-model="siniestro.numero_siniestro"
                     ></base-input>
                   </div>
                   <div class="col-md-3">
@@ -63,7 +64,7 @@
                         type="date"
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
-                        v-model="siniestro.completo"
+                        v-model="siniestro.fecha_completo"
                       >
                       </el-date-picker>
                     </base-input>
@@ -243,8 +244,8 @@
                       <textarea
                         class="form-control form-control"
                         rows="6"
-                        name="detalle_siniestro"
-                        v-model="siniestro.detalle_siniestro"
+                        name="detalle"
+                        v-model="siniestro.detalle"
                       ></textarea>
                     </div>
                   </div>
@@ -267,6 +268,7 @@
               <base-button
                 class="btn btn-primary ladda-button"
                 type="submit"
+                @click="crear"
               >Crear</base-button>
             </div>
           </form>
@@ -421,6 +423,9 @@ export default {
     ]
   }),
   methods: {
+    crear() {
+      this.$emit('crear', this.siniestro);
+    },
     close() {
       this.$emit('close');
       EventBus.$emit('resetInput', false);

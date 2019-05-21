@@ -171,7 +171,7 @@ export default {
       value.poliza_id = this.poliza.id;
       this.closeModalEndoso();
       http.create('endosos', value).then(() => {
-        this.notifyVue('success', 'La endoso ha sido creado con exito');
+        this.notifyVue('success', 'El endoso ha sido creado con exito');
         this.cargar();
       });
     },

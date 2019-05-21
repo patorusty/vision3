@@ -198,6 +198,9 @@ export default {
       }
     },
     close() {
+      (this.errorSelect.fecha_solicitud = false),
+        (this.errorSelect.tipo_endoso_id = false),
+        (this.errorSelect.detalle_endoso_id = false);
       this.$emit('close');
       EventBus.$emit('resetInput', false);
     },

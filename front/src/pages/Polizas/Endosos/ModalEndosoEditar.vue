@@ -194,17 +194,6 @@ export default {
       this.$emit('close');
       EventBus.$emit('resetInput', false);
     },
-    cargarTipoEndosos() {
-      http.load('tipoendoso').then(r => {
-        this.tipo_endosos = r.data.data;
-      });
-    },
-    filtrarModificacionPorTipo(id) {
-      this.endoso.detalle_endoso_id = '';
-      http.loadOne('/detallesendosos/filtrar', id).then(r => {
-        this.detalles = r.data.data;
-      });
-    },
     actualizar() {
       if (this.checkSelect()) {
         http
@@ -216,6 +205,17 @@ export default {
           })
           .catch(e => console.log(e));
       }
+    },
+    cargarTipoEndosos() {
+      http.load('tipoendoso').then(r => {
+        this.tipo_endosos = r.data.data;
+      });
+    },
+    filtrarModificacionPorTipo(id) {
+      this.endoso.detalle_endoso_id = '';
+      http.loadOne('/detallesendosos/filtrar', id).then(r => {
+        this.detalles = r.data.data;
+      });
     },
     touchSelect(val) {
       if (!this.endoso[`${val}`] || this.endoso[`${val}`] === undefined) {

@@ -102,7 +102,7 @@
       @close="closeModalSiniestroEditar"
       :siniestro="siniestro"
       v-if="dataLoaded"
-      @regargar="crear"
+      @regargar="cargar"
     />
   </div>
 </template>
@@ -157,6 +157,7 @@ export default {
     },
     crear(value) {
       value.poliza_id = this.poliza.id;
+      console.log(value.poliza_id);
       this.closeModalSiniestro();
       http.create('siniestrosautomotor', value).then(() => {
         this.notifyVue('success', 'El siniestro ha sido cargado con exito');
@@ -177,6 +178,7 @@ export default {
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);
+      this.siniestro = {};
     },
     showModalSiniestroEditar(id) {
       this.vaciarForm();
