@@ -19,7 +19,7 @@
             <el-table-column min-width="200" label="marca">
               <div slot-scope="{ row }">
                 {{ row.automotor_marca.nombre }}
-                {{ row.automotor_version.nombre }} {{ row.automotor_anio.anio }}
+                {{ row.automotor_version.nombre }}
               </div>
             </el-table-column>
 
@@ -124,7 +124,7 @@ export default {
   },
   data() {
     return {
-      url: 'riesgo_automotor',
+      url: 'riesgo_automotores',
       riesgo_automotor: {}
     };
   },
