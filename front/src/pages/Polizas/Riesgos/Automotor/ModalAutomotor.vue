@@ -540,27 +540,6 @@
               </tab-pane>
               <tab-pane>
                 <span slot="label">
-                  <i class="tim-icons icon-camera-18"></i>Fotos
-                </span>
-                <vue-dropzone
-                  v-model="uploads"
-                  ref="myVueDropzone"
-                  :useCustomSlot="true"
-                  :duplicateCheck="true"
-                  @vdropzone-queue-complete="assignUploads"
-                  id="dropzone"
-                  :options="dropzoneOptions"
-                >
-                  <div class="dropzone-custom-content">
-                    <div class="texto-drop">
-                      Arrastra las fotos aquí...
-                    </div>
-                  </div>
-                </vue-dropzone>
-                <button @click.prevent="uploadImages">Subir</button>
-              </tab-pane>
-              <tab-pane>
-                <span slot="label">
                   <i class="tim-icons icon-notes"></i>Acreedor Prendario
                 </span>
                 <base-checkbox
@@ -588,6 +567,27 @@
                     </base-input>
                   </div>
                 </div>
+              </tab-pane>
+              <tab-pane>
+                <span slot="label">
+                  <i class="tim-icons icon-camera-18"></i>Fotos
+                </span>
+                <vue-dropzone
+                  v-model="uploads"
+                  ref="myVueDropzone"
+                  :useCustomSlot="true"
+                  :duplicateCheck="true"
+                  @vdropzone-queue-complete="assignUploads"
+                  id="dropzone"
+                  :options="dropzoneOptions"
+                >
+                  <div class="dropzone-custom-content">
+                    <div class="texto-drop">
+                      Arrastra las fotos aquí...
+                    </div>
+                  </div>
+                </vue-dropzone>
+                <button @click.prevent="uploadImages">Subir</button>
               </tab-pane>
             </tabs>
             <div
@@ -904,10 +904,10 @@ export default {
   },
   methods: {
     uploadImages() {
-      this.imagenes.forEach(imagen => {
-        // imagen.riesgo_automotor_id = 4;
-        http.create('/imagenes_riesgo_automotor', imagen);
-      });
+      this.$refs.myVueDropzone.processQueue();
+      // this.imagenes.forEach(imagen => {
+      //   http.create('/imagenes_riesgo_automotor', imagen);
+      // });
     },
     sendingEvent(file) {
       console.log('hola');
@@ -925,16 +925,22 @@ export default {
       return modelo ? true : false;
     },
     crear() {
-      if (this.$validator.validateAll().then(r => r) && this.checkSelect()) {
-        this.riesgo_automotor.poliza_id = this.$attrs.poliza.id;
-        http.create('/riesgo_automotor', this.riesgo_automotor).then(() => {
-          this.$emit('recargar');
-          this.close();
-          this.notifyVue('success', 'El riesgo ha sido actualizado con exito');
-          this.$validator.reset();
-          this.errors.clear();
-        });
-      }
+      this.$validator.validateAll().then(r => {
+        if (r && this.checkSelect()) {
+          this.riesgo_automotor.poliza_id = this.$attrs.poliza.id;
+          http.create('/riesgo_automotor', this.riesgo_automotor).then(r => {
+            console.log(r.data.data);
+            this.$emit('recargar');
+            this.close();
+            this.notifyVue(
+              'success',
+              'El riesgo ha sido actualizado con exito'
+            );
+            this.$validator.reset();
+            this.errors.clear();
+          });
+        }
+      });
     },
     cargarMarcas() {
       http.load('administracion/marcas', this.marca_id).then(r => {

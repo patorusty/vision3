@@ -533,16 +533,13 @@ export default {
       return valor;
     },
     crear() {
-      if (
-        this.$validator.validateAll().then(r => r) &&
-        this.checkSelect() &&
-        !this.dniUsed &&
-        !this.cuitUsed
-      ) {
-        http.create('clientes', this.cliente).then(() => {
-          this.$router.push({ name: 'Clientes' });
-        });
-      }
+      this.$validator.validateAll().then(r => {
+        if (r && this.checkSelect() && !this.dniUsed && !this.cuitUsed) {
+          http.create('clientes', this.cliente).then(() => {
+            this.$router.push({ name: 'Clientes' });
+          });
+        }
+      });
     }
   },
   created() {

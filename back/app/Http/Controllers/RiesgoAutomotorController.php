@@ -92,7 +92,7 @@ class RiesgoAutomotorController extends Controller
             'vigencia_hasta' => $request->input('vigencia_hasta'),
         ]);
 
-        return (['message' => 'guardado']);
+        return new RiesgoAutomotorsResource($riesgo_automotor);
     }
 
     /**
