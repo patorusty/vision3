@@ -32,6 +32,7 @@ Route::Resource('/tiporiesgo', 'TipoRiesgoController');
 Route::Resource('/tipovigencia', 'TipoVigenciaController');
 Route::Resource('/polizas', 'PolizaController');
 Route::Resource('/endosos', 'EndosoController');
+Route::Resource('/siniestrosautomotor', 'SiniestroAutomotorController');
 Route::Resource('/tipoendoso', 'TipoEndosoController');
 Route::Resource('/riesgo_automotor', 'RiesgoAutomotorController');
 Route::post('/imagenes_riesgo_automotor', 'ImagenRiesgoAutomotorController@uploadFile');
@@ -60,6 +61,7 @@ Route::get('/versiones/busquedaVersion', 'AutomotorVersionController@searchVersi
 Route::get('/polizas/busquedaPolizaId/{id}', 'RiesgoAutomotorController@searchPoliza');
 Route::get('/detallesendosos/filtrar/{id}', 'DetalleEndosoController@filtro');
 Route::get('/endosos/poliza_id/{id}', 'EndosoController@indexFiltrado');    
+Route::get('/siniestrosautomotor/poliza_id/{id}', 'SiniestroAutomotorController@indexFiltrado');    
 
 
 

@@ -10,6 +10,7 @@ use App\EstadoPoliza;
 use App\TipoVigencia;
 use App\RiesgoAutomotor;
 use App\Endosos;
+use App\SiniestroAutomotor;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,5 +49,9 @@ class Polizas extends Model
 
     public function endosos(){
         return $this->hasMany(Endosos::class, 'poliza_id', 'id');
+    }
+
+    public function siniestros(){
+        return $this->hasMany(SiniestroAutomotor::class, 'poliza_id', 'id');
     }
 }

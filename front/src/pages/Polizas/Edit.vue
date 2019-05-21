@@ -333,7 +333,10 @@
                   v-if="dataLoaded"
                   :poliza="poliza"
                 />
-                <tabla-siniestros />
+                <tabla-siniestros
+                  v-if="dataLoaded"
+                  :poliza="poliza"
+                />
               </div>
             </div>
           </div>

@@ -21,29 +21,35 @@
             <el-table-column
               min-width="100"
               align="left"
-              label="Fecha"
+              label="F. Denuncia"
+              prop="fecha_denuncia"
             >
             </el-table-column>
             <el-table-column
-              min-width="125"
+              min-width="100"
+              label="F. Siniestro"
+              align="left"
+              prop="fecha_siniestro"
+            >
+            </el-table-column>
+            <el-table-column
+              min-width="80"
               label="Numero"
               align="left"
             >
             </el-table-column>
             <el-table-column
-              min-width="80"
-              label="Cleas"
-              align="left"
-            >
-            </el-table-column>
-            <el-table-column
-              min-width="100"
+              min-width="85"
               align="left"
               label="Completo"
             >
+              <div slot-scope="{ row }">
+                <div v-if="row.completo == true">SI</div>
+                <div v-else>NO</div>
+              </div>
             </el-table-column>
             <el-table-column
-              min-width="90"
+              min-width="80"
               header-align="right"
               align="right"
               label="Actions"
@@ -89,6 +95,14 @@
     <modal-siniestros
       v-show="isModalVisibleSiniestro"
       @close="closeModalSiniestro"
+      @crear="crear"
+    />
+    <modal-siniestros-editar
+      v-show="isModalVisibleSiniestroEditar"
+      @close="closeModalSiniestroEditar"
+      :siniestro="siniestro"
+      v-if="dataLoaded"
+      @regargar="cargar"
     />
   </div>
 </template>
@@ -101,6 +115,7 @@ import http from '../../../API/http-request.js';
 import { mixin } from '../../../mixins/mixin.js';
 import { EventBus } from '../../../main.js';
 import ModalSiniestros from './ModalSiniestro';
+import ModalSiniestrosEditar from './ModalSiniestroEditar';
 
 export default {
   mixins: [mixin],
@@ -113,20 +128,82 @@ export default {
     BaseSwitch,
     BaseAlert,
     BasePagination,
-    ModalSiniestros
+    ModalSiniestros,
+    ModalSiniestrosEditar
+  },
+  props: {
+    poliza: {
+      type: Object,
+      required: true,
+      default: null
+    }
   },
   data() {
     return {
-      isModalVisibleSiniestro: false
+      isModalVisibleSiniestro: false,
+      isModalVisibleSiniestroEditar: false,
+      siniestro: {},
+      tableData: [],
+      dataLoaded: false,
+      url: 'siniestrosautomotor/poliza_id'
     };
   },
   methods: {
+    cargar() {
+      http.loadOne(this.url, this.poliza.id).then(r => {
+        this.tableData = r.data.data;
+        this.dataLoaded = true;
+      });
+    },
+    crear(value) {
+      value.poliza_id = this.poliza.id;
+      console.log(value.poliza_id);
+      this.closeModalSiniestro();
+      http.create('siniestrosautomotor', value).then(() => {
+        this.notifyVue('success', 'El siniestro ha sido cargado con exito');
+        this.cargar();
+      });
+    },
     showModalSiniestro() {
+      this.vaciarForm();
       this.isModalVisibleSiniestro = true;
     },
     closeModalSiniestro() {
+      this.vaciarForm();
       this.isModalVisibleSiniestro = false;
+    },
+    closeModalSiniestroEditar() {
+      this.vaciarForm();
+      this.isModalVisibleSiniestro = false;
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
+      this.siniestro = {};
+    },
+    showModalSiniestroEditar(id) {
+      this.vaciarForm();
+      EventBus.$emit('filtrarTipos', id);
+      this.isModalVisibleSiniestroEditar = true;
+    },
+    editar(id) {
+      this.showModalSiniestroEditar(id);
+      http.loadOne('siniestrosautomotor', id).then(r => {
+        this.siniestro = r.data.data;
+      });
+    },
+    borrar(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete('siniestrosautomotor', id).then(() => {
+            this.notifyVue('danger', 'El siniestro ha sido eliminado');
+            this.cargar();
+          });
+        }
+      });
     }
+  },
+  created() {
+    this.cargar();
   }
 };
 </script>

@@ -268,8 +268,8 @@
               <base-button
                 class="btn btn-primary ladda-button"
                 type="submit"
-                @click="crear"
-              >Crear</base-button>
+                @click="actualizar"
+              >Guardar</base-button>
             </div>
           </form>
         </card>
@@ -289,7 +289,8 @@ import Notas from './Notas';
 
 export default {
   mixins: [mixin],
-  name: 'modal-siniestro',
+  name: 'modal-siniestro-editar',
+  props: ['siniestro'],
   components: {
     SlideYUpTransition,
     Card,
@@ -300,11 +301,8 @@ export default {
     [DatePicker.name]: DatePicker
   },
   data: () => ({
-    siniestro: {
-      tipo_reclamo: '',
-      estado_siniestro: '',
-      inspeccion: ''
-    },
+    url: 'siniestrosautomotor',
+
     tipo_reclamos: [
       {
         value: 'DAÑO A ASEGURADO (Reclamo a Tercero)',
@@ -423,12 +421,22 @@ export default {
     ]
   }),
   methods: {
-    crear() {
-      this.$emit('crear', this.siniestro);
-    },
     close() {
       this.$emit('close');
       EventBus.$emit('resetInput', false);
+    },
+    actualizar() {
+      http
+        .update('siniestrosautomotor', this.siniestro.id, this.siniestro)
+        .then(() => {
+          this.close();
+          this.$emit('recargar');
+          this.notifyVue(
+            'success',
+            'El siniestro ha sido modificado con exito'
+          );
+        })
+        .catch(e => console.log(e));
     }
   }
 };
