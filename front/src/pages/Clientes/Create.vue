@@ -534,6 +534,7 @@ export default {
     },
     crear() {
       this.$validator.validateAll().then(r => {
+        this.checkSelect();
         if (r && this.checkSelect() && !this.dniUsed && !this.cuitUsed) {
           http.create('clientes', this.cliente).then(() => {
             this.$router.push({ name: 'Clientes' });
