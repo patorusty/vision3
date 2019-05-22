@@ -5,8 +5,8 @@
   >
     <template slot-scope="{ row }">
       <td>
-        <p class="title">{{ row.title }}</p>
-        <p class="text-muted">{{ row.description }}</p>
+        <p class="title">{{ row.fecha }}</p>
+        <p class="text-muted">{{ row.nota }}</p>
       </td>
       <td class="td-actions text-right">
         <el-tooltip
@@ -25,33 +25,59 @@
 </template>
 <script>
 import { BaseTable } from '@/components';
+import http from '../../../API/http-request.js';
+import { mixin } from '../../../mixins/mixin.js';
+import { EventBus } from '../../../main.js';
 
 export default {
   components: {
     BaseTable
   },
+  mixins: [mixin],
+
+  props: {
+    siniestro: {
+      type: Object,
+      required: true,
+      default: null
+    }
+  },
   data() {
     return {
-      tableData: [
-        {
-          title: 'Update the Documentation',
-          description: 'Dwuamish Head, Seattle, WA 8:47 AM',
-          done: false
-        },
-        {
-          title: 'GDPR Compliance',
-          description:
-            'The GDPR is a regulation that requires businesses to protect the personal data and privacy of Europe citizens for transactions that occur within EU member states.',
-          done: true
-        },
-        {
-          title: 'Solve the issues',
-          description:
-            'Fifty percent of all respondents said they would be more likely to shop at a company',
-          done: false
-        }
-      ]
+      url: 'notasiniestroautomotor/siniestro_automotor_id',
+      tableData: []
+      // tableData: [
+      //   {
+      //     title: 'Update the Documentation',
+      //     description: 'Dwuamish Head, Seattle, WA 8:47 AM',
+      //     done: false
+      //   },
+      //   {
+      //     title: 'GDPR Compliance',
+      //     description:
+      //       'The GDPR is a regulation that requires businesses to protect the personal data and privacy of Europe citizens for transactions that occur within EU member states.',
+      //     done: true
+      //   },
+      //   {
+      //     title: 'Solve the issues',
+      //     description:
+      //       'Fifty percent of all respondents said they would be more likely to shop at a company',
+      //     done: false
+      //   }
+      // ]
     };
+  },
+  methods: {
+    cargar() {
+      http.loadOne(this.url, 6).then(r => {
+        console.log(this.siniestro.id);
+        this.tableData = notas;
+        this.dataLoaded = true;
+      });
+    }
+  },
+  created() {
+    this.cargar();
   }
 };
 </script>

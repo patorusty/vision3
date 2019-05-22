@@ -41,8 +41,16 @@
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
                         v-model="siniestro.fecha_denuncia"
+                        @change="touchSelect('fecha_denuncia')"
+                        :class="{ errorS: errorSelect.fecha_denuncia }"
                       >
                       </el-date-picker>
+                      <p
+                        class="errorSelect"
+                        v-show="errorSelect.fecha_denuncia"
+                      >
+                        Este campo es obligatorio
+                      </p>
                     </base-input>
                   </div>
                   <div class="col-md-3">
@@ -53,8 +61,16 @@
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
                         v-model="siniestro.fecha_siniestro"
+                        @change="touchSelect('fecha_siniestro')"
+                        :class="{ errorS: errorSelect.fecha_siniestro }"
                       >
                       </el-date-picker>
+                      <p
+                        class="errorSelect"
+                        v-show="errorSelect.fecha_siniestro"
+                      >
+                        Este campo es obligatorio
+                      </p>
                     </base-input>
                   </div>
                   <div class="col-md-3">
@@ -79,6 +95,8 @@
                       class="select-primary"
                       name="tipo_reclamo"
                       v-model="siniestro.tipo_reclamo"
+                      :class="{ errorS: errorSelect.tipo_reclamo }"
+                      @change="touchSelect('tipo_reclamo');"
                     >
                       <el-option
                         v-for="tipo_reclamo in tipo_reclamos"
@@ -89,6 +107,12 @@
                       >
                       </el-option>
                     </el-select>
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.tipo_reclamo"
+                    >
+                      Este campo es obligatorio
+                    </p>
                   </div>
                   <div class="col-md-6">
                     <label>Estado Siniestro</label>
@@ -97,6 +121,8 @@
                       class="select-primary"
                       name="estado_siniestro"
                       v-model="siniestro.estado_siniestro"
+                      :class="{ errorS: errorSelect.estado_siniestro }"
+                      @change="touchSelect('estado_siniestro');"
                     >
                       <el-option
                         v-for="estado in estados"
@@ -107,6 +133,12 @@
                       >
                       </el-option>
                     </el-select>
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.estado_siniestro"
+                    >
+                      Este campo es obligatorio
+                    </p>
                   </div>
                 </div>
                 <div class="row mt-3">
@@ -305,6 +337,18 @@ export default {
       estado_siniestro: '',
       inspeccion: ''
     },
+    errorSelect: {
+      fecha_denuncia: false,
+      fecha_siniestro: false,
+      tipo_reclamo: false,
+      estado_siniestro: false
+    },
+    selected: {
+      fecha_denuncia: false,
+      fecha_siniestro: false,
+      tipo_reclamo: false,
+      estado_siniestro: false
+    },
     tipo_reclamos: [
       {
         value: 'DAÑO A ASEGURADO (Reclamo a Tercero)',
@@ -424,11 +468,36 @@ export default {
   }),
   methods: {
     crear() {
-      this.$emit('crear', this.siniestro);
+      if (this.checkSelect()) {
+        this.$emit('crear', this.siniestro);
+      }
     },
     close() {
+      (this.errorSelect.fecha_denuncia = false),
+        (this.errorSelect.fecha_siniestro = false),
+        (this.errorSelect.tipo_reclamo = false);
+      this.errorSelect.estado_siniestro = false;
       this.$emit('close');
       EventBus.$emit('resetInput', false);
+    },
+    touchSelect(val) {
+      if (!this.siniestro[`${val}`] || this.siniestro[`${val}`] === undefined) {
+        this.selected[val] = false;
+        this.errorSelect[val] = true;
+      } else {
+        this.selected[val] = true;
+        this.errorSelect[val] = false;
+      }
+    },
+    checkSelect() {
+      let valor = true;
+      Object.entries(this.selected).forEach(select => {
+        if (select[1] == false && !this.siniestro[`${select[0]}`]) {
+          this.errorSelect[`${select[0]}`] = true;
+          valor = false;
+        }
+      });
+      return valor;
     }
   }
 };

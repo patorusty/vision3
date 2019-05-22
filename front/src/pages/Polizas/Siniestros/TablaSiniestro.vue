@@ -12,7 +12,7 @@
             size="sm"
             class="float-right"
             @click="showModalSiniestro"
-          >Siniestro +</base-button>
+          >+</base-button>
         </div>
       </div>
       <div class="row">
@@ -36,6 +36,7 @@
               min-width="80"
               label="Numero"
               align="left"
+              prop="numero_siniestro"
             >
             </el-table-column>
             <el-table-column
@@ -44,12 +45,12 @@
               label="Completo"
             >
               <div slot-scope="{ row }">
-                <div v-if="row.completo == true">SI</div>
-                <div v-else>NO</div>
+                <div v-if="row.completo == null">NO</div>
+                <div v-else>SI</div>
               </div>
             </el-table-column>
             <el-table-column
-              min-width="80"
+              min-width="90"
               header-align="right"
               align="right"
               label="Actions"
@@ -62,7 +63,7 @@
                   placement="top"
                 >
                   <base-button
-                    @click.native="editar(props.row.poliza_id)"
+                    @click.native="editar(props.row.id)"
                     type="warning"
                     icon
                     size="sm"
@@ -72,6 +73,7 @@
                   </base-button>
                 </el-tooltip>
                 <el-tooltip
+                  @click.native="borrar(props.row.id)"
                   content="Delete"
                   effect="light"
                   :open-delay="300"
@@ -116,6 +118,7 @@ import { mixin } from '../../../mixins/mixin.js';
 import { EventBus } from '../../../main.js';
 import ModalSiniestros from './ModalSiniestro';
 import ModalSiniestrosEditar from './ModalSiniestroEditar';
+import { format } from 'date-fns';
 
 export default {
   mixins: [mixin],
@@ -140,24 +143,37 @@ export default {
   },
   data() {
     return {
+      url: 'siniestrosautomotor/poliza_id',
       isModalVisibleSiniestro: false,
       isModalVisibleSiniestroEditar: false,
       siniestro: {},
       tableData: [],
-      dataLoaded: false,
-      url: 'siniestrosautomotor/poliza_id'
+      dataLoaded: false
     };
   },
   methods: {
     cargar() {
+      let siniestros = [];
       http.loadOne(this.url, this.poliza.id).then(r => {
+        siniestros = r.data.data;
+        siniestros.forEach(siniestro => {
+          siniestro.fecha_denuncia = format(
+            siniestro.fecha_denuncia,
+            'DD/MM/YYYY'
+          );
+        });
+        siniestros.forEach(siniestro => {
+          siniestro.fecha_siniestro = format(
+            siniestro.fecha_siniestro,
+            'DD/MM/YYYY'
+          );
+        });
         this.tableData = r.data.data;
         this.dataLoaded = true;
       });
     },
     crear(value) {
       value.poliza_id = this.poliza.id;
-      console.log(value.poliza_id);
       this.closeModalSiniestro();
       http.create('siniestrosautomotor', value).then(() => {
         this.notifyVue('success', 'El siniestro ha sido cargado con exito');
@@ -174,7 +190,7 @@ export default {
     },
     closeModalSiniestroEditar() {
       this.vaciarForm();
-      this.isModalVisibleSiniestro = false;
+      this.isModalVisibleSiniestroEditar = false;
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);

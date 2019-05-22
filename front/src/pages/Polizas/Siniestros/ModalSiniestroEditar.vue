@@ -41,8 +41,16 @@
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
                         v-model="siniestro.fecha_denuncia"
+                        @change="touchSelect('fecha_denuncia')"
+                        :class="{ errorS: errorSelect.fecha_denuncia }"
                       >
                       </el-date-picker>
+                      <p
+                        class="errorSelect"
+                        v-show="errorSelect.fecha_denuncia"
+                      >
+                        Este campo es obligatorio
+                      </p>
                     </base-input>
                   </div>
                   <div class="col-md-3">
@@ -53,8 +61,16 @@
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
                         v-model="siniestro.fecha_siniestro"
+                        @change="touchSelect('fecha_siniestro')"
+                        :class="{ errorS: errorSelect.fecha_siniestro }"
                       >
                       </el-date-picker>
+                      <p
+                        class="errorSelect"
+                        v-show="errorSelect.fecha_siniestro"
+                      >
+                        Este campo es obligatorio
+                      </p>
                     </base-input>
                   </div>
                   <div class="col-md-3">
@@ -89,6 +105,7 @@
                       >
                       </el-option>
                     </el-select>
+
                   </div>
                   <div class="col-md-6">
                     <label>Estado Siniestro</label>
@@ -107,6 +124,7 @@
                       >
                       </el-option>
                     </el-select>
+
                   </div>
                 </div>
                 <div class="row mt-3">
@@ -257,7 +275,7 @@
                       class="text-left"
                     >
                       <div class="table-full-width table-responsive">
-                        <notas></notas>
+                        <notas :siniestro="siniestro"></notas>
                       </div>
                     </div>
                   </div>
@@ -288,9 +306,9 @@ import { EventBus } from '../../../main.js';
 import Notas from './Notas';
 
 export default {
+  props: ['siniestro'],
   mixins: [mixin],
   name: 'modal-siniestro-editar',
-  props: ['siniestro'],
   components: {
     SlideYUpTransition,
     Card,
@@ -302,7 +320,18 @@ export default {
   },
   data: () => ({
     url: 'siniestrosautomotor',
-
+    errorSelect: {
+      fecha_denuncia: false,
+      fecha_siniestro: false,
+      tipo_reclamo: false,
+      estado_siniestro: false
+    },
+    selected: {
+      fecha_denuncia: false,
+      fecha_siniestro: false,
+      tipo_reclamo: false,
+      estado_siniestro: false
+    },
     tipo_reclamos: [
       {
         value: 'DAÑO A ASEGURADO (Reclamo a Tercero)',
@@ -426,17 +455,38 @@ export default {
       EventBus.$emit('resetInput', false);
     },
     actualizar() {
-      http
-        .update('siniestrosautomotor', this.siniestro.id, this.siniestro)
-        .then(() => {
-          this.close();
-          this.$emit('recargar');
-          this.notifyVue(
-            'success',
-            'El siniestro ha sido modificado con exito'
-          );
-        })
-        .catch(e => console.log(e));
+      if (this.checkSelect()) {
+        http
+          .update('siniestrosautomotor', this.siniestro.id, this.siniestro)
+          .then(() => {
+            this.close();
+            this.$emit('recargar');
+            this.notifyVue(
+              'success',
+              'El siniestro ha sido modificado con exito'
+            );
+          })
+          .catch(e => console.log(e));
+      }
+    },
+    touchSelect(val) {
+      if (!this.siniestro[`${val}`] || this.siniestro[`${val}`] === undefined) {
+        this.selected[val] = false;
+        this.errorSelect[val] = true;
+      } else {
+        this.selected[val] = true;
+        this.errorSelect[val] = false;
+      }
+    },
+    checkSelect() {
+      let valor = true;
+      Object.entries(this.selected).forEach(select => {
+        if (select[1] == false && !this.siniestro[`${select[0]}`]) {
+          this.errorSelect[`${select[0]}`] = true;
+          valor = false;
+        }
+      });
+      return valor;
     }
   }
 };

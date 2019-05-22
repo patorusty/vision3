@@ -12,14 +12,14 @@
             size="sm"
             class="float-right"
             @click="showModalEndoso"
-          >Endoso +</base-button>
+          >+</base-button>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <el-table :data="queriedData">
             <el-table-column
-              min-width="95"
+              min-width="100"
               align="left"
               label="Fecha"
               prop="fecha_solicitud"
@@ -44,9 +44,9 @@
               </div>
             </el-table-column>
             <el-table-column
-              min-width="99"
+              min-width="85"
               align="left"
-              label="Completo"
+              label="Compl."
             >
               <div slot-scope="{ row }">
                 <div v-if="row.completo == true">SI</div>
@@ -180,11 +180,6 @@ export default {
       this.vaciarForm();
       this.isModalVisibleEndoso = true;
     },
-    showModalEndosoEditar(id) {
-      this.vaciarForm();
-      EventBus.$emit('filtrarTipos', id);
-      this.isModalVisibleEndosoEditar = true;
-    },
     closeModalEndoso() {
       this.vaciarForm();
       this.isModalVisibleEndoso = false;
@@ -195,6 +190,11 @@ export default {
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);
+    },
+    showModalEndosoEditar(id) {
+      this.vaciarForm();
+      EventBus.$emit('filtrarTipos', id);
+      this.isModalVisibleEndosoEditar = true;
     },
     editar(id) {
       this.showModalEndosoEditar(id);
