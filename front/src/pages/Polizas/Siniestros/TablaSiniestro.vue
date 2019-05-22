@@ -106,6 +106,7 @@
       v-if="dataLoaded"
       @regargar="cargar"
     />
+
   </div>
 </template>
 <script>
@@ -118,6 +119,7 @@ import { mixin } from '../../../mixins/mixin.js';
 import { EventBus } from '../../../main.js';
 import ModalSiniestros from './ModalSiniestro';
 import ModalSiniestrosEditar from './ModalSiniestroEditar';
+import Notas from './Notas';
 import { format } from 'date-fns';
 
 export default {
@@ -132,7 +134,8 @@ export default {
     BaseAlert,
     BasePagination,
     ModalSiniestros,
-    ModalSiniestrosEditar
+    ModalSiniestrosEditar,
+    Notas
   },
   props: {
     poliza: {
@@ -198,7 +201,7 @@ export default {
     },
     showModalSiniestroEditar(id) {
       this.vaciarForm();
-      EventBus.$emit('filtrarTipos', id);
+      EventBus.$emit('cargarNotas', id);
       this.isModalVisibleSiniestroEditar = true;
     },
     editar(id) {

@@ -37,11 +37,14 @@ export default {
 
   props: {
     siniestro: {
-      type: Object,
-      required: true,
-      default: null
+      type: Object
+    },
+    dataLista: {
+      type: Boolean,
+      default: false
     }
   },
+
   data() {
     return {
       url: 'notasiniestroautomotor/siniestro_automotor_id',
@@ -68,16 +71,17 @@ export default {
     };
   },
   methods: {
-    cargar() {
-      http.loadOne(this.url, 6).then(r => {
-        console.log(this.siniestro.id);
-        this.tableData = notas;
-        this.dataLoaded = true;
+    cargar(id) {
+      // console.log(id);
+      http.loadOne(this.url, id).then(r => {
+        this.tableData = r.data.data;
       });
     }
   },
-  created() {
-    this.cargar();
+  mounted() {
+    EventBus.$on('cargarNotas', id => {
+      this.cargar(id);
+    });
   }
 };
 </script>

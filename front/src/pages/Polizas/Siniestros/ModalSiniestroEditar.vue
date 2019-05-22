@@ -282,7 +282,10 @@
                 </div>
               </div>
             </div>
-            <div class="modal-pie pull-right mt-3">
+            <div class="
+                          modal-pie
+                          pull-right
+                          mt-3">
               <base-button
                 class="btn btn-primary ladda-button"
                 type="submit"
@@ -306,7 +309,11 @@ import { EventBus } from '../../../main.js';
 import Notas from './Notas';
 
 export default {
-  props: ['siniestro'],
+  props: {
+    siniestro: {
+      type: Object
+    }
+  },
   mixins: [mixin],
   name: 'modal-siniestro-editar',
   components: {
@@ -332,6 +339,7 @@ export default {
       tipo_reclamo: false,
       estado_siniestro: false
     },
+    dataLista: false,
     tipo_reclamos: [
       {
         value: 'DAÑO A ASEGURADO (Reclamo a Tercero)',
