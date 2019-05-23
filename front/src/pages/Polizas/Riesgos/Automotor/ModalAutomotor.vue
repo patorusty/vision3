@@ -572,12 +572,13 @@
                 <span slot="label">
                   <i class="tim-icons icon-camera-18"></i>Fotos
                 </span>
+                <!-- <form id="fotos"> -->
                 <vue-dropzone
-                  v-model="uploads"
                   ref="myVueDropzone"
                   :useCustomSlot="true"
                   :duplicateCheck="true"
                   @vdropzone-queue-complete="assignUploads"
+                  v-on:vdropzone-sending="sendingEvent"
                   id="dropzone"
                   :options="dropzoneOptions"
                 >
@@ -586,8 +587,17 @@
                       Arrastra las fotos aquí...
                     </div>
                   </div>
+                  <input
+                    style="display: none;"
+                    type="text"
+                    name="riesgo_id"
+                    value="xx"
+                  />
                 </vue-dropzone>
-                <button @click.prevent="uploadImages">Subir</button>
+                <!-- </form> -->
+                <button @click.prevent="uploadImages">
+                  Subir
+                </button>
               </tab-pane>
             </tabs>
             <div
@@ -655,7 +665,6 @@ export default {
     modelo: {},
     anios: [],
     versiones: [],
-    imagenes: [],
     url: '/anios/filtrar',
     errorSelect: {
       automotor_anio: false,
@@ -698,7 +707,8 @@ export default {
       addRemoveLinks: true,
       autoProcessQueue: false,
       acceptedFiles: 'image/*',
-      dictRemoveFile: 'Remover imagen'
+      dictRemoveFile: 'Remover imagen',
+      params: { riesgoId: 2 }
     },
     tipo_vehiculos: [
       {
@@ -904,18 +914,19 @@ export default {
   },
   methods: {
     uploadImages() {
+      console.log(this.$refs.myVueDropzone);
       this.$refs.myVueDropzone.processQueue();
       // this.imagenes.forEach(imagen => {
       //   http.create('/imagenes_riesgo_automotor', imagen);
       // });
     },
-    sendingEvent(file) {
-      console.log('hola');
-      file.riesgo_automotor_id = 34;
-      console.log(file);
+    sendingEvent: function(file, xhr, formData) {
+      //   console.log(formData);
+      //   formData.append('productid', 'this.someId');
+      //   console.log(formData);
     },
     assignUploads() {
-      this.imagenes = this.$refs.myVueDropzone.dropzone.files;
+      // this.imagenes = this.$refs.myVueDropzone.dropzone.files;
     },
     close() {
       EventBus.$emit('resetInput', false);

@@ -47,7 +47,7 @@
                         type="text"
                         placeholder="Razon Social"
                         v-model="cliente.razon_social"
-                        v-validate="validations.razon_social"
+                        v-validate="'required'"
                         :error="getError('razon_social')"
                         name="razon_social"
                       ></base-input>
@@ -82,7 +82,7 @@
                         type="text"
                         placeholder="DNI"
                         v-model="cliente.nro_dni"
-                        v-validate="'required | numeric'"
+                        v-validate="'required|numeric'"
                         :error="getErrorDNI('nro_dni', dniUsed)"
                         :class="{ 'has-danger': dniUsed }"
                         name="nro_dni"
@@ -534,8 +534,7 @@ export default {
     },
     crear() {
       this.$validator.validateAll().then(r => {
-        this.checkSelect();
-        if (r && this.checkSelect() && !this.dniUsed && !this.cuitUsed) {
+        if (this.checkSelect() && r && !this.dniUsed && !this.cuitUsed) {
           http.create('clientes', this.cliente).then(() => {
             this.$router.push({ name: 'Clientes' });
           });

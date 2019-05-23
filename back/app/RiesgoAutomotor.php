@@ -48,7 +48,7 @@ class RiesgoAutomotor extends Model
 
    public function imagenes() 
    {
-      return $this->hasMany(ImagenesRiesgoAutomotor::class, 'imagenes_id', 'id');
+      return $this->belongsToMany(ImagenesRiesgoAutomotor::class);
    }
 
 }
