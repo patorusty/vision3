@@ -708,8 +708,7 @@ export default {
       autoProcessQueue: false,
       acceptedFiles: 'image/*',
       dictRemoveFile: 'Remover imagen',
-      params: {'riesgoId': 1},
-        }
+      params: { riesgoId: 2 }
     },
     tipo_vehiculos: [
       {
@@ -922,9 +921,9 @@ export default {
       // });
     },
     sendingEvent: function(file, xhr, formData) {
-    //   console.log(formData);
-    //   formData.append('productid', 'this.someId');
-    //   console.log(formData);
+      //   console.log(formData);
+      //   formData.append('productid', 'this.someId');
+      //   console.log(formData);
     },
     assignUploads() {
       // this.imagenes = this.$refs.myVueDropzone.dropzone.files;
