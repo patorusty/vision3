@@ -119,7 +119,7 @@ import { mixin } from '../../../mixins/mixin.js';
 import { EventBus } from '../../../main.js';
 import ModalSiniestros from './ModalSiniestro';
 import ModalSiniestrosEditar from './ModalSiniestroEditar';
-import Notas from './Notas';
+import NotasSiniestro from './NotasSiniestro';
 import { format } from 'date-fns';
 
 export default {
@@ -135,7 +135,7 @@ export default {
     BasePagination,
     ModalSiniestros,
     ModalSiniestrosEditar,
-    Notas
+    NotasSiniestro
   },
   props: {
     poliza: {

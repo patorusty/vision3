@@ -16,7 +16,6 @@ class NotaSiniestros extends Migration
         Schema::create('nota_siniestro_auts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('siniestro_automotor_id')->nullable();
-            $table->string('fecha')->nullable();
             $table->string('user_id')->nullable();
             $table->string('nota')->nullable();
             $table->timestamps();
