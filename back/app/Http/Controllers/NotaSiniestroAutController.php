@@ -49,7 +49,6 @@ class NotaSiniestroAutController extends Controller
 
         $nota = NotaSiniestroAut::create([
             'siniestro_automotor_id' => $request->input('siniestro_automotor_id'),
-            'fecha' => $request->input('fecha'),
             'user_id' => $request->input('user_id'),
             'nota' => $request->input('nota'),
         ]);

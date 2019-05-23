@@ -35,6 +35,9 @@ Route::Resource('/endosos', 'EndosoController');
 Route::Resource('/siniestrosautomotor', 'SiniestroAutomotorController');
 Route::Resource('/tipoendoso', 'TipoEndosoController');
 Route::Resource('/riesgo_automotor', 'RiesgoAutomotorController');
+Route::Resource('/notas_siniestro_aut', 'NotaSiniestroAutController');
+
+
 Route::post('/imagenes_riesgo_automotor', 'ImagenRAController@uploadFile');
 Route::get('/numerosolicitud', 'PolizaController@numeroDeSolicitud');
 Route::get('/codigoorganizador/compania/{id}', 'CodigoOrganizadorController@indexFiltrado');

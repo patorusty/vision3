@@ -72,7 +72,7 @@ export default {
     return {
       url: 'notasiniestroautomotor/siniestro_automotor_id',
       nota_siniestro_aut: {
-        user_id: 'Boti',
+        user_id: 1,
         nota: '',
         siniestro_automotor_id: ''
       }
@@ -113,7 +113,6 @@ export default {
       this.cargar(id);
     });
     EventBus.$on('closeModal', val => {
-      console.log(val);
       this.nota_siniestro_aut.nota = val;
       EventBus.$emit('resetInput', false);
     });
