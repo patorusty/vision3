@@ -23,6 +23,7 @@ Route::Resource('/administracion/productores', 'ProductorController');
 Route::Resource('/administracion/marcas', 'AutomotorMarcaController');
 Route::Resource('/administracion/modelos', 'AutomotorModeloController');
 Route::Resource('/administracion/versiones', 'AutomotorVersionController');
+Route::Resource('/configuracion/usuarios', 'UserController');
 Route::Resource('/localidades', 'LocalidadController');
 Route::Resource('/anios', 'AnioController');
 Route::Resource('/codigoorganizador', 'CodigoOrganizadorController');
@@ -36,6 +37,7 @@ Route::Resource('/siniestrosautomotor', 'SiniestroAutomotorController');
 Route::Resource('/tipoendoso', 'TipoEndosoController');
 Route::Resource('/riesgo_automotor', 'RiesgoAutomotorController');
 Route::Resource('/notas_siniestro_aut', 'NotaSiniestroAutController');
+Route::Resource('/tipousuario', 'TipoUsuarioController');
 
 
 Route::post('/imagenes_riesgo_automotor', 'ImagenRAController@uploadFile');
