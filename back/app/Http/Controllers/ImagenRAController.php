@@ -20,28 +20,29 @@ class ImagenRAController extends Controller
         //
     }
 
-    public function uploadFile(Request $request)
-    {
+    public function uploadFile(Request $request) {
 
-        $riesgoId = $request->get('riesgoId');
-        if ($request->file('file')) {
-            $image = $request->file('file');
-            $size = $image->getClientSize();
-            $name = time() . $image->getClientOriginalName();
-            $path = '/images/' . $name;
-            $mime = $image->getClientMimeType();
-            $image->move(public_path() . '/images/', $name);
-        }
-
-        $image = new ImagenRA();
-        $image->filename = $name;
-        $image->path = $path;
-        $image->size = $size;
-        $image->mime = $mime;
-        $image->save();
-        $image->riesgo_automotor()->sync($riesgoId);
-
-        return $riesgoId;
+            $riesgoId = $request->get('riesgoId');
+            if($request->file('file'))
+            {
+                $image = $request->file('file');
+                $size = $image->getClientSize();
+                $name = time().$image->getClientOriginalName();
+                $path = '/images/'.$name;
+                $mime = $image->getClientMimeType();
+                $image->move(public_path().'/images/', $name); 
+            }
+            
+            $image= new ImagenRA();
+            $image->filename = $name;
+            $image->path = $path;
+            $image->size = $size;
+            $image->mime = $mime;
+            $image->save();
+            $image->riesgo_automotor()->sync($riesgoId);
+     
+            return response()->json(['success' => 'You have successfully uploaded an image'], 200);
+          
     }
 
     /**

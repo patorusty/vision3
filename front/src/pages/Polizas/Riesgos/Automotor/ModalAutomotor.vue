@@ -572,13 +572,10 @@
                 <span slot="label">
                   <i class="tim-icons icon-camera-18"></i>Fotos
                 </span>
-                <!-- <form id="fotos"> -->
                 <vue-dropzone
                   ref="myVueDropzone"
                   :useCustomSlot="true"
                   :duplicateCheck="true"
-                  @vdropzone-queue-complete="assignUploads"
-                  v-on:vdropzone-sending="sendingEvent"
                   id="dropzone"
                   :options="dropzoneOptions"
                 >
@@ -594,10 +591,6 @@
                     value="xx"
                   />
                 </vue-dropzone>
-                <!-- </form> -->
-                <button @click.prevent="uploadImages">
-                  Subir
-                </button>
               </tab-pane>
             </tabs>
             <div
@@ -608,6 +601,11 @@
                 type="submit"
                 class="btn btn-primary ladda-button"
                 >Crear</base-button
+              >
+              <base-button
+                @click="uploadImages"
+                class="btn btn-primary ladda-button"
+                >Subir</base-button
               >
             </div>
           </form>
@@ -630,9 +628,6 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 
 export default {
   props: {
-    // riesgo_automotor: {
-    //   type: Object
-    // },
     props: ['poliza'],
     compania_id: {
       type: Number
@@ -701,14 +696,15 @@ export default {
       automotor_version_id: ''
     },
     dropzoneOptions: {
-      url: 'http://127.0.0.1:8000/api/imagenes_riesgo_automotor',
+      url: 'http://127.0.0.1:8000/api/imagenes_r_a',
       thumbnailWidth: 150,
       maxFilesize: 2,
       addRemoveLinks: true,
       autoProcessQueue: false,
       acceptedFiles: 'image/*',
+      method: 'POST',
       dictRemoveFile: 'Remover imagen',
-      params: { riesgoId: 2 }
+      params: { riesgoId: '' }
     },
     tipo_vehiculos: [
       {
@@ -913,43 +909,31 @@ export default {
     }
   },
   methods: {
-    uploadImages() {
-      console.log(this.$refs.myVueDropzone);
-      this.$refs.myVueDropzone.processQueue();
-      // this.imagenes.forEach(imagen => {
-      //   http.create('/imagenes_riesgo_automotor', imagen);
-      // });
-    },
-    sendingEvent: function(file, xhr, formData) {
-      //   console.log(formData);
-      //   formData.append('productid', 'this.someId');
-      //   console.log(formData);
-    },
-    assignUploads() {
-      // this.imagenes = this.$refs.myVueDropzone.dropzone.files;
-    },
     close() {
       EventBus.$emit('resetInput', false);
+      this.$emit('recargar');
       this.$emit('close');
     },
-    checkPatente(modelo) {
-      return modelo ? true : false;
+    uploadImages() {
+      this.$refs.myVueDropzone.processQueue();
     },
     crear() {
       this.$validator.validateAll().then(r => {
-        if (r && this.checkSelect()) {
+        if (this.checkSelect() && r) {
           this.riesgo_automotor.poliza_id = this.$attrs.poliza.id;
-          http.create('/riesgo_automotor', this.riesgo_automotor).then(r => {
-            console.log(r.data.data);
-            this.$emit('recargar');
-            this.close();
-            this.notifyVue(
-              'success',
-              'El riesgo ha sido actualizado con exito'
+          http
+            .create('/riesgo_automotor', this.riesgo_automotor)
+            .then(r => {
+              let rId = r.data.data.id;
+              this.dropzoneOptions.params.riesgoId = rId;
+              this.uploadImages();
+            })
+            .then(() => {
+              setTimeout(() => this.close(), 500);
+            })
+            .then(() =>
+              this.notifyVue('success', 'El riesgo ha sido creado con exito')
             );
-            this.$validator.reset();
-            this.errors.clear();
-          });
         }
       });
     },
