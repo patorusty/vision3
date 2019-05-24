@@ -80,7 +80,6 @@
                     >
                       <i class="tim-icons icon-pencil"></i>
                     </base-button>
-                    </router-link>
                   </el-tooltip>
                   <base-button
                     @click.native="borrar(props.row.id);"
