@@ -91,17 +91,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
-                <base-input label="Sobre Mi">
-                  <textarea
-                    rows="1"
-                    class="form-control"
-                    placeholder="Sobre Mi"
-                    v-model="usuario.aboutme"
-                  >
-            </textarea>
-                </base-input>
-              </div>
+
             </div>
             <base-button
               native-type="submit"
@@ -111,6 +101,27 @@
               Crear
             </base-button>
           </form>
+        </card>
+      </div>
+      <div class="col-md-4">
+        <card class="card-user">
+          <p class="card-text"></p>
+          <div class="author">
+            <div class="block block-one"></div>
+            <div class="block block-two"></div>
+            <div class="block block-three"></div>
+            <div class="block block-four"></div>
+            <a href="javascript:void(0)">
+              <img
+                class="avatar"
+                src="img/emilyz.jpg"
+                alt="..."
+              />
+              <h5 class="title">nombre apellido</h5>
+            </a>
+            <p class="description">Ceo/Co-Founder</p>
+          </div>
+
         </card>
       </div>
     </div>

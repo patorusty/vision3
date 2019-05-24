@@ -37,7 +37,7 @@
         <sidebar-item :link="{
             name: 'endosos',
             icon: 'tim-icons icon-bullet-list-67',
-            path: '/endosos'
+            path: '/polizas/endosos'
           }"></sidebar-item>
         <sidebar-item :link="{
             name: 'clientes',

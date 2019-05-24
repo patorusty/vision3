@@ -149,9 +149,9 @@ const routes = [
         component: require('../pages/Polizas/Siniestros.vue').default
       },
       {
-        path: 'endosos',
+        path: '/polizas/endosos',
         name: 'Endosos',
-        component: require('../pages/Polizas/Endosos.vue').default
+        component: require('../pages/Polizas/Endosos/HomeEndoso.vue').default
       },
       {
         path: 'clientes',
