@@ -39,8 +39,7 @@ Route::Resource('/riesgo_automotor', 'RiesgoAutomotorController');
 Route::Resource('/notas_siniestro_aut', 'NotaSiniestroAutController');
 Route::Resource('/tipousuario', 'TipoUsuarioController');
 
-
-Route::post('/imagenes_riesgo_automotor', 'ImagenRAController@uploadFile');
+Route::post('/imagenes_r_a', 'ImagenRAController@uploadFile');
 Route::get('/numerosolicitud', 'PolizaController@numeroDeSolicitud');
 Route::get('/codigoorganizador/compania/{id}', 'CodigoOrganizadorController@indexFiltrado');
 Route::get('/codigoproductor/compania/{id}', 'CodigoProductorController@indexFiltrado');
