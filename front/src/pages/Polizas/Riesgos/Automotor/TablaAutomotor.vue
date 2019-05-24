@@ -73,7 +73,9 @@
                   :open-delay="300"
                   placement="top"
                 >
-                  <base-button type="danger" icon size="sm" class="btn-link">
+                  <base-button 
+                  @click.native="borrar(props.row.poliza_id)"
+                  type="danger" icon size="sm" class="btn-link">
                     <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </el-tooltip>
@@ -158,6 +160,16 @@ export default {
           this.riesgo_automotor = r.data.data[0];
         })
         .catch(e => console.log(e));
+    },
+    borrar(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete('polizas', id).then(() => {
+            this.notifyVue('danger', 'El cliente ha sido eliminado');
+            this.cargar();
+          });
+        }
+      });
     }
   },
   mounted() {

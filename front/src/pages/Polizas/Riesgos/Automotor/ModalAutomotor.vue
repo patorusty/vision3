@@ -149,6 +149,36 @@
                     >
                       Este campo es obligatorio
                     </p>
+                    <label>Cobertura</label>
+                    <el-select
+                      filterable
+                      class="select-primary"
+                      :class="{ errorS: errorSelect.cobertura_id }"
+                      v-model="riesgo_automotor.cobertura_id"
+                      name="estado_general"
+                      @change="
+                        touchSelect('cobertura_id'), coberturaSeleccionada()
+                      "
+                    >
+                      <el-option
+                        v-for="cobertura in coberturas"
+                        :key="cobertura.id"
+                        :label="cobertura.nombre"
+                        :value="cobertura.id"
+                        class="select-primary"
+                      ></el-option>
+                    </el-select>
+                    <p class="errorSelect" v-show="errorSelect.cobertura_id">
+                      Este campo es obligatorio
+                    </p>
+                    <base-input
+                      class="mt-3"
+                      label="Franquicia"
+                      v-model="riesgo_automotor.franquicia"
+                      name="franquicia"
+                      :disabled="cobertura.todo_riesgo == 1"
+                    >
+                    </base-input>
                   </div>
                   <!-- SEGUNDA COLUMNA -->
                   <div class="col-md-4">
@@ -246,6 +276,37 @@
                         >0km</base-checkbox
                       >
                     </div>
+                    <label class="mt-4">Ajuste</label>
+                    <el-select
+                      filterable
+                      class="select-primary"
+                      v-model="riesgo_automotor.ajuste"
+                      name="ajuste"
+                    >
+                      <el-option
+                        v-for="ajuste in ajustes"
+                        :key="ajuste.value"
+                        :label="ajuste.label"
+                        :value="ajuste.value"
+                        class="select-primary"
+                      ></el-option>
+                    </el-select>
+
+                    <label class="mt-3">Equipo de Rastreo</label>
+                    <el-select
+                      filterable
+                      class="select-primary"
+                      v-model="riesgo_automotor.equipo_rastreo"
+                      name="equipo_rastreo"
+                    >
+                      <el-option
+                        v-for="equipo in equipo_rastreos"
+                        :key="equipo.value"
+                        :label="equipo.label"
+                        :value="equipo.value"
+                        class="select-primary"
+                      ></el-option>
+                    </el-select>
                   </div>
                   <!-- TERCER COLUMNA -->
                   <div class="col-md-4">
@@ -318,75 +379,6 @@
                     <label class="mt-2">Color</label>
                     <base-input v-model="riesgo_automotor.color" name="color">
                     </base-input>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <label>Cobertura</label>
-                    <el-select
-                      filterable
-                      class="select-primary"
-                      :class="{ errorS: errorSelect.cobertura_id }"
-                      v-model="riesgo_automotor.cobertura_id"
-                      name="estado_general"
-                      @change="
-                        touchSelect('cobertura_id'), coberturaSeleccionada()
-                      "
-                    >
-                      <el-option
-                        v-for="cobertura in coberturas"
-                        :key="cobertura.id"
-                        :label="cobertura.nombre"
-                        :value="cobertura.id"
-                        class="select-primary"
-                      ></el-option>
-                    </el-select>
-                    <p class="errorSelect" v-show="errorSelect.cobertura_id">
-                      Este campo es obligatorio
-                    </p>
-                    <base-input
-                      class="mt-3"
-                      label="Franquicia"
-                      v-model="riesgo_automotor.franquicia"
-                      name="franquicia"
-                      :disabled="cobertura.todo_riesgo == 1"
-                    >
-                    </base-input>
-                  </div>
-                  <div class="col-md-4">
-                    <label>Ajuste</label>
-                    <el-select
-                      filterable
-                      class="select-primary"
-                      v-model="riesgo_automotor.ajuste"
-                      name="ajuste"
-                    >
-                      <el-option
-                        v-for="ajuste in ajustes"
-                        :key="ajuste.value"
-                        :label="ajuste.label"
-                        :value="ajuste.value"
-                        class="select-primary"
-                      ></el-option>
-                    </el-select>
-
-                    <label class="mt-3">Equipo de Rastreo</label>
-                    <el-select
-                      filterable
-                      class="select-primary"
-                      v-model="riesgo_automotor.equipo_rastreo"
-                      name="equipo_rastreo"
-                    >
-                      <el-option
-                        v-for="equipo in equipo_rastreos"
-                        :key="equipo.value"
-                        :label="equipo.label"
-                        :value="equipo.value"
-                        class="select-primary"
-                      ></el-option>
-                    </el-select>
-                  </div>
-                  <div class="col-md-4">
                     <base-input label="Valor Total" v-model="suma">
                     </base-input>
                     <base-input label="Observaciones">
@@ -398,7 +390,6 @@
                   </div>
                 </div>
               </tab-pane>
-
               <tab-pane>
                 <p class="text-primary">
                   Cubiertas
@@ -601,11 +592,6 @@
                 type="submit"
                 class="btn btn-primary ladda-button"
                 >Crear</base-button
-              >
-              <base-button
-                @click="uploadImages"
-                class="btn btn-primary ladda-button"
-                >Subir</base-button
               >
             </div>
           </form>

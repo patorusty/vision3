@@ -474,6 +474,7 @@ export default {
       if (this.checkSelect()) {
         this.$emit('crear', this.siniestro);
         this.close();
+        this.siniestro = {};
       }
     },
     close() {
@@ -481,6 +482,7 @@ export default {
         (this.errorSelect.fecha_siniestro = false),
         (this.errorSelect.tipo_reclamo = false);
       this.errorSelect.estado_siniestro = false;
+      this.siniestro = {};
       this.$emit('close');
       EventBus.$emit('resetInput', false);
     },

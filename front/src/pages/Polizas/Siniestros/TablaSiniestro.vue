@@ -45,7 +45,7 @@
               label="Completo"
             >
               <div slot-scope="{ row }">
-                <div v-if="row.completo == null">NO</div>
+                <div v-if="row.fecha_completo == null">NO</div>
                 <div v-else>SI</div>
               </div>
             </el-table-column>

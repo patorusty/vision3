@@ -57,8 +57,9 @@
                       @change="
                         filtrarModificacionPorTipo(
                           endoso.tipo_endoso_id
-                        )
-                        touchSelect('tipo_endoso_id');
+                        ),
+                        touchSelect('tipo_endoso_id'),
+                        reset()
                       "
                     >
                       <el-option
@@ -159,7 +160,7 @@ import { Card } from 'src/components';
 import { BaseButton } from 'src/components';
 import http from '../../../API/http-request.js';
 import { EventBus } from '../../../main.js';
-import { BaseCheckbox, BaseRadio } from 'src/components/index';
+import { BaseCheckbox } from 'src/components/index';
 
 export default {
   props: ['endoso'],
@@ -212,7 +213,6 @@ export default {
       });
     },
     filtrarModificacionPorTipo(id) {
-      this.endoso.detalle_endoso_id = '';
       http.loadOne('/detallesendosos/filtrar', id).then(r => {
         this.detalles = r.data.data;
       });
@@ -235,6 +235,9 @@ export default {
         }
       });
       return valor;
+    },
+    reset() {
+      this.endoso.detalle_endoso_id = '';
     }
   },
   created() {
@@ -242,6 +245,7 @@ export default {
   },
   mounted() {
     EventBus.$on('filtrarTipos', id => {
+      console.log(id);
       this.filtrarModificacionPorTipo(id);
     });
   }

@@ -60,9 +60,9 @@
               ></el-table-column>
               <el-table-column
                 label="Desde / Hasta"
-                :min-width="90"
+                :min-width="100"
               >
-                <div slot-scope="{ row }">{{row.vigencia_desde}} / {{row.vigencia_hasta}}</div>
+                <div slot-scope="{ row }">{{row.vigencia_desde}} - {{row.vigencia_hasta}}</div>
               </el-table-column>
               <el-table-column
                 label="Estado"
@@ -110,7 +110,7 @@
                     </router-link>
                   </el-tooltip>
                   <base-button
-                    @click.native="handleDelete(props.$index, props.row);"
+                    @click.native="borrar(props.row.id);"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -159,6 +159,7 @@ import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from 'src/components';
 import { mixin } from '../../mixins/mixin.js';
 import http from '../../API/http-request.js';
+import { format } from 'date-fns';
 
 export default {
   mixins: [mixin],
@@ -175,13 +176,30 @@ export default {
   },
   methods: {
     cargaPolizas() {
+      let polizas = [];
       http
-        .load('http://127.0.0.1:8000/api/polizas')
+        .load('polizas')
         .then(r => {
-          this.dataLoaded = true;
-          this.tableData = r.data.data;
+          polizas = r.data.data;
+          polizas.forEach(poliza => {
+            poliza.vigencia_desde = format(poliza.vigencia_desde, 'DD/MM/YYYY');
+          });
+          polizas.forEach(poliza => {
+            poliza.vigencia_hasta = format(poliza.vigencia_hasta, 'DD/MM/YYYY');
+          });
+          this.tableData = polizas;
         })
         .catch(e => console.log(e));
+    },
+    borrar(id) {
+      this.dangerSwal().then(r => {
+        if (r.value) {
+          http.delete('polizas', id).then(() => {
+            this.notifyVue('danger', 'La poliza ha sido eliminada');
+            this.cargaPolizas();
+          });
+        }
+      });
     }
   },
   created() {

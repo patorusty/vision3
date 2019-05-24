@@ -191,13 +191,13 @@ export default {
     vaciarForm() {
       EventBus.$emit('resetInput', false);
     },
-    showModalEndosoEditar(id) {
+    showModalEndosoEditar() {
       this.vaciarForm();
-      EventBus.$emit('filtrarTipos', id);
+      EventBus.$emit('filtrarTipos', this.endoso.tipo_endoso_id);
       this.isModalVisibleEndosoEditar = true;
     },
     editar(id) {
-      this.showModalEndosoEditar(id);
+      this.showModalEndosoEditar(this.endoso.tipo_endoso_id);
       http.loadOne('endosos', id).then(r => {
         this.endoso = r.data.data;
       });

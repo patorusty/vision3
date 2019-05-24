@@ -195,6 +195,9 @@ export default {
     crear() {
       if (this.checkSelect()) {
         this.$emit('crear', this.endoso);
+        this.endoso = {
+          fecha_solicitud: new Date()
+        };
       }
     },
     close() {
@@ -203,6 +206,9 @@ export default {
         (this.errorSelect.detalle_endoso_id = false);
       this.$emit('close');
       EventBus.$emit('resetInput', false);
+      this.endoso = {
+        fecha_solicitud: new Date()
+      };
     },
     cargarTipoEndosos() {
       http.load('tipoendoso').then(r => {
