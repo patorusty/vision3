@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNotaSiniestroAutsTable extends Migration
+class CreateTipoUsuarioTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateNotaSiniestroAutsTable extends Migration
      */
     public function up()
     {
-        Schema::create('nota_siniestro_auts', function (Blueprint $table) {
+        Schema::create('tipo_usuarios', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('siniestro_automotor_id')->nullable();
-            $table->integer('user_id')->nullable();
-            $table->string('nota')->nullable();
+            $table->string('nombre');
             $table->timestamps();
         });
     }
@@ -29,7 +27,6 @@ class CreateNotaSiniestroAutsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nota_siniestro_auts');
-
+        Schema::dropIfExists('tipo_usuarios');
     }
 }

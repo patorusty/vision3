@@ -270,12 +270,13 @@
 
                   <div class="col-md-6">
                     <label>Notas</label>
+
                     <div
                       type="tasks"
                       class="text-left"
                     >
                       <div class="table-full-width table-responsive">
-                        <notas :siniestro="siniestro"></notas>
+                        <notas-siniestro :siniestro="siniestro"></notas-siniestro>
                       </div>
                     </div>
                   </div>
@@ -306,7 +307,7 @@ import { Card } from 'src/components';
 import { BaseButton } from 'src/components';
 import http from '../../../API/http-request.js';
 import { EventBus } from '../../../main.js';
-import Notas from './Notas';
+import NotasSiniestro from './NotasSiniestro';
 
 export default {
   props: {
@@ -320,7 +321,7 @@ export default {
     SlideYUpTransition,
     Card,
     BaseButton,
-    Notas,
+    NotasSiniestro,
     [Option.name]: Option,
     [Select.name]: Select,
     [DatePicker.name]: DatePicker
@@ -461,6 +462,8 @@ export default {
     close() {
       this.$emit('close');
       EventBus.$emit('resetInput', false);
+      let vacio = '';
+      EventBus.$emit('closeModal', vacio);
     },
     actualizar() {
       if (this.checkSelect()) {

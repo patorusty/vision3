@@ -93,7 +93,17 @@ let configuracion = {
     {
       path: 'usuarios',
       name: 'Usuarios',
-      component: require('../pages/Configuracion/Usuarios.vue').default
+      component: require('../pages/Configuracion/Usuarios/Usuarios.vue').default
+    },
+    {
+      path: 'usuarios/create',
+      name: 'Usuarios Create',
+      component: require('../pages/Configuracion/Usuarios/Create.vue').default
+    },
+    {
+      path: 'usuarios/:id/edit',
+      name: 'Editar Usuario',
+      component: require('../pages/Configuracion/Usuarios/Edit.vue').default
     }
   ]
 };

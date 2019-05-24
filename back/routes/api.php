@@ -23,6 +23,7 @@ Route::Resource('/administracion/productores', 'ProductorController');
 Route::Resource('/administracion/marcas', 'AutomotorMarcaController');
 Route::Resource('/administracion/modelos', 'AutomotorModeloController');
 Route::Resource('/administracion/versiones', 'AutomotorVersionController');
+Route::Resource('/configuracion/usuarios', 'UserController');
 Route::Resource('/localidades', 'LocalidadController');
 Route::Resource('/anios', 'AnioController');
 Route::Resource('/codigoorganizador', 'CodigoOrganizadorController');
@@ -35,7 +36,11 @@ Route::Resource('/endosos', 'EndosoController');
 Route::Resource('/siniestrosautomotor', 'SiniestroAutomotorController');
 Route::Resource('/tipoendoso', 'TipoEndosoController');
 Route::Resource('/riesgo_automotor', 'RiesgoAutomotorController');
-Route::post('/imagenes_r_a', 'ImagenRAController@uploadFile');
+Route::Resource('/notas_siniestro_aut', 'NotaSiniestroAutController');
+Route::Resource('/tipousuario', 'TipoUsuarioController');
+
+
+Route::post('/imagenes_riesgo_automotor', 'ImagenRAController@uploadFile');
 Route::get('/numerosolicitud', 'PolizaController@numeroDeSolicitud');
 Route::get('/codigoorganizador/compania/{id}', 'CodigoOrganizadorController@indexFiltrado');
 Route::get('/codigoproductor/compania/{id}', 'CodigoProductorController@indexFiltrado');

@@ -20,7 +20,7 @@ class NotaSiniestroAutController extends Controller
     }
     public function indexFiltrado($siniestro_automotor_id)
     {
-        $nota = NotaSiniestroAut::where('siniestro_automotor_id', $siniestro_automotor_id)->get();
+        $nota = NotaSiniestroAut::where('siniestro_automotor_id', $siniestro_automotor_id)->orderBy('id', 'DESC')->get();
 
         return NotaSiniestroAutsResource::collection($nota);
     }
@@ -49,7 +49,6 @@ class NotaSiniestroAutController extends Controller
 
         $nota = NotaSiniestroAut::create([
             'siniestro_automotor_id' => $request->input('siniestro_automotor_id'),
-            'fecha' => $request->input('fecha'),
             'user_id' => $request->input('user_id'),
             'nota' => $request->input('nota'),
         ]);
@@ -93,7 +92,6 @@ class NotaSiniestroAutController extends Controller
         $nota = NotaSiniestroAut::find($id);
         $nota->update([
             'siniestro_automotor_id' => $request->input('siniestro_automotor_id'),
-            'fecha' => $request->input('fecha'),
             'user_id' => $request->input('user_id'),
             'nota' => $request->input('nota'),            
         ]);
