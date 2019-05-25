@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Endosos;
 use App\TipoEndosos;
 use App\DetalleEndosos;
+use App\Polizas;
 use Illuminate\Http\Request;
 use App\Http\Resources\Endoso as EndososResource;
 

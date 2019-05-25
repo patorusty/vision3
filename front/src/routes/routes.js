@@ -144,9 +144,10 @@ const routes = [
         name: 'Editar Poliza'
       },
       {
-        path: 'siniestros',
+        path: '/polizas/siniestros',
         name: 'Siniestros',
-        component: require('../pages/Polizas/Siniestros.vue').default
+        component: require('../pages/Polizas/Siniestros/HomeSiniestro.vue')
+          .default
       },
       {
         path: '/polizas/endosos',

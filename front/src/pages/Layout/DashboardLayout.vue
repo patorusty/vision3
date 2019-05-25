@@ -32,7 +32,7 @@
         <sidebar-item :link="{
             name: 'siniestros',
             icon: 'tim-icons icon-chart-pie-36',
-            path: '/siniestros'
+            path: '/polizas/siniestros'
           }"></sidebar-item>
         <sidebar-item :link="{
             name: 'endosos',

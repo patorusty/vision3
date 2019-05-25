@@ -16,33 +16,24 @@
                   aria-controls="datatables"
                 ></el-input>
               </base-input>
-
             </div>
             <el-table :data="queriedData">
+              <el-table-column
+                label="Siniestro N"
+                :min-width="70"
+                prop="numero_siniestro"
+              >
+              </el-table-column>
+              <el-table-column
+                label="F. Siniestro"
+                :min-width="70"
+                prop="fecha_siniestro"
+              ></el-table-column>
               <el-table-column
                 label="Poliza"
                 :min-width="70"
               >
                 <div slot-scope="{ row }">{{row.polizas.numero}}</div>
-              </el-table-column>
-              <el-table-column
-                label="Endoso"
-                :min-width="70"
-                prop="numero_endoso"
-              >
-              </el-table-column>
-              <el-table-column
-                label="Tipo"
-                :min-width="70"
-              >
-                <div slot-scope="{ row }">{{row.tipo_endosos.nombre}}</div>
-              </el-table-column>
-              <el-table-column
-                label="Asegurado"
-                :min-width="120"
-              >
-                <div slot-scope="{ row }">{{row.polizas.cliente_id}}</div>
-
               </el-table-column>
               <el-table-column
                 label="Compañia"
@@ -52,18 +43,19 @@
 
               </el-table-column>
               <el-table-column
-                label="Fecha Solicitud"
-                :min-width="70"
-                prop="fecha_solicitud"
-              ></el-table-column>
+                label="Asegurado"
+                :min-width="120"
+              >
+                <div slot-scope="{ row }">{{row.polizas.cliente_id}}</div>
 
+              </el-table-column>
               <el-table-column
                 label="Completo"
                 :min-width="50"
               >
                 <div slot-scope="{ row }">
-                  <div v-if="row.completo == true">SI</div>
-                  <div v-else>NO</div>
+                  <div v-if="row.fecha_completo == null">NO</div>
+                  <div v-else>SI</div>
                 </div>
               </el-table-column>
               <el-table-column
@@ -130,12 +122,12 @@
         </card>
       </div>
     </div>
-    <modal-endoso-editar
-      v-show="isModalVisibleEndosoEditar"
-      @close="closeModalEndosoEditar"
-      :endoso="endoso"
+    <modal-siniestros-editar
+      v-show="isModalVisibleSiniestroEditar"
+      @close="closeModalSiniestroEditar"
+      :siniestro="siniestro"
       v-if="dataLoaded"
-      @recargar="cargarEndosos"
+      @recargar="cargarSiniestros"
     />
   </div>
 </template>
@@ -145,7 +137,8 @@ import { BasePagination } from 'src/components';
 import { mixin } from '../../../mixins/mixin.js';
 import http from '../../../API/http-request.js';
 import { format } from 'date-fns';
-import ModalEndosoEditar from './ModalEndosoEditar';
+import ModalSiniestrosEditar from './ModalSiniestroEditar';
+import NotasSiniestro from './NotasSiniestro';
 import { EventBus } from '../../../main.js';
 import { BaseAlert } from 'src/components';
 import { BaseSwitch } from 'src/components/index';
@@ -158,69 +151,76 @@ export default {
     [Option.name]: Option,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
-    ModalEndosoEditar,
+    ModalSiniestrosEditar,
+    NotasSiniestro,
     BaseAlert,
     BaseSwitch
   },
 
   data() {
     return {
-      isModalVisibleEndosoEditar: false,
-      url: 'endosos',
-      endoso: {},
+      isModalVisibleSiniestroEditar: false,
+      url: 'siniestrosautomotor',
+      siniestro: {},
       tableData: [],
       dataLoaded: false
     };
   },
   methods: {
-    cargarEndosos() {
-      let endosos = [];
+    cargarSiniestros() {
+      let siniestros = [];
       http
-        .load('endosos')
+        .load('siniestrosautomotor')
         .then(r => {
-          endosos = r.data.data;
-          endosos.forEach(endoso => {
-            endoso.fecha_solicitud = format(
-              endoso.fecha_solicitud,
+          siniestros = r.data.data;
+          siniestros.forEach(siniestro => {
+            siniestro.fecha_denuncia = format(
+              siniestro.fecha_denuncia,
               'DD/MM/YYYY'
             );
           });
-          this.tableData = endosos;
+          siniestros.forEach(siniestro => {
+            siniestro.fecha_siniestro = format(
+              siniestro.fecha_siniestro,
+              'DD/MM/YYYY'
+            );
+          });
+          this.tableData = siniestros;
           this.dataLoaded = true;
         })
         .catch(e => console.log(e));
     },
-    closeModalEndosoEditar() {
+    closeModalSiniestroEditar() {
       this.vaciarForm();
-      this.isModalVisibleEndosoEditar = false;
+      this.isModalVisibleSiniestroEditar = false;
     },
     vaciarForm() {
       EventBus.$emit('resetInput', false);
     },
-    showModalEndosoEditar() {
+    showModalSiniestroEditar(id) {
       this.vaciarForm();
-      EventBus.$emit('filtrarTipos', this.endoso.tipo_endoso_id);
-      this.isModalVisibleEndosoEditar = true;
+      EventBus.$emit('cargarNotas', id);
+      this.isModalVisibleSiniestroEditar = true;
     },
     editar(id) {
-      this.showModalEndosoEditar(this.endoso.tipo_endoso_id);
-      http.loadOne('endosos', id).then(r => {
-        this.endoso = r.data.data;
+      this.showModalSiniestroEditar(id);
+      http.loadOne('siniestrosautomotor', id).then(r => {
+        this.siniestro = r.data.data;
       });
     },
-    borrar(url, id) {
+    borrar(id) {
       this.dangerSwal().then(r => {
         if (r.value) {
-          http.delete('endosos', id).then(() => {
-            this.notifyVue('danger', 'El endoso ha sido eliminada');
-            this.cargarEndosos();
+          http.delete('siniestrosautomotor', id).then(() => {
+            this.notifyVue('danger', 'El siniestro ha sido eliminada');
+            this.cargarSiniestros();
           });
         }
       });
     }
   },
   created() {
-    this.cargarEndosos();
+    this.cargarSiniestros();
   }
 };
 </script>

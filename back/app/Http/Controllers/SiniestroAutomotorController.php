@@ -16,7 +16,9 @@ class SiniestroAutomotorController extends Controller
      */
     public function index()
     {
-        
+        $siniestros = SiniestroAutomotor::with(['polizas'])->get();
+        return SiniestroAutomotorsResource::collection($siniestros);
+
     }
     public function indexFiltrado($poliza_id)
     {
