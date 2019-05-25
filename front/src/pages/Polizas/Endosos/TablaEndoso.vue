@@ -67,7 +67,7 @@
                   placement="top"
                 >
                   <base-button
-                    @click.native="editar(props.row.id)"
+                    @click.native="editar(props.row.id, props.row.tipo_endoso_id)"
                     type="warning"
                     icon
                     size="sm"
@@ -191,13 +191,14 @@ export default {
     vaciarForm() {
       EventBus.$emit('resetInput', false);
     },
-    showModalEndosoEditar() {
+    showModalEndosoEditar(tipo_endoso_id) {
       this.vaciarForm();
-      EventBus.$emit('filtrarTipos', this.endoso.tipo_endoso_id);
+      EventBus.$emit('filtrarTipos', tipo_endoso_id);
       this.isModalVisibleEndosoEditar = true;
     },
-    editar(id) {
-      this.showModalEndosoEditar(this.endoso.tipo_endoso_id);
+    editar(id, tipo_endoso_id) {
+      console.log(tipo_endoso_id);
+      this.showModalEndosoEditar(tipo_endoso_id);
       http.loadOne('endosos', id).then(r => {
         this.endoso = r.data.data;
       });

@@ -241,10 +241,10 @@ export default {
     }
   },
   created() {
-    this.cargarTipoEndosos();
   },
   mounted() {
     EventBus.$on('filtrarTipos', id => {
+      this.cargarTipoEndosos();
       console.log(id);
       this.filtrarModificacionPorTipo(id);
     });
