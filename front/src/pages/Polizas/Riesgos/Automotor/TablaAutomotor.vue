@@ -94,6 +94,15 @@
       @close="closeModal"
       @recargar="cargar"
     ></modal-automotor>
+    <modal-automotor-edit
+      v-if="isModalEditVisible"
+      :riesgo_automotor="riesgo_automotor"
+      :modo="modoEditar"
+      :poliza="poliza"
+      :compania_id="poliza.compania_id"
+      @close="closeModal"
+      @recargar="cargar"
+    ></modal-automotor-edit>    
   </div>
 </template>
 <script>
@@ -105,6 +114,7 @@ import http from '../../../../API/http-request.js';
 import { mixin } from '../../../../mixins/mixin.js';
 import { EventBus } from '../../../../main.js';
 import ModalAutomotor from './ModalAutomotor';
+import ModalAutomotorEdit from './ModalAutomotorEdit';
 
 export default {
   mixins: [mixin],
@@ -117,7 +127,8 @@ export default {
     BaseSwitch,
     BaseAlert,
     BasePagination,
-    ModalAutomotor
+    ModalAutomotor,
+    ModalAutomotorEdit
   },
   props: {
     poliza: {
@@ -127,7 +138,8 @@ export default {
   data() {
     return {
       url: 'riesgo_automotores',
-      riesgo_automotor: {}
+      riesgo_automotor: {},
+      isModalEditVisible: false
     };
   },
   methods: {
@@ -146,10 +158,11 @@ export default {
     },
     showModal() {
       this.vaciarForm();
-      this.isModalVisible = true;
+      this.isModalEditVisible = true;
     },
     closeModal() {
       this.isModalVisible = false;
+      this.isModalEditVisible = false;
       this.vaciarForm();
     },
     editar(id) {

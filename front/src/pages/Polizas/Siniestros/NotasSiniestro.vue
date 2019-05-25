@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="row ">
-      <div class="col-md-10">
+      <div class="col-md-10 mt-1">
         <base-input v-model="nota_siniestro_aut.nota">
         </base-input>
       </div>
       <div
         id="botonenviar"
-        class="col-md-2"
+        class="col-md-2 pl-2 mt-0"
       >
         <base-button
           type="primary submit"

@@ -634,7 +634,6 @@ export default {
     vueDropzone: vue2Dropzone
   },
   data: () => ({
-    uploads: [],
     marcas: {},
     marca: {},
     marca_id: '',

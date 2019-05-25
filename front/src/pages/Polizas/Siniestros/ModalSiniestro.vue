@@ -318,7 +318,6 @@ import { Select, Option, DatePicker } from 'element-ui';
 import { mixin } from '../../../mixins/mixin.js';
 import { Card } from 'src/components';
 import { BaseButton } from 'src/components';
-import http from '../../../API/http-request.js';
 import { EventBus } from '../../../main.js';
 import NotasSiniestro from './NotasSiniestro';
 
