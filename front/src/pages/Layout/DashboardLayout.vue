@@ -21,9 +21,11 @@
           }"></sidebar-item>
         <sidebar-item :link="{
             name: 'automotor',
-            icon: 'tim-icons icon-chart-pie-36',
+            icon: 'tim-icons icon-bus-front-12',
             path: '/polizas/automotor'
-          }"></sidebar-item>
+          }">
+
+        </sidebar-item>
         <sidebar-item :link="{ name: 'Otros Riesgos', icon: 'tim-icons icon-molecule-40' }">
           <sidebar-item :link="{ name: 'Accidente Personal', path: '/otrosriesgos/accidentepersonal' }"></sidebar-item>
           <sidebar-item :link="{ name: 'Combinado Familiar', path: '/otrosriesgos/combinadofamiliar' }"></sidebar-item>
@@ -31,7 +33,7 @@
         </sidebar-item>
         <sidebar-item :link="{
             name: 'siniestros',
-            icon: 'tim-icons icon-chart-pie-36',
+            icon: 'tim-icons icon-sound-wave',
             path: '/polizas/siniestros'
           }"></sidebar-item>
         <sidebar-item :link="{
@@ -41,7 +43,7 @@
           }"></sidebar-item>
         <sidebar-item :link="{
             name: 'clientes',
-            icon: 'tim-icons icon-chart-pie-36',
+            icon: 'tim-icons icon-single-02',
             path: '/clientes'
           }"></sidebar-item>
         <sidebar-item :link="{
