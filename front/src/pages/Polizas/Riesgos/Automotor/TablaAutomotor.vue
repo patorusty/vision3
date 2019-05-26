@@ -58,25 +58,13 @@
                   placement="top"
                 >
                   <base-button
-                    @click.native="editar(props.row.poliza_id)"
+                    @click.native="editar(props.row.id)"
                     type="warning"
                     icon
                     size="sm"
                     class="edit btn-link"
                   >
                     <i class="tim-icons icon-pencil"></i>
-                  </base-button>
-                </el-tooltip>
-                <el-tooltip
-                  content="Delete"
-                  effect="light"
-                  :open-delay="300"
-                  placement="top"
-                >
-                  <base-button 
-                  @click.native="borrar(props.row.poliza_id)"
-                  type="danger" icon size="sm" class="btn-link">
-                    <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </el-tooltip>
               </div>
@@ -95,7 +83,8 @@
       @recargar="cargar"
     ></modal-automotor>
     <modal-automotor-edit
-      v-if="isModalEditVisible"
+      v-if="dataLoaded"
+      v-show="isModalEditVisible"
       :riesgo_automotor="riesgo_automotor"
       :modo="modoEditar"
       :poliza="poliza"
@@ -139,7 +128,8 @@ export default {
     return {
       url: 'riesgo_automotores',
       riesgo_automotor: {},
-      isModalEditVisible: false
+      isModalEditVisible: false,
+      dataLoaded: false
     };
   },
   methods: {
@@ -166,11 +156,15 @@ export default {
       this.vaciarForm();
     },
     editar(id) {
-      this.showModal();
       http
-        .loadOne(this.url, id)
+        .loadOne('/riesgo_automotor', id)
         .then(r => {
-          this.riesgo_automotor = r.data.data[0];
+          this.riesgo_automotor = r.data.data;
+          this.dataLoaded = true;
+          this.$nextTick(() => {
+            EventBus.$emit('MMV', this.riesgo_automotor);
+          });
+          this.showModal();
         })
         .catch(e => console.log(e));
     },

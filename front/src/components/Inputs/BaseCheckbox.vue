@@ -20,7 +20,7 @@ export default {
     prop: 'checked'
   },
   props: {
-    checked: [Array, Boolean],
+    checked: [Array, Boolean, Number],
     disabled: Boolean,
     inline: Boolean,
     hasError: Boolean

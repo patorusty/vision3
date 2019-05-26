@@ -54,6 +54,7 @@ class RiesgoAutomotorController extends Controller
             'automotor_marca_id' => $request->input('automotor_marca_id'),
             'automotor_modelo_id' => $request->input('automotor_modelo_id'),
             'automotor_version_id' => $request->input('automotor_version_id'),
+            'tipo_patente' => $request->input('tipo_patente'),
             'patente' => $request->input('patente'),
             'nro_motor' => $request->input('nro_motor'),
             'nro_chasis' => $request->input('nro_chasis'),
@@ -103,7 +104,8 @@ class RiesgoAutomotorController extends Controller
      */
     public function show($id)
     {
-        $riesgo_automotor = RiesgoAutomotor::findOrFail($id);
+        $riesgo_automotor = RiesgoAutomotor::with('imagenes')->findOrFail($id);
+        // $riesgo_automotor = $riesgo_automotor->imagenes->toArray();
 
         return new RiesgoAutomotorsResource($riesgo_automotor);
     }

@@ -8,7 +8,7 @@ use App\AutomotorMarca;
 use App\AutomotorModelo;
 use App\AutomotorVersion;
 use App\Coberturas;
-use App\ImagenesRiesgoAutomotor;
+use App\ImagenRA;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,7 +48,7 @@ class RiesgoAutomotor extends Model
 
    public function imagenes() 
    {
-      return $this->belongsToMany(ImagenesRiesgoAutomotor::class);
+      return $this->belongsToMany(ImagenRA::class);
    }
 
 }
