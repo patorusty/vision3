@@ -56,15 +56,17 @@ export default {
           case true == isWithinRange(hoy, subMonths(hasta, 1), hasta):
             this.estado = 'VIGENTE / A RENOVAR';
             break;
+          case true == isWithinRange(hoy, desde, subMonths(hasta, 1)) && this.renovada.length >= 1; 
           // case true == isWithinRange(hoy, desde, subMonths(hasta, 1)) && existe una poliza que en su renueva_numero tenga su numero de poliza:
-          //   this.estado = 'VIGENTE / RENOVADA';
-          //   break;
+            this.estado = 'VIGENTE / RENOVADA';
+            break;
           case true == isAfter(hoy, hasta):
             this.estado = 'CUMPLIDA';
             break;
+          case true == isAfter(hoy, hasta) && this.renovada.length >= 1;
           // case true == isAfter(hoy, hasta) && existe una poliza que en su renueva_numero tenga su numero de poliza:
-          //   this.estado = 'CUMPLIDA / RENOVADA';
-          //   break;
+            this.estado = 'CUMPLIDA / RENOVADA';
+            break;
           case true == isBefore(hoy, desde):
             this.estado = 'PENDIENTE';
             break;
@@ -80,7 +82,18 @@ export default {
         .then(() => {
           this.estadoVigencia();
         });
+    },
+
+
+///ver como hacer andar esto
+    chequeoRenovadas(){
+      .loadOne('poliza/predecesora', polizaactual)
+        .then(r => {
+          this.renovada = r.data.data;
+        })
     }
+
+
   },
   created() {
     this.checkAnuladas();
