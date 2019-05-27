@@ -29,6 +29,13 @@ class PolizaController extends Controller
         return new PolizasResource($nro_solicitud);
     }
 
+    public function chequeoRenovada($poliza_actual)
+    {
+        $poliza = Polizas::where('renueva_numero', $poliza_actual)->get();
+
+        return new PolizasResource($poliza);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
