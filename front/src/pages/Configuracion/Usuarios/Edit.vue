@@ -117,11 +117,11 @@
                 src="img/emilyz.jpg"
                 alt="..."
               />
-              <h5 class="title">nombre apellido</h5>
+              <h5 class="title">{{usuario.nombre}} {{usuario.apellido}}</h5>
             </a>
-            <p class="description">Ceo/Co-Founder</p>
+            <p class="description"> {{ tipo_usuarios.nombre }}
+            </p>
           </div>
-
         </card>
       </div>
     </div>

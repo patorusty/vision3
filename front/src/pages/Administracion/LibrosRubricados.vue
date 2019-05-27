@@ -26,6 +26,7 @@ import {
   isAfter,
   isBefore
 } from 'date-fns';
+import http from '../../API/http-request';
 
 export default {
   data() {
@@ -33,42 +34,56 @@ export default {
       hoy: new Date(),
       desde: setDate(setMonth(setYear(new Date(), 2018), 0), 1),
       hasta: setDate(setMonth(setYear(new Date(), 2018), 5), 1),
-      estado: ''
+      estado: '',
+      anulado: []
     };
   },
   methods: {
     estadoVigencia() {
       let hoy = new Date();
       let desde = setDate(setMonth(setYear(new Date(), 2020), 0), 1);
+      //poliza.vigencia_desde;
       let hasta = setDate(setMonth(setYear(new Date(), 2021), 5), 1);
+      //poliza.vigencia_hasta;
 
-      switch (true) {
-        // case true == si existe una endoso de anulacion que tenga poliza_id:
-        //   this.estado = 'ANULADO';
-        //   break;
-        case true == isWithinRange(hoy, desde, subMonths(hasta, 1)):
-          this.estado = 'VIGENTE';
-          break;
-        case true == isWithinRange(hoy, subMonths(hasta, 1), hasta):
-          this.estado = 'VIGENTE / A RENOVAR';
-          break;
-        // case true == isWithinRange(hoy, desde, subMonths(hasta, 1)) && existe una poliza que en su renueva_numero tenga su numero de poliza:
-        //   this.estado = 'VIGENTE / RENOVADA';
-        //   break;
-        case true == isAfter(hoy, hasta):
-          this.estado = 'CUMPLIDA';
-          break;
-        // case true == isAfter(hoy, hasta) && existe una poliza que en su renueva_numero tenga su numero de poliza:
-        //   this.estado = 'CUMPLIDA / RENOVADA';
-        //   break;
-        case true == isBefore(hoy, desde):
-          this.estado = 'PENDIENTE';
-          break;
+      if (this.anulado.length >= 1) {
+        this.estado = 'ANULADO';
+      } else {
+        switch (true) {
+          case true == isWithinRange(hoy, desde, subMonths(hasta, 1)):
+            this.estado = 'VIGENTE';
+            break;
+          case true == isWithinRange(hoy, subMonths(hasta, 1), hasta):
+            this.estado = 'VIGENTE / A RENOVAR';
+            break;
+          // case true == isWithinRange(hoy, desde, subMonths(hasta, 1)) && existe una poliza que en su renueva_numero tenga su numero de poliza:
+          //   this.estado = 'VIGENTE / RENOVADA';
+          //   break;
+          case true == isAfter(hoy, hasta):
+            this.estado = 'CUMPLIDA';
+            break;
+          // case true == isAfter(hoy, hasta) && existe una poliza que en su renueva_numero tenga su numero de poliza:
+          //   this.estado = 'CUMPLIDA / RENOVADA';
+          //   break;
+          case true == isBefore(hoy, desde):
+            this.estado = 'PENDIENTE';
+            break;
+        }
       }
+    },
+    checkAnuladas() {
+      http
+        .loadOne('endosos/poliza', 3)
+        .then(r => {
+          this.anulado = r.data.data;
+        })
+        .then(() => {
+          this.estadoVigencia();
+        });
     }
   },
   created() {
-    this.estadoVigencia();
+    this.checkAnuladas();
   }
 };
 </script>

@@ -30,6 +30,22 @@ class EndosoController extends Controller
         return EndososResource::collection($endosos);
     }
 
+    public function anulaciones($poliza_id)
+    {
+        $endoso = Endosos::where('poliza_id', $poliza_id)->where('tipo_endoso_id', 1)->get();
+        return new EndososResource($endoso);
+
+        // if (count($endoso)){
+            
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+
+
+    }
+
+
 
 
     /**

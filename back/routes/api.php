@@ -65,6 +65,7 @@ Route::get('/versiones/busquedaVersion', 'AutomotorVersionController@searchVersi
 Route::get('/polizas/busquedaPolizaId/{id}', 'RiesgoAutomotorController@searchPoliza');
 Route::get('/detallesendosos/filtrar/{id}', 'DetalleEndosoController@filtro');
 Route::get('/endosos/poliza_id/{id}', 'EndosoController@indexFiltrado');    
+Route::get('/endosos/poliza/{id}', 'EndosoController@anulaciones');    
 Route::get('/siniestrosautomotor/poliza_id/{id}', 'SiniestroAutomotorController@indexFiltrado');  
 Route::get('/notasiniestroautomotor/siniestro_automotor_id/{id}', 'NotaSiniestroAutController@indexFiltrado');  
 
