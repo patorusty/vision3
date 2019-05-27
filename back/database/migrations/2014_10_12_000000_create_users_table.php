@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('nombre')->nullable();;
             $table->string('apellido')->nullable();
             $table->string('compania')->nullable();
-            $table->boolean('tipo_user')->nullable();
+            $table->integer('tipo_usuario_id')->nullable();
             $table->string('activo')->nullable();
             $table->string('email')->unique();
             $table->string('avatar')->unique();

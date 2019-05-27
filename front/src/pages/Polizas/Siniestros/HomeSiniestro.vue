@@ -39,14 +39,14 @@
                 label="Compañia"
                 :min-width="70"
               >
-                <div slot-scope="{ row }">{{row.polizas.compania_id}}</div>
+                <div slot-scope="{ row }">{{row.polizas.companias.nombre}}</div>
 
               </el-table-column>
               <el-table-column
                 label="Asegurado"
                 :min-width="120"
               >
-                <div slot-scope="{ row }">{{row.polizas.cliente_id}}</div>
+                <div slot-scope="{ row }">{{row.polizas.clientes.apellido}} {{row.polizas.clientes.nombre}}</div>
 
               </el-table-column>
               <el-table-column

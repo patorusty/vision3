@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-md-8">
         <card>
-          <form @submit.prevent="crearUsuario">
+          <form>
             <div class="row">
               <div class="col-md-6">
                 <base-input
@@ -18,6 +18,7 @@
                   label="Company"
                   :disabled="true"
                   placeholder="Company"
+                  v-model="usuario.compania"
                 >
                 </base-input>
               </div>
@@ -26,6 +27,7 @@
                   type="email"
                   label="Email"
                   placeholder="mike@email.com"
+                  v-model="usuario.email"
                 >
                 </base-input>
               </div>
@@ -36,6 +38,7 @@
                 <base-input
                   type="text"
                   label="Nombre"
+                  v-model="usuario.nombre"
                 >
                 </base-input>
               </div>
@@ -43,17 +46,30 @@
                 <base-input
                   type="text"
                   label="Apellido"
+                  v-model="usuario.apellido"
                 >
                 </base-input>
               </div>
             </div>
             <div class="row">
               <div class="col-md-4">
-                <base-input
-                  type="text"
-                  label="Tipo Usuario"
+                <label>Tipo Usuario</label>
+                <el-select
+                  filterable
+                  class="select-primary"
+                  value="tipo_usuario_id"
+                  v-model="usuario.tipo_usuario_id"
                 >
-                </base-input>
+                  <el-option
+                    v-for="tipo_usuario in tipo_usuarios"
+                    class="select-primary"
+                    :key="tipo_usuario.id"
+                    :value="tipo_usuario.id"
+                    :label="tipo_usuario.nombre"
+                  >
+                    {{ tipo_usuario.nombre }}
+                  </el-option>
+                </el-select>
               </div>
               <div class="col-md-4">
                 <label>Usuario Activo?</label>
@@ -62,6 +78,7 @@
                     type="primary"
                     on-text="ON"
                     off-text="OFF"
+                    v-model="usuario.activo"
                   ></base-switch>
                 </base-input>
               </div>
@@ -77,11 +94,11 @@
             <div class="row">
             </div>
             <base-button
-              native-type="submit"
               type="primary"
               class="btn-fill"
+              @click="actualizar"
             >
-              Crear
+              Guardar
             </base-button>
           </form>
         </card>
@@ -111,25 +128,56 @@
   </div>
 </template>
 <script>
+import { Select, Option, DatePicker } from 'element-ui';
 import { BaseSwitch, ImageUpload } from 'src/components/index';
 import http from '../../../API/http-request.js';
 import debounce from '../../../debounce.js';
+import { mixin } from '../../../mixins/mixin.js';
+import { EventBus } from '../../../main.js';
+
 export default {
   components: {
+    mixins: [mixin],
     BaseSwitch,
-    ImageUpload
+    ImageUpload,
+    [Select.name]: Select,
+    [Option.name]: Option,
+    [DatePicker.name]: DatePicker
   },
   data() {
     return {
       images: {
         avatar: null
-      }
+      },
+      usuario: {},
+      tipo_usuarios: []
     };
   },
   methods: {
     onAvatarChange(file) {
       this.images.avatar = file;
+    },
+    cargarTipo_Usuarios() {
+      http.load('tipousuario').then(response => {
+        this.tipo_usuarios = response.data.data;
+      });
+    },
+    cargar() {
+      http.loadOne('configuracion/usuarios', this.$route.params.id).then(r => {
+        this.usuario = r.data.data;
+      });
+    },
+    actualizar() {
+      http
+        .update('configuracion/usuarios', this.usuario.id, this.usuario)
+        .then(() => {
+          this.notifyVue('success', 'El usuario ha sido modificado con exito');
+        });
     }
+  },
+  created() {
+    this.cargar();
+    this.cargarTipo_Usuarios();
   }
 };
 </script>
