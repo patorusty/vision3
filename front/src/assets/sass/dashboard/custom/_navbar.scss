@@ -1,6 +1,6 @@
 .navbar {
   width: 100%;
-  z-index: 1050;
+  // z-index: 1050;
   background: $navbar-color;
 
   .photo {
@@ -30,7 +30,7 @@
 
   &.navbar-absolute{
     position: absolute;
-    z-index: 1050;
+    // z-index: 1050;
   }
 
 

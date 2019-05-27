@@ -583,6 +583,16 @@
                   />
                 </vue-dropzone>
                 <vue-picture-swipe :items="riesgo_automotor.imagenes"></vue-picture-swipe>
+                <!-- <div>
+                  <gallery :images="imagenes" :index="index" @close="index = null"></gallery>
+                  <div
+                    class="image"
+                    v-for="(image, imageIndex) in imagenes"
+                    :key="imageIndex"
+                    @click="index = imageIndex"
+                    :style="{ backgroundImage: 'url(' + image + ')', width: '300px', height: '200px' }"
+                  ></div>
+                </div> -->
               </tab-pane>
             </tabs>
             <div
@@ -618,6 +628,7 @@ import { TheMask } from 'vue-the-mask';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import VuePictureSwipe from 'vue-picture-swipe';
+import VueGallery from 'vue-gallery';
 
 export default {
   props: {
@@ -644,7 +655,8 @@ export default {
     TheMask,
     Tabs,
     vueDropzone: vue2Dropzone,
-    VuePictureSwipe
+    VuePictureSwipe,
+    gallery: VueGallery
   },
   data: () => ({
     visible: false,
@@ -898,8 +910,8 @@ export default {
     }
   },
   methods: {
-    console(){
-    console.log(this.$refs.myVueDropzone.dropzone.files);
+    console() {
+      console.log(this.$refs.myVueDropzone.dropzone.files);
     },
     close() {
       EventBus.$emit('resetInput', false);

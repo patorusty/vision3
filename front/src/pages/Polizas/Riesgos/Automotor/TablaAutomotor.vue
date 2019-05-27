@@ -72,7 +72,9 @@
           </el-table>
         </div>
       </div>
+      <vue-picture-swipe :items="imagenes"></vue-picture-swipe>
     </card>
+
     <modal-automotor
       v-if="isModalVisible"
       :riesgo_automotor="riesgo_automotor"
@@ -104,6 +106,7 @@ import { mixin } from '../../../../mixins/mixin.js';
 import { EventBus } from '../../../../main.js';
 import ModalAutomotor from './ModalAutomotor';
 import ModalAutomotorEdit from './ModalAutomotorEdit';
+import VuePictureSwipe from 'vue-picture-swipe';
 
 export default {
   mixins: [mixin],
@@ -117,7 +120,8 @@ export default {
     BaseAlert,
     BasePagination,
     ModalAutomotor,
-    ModalAutomotorEdit
+    ModalAutomotorEdit,
+    VuePictureSwipe
   },
   props: {
     poliza: {
@@ -129,7 +133,17 @@ export default {
       url: 'riesgo_automotores',
       riesgo_automotor: {},
       isModalEditVisible: false,
-      dataLoaded: false
+      dataLoaded: false,
+      imagenes: [
+        {
+          path: 'http://localhost:8000/images/1558850310auto2.jpeg',
+          thumbnail: 'http://localhost:8000/images/1558850310auto2.jpeg'
+        },
+        {
+          path: 'http://localhost:8000/images/1558850310auto3.jpg',
+          thumbnail: 'http://localhost:8000/images/1558850310auto3.jpg'
+        }
+      ]
     };
   },
   methods: {
