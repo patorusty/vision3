@@ -689,6 +689,7 @@ export default {
       acceptedFiles: 'image/*',
       method: 'POST',
       dictRemoveFile: 'Remover imagen',
+      resizeWidth: 500,
       params: { riesgoId: '' }
     },
     tipo_vehiculos: [
@@ -901,6 +902,7 @@ export default {
     },
     uploadImages() {
       this.$refs.myVueDropzone.processQueue();
+      console.log(this.$refs.myVueDropzone.dropzone);
     },
     crear() {
       this.$validator.validateAll().then(r => {

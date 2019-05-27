@@ -272,7 +272,7 @@
                     >
                     </base-input>
                     <div class="mt-4">
-                      <base-checkbox v-model="riesgo_automotor.okm"
+                      <base-checkbox :checked="riesgo_automotor.okm" v-model="riesgo_automotor.okm"
                         >0km</base-checkbox
                       >
                     </div>
@@ -582,6 +582,7 @@
                     value="xx"
                   />
                 </vue-dropzone>
+                <vue-picture-swipe :items="riesgo_automotor.imagenes"></vue-picture-swipe>
               </tab-pane>
             </tabs>
             <div
@@ -592,6 +593,11 @@
                 type="submit"
                 class="btn btn-primary ladda-button"
                 >Crear</base-button
+              >
+              <base-button
+                @click="console"
+                class="btn btn-primary ladda-button"
+                >Console</base-button
               >
             </div>
           </form>
@@ -607,19 +613,25 @@ import { Select, Option, DatePicker } from 'element-ui';
 import http from '../../../../API/http-request.js';
 import { TabPane, Tabs, Collapse, CollapseItem } from 'src/components';
 import { BaseSwitch } from 'src/components/index';
+import { mixin } from '../../../../mixins/mixin.js';
 import { TheMask } from 'vue-the-mask';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
+import VuePictureSwipe from 'vue-picture-swipe';
 
 export default {
   props: {
-    // riesgo_automotor: {
-    //   type: Object
-    // },
+    riesgo_automotor: {
+      type: Object
+    },
     compania_id: {
       type: Number
+    },
+    poliza: {
+      type: Object
     }
   },
+  mixins: [mixin],
   components: {
     SlideYUpTransition,
     [Select.name]: Select,
@@ -631,9 +643,264 @@ export default {
     TabPane,
     TheMask,
     Tabs,
-    vueDropzone: vue2Dropzone
+    vueDropzone: vue2Dropzone,
+    VuePictureSwipe
+  },
+  data: () => ({
+    visible: false,
+    index: 0,
+    marcas: {},
+    marca: {},
+    marca_id: '',
+    automotor_marcas: {},
+    automotor_modelos: {},
+    coberturas: [],
+    cobertura: {},
+    modelos: [],
+    modelo: {},
+    anios: [],
+    versiones: [],
+    url: '/anios/filtrar',
+    errorSelect: {
+      automotor_anio: false,
+      automotor_marca_id: false,
+      automotor_modelo_id: false,
+      automotor_version_id: false,
+      cobertura_id: false,
+      tipo_carroceria: false
+    },
+    selected: {
+      automotor_anio: false,
+      automotor_marca_id: false,
+      automotor_modelo_id: false,
+      automotor_version_id: false,
+      cobertura_id: false,
+      tipo_carroceria: false
+    },
+    dropzoneOptions: {
+      url: 'http://127.0.0.1:8000/api/imagenes_r_a',
+      thumbnailWidth: 150,
+      maxFilesize: 2,
+      addRemoveLinks: true,
+      autoProcessQueue: false,
+      acceptedFiles: 'image/*',
+      method: 'POST',
+      dictRemoveFile: 'Remover imagen',
+      params: { riesgoId: '' }
+    },
+    tipo_vehiculos: [
+      {
+        value: 'Automotor',
+        label: 'Automotor'
+      },
+      {
+        value: 'Camion',
+        label: 'Camion'
+      },
+      {
+        value: 'Trailer',
+        label: 'Trailer'
+      }
+    ],
+
+    usos: [
+      {
+        value: 'Particular',
+        label: 'Particular'
+      },
+      {
+        value: 'Comercial',
+        label: 'Comercial'
+      },
+      {
+        value: 'Particular / Comercial',
+        label: 'Particular / Comercial'
+      },
+      {
+        value: 'Remise',
+        label: 'Remise'
+      },
+      {
+        value: 'Cabify / Uber',
+        label: 'Cabify / Uber'
+      }
+    ],
+    tipo_carrocerias: [
+      {
+        value: 'Sedan 3 Puertas',
+        label: 'Sedan 3 Puertas'
+      },
+      {
+        value: 'Sedan 4 Puertas',
+        label: 'Sedan 4 Puertas'
+      },
+      {
+        value: 'Sedan 5 Puertas',
+        label: 'Sedan 5 Puertas'
+      },
+      {
+        value: 'Rural',
+        label: 'Rural'
+      },
+      {
+        value: 'Utilitario',
+        label: 'Utilitario'
+      },
+      {
+        value: 'Berlina',
+        label: 'Berlina'
+      },
+      {
+        value: 'Coupe',
+        label: 'Coupe'
+      },
+      {
+        value: 'Cabriolet',
+        label: 'Cabriolet'
+      }
+    ],
+    tipo_patentes: [
+      {
+        value: 0,
+        label: 'Nacional'
+      },
+      {
+        value: 1,
+        label: 'Mercosur'
+      }
+    ],
+    combustibles: [
+      {
+        value: 'Nafta',
+        label: 'Nafta'
+      },
+      {
+        value: 'Diesel',
+        label: 'Diesel'
+      },
+      {
+        value: 'GNC',
+        label: 'GNC'
+      }
+    ],
+    estados: [
+      {
+        value: 'Muy Bueno',
+        label: 'Muy Bueno'
+      },
+      {
+        value: 'Bueno',
+        label: 'Bueno'
+      },
+      {
+        value: 'Regular',
+        label: 'Regular'
+      }
+    ],
+    cubiertas_marcas: [
+      {
+        value: 'Pirelli',
+        label: 'Pirelli'
+      },
+      {
+        value: 'Fate',
+        label: 'Fate'
+      },
+      {
+        value: 'Continental',
+        label: 'Continental'
+      },
+      {
+        value: 'Michelin',
+        label: 'Michelin'
+      },
+      {
+        value: 'Dunlop',
+        label: 'Dunlop'
+      },
+      {
+        value: 'Goodyear',
+        label: 'Goodyear'
+      },
+      {
+        value: 'Hankook',
+        label: 'Hankook'
+      },
+      {
+        value: 'Firestone',
+        label: 'Firestone'
+      },
+      {
+        value: 'Bridgestone',
+        label: 'Bridgestone'
+      },
+      {
+        value: 'Yokohama',
+        label: 'Yokohama'
+      },
+      {
+        value: 'Otro',
+        label: 'Otro'
+      }
+    ],
+    ajustes: [
+      {
+        value: '0%',
+        label: '0%'
+      },
+      {
+        value: '10%',
+        label: '10%'
+      },
+      {
+        value: '20%',
+        label: '20%'
+      },
+      {
+        value: '30%',
+        label: '30%'
+      }
+    ],
+    equipo_rastreos: [
+      {
+        value: 'NO',
+        label: 'NO'
+      },
+      {
+        value: 'LO JACK',
+        label: 'LO JACK'
+      },
+      {
+        value: 'ITURAN',
+        label: 'ITURAN'
+      },
+      {
+        value: 'OTRO',
+        label: 'OTRO'
+      }
+    ]
+  }),
+  computed: {
+    suma: function() {
+      return (
+        parseInt(this.riesgo_automotor.valor_vehiculo) +
+        parseInt(this.riesgo_automotor.valor_gnc) +
+        parseInt(this.riesgo_automotor.valor_accesorio_01) +
+        parseInt(this.riesgo_automotor.valor_accesorio_02)
+      );
+    },
+    imagenes() {
+      let pathsArray = [];
+      this.riesgo_automotor.imagenes.forEach(imagen => {
+        pathsArray.push(imagen.path);
+      });
+      return pathsArray;
+    }
   },
   methods: {
+    console(){
+    console.log(this.$refs.myVueDropzone.dropzone.files);
+    },
     close() {
       EventBus.$emit('resetInput', false);
       this.$emit('recargar');
@@ -673,6 +940,7 @@ export default {
       });
     },
     filtrarModeloPorMarca(id) {
+      console.log('filtro1');
       this.riesgo_automotor.automotor_modelo_id = '';
       this.versiones = [];
       http.loadOne('/modelos/filtrar', id).then(r => {
@@ -680,6 +948,7 @@ export default {
       });
     },
     filtrarVersionesDeModelo(url, anio, modelo) {
+      console.log('filtro2');
       this.versiones = [];
       http.search2(url, anio, modelo).then(r => {
         this.versiones = r.data.data;
@@ -733,6 +1002,18 @@ export default {
     this.cargarMarcas();
     this.cargarCoberturas();
     this.cargarAnios();
+  },
+  mounted() {
+    EventBus.$on('MMV', value => {
+      http.loadOne('/modelos/filtrar', value.automotor_marca_id).then(r => {
+        this.modelos = r.data.data;
+      });
+      http
+        .search2(this.url, value.automotor_anio_id, value.automotor_modelo_id)
+        .then(r => {
+          this.versiones = r.data.data;
+        });
+    });
   }
 };
 </script>
@@ -798,5 +1079,15 @@ export default {
 
 .vue-dropzone > .dz-preview .dz-details {
   background-color: transparent;
+}
+
+.image {
+  height: 150px !important;
+  background-size: cover;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 3px;
+  border: 1px solid lightgray;
+  object-fit: contain;
 }
 </style>

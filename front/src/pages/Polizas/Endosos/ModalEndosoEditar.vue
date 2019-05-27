@@ -240,12 +240,9 @@ export default {
       this.endoso.detalle_endoso_id = '';
     }
   },
-  created() {
-  },
   mounted() {
     EventBus.$on('filtrarTipos', id => {
       this.cargarTipoEndosos();
-      console.log(id);
       this.filtrarModificacionPorTipo(id);
     });
   }

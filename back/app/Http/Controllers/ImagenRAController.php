@@ -23,7 +23,7 @@ class ImagenRAController extends Controller
     public function uploadFile(Request $request) {
 
             $riesgoId = $request->get('riesgoId');
-            if($request->file('file'))
+            if($request->file('file'));
             {
                 $image = $request->file('file');
                 $size = $image->getClientSize();
@@ -36,6 +36,7 @@ class ImagenRAController extends Controller
             $image= new ImagenRA();
             $image->filename = $name;
             $image->path = $path;
+            $image->size = $size;
             $image->size = $size;
             $image->mime = $mime;
             $image->save();
