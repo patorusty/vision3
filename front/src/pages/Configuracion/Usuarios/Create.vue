@@ -57,7 +57,7 @@
                   filterable
                   class="select-primary"
                   value="tipo_usuario_id"
-                  v-model="usuario.tipo_usuario"
+                  v-model="usuario.tipo_usuario_id"
                 >
                   <el-option
                     v-for="tipo_usuario in tipo_usuarios"

@@ -54,4 +54,5 @@ class Polizas extends Model
     public function siniestros(){
         return $this->hasMany(SiniestroAutomotor::class, 'poliza_id', 'id');
     }
+
 }

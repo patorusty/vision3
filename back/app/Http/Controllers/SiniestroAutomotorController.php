@@ -16,7 +16,9 @@ class SiniestroAutomotorController extends Controller
      */
     public function index()
     {
-        $siniestros = SiniestroAutomotor::with(['polizas'])->get();
+        
+        $siniestros = SiniestroAutomotor::with(['polizas.clientes','polizas.companias'])->get();
+
         return SiniestroAutomotorsResource::collection($siniestros);
 
     }
