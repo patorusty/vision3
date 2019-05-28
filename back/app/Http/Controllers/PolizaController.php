@@ -163,8 +163,6 @@ class PolizaController extends Controller
         // dd($numero);
         return PolizasResource::collection($numero);
     }
-
-
     /**
      * Remove the specified resource from storage.
      *
@@ -178,5 +176,24 @@ class PolizaController extends Controller
         $poliza->delete();
 
         return ['message'=>'Eliminado'];
+    }
+
+
+    public function vigencias()
+    {
+        $polizas = Polizas::All();
+        $hoy = date("Y-m-d");
+        $hola = 'hola';
+        // dd($polizas);
+        // foreach ($polizas as $poliza => $value) {
+        //     $poliza['fecha_entrega_email'] = $hola;
+        // }
+        dd($hoy);
+        $collection= $polizas->map(function ($poliza){
+            dd($poliza);
+        });
+        
+        return PolizasResource::collection($polizas);
+
     }
 }
