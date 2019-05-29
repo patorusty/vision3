@@ -182,7 +182,7 @@ class PolizaController extends Controller
     public function vigencias()
     {
         $polizas = Polizas::All();
-        $hoy = date("Y-m-d");
+        $hoy = date("Y-m-d H:i:s");
         $hola = 'hola';
         // dd($polizas);
         // foreach ($polizas as $poliza => $value) {

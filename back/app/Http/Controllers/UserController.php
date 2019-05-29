@@ -118,4 +118,11 @@ class UserController extends Controller
 
         return ['message'=>'Eliminado'];
     }
+    public function searchMail()
+    {
+        if ($search = \Request::get('q')) {
+            $mail = Usuarios::where('email', $search)->get();
+        } 
+        return UsuariosResource::collection($mail);
+    }
 }

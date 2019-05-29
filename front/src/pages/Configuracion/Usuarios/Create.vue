@@ -27,6 +27,8 @@
                   label="Email"
                   placeholder="mike@email.com"
                   v-model="usuario.email"
+                  v-validate="'required'"
+                  :error="getError('email')"
                 >
                 </base-input>
               </div>
@@ -38,6 +40,8 @@
                   type="text"
                   label="Nombre"
                   v-model="usuario.nombre"
+                  v-validate="'required'"
+                  :error="getError('nombre')"
                 >
                 </base-input>
               </div>
@@ -46,6 +50,8 @@
                   type="text"
                   label="Apellido"
                   v-model="usuario.apellido"
+                  v-validate="'required'"
+                  :error="getError('apellido')"
                 >
                 </base-input>
               </div>
@@ -56,8 +62,10 @@
                 <el-select
                   filterable
                   class="select-primary"
+                  :class="{ errorS: errorSelect.tipo_usuario }"
                   value="tipo_usuario_id"
                   v-model="usuario.tipo_usuario_id"
+                  @change="touchSelect('tipo_usuario')"
                 >
                   <el-option
                     v-for="tipo_usuario in tipo_usuarios"
@@ -69,6 +77,12 @@
                     {{ tipo_usuario.nombre }}
                   </el-option>
                 </el-select>
+                <p
+                  class="errorSelect"
+                  v-show="errorSelect.tipo_usuario"
+                >
+                  Debe seleccionar un Tipo de Usuario
+                </p>
               </div>
               <div class="col-md-4">
                 <label>Usuario Activo?</label>
@@ -145,6 +159,12 @@ export default {
   },
   data() {
     return {
+      errorSelect: {
+        tipo_usuario: false
+      },
+      selected: {
+        tipo_usuario: false
+      },
       usuario: {
         activo: true,
         compania: 'Vision',
@@ -153,7 +173,8 @@ export default {
       images: {
         avatar: null
       },
-      tipo_usuarios: {}
+      tipo_usuarios: {},
+      tipo_usuario: ''
     };
   },
   methods: {
@@ -166,14 +187,42 @@ export default {
       });
     },
     crearUsuario() {
-      http
-        .create('configuracion/usuarios', this.usuario)
-        .then(() => {
-          this.notifyVue('success', 'El usuario ha sido creado con exito');
-          this.$router.push({ name: 'Usuarios' });
-        })
-        .catch(e => console.log(e));
-    }
+      this.$validator.validateAll().then(r => {
+        if (this.checkSelect() && r && !this.mailUsed) {
+          http
+            .create('configuracion/usuarios', this.usuario)
+            .then(() => {
+              this.notifyVue('success', 'El usuario ha sido creado con exito');
+              this.$router.push({ name: 'Usuarios' });
+            })
+            .catch(e => console.log(e));
+        }
+      });
+    },
+    touchSelect(val) {
+      this.selected[val] = true;
+      this.errorSelect[val] = false;
+    },
+    getErrorMail(fieldName, mailUsed) {
+      if (!mailUsed) {
+        return this.errors.first(fieldName);
+      } else {
+        return 'Este mail ya esta en uso';
+      }
+    },
+    buscarMail: debounce(function() {
+      if (this.usuario.email) {
+        http.search('usuario/busquedaMail?q=' + this.usuario.email).then(r => {
+          this.mail = r.data.data;
+          if (this.mail.length > 0) {
+            console.log('usado!');
+            this.mailUsed = true;
+          } else {
+            this.mailUsed = false;
+          }
+        });
+      }
+    }, 500)
   },
   created() {
     this.cargarTipo_Usuarios();

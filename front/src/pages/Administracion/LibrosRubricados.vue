@@ -33,10 +33,8 @@ export default {
   data() {
     return {
       hoy: format(new Date(), 'DD/MM/YYYY'),
-      desde: format(
-        setDate(setMonth(setYear(new Date(), 2018), 0), 1),
-        'DD/MM/YYYY'
-      ),
+      desde: setDate(setMonth(setYear(new Date(), 2018), 0), 1),
+
       hasta: format(
         setDate(setMonth(setYear(new Date(), 2019), 5), 1),
         'DD/MM/YYYY'
