@@ -28,7 +28,10 @@
                   placeholder="mike@email.com"
                   v-model="usuario.email"
                   v-validate="'required'"
-                  :error="getError('email')"
+                  :error="getErrorMail('email', mailUsed)"
+                  name="email"
+                  @keyup="buscarMail"
+                  :class="{ 'has-danger': mailUsed }"
                 >
                 </base-input>
               </div>
@@ -42,6 +45,7 @@
                   v-model="usuario.nombre"
                   v-validate="'required'"
                   :error="getError('nombre')"
+                  name="nombre"
                 >
                 </base-input>
               </div>
@@ -52,6 +56,7 @@
                   v-model="usuario.apellido"
                   v-validate="'required'"
                   :error="getError('apellido')"
+                  name="apellido"
                 >
                 </base-input>
               </div>
@@ -77,10 +82,7 @@
                     {{ tipo_usuario.nombre }}
                   </el-option>
                 </el-select>
-                <p
-                  class="errorSelect"
-                  v-show="errorSelect.tipo_usuario"
-                >
+                <p class="errorSelect" v-show="errorSelect.tipo_usuario">
                   Debe seleccionar un Tipo de Usuario
                 </p>
               </div>
@@ -104,14 +106,8 @@
                 />
               </div>
             </div>
-            <div class="row">
-
-            </div>
-            <base-button
-              native-type="submit"
-              type="primary"
-              class="btn-fill"
-            >
+            <div class="row"></div>
+            <base-button native-type="submit" type="primary" class="btn-fill">
               Crear
             </base-button>
           </form>
@@ -126,16 +122,11 @@
             <div class="block block-three"></div>
             <div class="block block-four"></div>
             <a href="javascript:void(0)">
-              <img
-                class="avatar"
-                src="img/emilyz.jpg"
-                alt="..."
-              />
+              <img class="avatar" src="img/emilyz.jpg" alt="..." />
               <h5 class="title">nombre apellido</h5>
             </a>
             <p class="description">Ceo/Co-Founder</p>
           </div>
-
         </card>
       </div>
     </div>
@@ -149,8 +140,8 @@ import debounce from '../../../debounce.js';
 import { mixin } from '../../../mixins/mixin.js';
 
 export default {
+  mixins: [mixin],
   components: {
-    mixins: [mixin],
     BaseSwitch,
     ImageUpload,
     [Select.name]: Select,
@@ -159,6 +150,8 @@ export default {
   },
   data() {
     return {
+      mailUsed: false,
+      mail: '',
       errorSelect: {
         tipo_usuario: false
       },
@@ -222,7 +215,7 @@ export default {
           }
         });
       }
-    }, 500)
+    }, 1000)
   },
   created() {
     this.cargarTipo_Usuarios();

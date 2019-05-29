@@ -8,8 +8,7 @@
     <p class="text-info">VIGENCIA HASTA</p>
     <p class="text-primary">{{ hasta }}</p>
     <h1>ESTADO:</h1>
-    <h1> {{ estado }} </h1>
-
+    <h1>{{ estado }}</h1>
   </div>
 </template>
 

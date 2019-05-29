@@ -55,7 +55,7 @@ Route::get('/versiones/busquedaVersion', 'AutomotorVersionController@searchVersi
 
 //Usuarios//////////////////////////////////
 Route::Resource('/configuracion/usuarios', 'UserController');
-Route::Resource('usuario/busquedaMail', 'UserController@searchMail');
+Route::get('/usuario/busquedaMail', 'UserController@searchMail');
 Route::Resource('/tipousuario', 'TipoUsuarioController');
 
 
