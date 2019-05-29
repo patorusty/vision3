@@ -186,11 +186,12 @@ class PolizaController extends Controller
         $hola = 'hola';
         // dd($polizas);
         // foreach ($polizas as $poliza => $value) {
-        //     $poliza['fecha_entrega_email'] = $hola;
+        //     var_dump($value);
+        //     // dd($poliza->numero);
         // }
-        dd($hoy);
-        $collection= $polizas->map(function ($poliza){
-            dd($poliza);
+        // dd($hoy);
+        $polizas->map(function ($poliza){
+            return dd($poliza);
         });
         
         return PolizasResource::collection($polizas);
