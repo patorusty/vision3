@@ -20,6 +20,16 @@
                   v-model="usuario.compania"
                 >
                 </base-input>
+                <base-input
+                  type="text"
+                  label="Nombre"
+                  v-model="usuario.nombre"
+                  v-validate="'required'"
+                  :error="getError('nombre')"
+                  name="nombre"
+                >
+                </base-input>
+
               </div>
               <div class="col-md-6">
                 <base-input
@@ -34,22 +44,6 @@
                   :class="{ 'has-danger': mailUsed }"
                 >
                 </base-input>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <base-input
-                  type="text"
-                  label="Nombre"
-                  v-model="usuario.nombre"
-                  v-validate="'required'"
-                  :error="getError('nombre')"
-                  name="nombre"
-                >
-                </base-input>
-              </div>
-              <div class="col-md-6">
                 <base-input
                   type="text"
                   label="Apellido"
@@ -59,7 +53,9 @@
                   name="apellido"
                 >
                 </base-input>
+
               </div>
+
             </div>
             <div class="row">
               <div class="col-md-4">
@@ -82,7 +78,10 @@
                     {{ tipo_usuario.nombre }}
                   </el-option>
                 </el-select>
-                <p class="errorSelect" v-show="errorSelect.tipo_usuario">
+                <p
+                  class="errorSelect"
+                  v-show="errorSelect.tipo_usuario"
+                >
                   Debe seleccionar un Tipo de Usuario
                 </p>
               </div>
@@ -107,7 +106,11 @@
               </div>
             </div>
             <div class="row"></div>
-            <base-button native-type="submit" type="primary" class="btn-fill">
+            <base-button
+              native-type="submit"
+              type="primary"
+              class="btn-fill"
+            >
               Crear
             </base-button>
           </form>
@@ -122,10 +125,12 @@
             <div class="block block-three"></div>
             <div class="block block-four"></div>
             <a href="javascript:void(0)">
-              <img class="avatar" src="img/emilyz.jpg" alt="..." />
-              <h5 class="title">nombre apellido</h5>
+              <img
+                class="avatar"
+                src="img/emilyz.jpg"
+                alt="."
+              />
             </a>
-            <p class="description">Ceo/Co-Founder</p>
           </div>
         </card>
       </div>

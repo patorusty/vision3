@@ -12,7 +12,8 @@
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
-              <h4>Endoso</h4>
+              <h4>Endoso - Pza. 999999</h4>
+
               <button
                 class="close"
                 type="button"
@@ -24,7 +25,16 @@
             </div>
             <div class="modal-contenido">
               <div class="col-md-12">
-                <div class="row">
+
+                <blockquote>
+                  <p class="blockquote blockquote-primary text-primary">
+                    Asegurado: Sarno Juan Ignacio - DNI:33402231 Telefono: 15-3949-8299<br>
+                    Marca: Ford - Version: KA 1.6 <br>
+                    Patente: INJ004 - Cob: A - SA: $80.000.-
+                  </p>
+                </blockquote>
+                <div class="
+                  row">
                   <div class="col-md-6">
                     <label>Fecha Solicitud</label>
                     <base-input>
@@ -177,6 +187,7 @@ export default {
   },
   data: () => ({
     url: 'endosos',
+    poliza: {},
     detalles: [],
     tipo_endosos: [],
     errorSelect: {
