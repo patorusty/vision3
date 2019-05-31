@@ -12,7 +12,7 @@
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
-              <h4>Endoso - Pza. 999999</h4>
+              <h4>Endoso - {{endoso.polizas.numero}}</h4>
 
               <button
                 class="close"
@@ -25,16 +25,25 @@
             </div>
             <div class="modal-contenido">
               <div class="col-md-12">
-
-                <blockquote>
-                  <p class="blockquote blockquote-primary text-primary">
-                    Asegurado: {{endoso.polizas.clientes.apellido}} - DNI:33402231 Telefono: 15-3949-8299<br>
-                    Marca: Ford - Version: KA 1.6 <br>
-                    Patente: INJ004 - Cob: A - SA: $80.000.-
-                  </p>
-                </blockquote>
-                <div class="
-                  row">
+                <div class="recuadro">
+                  <div class="row">
+                    <p class="text-primary">Asegurado: </p>
+                    <p> {{endoso.polizas.clientes.apellido}} {{endoso.polizas.clientes.nombre}} </p>
+                  </div>
+                  <div class="row">
+                    <p class="text-primary">Marca: </p>
+                    <p> {{endoso.polizas.riesgo_automotor.automotor.marca_id}}</p>
+                    <p class="text-primary">Version: </p>
+                    <p> {{endoso.polizas.riesgo_automotor.automotor_version_id}}</p>
+                  </div>
+                  <div class="row">
+                    <p class="text-primary">Patente: </p>
+                    <p> {{endoso.polizas.riesgo_automotor.patente}}</p>
+                    <p class="text-primary">Cobertura : </p>
+                    <p> {{endoso.polizas.riesgo_automotor.cobertura_id}} </p>
+                  </div>
+                </div>
+                <div class="row mt-3">
                   <div class="col-md-6">
                     <label>Fecha Solicitud</label>
                     <base-input>
@@ -193,7 +202,6 @@ export default {
   },
   data: () => ({
     url: 'endosos',
-    clientes: [],
     poliza: {},
     detalles: [],
     tipo_endosos: [],
@@ -293,5 +301,9 @@ export default {
   font-size: 0.75rem;
   margin-bottom: 5px;
   margin-top: 5px;
+}
+.recuadro {
+  margin-right: 15px;
+  margin-left: 15px;
 }
 </style>

@@ -107,7 +107,6 @@
       v-show="isModalVisibleEndosoEditar"
       @close="closeModalEndosoEditar"
       :endoso="endoso"
-      :poliza="poliza"
       v-if="dataLoaded"
       @recargar="cargar"
     />

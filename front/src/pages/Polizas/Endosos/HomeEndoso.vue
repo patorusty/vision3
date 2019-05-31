@@ -78,7 +78,7 @@
                     placement="top"
                   >
                     <base-button
-                      @click.native="editar(props.row.id)"
+                      @click.native="editar(props.row.id, props.row.tipo_endoso_id)"
                       class="edit btn-link"
                       type="warning"
                       size="sm"
@@ -131,10 +131,10 @@
       </div>
     </div>
     <modal-endoso-editar
+      v-if="dataLoaded"
       v-show="isModalVisibleEndosoEditar"
       @close="closeModalEndosoEditar"
       :endoso="endoso"
-      v-if="dataLoaded"
       @recargar="cargarEndosos"
     />
   </div>
@@ -186,7 +186,7 @@ export default {
             );
           });
           this.tableData = endosos;
-          this.dataLoaded = true;
+          // this.dataLoaded = true;
         })
         .catch(e => console.log(e));
     },
@@ -197,16 +197,17 @@ export default {
     vaciarForm() {
       EventBus.$emit('resetInput', false);
     },
-    showModalEndosoEditar() {
+    showModalEndosoEditar(tipo_endoso_id) {
       this.vaciarForm();
-      EventBus.$emit('filtrarTipos', this.endoso.tipo_endoso_id);
+      EventBus.$emit('filtrarTipos', tipo_endoso_id);
       this.isModalVisibleEndosoEditar = true;
     },
-    editar(id) {
-      this.showModalEndosoEditar(this.endoso.tipo_endoso_id);
+    editar(id, tipo_endoso_id) {
       http.loadOne('endosos', id).then(r => {
         this.endoso = r.data.data;
       });
+      this.dataLoaded = true;
+      this.showModalEndosoEditar(tipo_endoso_id);
     },
     borrar(url, id) {
       this.dangerSwal().then(r => {

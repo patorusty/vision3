@@ -19,7 +19,7 @@ class EndosoController extends Controller
      */
     public function index()
     {
-        $endosos = Endosos::with(['tipo_endosos','polizas.clientes','polizas.companias'])->get();
+        $endosos = Endosos::with(['tipo_endosos','polizas.clientes','polizas.companias', 'polizas.riesgo_automotor'])->get();
 
         return EndososResource::collection($endosos);
     }
@@ -81,7 +81,7 @@ class EndosoController extends Controller
      */
     public function show($id)
     {
-        $endoso = Endosos::with(['tipo_endosos','polizas.clientes','polizas.companias'])->findOrFail($id);
+        $endoso = Endosos::with(['tipo_endosos','polizas.clientes', 'polizas.riesgo_automotor', 'polizas.companias' ])->findOrFail($id);
 
         return new EndososResource($endoso);
     }
