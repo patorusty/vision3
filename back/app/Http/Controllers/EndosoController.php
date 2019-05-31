@@ -81,7 +81,7 @@ class EndosoController extends Controller
      */
     public function show($id)
     {
-        $endoso = Endosos::findOrFail($id);
+        $endoso = Endosos::with(['tipo_endosos','polizas.clientes','polizas.companias'])->findOrFail($id);
 
         return new EndososResource($endoso);
     }

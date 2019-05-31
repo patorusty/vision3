@@ -28,7 +28,7 @@
 
                 <blockquote>
                   <p class="blockquote blockquote-primary text-primary">
-                    Asegurado: Sarno Juan Ignacio - DNI:33402231 Telefono: 15-3949-8299<br>
+                    Asegurado: {{endoso.polizas.clientes.apellido}} - DNI:33402231 Telefono: 15-3949-8299<br>
                     Marca: Ford - Version: KA 1.6 <br>
                     Patente: INJ004 - Cob: A - SA: $80.000.-
                   </p>
@@ -173,7 +173,13 @@ import { EventBus } from '../../../main.js';
 import { BaseCheckbox } from 'src/components/index';
 
 export default {
-  props: ['endoso'],
+  props: {
+    endoso: {
+      type: Object,
+      required: true,
+      default: null
+    }
+  },
   mixins: [mixin],
   name: 'modal-endosos-editar',
   components: {
@@ -187,6 +193,7 @@ export default {
   },
   data: () => ({
     url: 'endosos',
+    clientes: [],
     poliza: {},
     detalles: [],
     tipo_endosos: [],
