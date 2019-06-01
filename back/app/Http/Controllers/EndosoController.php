@@ -81,10 +81,12 @@ class EndosoController extends Controller
      */
     public function show($id)
     {
-        $endoso = Endosos::with(['tipo_endosos','polizas.clientes', 'polizas.riesgo_automotor', 'polizas.companias' ])->findOrFail($id);
-
+        $endoso = Endosos::with(['tipo_endosos','polizas.clientes', 'polizas.riesgo_automotor', 'polizas.companias', 'polizas.riesgo_automotor', 'polizas.riesgo_automotor.automotor_marca', 'polizas.riesgo_automotor.automotor_version', 'polizas.riesgo_automotor.cobertura'])->findOrFail($id);
+        
         return new EndososResource($endoso);
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

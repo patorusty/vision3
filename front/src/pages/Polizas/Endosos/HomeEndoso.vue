@@ -168,6 +168,7 @@ export default {
       isModalVisibleEndosoEditar: false,
       url: 'endosos',
       endoso: {},
+      riesgo: {},
       tableData: [],
       dataLoaded: false
     };

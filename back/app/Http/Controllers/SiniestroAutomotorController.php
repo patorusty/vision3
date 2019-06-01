@@ -80,8 +80,11 @@ class SiniestroAutomotorController extends Controller
     public function show($id)
     {
         $siniestro = SiniestroAutomotor::findOrFail($id);
+        $siniestro = SiniestroAutomotor::with(['polizas.clientes', 'polizas.riesgo_automotor', 'polizas.companias', 'polizas.riesgo_automotor', 'polizas.riesgo_automotor.automotor_marca', 'polizas.riesgo_automotor.automotor_version', 'polizas.riesgo_automotor.cobertura'])->findOrFail($id);
+
 
         return new SiniestroAutomotorsResource($siniestro);
+
     }
 
     /**

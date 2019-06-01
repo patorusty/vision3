@@ -28,19 +28,25 @@
                 <div class="recuadro">
                   <div class="row">
                     <p class="text-primary">Asegurado: </p>
-                    <p> {{endoso.polizas.clientes.apellido}} {{endoso.polizas.clientes.nombre}} </p>
+                    <p>{{endoso.polizas.clientes.apellido }} {{endoso.polizas.clientes.nombre}} </p>
+                  </div>
+                  <div class="row">
+                    <p class="text-primary">DNI: </p>
+                    <p>{{endoso.polizas.clientes.nro_dni }} </p>
+                    <p class="text-primary">Telefono: </p>
+                    <p>{{endoso.polizas.clientes.telefono_1 }} </p>
                   </div>
                   <div class="row">
                     <p class="text-primary">Marca: </p>
-                    <p> {{endoso.polizas.riesgo_automotor.automotor.marca_id}}</p>
+                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_marca.nombre}}</p>
                     <p class="text-primary">Version: </p>
-                    <p> {{endoso.polizas.riesgo_automotor.automotor_version_id}}</p>
+                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_version.nombre}}</p>
                   </div>
                   <div class="row">
-                    <p class="text-primary">Patente: </p>
-                    <p> {{endoso.polizas.riesgo_automotor.patente}}</p>
-                    <p class="text-primary">Cobertura : </p>
-                    <p> {{endoso.polizas.riesgo_automotor.cobertura_id}} </p>
+                    <p class="text-primary">Año: </p>
+                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_anio_id}}</p>
+                    <p class="text-primary">Cobertura: </p>
+                    <p> {{endoso.polizas.riesgo_automotor[0].cobertura.nombre}}</p>
                   </div>
                 </div>
                 <div class="row mt-3">

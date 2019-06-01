@@ -12,7 +12,7 @@
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
-              <h4>Siniestro - Pza. 9999999</h4>
+              <h4>Siniestro - {{siniestro.polizas.numero}}</h4>
               <button
                 class="close"
                 type="button"
@@ -24,14 +24,33 @@
             </div>
             <div class="modal-contenido">
               <div class="col-md-12">
-                <div class="mb-3">
-                  <blockquote>
-                    <p class="blockquote blockquote-primary text-primary">
-                      Asegurado: Sarno Juan Ignacio - DNI:33402231 - Telefono: 15-3949-8299 <br>
-                      Marca: Ford - Version: KA 1.6
-                      Patente: INJ004 - Cob: A - SA: $80.000.-
-                    </p>
-                  </blockquote>
+                <div class="row m-1">
+                  <div class="col-md-6">
+                    <div class="row">
+                      <p class="text-primary">Asegurado: </p>
+                      <p>{{siniestro.polizas.clientes.apellido }} {{siniestro.polizas.clientes.nombre}} </p>
+                    </div>
+                    <div class="row">
+                      <p class="text-primary">DNI: </p>
+                      <p>{{siniestro.polizas.clientes.nro_dni }} </p>
+                      <p class="text-primary">Telefono: </p>
+                      <p>{{siniestro.polizas.clientes.telefono_1 }} </p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="row m-1">
+                      <p class="text-primary">Marca: </p>
+                      <p> {{siniestro.polizas.riesgo_automotor[0].automotor_marca.nombre}}</p>
+                      <p class="text-primary">Version: </p>
+                      <p> {{siniestro.polizas.riesgo_automotor[0].automotor_version.nombre}}</p>
+                    </div>
+                    <div class="row m-1">
+                      <p class="text-primary">Año: </p>
+                      <p> {{siniestro.polizas.riesgo_automotor[0].automotor_anio_id}}</p>
+                      <p class="text-primary">Cobertura: </p>
+                      <p> {{siniestro.polizas.riesgo_automotor[0].cobertura.nombre}}</p>
+                    </div>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-md-3">
@@ -544,5 +563,9 @@ export default {
   max-height: 200px;
   overflow: hidden;
   overflow-y: scroll;
+}
+.recuadro {
+  margin-right: 15px;
+  margin-left: 15px;
 }
 </style>
