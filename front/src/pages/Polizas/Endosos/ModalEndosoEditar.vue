@@ -27,26 +27,26 @@
               <div class="col-md-12">
                 <div class="recuadro">
                   <div class="row">
-                    <p class="text-primary">Asegurado: </p>
-                    <p>{{endoso.polizas.clientes.apellido }} {{endoso.polizas.clientes.nombre}} </p>
+                    <p class="text-primary">Asegurado: </p>&nbsp;
+                    <p>{{endoso.polizas.clientes.apellido }} {{endoso.polizas.clientes.nombre}} </p>&nbsp;
                   </div>
                   <div class="row">
-                    <p class="text-primary">DNI: </p>
-                    <p>{{endoso.polizas.clientes.nro_dni }} </p>
-                    <p class="text-primary">Telefono: </p>
-                    <p>{{endoso.polizas.clientes.telefono_1 }} </p>
+                    <p class="text-primary">DNI: </p>&nbsp;
+                    <p>{{endoso.polizas.clientes.nro_dni }} </p>&nbsp;
+                    <p class="text-primary">Telefono: </p>&nbsp;
+                    <p>{{endoso.polizas.clientes.telefono_1 }} </p>&nbsp;
                   </div>
                   <div class="row">
-                    <p class="text-primary">Marca: </p>
-                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_marca.nombre}}</p>
-                    <p class="text-primary">Version: </p>
-                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_version.nombre}}</p>
+                    <p class="text-primary">Marca: </p>&nbsp;
+                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_marca.nombre}}</p>&nbsp;
+                    <p class="text-primary">Version: </p>&nbsp;
+                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_version.nombre}}</p>&nbsp;
                   </div>
                   <div class="row">
-                    <p class="text-primary">Año: </p>
-                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_anio_id}}</p>
-                    <p class="text-primary">Cobertura: </p>
-                    <p> {{endoso.polizas.riesgo_automotor[0].cobertura.nombre}}</p>
+                    <p class="text-primary">Año: </p>&nbsp;
+                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_anio_id}}</p>&nbsp;
+                    <p class="text-primary">Cobertura: </p>&nbsp;
+                    <p> {{endoso.polizas.riesgo_automotor[0].cobertura.nombre}}</p>&nbsp;
                   </div>
                 </div>
                 <div class="row mt-3">

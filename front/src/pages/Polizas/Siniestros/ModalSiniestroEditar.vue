@@ -7,7 +7,7 @@
     >
       <div
         @click.stop
-        style="width:65%;"
+        style="width:55%;"
       >
         <card>
           <form>
@@ -27,27 +27,27 @@
                 <div class="row m-1">
                   <div class="col-md-6">
                     <div class="row">
-                      <p class="text-primary">Asegurado: </p>
-                      <p>{{siniestro.polizas.clientes.apellido }} {{siniestro.polizas.clientes.nombre}} </p>
+                      <p class="text-primary">Asegurado: </p>&nbsp;
+                      <p>{{siniestro.polizas.clientes.apellido }} {{siniestro.polizas.clientes.nombre}} </p>&nbsp;
                     </div>
                     <div class="row">
-                      <p class="text-primary">DNI: </p>
-                      <p>{{siniestro.polizas.clientes.nro_dni }} </p>
-                      <p class="text-primary">Telefono: </p>
-                      <p>{{siniestro.polizas.clientes.telefono_1 }} </p>
+                      <p class="text-primary">DNI: </p>&nbsp;
+                      <p>{{siniestro.polizas.clientes.nro_dni }} </p>&nbsp;
+                      <p class="text-primary">Telefono: </p>&nbsp;
+                      <p>{{siniestro.polizas.clientes.telefono_1 }} </p>&nbsp;
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="row m-1">
-                      <p class="text-primary">Marca: </p>
-                      <p> {{siniestro.polizas.riesgo_automotor[0].automotor_marca.nombre}}</p>
-                      <p class="text-primary">Version: </p>
+                      <p class="text-primary">Marca: </p>&nbsp;
+                      <p> {{siniestro.polizas.riesgo_automotor[0].automotor_marca.nombre}}</p>&nbsp;
+                      <p class="text-primary">Version: </p>&nbsp;
                       <p> {{siniestro.polizas.riesgo_automotor[0].automotor_version.nombre}}</p>
                     </div>
                     <div class="row m-1">
-                      <p class="text-primary">Año: </p>
-                      <p> {{siniestro.polizas.riesgo_automotor[0].automotor_anio_id}}</p>
-                      <p class="text-primary">Cobertura: </p>
+                      <p class="text-primary">Año: </p>&nbsp;
+                      <p> {{siniestro.polizas.riesgo_automotor[0].automotor_anio_id}}</p>&nbsp;
+                      <p class="text-primary">Cobertura: </p>&nbsp;
                       <p> {{siniestro.polizas.riesgo_automotor[0].cobertura.nombre}}</p>
                     </div>
                   </div>
@@ -307,6 +307,7 @@
                         <notas-siniestro :siniestro="siniestro"></notas-siniestro>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
