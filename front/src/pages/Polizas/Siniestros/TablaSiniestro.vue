@@ -1,10 +1,7 @@
 <template>
   <div class="col-md-6">
     <card class="mt-4 ">
-      <div
-        class="col-sm-12 row align-items-center"
-        slot="header"
-      >
+      <div class="col-sm-12 row align-items-center" slot="header">
         <div class="col">
           <h4 class="d-inline text-primary ">SINIESTROS</h4>
           <base-button
@@ -12,7 +9,8 @@
             size="sm"
             class="float-right"
             @click="showModalSiniestro"
-          >+</base-button>
+            >+</base-button
+          >
         </div>
       </div>
       <div class="row">
@@ -39,11 +37,7 @@
               prop="numero_siniestro"
             >
             </el-table-column>
-            <el-table-column
-              min-width="85"
-              align="left"
-              label="Completo"
-            >
+            <el-table-column min-width="85" align="left" label="Completo">
               <div slot-scope="{ row }">
                 <div v-if="row.fecha_completo == null">NO</div>
                 <div v-else>SI</div>
@@ -79,12 +73,7 @@
                   :open-delay="300"
                   placement="top"
                 >
-                  <base-button
-                    type="danger"
-                    icon
-                    size="sm"
-                    class="btn-link"
-                  >
+                  <base-button type="danger" icon size="sm" class="btn-link">
                     <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </el-tooltip>
@@ -106,7 +95,6 @@
       v-if="dataLoaded"
       @regargar="cargar"
     />
-
   </div>
 </template>
 <script>
@@ -172,7 +160,6 @@ export default {
           );
         });
         this.tableData = r.data.data;
-        this.dataLoaded = true;
       });
     },
     crear(value) {
@@ -192,6 +179,7 @@ export default {
       this.isModalVisibleSiniestro = false;
     },
     closeModalSiniestroEditar() {
+      this.dataLoaded = false;
       this.vaciarForm();
       this.isModalVisibleSiniestroEditar = false;
     },
@@ -208,6 +196,7 @@ export default {
       this.showModalSiniestroEditar(id);
       http.loadOne('siniestrosautomotor', id).then(r => {
         this.siniestro = r.data.data;
+        this.dataLoaded = true;
       });
     },
     borrar(id) {

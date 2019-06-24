@@ -72,7 +72,6 @@
           </el-table>
         </div>
       </div>
-      <vue-picture-swipe :items="imagenes"></vue-picture-swipe>
     </card>
 
     <modal-automotor
@@ -93,7 +92,7 @@
       :compania_id="poliza.compania_id"
       @close="closeModal"
       @recargar="cargar"
-    ></modal-automotor-edit>    
+    ></modal-automotor-edit>
   </div>
 </template>
 <script>
@@ -106,7 +105,6 @@ import { mixin } from '../../../../mixins/mixin.js';
 import { EventBus } from '../../../../main.js';
 import ModalAutomotor from './ModalAutomotor';
 import ModalAutomotorEdit from './ModalAutomotorEdit';
-import VuePictureSwipe from 'vue-picture-swipe';
 
 export default {
   mixins: [mixin],
@@ -120,8 +118,7 @@ export default {
     BaseAlert,
     BasePagination,
     ModalAutomotor,
-    ModalAutomotorEdit,
-    VuePictureSwipe
+    ModalAutomotorEdit
   },
   props: {
     poliza: {

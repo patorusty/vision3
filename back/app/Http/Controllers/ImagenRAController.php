@@ -107,8 +107,12 @@ class ImagenRAController extends Controller
      * @param  \App\ImagenRA  $imagenRA
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ImagenRA $imagenRA)
+    public function destroy($id)
     {
-        //
+        $imagen = ImagenRA::find($id);
+
+        $imagen->delete();
+
+        return ['message'=>'Eliminado'];
     }
 }

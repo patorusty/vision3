@@ -1,10 +1,7 @@
 <template>
   <div class="col-md-6">
     <card class="mt-4 ">
-      <div
-        class="col-sm-12 row align-items-center"
-        slot="header"
-      >
+      <div class="col-sm-12 row align-items-center" slot="header">
         <div class="col">
           <h4 class="d-inline text-primary ">ENDOSOS</h4>
           <base-button
@@ -12,7 +9,8 @@
             size="sm"
             class="float-right"
             @click="showModalEndoso"
-          >+</base-button>
+            >+</base-button
+          >
         </div>
       </div>
       <div class="row">
@@ -25,29 +23,17 @@
               prop="fecha_solicitud"
             >
             </el-table-column>
-            <el-table-column
-              min-width="132"
-              label="Tipo"
-              align="left"
-            >
+            <el-table-column min-width="132" label="Tipo" align="left">
               <div slot-scope="{ row }">
                 {{ row.tipo_endosos.nombre }}
               </div>
             </el-table-column>
-            <el-table-column
-              min-width="150"
-              label="Detalle"
-              align="left"
-            >
+            <el-table-column min-width="150" label="Detalle" align="left">
               <div slot-scope="{ row }">
                 {{ row.detalle_endosos.nombre }}
               </div>
             </el-table-column>
-            <el-table-column
-              min-width="85"
-              align="left"
-              label="Compl."
-            >
+            <el-table-column min-width="85" align="left" label="Compl.">
               <div slot-scope="{ row }">
                 <div v-if="row.completo == true">SI</div>
                 <div v-else>NO</div>
@@ -67,7 +53,9 @@
                   placement="top"
                 >
                   <base-button
-                    @click.native="editar(props.row.id, props.row.tipo_endoso_id)"
+                    @click.native="
+                      editar(props.row.id, props.row.tipo_endoso_id)
+                    "
                     type="warning"
                     icon
                     size="sm"
@@ -83,12 +71,7 @@
                   :open-delay="300"
                   placement="top"
                 >
-                  <base-button
-                    type="danger"
-                    icon
-                    size="sm"
-                    class="btn-link"
-                  >
+                  <base-button type="danger" icon size="sm" class="btn-link">
                     <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </el-tooltip>
@@ -164,7 +147,6 @@ export default {
           endoso.fecha_solicitud = format(endoso.fecha_solicitud, 'DD/MM/YYYY');
         });
         this.tableData = endosos;
-        this.dataLoaded = true;
       });
     },
     crear(value) {
@@ -191,16 +173,18 @@ export default {
     vaciarForm() {
       EventBus.$emit('resetInput', false);
     },
-    showModalEndosoEditar(tipo_endoso_id) {
-      this.vaciarForm();
-      EventBus.$emit('filtrarTipos', tipo_endoso_id);
+    showModalEndosoEditar() {
+      // this.vaciarForm();
       this.isModalVisibleEndosoEditar = true;
     },
     editar(id, tipo_endoso_id) {
-      console.log(tipo_endoso_id);
-      this.showModalEndosoEditar(tipo_endoso_id);
       http.loadOne('endosos', id).then(r => {
         this.endoso = r.data.data;
+        this.dataLoaded = true;
+        this.$nextTick(() => {
+          EventBus.$emit('filtrarTipos', tipo_endoso_id);
+        });
+        this.showModalEndosoEditar();
       });
     },
     borrar(id) {

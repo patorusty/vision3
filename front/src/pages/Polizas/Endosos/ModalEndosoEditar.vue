@@ -1,18 +1,11 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:35%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:35%;">
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
-              <h4>Endoso - {{endoso.polizas.numero}}</h4>
+              <h4>Endoso - {{ endoso.polizas.numero }}</h4>
 
               <button
                 class="close"
@@ -27,26 +20,57 @@
               <div class="col-md-12">
                 <div class="recuadro">
                   <div class="row">
-                    <p class="text-primary">Asegurado: </p>&nbsp;
-                    <p>{{endoso.polizas.clientes.apellido }} {{endoso.polizas.clientes.nombre}} </p>&nbsp;
+                    <p class="text-primary">Asegurado:</p>
+                    &nbsp;
+                    <p>
+                      {{ endoso.polizas.clientes.apellido }}
+                      {{ endoso.polizas.clientes.nombre }}
+                    </p>
+                    &nbsp;
                   </div>
                   <div class="row">
-                    <p class="text-primary">DNI: </p>&nbsp;
-                    <p>{{endoso.polizas.clientes.nro_dni }} </p>&nbsp;
-                    <p class="text-primary">Telefono: </p>&nbsp;
-                    <p>{{endoso.polizas.clientes.telefono_1 }} </p>&nbsp;
+                    <p class="text-primary">DNI:</p>
+                    &nbsp;
+                    <p>{{ endoso.polizas.clientes.nro_dni }}</p>
+                    &nbsp;
+                    <p class="text-primary">Telefono:</p>
+                    &nbsp;
+                    <p>{{ endoso.polizas.clientes.telefono_1 }}</p>
+                    &nbsp;
                   </div>
                   <div class="row">
-                    <p class="text-primary">Marca: </p>&nbsp;
-                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_marca.nombre}}</p>&nbsp;
-                    <p class="text-primary">Version: </p>&nbsp;
-                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_version.nombre}}</p>&nbsp;
+                    <p class="text-primary">Marca:</p>
+                    &nbsp;
+                    <p>
+                      {{
+                        endoso.polizas.riesgo_automotor[0].automotor_marca
+                          .nombre
+                      }}
+                    </p>
+                    &nbsp;
+                    <p class="text-primary">Version:</p>
+                    &nbsp;
+                    <p>
+                      {{
+                        endoso.polizas.riesgo_automotor[0].automotor_version
+                          .nombre
+                      }}
+                    </p>
+                    &nbsp;
                   </div>
                   <div class="row">
-                    <p class="text-primary">Año: </p>&nbsp;
-                    <p> {{endoso.polizas.riesgo_automotor[0].automotor_anio_id}}</p>&nbsp;
-                    <p class="text-primary">Cobertura: </p>&nbsp;
-                    <p> {{endoso.polizas.riesgo_automotor[0].cobertura.nombre}}</p>&nbsp;
+                    <p class="text-primary">Año:</p>
+                    &nbsp;
+                    <p>
+                      {{ endoso.polizas.riesgo_automotor[0].automotor_anio_id }}
+                    </p>
+                    &nbsp;
+                    <p class="text-primary">Cobertura:</p>
+                    &nbsp;
+                    <p>
+                      {{ endoso.polizas.riesgo_automotor[0].cobertura.nombre }}
+                    </p>
+                    &nbsp;
                   </div>
                 </div>
                 <div class="row mt-3">
@@ -80,11 +104,9 @@
                       v-model="endoso.tipo_endoso_id"
                       :class="{ errorS: errorSelect.tipo_endoso_id }"
                       @change="
-                        filtrarModificacionPorTipo(
-                          endoso.tipo_endoso_id
-                        ),
-                        touchSelect('tipo_endoso_id'),
-                        reset()
+                        filtrarModificacionPorTipo(endoso.tipo_endoso_id),
+                          touchSelect('tipo_endoso_id'),
+                          reset()
                       "
                     >
                       <el-option
@@ -95,10 +117,7 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect.tipo_endoso_id"
-                    >
+                    <p class="errorSelect" v-show="errorSelect.tipo_endoso_id">
                       Este campo es obligatorio
                     </p>
                   </div>
@@ -157,17 +176,17 @@
                   </div>
                 </div>
                 <div>
-                  <base-checkbox
-                    name="completo"
-                    v-model="endoso.completo"
-                  >Completo</base-checkbox>
+                  <base-checkbox name="completo" v-model="endoso.completo"
+                    >Completo</base-checkbox
+                  >
                 </div>
                 <div class="modal-pie pull-right mt-3">
                   <base-button
                     class="btn btn-primary ladda-button"
                     type="submit"
                     @click="actualizar"
-                  >Guardar</base-button>
+                    >Guardar</base-button
+                  >
                 </div>
               </div>
             </div>

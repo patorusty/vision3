@@ -272,7 +272,9 @@
                     >
                     </base-input>
                     <div class="mt-4">
-                      <base-checkbox :checked="riesgo_automotor.okm" v-model="riesgo_automotor.okm"
+                      <base-checkbox
+                        :checked="riesgo_automotor.okm"
+                        v-model="riesgo_automotor.okm"
                         >0km</base-checkbox
                       >
                     </div>
@@ -582,17 +584,23 @@
                     value="xx"
                   />
                 </vue-dropzone>
-                <vue-picture-swipe :items="riesgo_automotor.imagenes"></vue-picture-swipe>
-                <!-- <div>
-                  <gallery :images="imagenes" :index="index" @close="index = null"></gallery>
+                <div class="fotos-container">
                   <div
-                    class="image"
-                    v-for="(image, imageIndex) in imagenes"
-                    :key="imageIndex"
-                    @click="index = imageIndex"
-                    :style="{ backgroundImage: 'url(' + image + ')', width: '300px', height: '200px' }"
-                  ></div>
-                </div> -->
+                    v-for="imagen in riesgo_automotor.imagenes"
+                    class="imagen-container"
+                    :key="imagen.id"
+                  >
+                    <a
+                      :href="'http://localhost:8000' + imagen.path"
+                      target="_blank"
+                      ><img :src="'http://localhost:8000' + imagen.path" />
+                    </a>
+                    <i
+                      class="icono-imagen tim-icons icon-simple-remove"
+                      @click="borrarFoto(imagen.id)"
+                    ></i>
+                  </div>
+                </div>
               </tab-pane>
             </tabs>
             <div
@@ -603,11 +611,6 @@
                 type="submit"
                 class="btn btn-primary ladda-button"
                 >Crear</base-button
-              >
-              <base-button
-                @click="console"
-                class="btn btn-primary ladda-button"
-                >Console</base-button
               >
             </div>
           </form>
@@ -627,8 +630,6 @@ import { mixin } from '../../../../mixins/mixin.js';
 import { TheMask } from 'vue-the-mask';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
-import VuePictureSwipe from 'vue-picture-swipe';
-import VueGallery from 'vue-gallery';
 
 export default {
   props: {
@@ -654,9 +655,7 @@ export default {
     TabPane,
     TheMask,
     Tabs,
-    vueDropzone: vue2Dropzone,
-    VuePictureSwipe,
-    gallery: VueGallery
+    vueDropzone: vue2Dropzone
   },
   data: () => ({
     visible: false,
@@ -1008,6 +1007,12 @@ export default {
       this.riesgo_automotor.automotor_marca_id = '';
       this.riesgo_automotor.automotor_modelo_id = '';
       this.riesgo_automotor.automotor_version_id = '';
+    },
+    borrarFoto(id) {
+      console.log(id);
+      http
+        .delete('http://127.0.0.1:8000/api/imagenes_r_a', id)
+        .then(() => this.notifyVue('danger', 'Imagen eliminada'));
     }
   },
   created() {
@@ -1080,7 +1085,6 @@ export default {
   background-color: transparent;
   border-color: #2b3553;
 }
-
 .texto-drop {
   color: #777;
   text-align: center;
@@ -1088,18 +1092,32 @@ export default {
   cursor: pointer;
   font-size: 0.875rem;
 }
-
 .vue-dropzone > .dz-preview .dz-details {
   background-color: transparent;
 }
-
-.image {
-  height: 150px !important;
-  background-size: cover;
-  cursor: pointer;
-  margin: 5px;
-  border-radius: 3px;
-  border: 1px solid lightgray;
-  object-fit: contain;
+.fotos-container {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 150px;
+  white-space: nowrap;
+  margin-top: 20px;
+}
+.imagen-container {
+  display: inline-block;
+}
+.imagen-container {
+  position: relative;
+}
+.imagen-container img {
+  max-width: 250px;
+}
+.imagen-container:nth-child(even) {
+  margin: 0 20px;
+}
+.icono-imagen {
+  position: absolute;
+  bottom: 10px;
+  right: 8px;
+  color: #e14eca;
 }
 </style>

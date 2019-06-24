@@ -76,6 +76,7 @@ Route::get('/poliza/vigencias', 'PolizaController@vigencias');
 //Riesgo Automotor/
 Route::Resource('/riesgo_automotor', 'RiesgoAutomotorController');
 Route::post('/imagenes_r_a', 'ImagenRAController@uploadFile');
+Route::delete('/imagenes_r_a/{id}', 'ImagenRAController@destroy');
 Route::get('/riesgo_automotores/{id}', 'RiesgoAutomotorController@indexFiltrado');
 Route::get('/polizas/busquedaPolizaId/{id}', 'RiesgoAutomotorController@searchPoliza');
 

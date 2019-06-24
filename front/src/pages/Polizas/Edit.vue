@@ -32,7 +32,13 @@
                               class="select-primary"
                               :key="cliente.id"
                               :value="cliente.id"
-                              :label="cliente.apellido + ' ' + cliente.nombre + ' | DNI: ' + cliente.nro_dni"
+                              :label="
+                                cliente.apellido +
+                                  ' ' +
+                                  cliente.nombre +
+                                  ' | DNI: ' +
+                                  cliente.nro_dni
+                              "
                             ></el-option>
                           </el-select>
                           <label>Tipo Riesgo</label>
@@ -49,7 +55,8 @@
                               :key="tipo_riesgo.id"
                               :value="tipo_riesgo.id"
                               :label="tipo_riesgo.nombre"
-                            > {{tipo_riesgo.nombre}}
+                            >
+                              {{ tipo_riesgo.nombre }}
                             </el-option>
                           </el-select>
                           <label>Compañia</label>
@@ -59,8 +66,8 @@
                             value="compania_id"
                             v-model="poliza.compania_id"
                             @change="
-                                cargarCodigos_Productor(poliza.compania_id)
-                              "
+                              cargarCodigos_Productor(poliza.compania_id)
+                            "
                           >
                             <el-option
                               class="select-primary"
@@ -68,7 +75,8 @@
                               :key="compania.id"
                               :value="compania.id"
                               :label="compania.nombre"
-                            >{{ compania.nombre }}</el-option>
+                              >{{ compania.nombre }}</el-option
+                            >
                           </el-select>
                         </div>
                         <div class="col-md-6">
@@ -84,7 +92,14 @@
                               v-for="codigo_productor in codigo_productores"
                               :key="codigo_productor.id"
                               :value="codigo_productor.id"
-                              :label="codigo_productor.productores.apellido + ' ' + codigo_productor.productores.nombre + ' | Cod. (' + codigo_productor.codigo_productor + ')'"
+                              :label="
+                                codigo_productor.productores.apellido +
+                                  ' ' +
+                                  codigo_productor.productores.nombre +
+                                  ' | Cod. (' +
+                                  codigo_productor.codigo_productor +
+                                  ')'
+                              "
                             ></el-option>
                           </el-select>
                           <label>Poliza Nro:</label>
@@ -96,12 +111,20 @@
                           ></base-input>
                           <div class="row">
                             <div class="col-md-6">
-                              <label for="numero_solicitud">Renueva Poliza Nro:</label>
-                              <p class="text-primary">{{ poliza.renueva_numero}}</p>
+                              <label for="numero_solicitud"
+                                >Renueva Poliza Nro:</label
+                              >
+                              <p class="text-primary">
+                                {{ poliza.renueva_numero }}
+                              </p>
                             </div>
                             <div class="col-md-6">
-                              <label for="numero_solicitud">Nro de Solicitud:</label>
-                              <p class="text-primary">{{ poliza.numero_solicitud }}</p>
+                              <label for="numero_solicitud"
+                                >Nro de Solicitud:</label
+                              >
+                              <p class="text-primary">
+                                {{ poliza.numero_solicitud }}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -144,7 +167,6 @@
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
-
                         </div>
 
                         <div class="col-md-4">
@@ -175,7 +197,6 @@
                               value-format="yyyy-MM-dd"
                             ></el-date-picker>
                           </base-input>
-
                         </div>
 
                         <div class="col-md-4">
@@ -311,11 +332,12 @@
                         v-model="poliza.detalle_medio_pago"
                       ></textarea>
                     </div>
-                    <div class="col-md-3 d-flex justify-content-end align-items-end">
-                      <button
-                        type="submit"
-                        class="btn btn-primary"
-                      >Guardar</button>
+                    <div
+                      class="col-md-3 d-flex justify-content-end align-items-end"
+                    >
+                      <button type="submit" class="btn btn-primary">
+                        Guardar
+                      </button>
                     </div>
                   </div>
                 </card>
@@ -324,19 +346,13 @@
             <!-- aca deberia mostrar la tabla segun el tipo de riesgo -->
             <!-- aca meter la tabla -->
             <tabla-riesgo-automotor
-              v-if="(poliza.tipo_riesgo_id == '1' && dataLoaded)"
+              v-if="poliza.tipo_riesgo_id == '1' && dataLoaded"
               :poliza="poliza"
             />
             <div class="col-md-12">
               <div class="row">
-                <tabla-endosos
-                  v-if="dataLoaded"
-                  :poliza="poliza"
-                />
-                <tabla-siniestros
-                  v-if="dataLoaded"
-                  :poliza="poliza"
-                />
+                <tabla-endosos v-if="dataLoaded" :poliza="poliza" />
+                <tabla-siniestros v-if="dataLoaded" :poliza="poliza" />
               </div>
             </div>
           </div>
