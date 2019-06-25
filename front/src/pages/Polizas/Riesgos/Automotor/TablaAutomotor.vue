@@ -192,6 +192,7 @@ export default {
   },
   mounted() {
     this.cargar();
+    EventBus.$on('updateData', value => this.riesgo_automotor = value);
   }
 };
 </script>

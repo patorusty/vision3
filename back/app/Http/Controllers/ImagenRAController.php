@@ -111,6 +111,8 @@ class ImagenRAController extends Controller
     {
         $imagen = ImagenRA::find($id);
 
+        $imagen->riesgo_automotor()->detach();
+
         $imagen->delete();
 
         return ['message'=>'Eliminado'];

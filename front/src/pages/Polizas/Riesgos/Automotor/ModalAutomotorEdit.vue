@@ -54,9 +54,9 @@
                       filterable
                       class="select-primary"
                       :class="{ errorS: errorSelect.automotor_anio }"
-                      v-model="riesgo_automotor.automotor_anio"
+                      v-model="riesgo_automotor.automotor_anio_id"
                       name="automotor_anio_id"
-                      @change="touchSelect('automotor_anio'), reset()"
+                      @change="touchSelect('automotor_anio_id'), reset()"
                     >
                       <el-option
                         v-for="anio in anios"
@@ -105,7 +105,7 @@
                       @change="
                         filtrarVersionesDeModelo(
                           url,
-                          riesgo_automotor.automotor_anio,
+                          riesgo_automotor.automotor_anio_id,
                           riesgo_automotor.automotor_modelo_id
                         );
                         touchSelect('automotor_modelo_id');
@@ -584,6 +584,10 @@
                     value="xx"
                   />
                 </vue-dropzone>
+                <base-button
+                @click="subirFotos"
+                class="btn btn-primary ladda-button mt-2"
+                >Subir Fotos</base-button>
                 <div class="fotos-container">
                   <div
                     v-for="imagen in riesgo_automotor.imagenes"
@@ -607,10 +611,10 @@
               class="col-md-12 d-flex justify-content-center align-items-stretch"
             >
               <base-button
-                @click="crear"
+                @click="update"
                 type="submit"
                 class="btn btn-primary ladda-button"
-                >Crear</base-button
+                >Actualizar</base-button
               >
             </div>
           </form>
@@ -673,7 +677,7 @@ export default {
     versiones: [],
     url: '/anios/filtrar',
     errorSelect: {
-      automotor_anio: false,
+      automotor_anio_id: false,
       automotor_marca_id: false,
       automotor_modelo_id: false,
       automotor_version_id: false,
@@ -681,7 +685,7 @@ export default {
       tipo_carroceria: false
     },
     selected: {
-      automotor_anio: false,
+      automotor_anio_id: false,
       automotor_marca_id: false,
       automotor_modelo_id: false,
       automotor_version_id: false,
@@ -696,6 +700,7 @@ export default {
       autoProcessQueue: false,
       acceptedFiles: 'image/*',
       method: 'POST',
+      thumbnailHeight: 110,
       dictRemoveFile: 'Remover imagen',
       params: { riesgoId: '' }
     },
@@ -899,18 +904,12 @@ export default {
         parseInt(this.riesgo_automotor.valor_accesorio_01) +
         parseInt(this.riesgo_automotor.valor_accesorio_02)
       );
-    },
-    imagenes() {
-      let pathsArray = [];
-      this.riesgo_automotor.imagenes.forEach(imagen => {
-        pathsArray.push(imagen.path);
-      });
-      return pathsArray;
     }
   },
   methods: {
-    console() {
-      console.log(this.$refs.myVueDropzone.dropzone.files);
+    subirFotos() {
+      this.dropzoneOptions.params.riesgoId = this.riesgo_automotor.id;
+      this.uploadImages();
     },
     close() {
       EventBus.$emit('resetInput', false);
@@ -919,24 +918,27 @@ export default {
     },
     uploadImages() {
       this.$refs.myVueDropzone.processQueue();
+      setTimeout(() => {
+        this.$refs.myVueDropzone.removeAllFiles();
+        http.loadOne('/riesgo_automotor', this.riesgo_automotor.id).then(r => {
+          EventBus.$emit('updateData', r.data.data);
+        });
+      }, 1000);
     },
-    crear() {
+    update() {
       this.$validator.validateAll().then(r => {
         if (this.checkSelect() && r) {
-          this.riesgo_automotor.poliza_id = this.$attrs.poliza.id;
           http
-            .create('/riesgo_automotor', this.riesgo_automotor)
-            .then(r => {
-              let rId = r.data.data.id;
-              this.dropzoneOptions.params.riesgoId = rId;
-              this.uploadImages();
-            })
+            .update(
+              '/riesgo_automotor',
+              this.riesgo_automotor.id,
+              this.riesgo_automotor
+            )
             .then(() => {
-              setTimeout(() => this.close(), 500);
-            })
-            .then(() =>
-              this.notifyVue('success', 'El riesgo ha sido creado con exito')
-            );
+              this.subirFotos();
+              this.close();
+              this.notifyVue('success', 'El riesgo ha sido actualizado');
+            });
         }
       });
     },
@@ -951,7 +953,6 @@ export default {
       });
     },
     filtrarModeloPorMarca(id) {
-      console.log('filtro1');
       this.riesgo_automotor.automotor_modelo_id = '';
       this.versiones = [];
       http.loadOne('/modelos/filtrar', id).then(r => {
@@ -959,7 +960,7 @@ export default {
       });
     },
     filtrarVersionesDeModelo(url, anio, modelo) {
-      console.log('filtro2');
+      this.riesgo_automotor.automotor_version_id = '';
       this.versiones = [];
       http.search2(url, anio, modelo).then(r => {
         this.versiones = r.data.data;
@@ -991,9 +992,12 @@ export default {
     checkSelect() {
       let valor = true;
       Object.entries(this.selected).forEach(select => {
-        if (select[1] == false || !this.riesgo_automotor[`${select[0]}`]) {
+        if (select[1] == false && !this.riesgo_automotor[`${select[0]}`]) {
           this.errorSelect[`${select[0]}`] = true;
           valor = false;
+        } else {
+          this.errorSelect[`${select[0]}`] = false;
+          valor = true;
         }
       });
       return valor;
@@ -1009,10 +1013,15 @@ export default {
       this.riesgo_automotor.automotor_version_id = '';
     },
     borrarFoto(id) {
-      console.log(id);
+      // console.log(id);
       http
         .delete('http://127.0.0.1:8000/api/imagenes_r_a', id)
         .then(() => this.notifyVue('danger', 'Imagen eliminada'));
+      this.riesgo_automotor.imagenes = this.riesgo_automotor.imagenes.filter(
+        imagen => {
+          return imagen.id !== id;
+        }
+      );
     }
   },
   created() {
@@ -1107,17 +1116,21 @@ export default {
 }
 .imagen-container {
   position: relative;
+  height: 150px;
+  margin-right: 20px;
 }
 .imagen-container img {
-  max-width: 250px;
-}
-.imagen-container:nth-child(even) {
-  margin: 0 20px;
+  max-width:100%;
+max-height:100%;
 }
 .icono-imagen {
   position: absolute;
-  bottom: 10px;
+  top: 10px;
   right: 8px;
   color: #e14eca;
+  font-weight: 1000;
+}
+.icono-imagen:hover {
+  color: pink;
 }
 </style>

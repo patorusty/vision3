@@ -105,7 +105,7 @@
                       @change="
                         filtrarVersionesDeModelo(
                           url,
-                          riesgo_automotor.automotor_anio,
+                          riesgo_automotor.automotor_anio_id,
                           riesgo_automotor.automotor_modelo_id
                         );
                         touchSelect('automotor_modelo_id');
@@ -942,6 +942,7 @@ export default {
       });
     },
     filtrarVersionesDeModelo(url, anio, modelo) {
+      this.riesgo_automotor.automotor_version_id = '';
       this.versiones = [];
       http.search2(url, anio, modelo).then(r => {
         this.versiones = r.data.data;
@@ -973,9 +974,12 @@ export default {
     checkSelect() {
       let valor = true;
       Object.entries(this.selected).forEach(select => {
-        if (select[1] == false || !this.riesgo_automotor[`${select[0]}`]) {
+        if (select[1] == false && !this.riesgo_automotor[`${select[0]}`]) {
           this.errorSelect[`${select[0]}`] = true;
           valor = false;
+        } else {
+          this.errorSelect[`${select[0]}`] = false;
+          valor = true;
         }
       });
       return valor;

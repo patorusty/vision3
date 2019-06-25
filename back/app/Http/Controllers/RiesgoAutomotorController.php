@@ -185,6 +185,8 @@ class RiesgoAutomotorController extends Controller
             'vigencia_desde' => $request->input('vigencia_desde'),
             'vigencia_hasta' => $request->input('vigencia_hasta'),
         ]);
+
+        return ['message'=> 'Updated'];
     }
 
 
