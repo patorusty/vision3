@@ -98,8 +98,7 @@
                         v-model="siniestro.fecha_denuncia"
                         @change="touchSelect('fecha_denuncia')"
                         :class="{ errorS: errorSelect.fecha_denuncia }"
-                      >
-                      </el-date-picker>
+                      ></el-date-picker>
                       <p
                         class="errorSelect"
                         v-show="errorSelect.fecha_denuncia"
@@ -118,8 +117,7 @@
                         v-model="siniestro.fecha_siniestro"
                         @change="touchSelect('fecha_siniestro')"
                         :class="{ errorS: errorSelect.fecha_siniestro }"
-                      >
-                      </el-date-picker>
+                      ></el-date-picker>
                       <p
                         class="errorSelect"
                         v-show="errorSelect.fecha_siniestro"
@@ -136,8 +134,7 @@
                         format="d/M/yyyy"
                         value-format="yyyy-MM-dd"
                         v-model="siniestro.fecha_completo"
-                      >
-                      </el-date-picker>
+                      ></el-date-picker>
                     </base-input>
                   </div>
                 </div>
@@ -157,8 +154,7 @@
                         :value="tipo_reclamo.value"
                         :label="tipo_reclamo.label"
                         class="select-primary"
-                      >
-                      </el-option>
+                      ></el-option>
                     </el-select>
                   </div>
                   <div class="col-md-6">
@@ -175,8 +171,7 @@
                         :value="estado.value"
                         :label="estado.label"
                         class="select-primary"
-                      >
-                      </el-option>
+                      ></el-option>
                     </el-select>
                   </div>
                 </div>
@@ -205,8 +200,7 @@
                             :value="inspeccion.value"
                             :label="inspeccion.label"
                             class="select-primary"
-                          >
-                          </el-option>
+                          ></el-option>
                         </el-select>
                       </div>
                       <div class="col-md-6">
@@ -223,8 +217,7 @@
                             :value="orden_trabajo.value"
                             :label="orden_trabajo.label"
                             class="select-primary"
-                          >
-                          </el-option>
+                          ></el-option>
                         </el-select>
                       </div>
                     </div>
@@ -248,8 +241,7 @@
                             :value="cleas.value"
                             :label="cleas.label"
                             class="select-primary"
-                          >
-                          </el-option>
+                          ></el-option>
                         </el-select>
                       </div>
                       <div
@@ -272,8 +264,7 @@
                             :value="ciavscia.value"
                             :label="ciavscia.label"
                             class="select-primary"
-                          >
-                          </el-option>
+                          ></el-option>
                         </el-select>
                       </div>
                       <div
@@ -300,8 +291,7 @@
                             :value="taller.value"
                             :label="taller.label"
                             class="select-primary"
-                          >
-                          </el-option>
+                          ></el-option>
                         </el-select>
                       </div>
 
@@ -329,8 +319,7 @@
                             :value="culpabilidad.value"
                             :label="culpabilidad.label"
                             class="select-primary"
-                          >
-                          </el-option>
+                          ></el-option>
                         </el-select>
                       </div>
                     </div>
@@ -359,12 +348,7 @@
                 </div>
               </div>
             </div>
-            <div
-              class="
-                          modal-pie
-                          pull-right
-                          mt-3"
-            >
+            <div class="modal-pie pull-right mt-3">
               <base-button
                 class="btn btn-primary ladda-button"
                 type="submit"

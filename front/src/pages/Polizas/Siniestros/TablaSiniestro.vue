@@ -197,6 +197,9 @@ export default {
       http.loadOne('siniestrosautomotor', id).then(r => {
         this.siniestro = r.data.data;
         this.dataLoaded = true;
+        this.$nextTick(() => {
+          EventBus.$emit('cargarNotas', id);
+        });
       });
     },
     borrar(id) {
