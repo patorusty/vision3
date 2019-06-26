@@ -4,13 +4,24 @@
       <div class="col-md-10 mt-1">
         <base-input v-model="nota_siniestro_aut.nota"> </base-input>
       </div>
-      <div id="botonenviar" class="col-md-2 pl-2 mt-0">
-        <base-button type="primary submit" round icon @click="crear">
+      <div
+        id="botonenviar"
+        class="mt-0"
+      >
+        <base-button
+          type="primary submit"
+          round
+          icon
+          @click="crear"
+        >
           <i class="tim-icons icon-send"></i>
         </base-button>
       </div>
     </div>
-    <base-table :data="tableData" thead-classes="text-primary">
+    <base-table
+      :data="tableData"
+      thead-classes="text-primary"
+    >
       <template slot-scope="{ row }">
         <td>
           <p class="text-danger">{{ row.user_id }} - {{ row.created_at }}</p>

@@ -1,7 +1,14 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop style="width:55%;">
+    <div
+      class="modal-backdrop"
+      @keydown.esc="close"
+      @click="close"
+    >
+      <div
+        @click.stop
+        style="width:75%;"
+      >
         <card>
           <form>
             <div class="d-flex justify-content-between mb-2">
@@ -45,8 +52,8 @@
                       &nbsp;
                       <p>
                         {{
-                          siniestro.polizas.riesgo_automotor[0].automotor_marca
-                            .nombre
+                        siniestro.polizas.riesgo_automotor[0].automotor_marca
+                        .nombre
                         }}
                       </p>
                       &nbsp;
@@ -54,8 +61,8 @@
                       &nbsp;
                       <p>
                         {{
-                          siniestro.polizas.riesgo_automotor[0]
-                            .automotor_version.nombre
+                        siniestro.polizas.riesgo_automotor[0]
+                        .automotor_version.nombre
                         }}
                       </p>
                     </div>
@@ -64,8 +71,8 @@
                       &nbsp;
                       <p>
                         {{
-                          siniestro.polizas.riesgo_automotor[0]
-                            .automotor_anio_id
+                        siniestro.polizas.riesgo_automotor[0]
+                        .automotor_anio_id
                         }}
                       </p>
                       &nbsp;
@@ -73,152 +80,170 @@
                       &nbsp;
                       <p>
                         {{
-                          siniestro.polizas.riesgo_automotor[0].cobertura.nombre
+                        siniestro.polizas.riesgo_automotor[0].cobertura.nombre
                         }}
                       </p>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-3">
-                    <base-input
-                      label="Numero Siniestro"
-                      type="text"
-                      name="numero_siniestro"
-                      v-model="siniestro.numero_siniestro"
-                    ></base-input>
-                  </div>
-                  <div class="col-md-3">
-                    <label>Fecha Denuncia</label>
-                    <base-input>
-                      <el-date-picker
-                        type="date"
-                        format="d/M/yyyy"
-                        value-format="yyyy-MM-dd"
-                        v-model="siniestro.fecha_denuncia"
-                        @change="touchSelect('fecha_denuncia')"
-                        :class="{ errorS: errorSelect.fecha_denuncia }"
-                      ></el-date-picker>
-                      <p
-                        class="errorSelect"
-                        v-show="errorSelect.fecha_denuncia"
-                      >
-                        Este campo es obligatorio
-                      </p>
-                    </base-input>
-                  </div>
-                  <div class="col-md-3">
-                    <label>Fecha Siniestro</label>
-                    <base-input>
-                      <el-date-picker
-                        type="date"
-                        format="d/M/yyyy"
-                        value-format="yyyy-MM-dd"
-                        v-model="siniestro.fecha_siniestro"
-                        @change="touchSelect('fecha_siniestro')"
-                        :class="{ errorS: errorSelect.fecha_siniestro }"
-                      ></el-date-picker>
-                      <p
-                        class="errorSelect"
-                        v-show="errorSelect.fecha_siniestro"
-                      >
-                        Este campo es obligatorio
-                      </p>
-                    </base-input>
-                  </div>
-                  <div class="col-md-3">
-                    <label>Completo</label>
-                    <base-input>
-                      <el-date-picker
-                        type="date"
-                        format="d/M/yyyy"
-                        value-format="yyyy-MM-dd"
-                        v-model="siniestro.fecha_completo"
-                      ></el-date-picker>
-                    </base-input>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Tipo Reclamo</label>
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <base-input
+                          label="Numero Siniestro"
+                          type="text"
+                          name="numero_siniestro"
+                          v-model="siniestro.numero_siniestro"
+                        ></base-input>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Fecha Denuncia</label>
+                        <base-input>
+                          <el-date-picker
+                            type="date"
+                            format="d/M/yyyy"
+                            value-format="yyyy-MM-dd"
+                            v-model="siniestro.fecha_denuncia"
+                            @change="touchSelect('fecha_denuncia')"
+                            :class="{ errorS: errorSelect.fecha_denuncia }"
+                          ></el-date-picker>
+                          <p
+                            class="errorSelect"
+                            v-show="errorSelect.fecha_denuncia"
+                          >
+                            Este campo es obligatorio
+                          </p>
+                        </base-input>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label>Fecha Siniestro</label>
+                        <base-input>
+                          <el-date-picker
+                            type="date"
+                            format="d/M/yyyy"
+                            value-format="yyyy-MM-dd"
+                            v-model="siniestro.fecha_siniestro"
+                            @change="touchSelect('fecha_siniestro')"
+                            :class="{ errorS: errorSelect.fecha_siniestro }"
+                          ></el-date-picker>
+                          <p
+                            class="errorSelect"
+                            v-show="errorSelect.fecha_siniestro"
+                          >
+                            Este campo es obligatorio
+                          </p>
+                        </base-input>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Completo</label>
+                        <base-input>
+                          <el-date-picker
+                            type="date"
+                            format="d/M/yyyy"
+                            value-format="yyyy-MM-dd"
+                            v-model="siniestro.fecha_completo"
+                          ></el-date-picker>
+                        </base-input>
+                      </div>
+                    </div>
 
-                    <el-select
-                      filterable
-                      class="select-primary"
-                      name="tipo_reclamo"
-                      v-model="siniestro.tipo_reclamo"
-                    >
-                      <el-option
-                        v-for="tipo_reclamo in tipo_reclamos"
-                        :key="tipo_reclamo.value"
-                        :value="tipo_reclamo.value"
-                        :label="tipo_reclamo.label"
-                        class="select-primary"
-                      ></el-option>
-                    </el-select>
+                    <div class="mt-3">
+                      <label>Detalle Siniestro</label>
+                      <textarea
+                        class="form-control form-control"
+                        rows="6"
+                        name="detalle"
+                        v-model="siniestro.detalle"
+                      ></textarea>
+                    </div>
                   </div>
-                  <div class="col-md-6">
-                    <label>Estado Siniestro</label>
-                    <el-select
-                      filterable
-                      class="select-primary"
-                      name="estado_siniestro"
-                      v-model="siniestro.estado_siniestro"
-                    >
-                      <el-option
-                        v-for="estado in estados"
-                        :key="estado.value"
-                        :value="estado.value"
-                        :label="estado.label"
+                  <div class="col-md-4">
+                    <div class="">
+                      <label>Estado Siniestro</label>
+                      <el-select
+                        filterable
                         class="select-primary"
-                      ></el-option>
-                    </el-select>
-                  </div>
-                </div>
-                <div class="row mt-3">
-                  <div class="col-md-6">
-                    <div
-                      class="row mt-3"
-                      v-show="
+                        name="estado_siniestro"
+                        v-model="siniestro.estado_siniestro"
+                      >
+                        <el-option
+                          v-for="estado in estados"
+                          :key="estado.value"
+                          :value="estado.value"
+                          :label="estado.label"
+                          class="select-primary"
+                        ></el-option>
+                      </el-select>
+                    </div>
+                    <div class="mt-3">
+                      <label>Tipo Reclamo</label>
+                      <el-select
+                        filterable
+                        class="select-primary"
+                        name="tipo_reclamo"
+                        v-model="siniestro.tipo_reclamo"
+                      >
+                        <el-option
+                          v-for="tipo_reclamo in tipo_reclamos"
+                          :key="tipo_reclamo.value"
+                          :value="tipo_reclamo.value"
+                          :label="tipo_reclamo.label"
+                          class="select-primary"
+                        ></el-option>
+                      </el-select>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div
+                          class="row mt-3"
+                          v-show="
                         siniestro.tipo_reclamo == 'DAÑO A ASEGURADO (Cleas)' ||
                           siniestro.tipo_reclamo ==
                             'DAÑO A ASEGURADO (Cia. vs Cia.)' ||
                           siniestro.tipo_reclamo == 'DAÑO PARCIAL (Todo Riesgo)'
                       "
-                    >
-                      <div class="col-md-6">
-                        <label>Inspeccion</label>
-                        <el-select
-                          filterable
-                          class="select-primary"
-                          name="estado_siniestro"
-                          v-model="siniestro.inspeccion"
                         >
-                          <el-option
-                            v-for="inspeccion in inspecciones"
-                            :key="inspeccion.value"
-                            :value="inspeccion.value"
-                            :label="inspeccion.label"
-                            class="select-primary"
-                          ></el-option>
-                        </el-select>
-                      </div>
-                      <div class="col-md-6">
-                        <label>Orden de Trabajo</label>
-                        <el-select
-                          filterable
-                          class="select-primary"
-                          name="estado_siniestro"
-                          v-model="siniestro.orden_trabajo"
-                        >
-                          <el-option
-                            v-for="orden_trabajo in orden_trabajos"
-                            :key="orden_trabajo.value"
-                            :value="orden_trabajo.value"
-                            :label="orden_trabajo.label"
-                            class="select-primary"
-                          ></el-option>
-                        </el-select>
+                          <div class="col-md-6">
+                            <label>Inspeccion</label>
+                            <el-select
+                              filterable
+                              class="select-primary"
+                              name="estado_siniestro"
+                              v-model="siniestro.inspeccion"
+                            >
+                              <el-option
+                                v-for="inspeccion in inspecciones"
+                                :key="inspeccion.value"
+                                :value="inspeccion.value"
+                                :label="inspeccion.label"
+                                class="select-primary"
+                              ></el-option>
+                            </el-select>
+                          </div>
+                          <div class="col-md-6">
+                            <label>Orden de Trabajo</label>
+                            <el-select
+                              filterable
+                              class="select-primary"
+                              name="estado_siniestro"
+                              v-model="siniestro.orden_trabajo"
+                            >
+                              <el-option
+                                v-for="orden_trabajo in orden_trabajos"
+                                :key="orden_trabajo.value"
+                                :value="orden_trabajo.value"
+                                :label="orden_trabajo.label"
+                                class="select-primary"
+                              ></el-option>
+                            </el-select>
+                          </div>
+                        </div>
+
                       </div>
                     </div>
                     <div class="row mt-3">
@@ -323,29 +348,21 @@
                         </el-select>
                       </div>
                     </div>
-                    <div class="mt-3">
-                      <label>Detalle Siniestro</label>
-                      <textarea
-                        class="form-control form-control"
-                        rows="6"
-                        name="detalle"
-                        v-model="siniestro.detalle"
-                      ></textarea>
-                    </div>
+
                   </div>
-
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <label>Notas</label>
-
-                    <div type="tasks" class="text-left">
+                    <div
+                      type="tasks"
+                      class="text-left"
+                    >
                       <div class="table-full-width table-responsive">
-                        <notas-siniestro
-                          :siniestro="siniestro"
-                        ></notas-siniestro>
+                        <notas-siniestro :siniestro="siniestro"></notas-siniestro>
                       </div>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
             <div class="modal-pie pull-right mt-3">
@@ -353,8 +370,7 @@
                 class="btn btn-primary ladda-button"
                 type="submit"
                 @click="actualizar"
-                >Guardar</base-button
-              >
+              >Guardar</base-button>
             </div>
           </form>
         </card>
