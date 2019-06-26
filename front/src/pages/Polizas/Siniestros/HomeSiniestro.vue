@@ -4,7 +4,9 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
+            <div
+              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+            >
               <base-input>
                 <el-input
                   type="search"
@@ -29,39 +31,27 @@
                 :min-width="70"
                 prop="fecha_siniestro"
               ></el-table-column>
-              <el-table-column
-                label="Poliza"
-                :min-width="70"
-              >
-                <div slot-scope="{ row }">{{row.polizas.numero}}</div>
+              <el-table-column label="Poliza" :min-width="70">
+                <div slot-scope="{ row }">{{ row.polizas.numero }}</div>
               </el-table-column>
-              <el-table-column
-                label="Compañia"
-                :min-width="70"
-              >
-                <div slot-scope="{ row }">{{row.polizas.companias.nombre}}</div>
-
+              <el-table-column label="Compañia" :min-width="70">
+                <div slot-scope="{ row }">
+                  {{ row.polizas.companias.nombre }}
+                </div>
               </el-table-column>
-              <el-table-column
-                label="Asegurado"
-                :min-width="120"
-              >
-                <div slot-scope="{ row }">{{row.polizas.clientes.apellido}} {{row.polizas.clientes.nombre}}</div>
-
+              <el-table-column label="Asegurado" :min-width="120">
+                <div slot-scope="{ row }">
+                  {{ row.polizas.clientes.apellido }}
+                  {{ row.polizas.clientes.nombre }}
+                </div>
               </el-table-column>
-              <el-table-column
-                label="Completo"
-                :min-width="50"
-              >
+              <el-table-column label="Completo" :min-width="50">
                 <div slot-scope="{ row }">
                   <div v-if="row.fecha_completo == null">NO</div>
                   <div v-else>SI</div>
                 </div>
               </el-table-column>
-              <el-table-column
-                align="right"
-                label="Actions"
-              >
+              <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
                   <el-tooltip
                     content="Editar"
@@ -80,7 +70,7 @@
                     </base-button>
                   </el-tooltip>
                   <base-button
-                    @click.native="borrar(props.row.id);"
+                    @click.native="borrar(props.row.id)"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -97,7 +87,9 @@
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
             <div class>
-              <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
+              <p class="card-category">
+                Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+              </p>
             </div>
             <el-select
               class="select-primary mb-3 pagination-select"
@@ -197,17 +189,17 @@ export default {
     vaciarForm() {
       EventBus.$emit('resetInput', false);
     },
-    showModalSiniestroEditar(id) {
+    showModalSiniestroEditar() {
       this.vaciarForm();
-      this.$nextTick(() => {
-        EventBus.$emit('cargarNotas', id);
-      });
       this.isModalVisibleSiniestroEditar = true;
     },
     editar(id) {
       this.showModalSiniestroEditar(id);
       http.loadOne('siniestrosautomotor', id).then(r => {
         this.siniestro = r.data.data;
+        this.$nextTick(() => {
+          EventBus.$emit('cargarNotas', id);
+        });
       });
     },
     borrar(id) {

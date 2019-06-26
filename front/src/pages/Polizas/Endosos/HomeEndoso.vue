@@ -4,7 +4,9 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
+            <div
+              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+            >
               <base-input>
                 <el-input
                   type="search"
@@ -16,14 +18,10 @@
                   aria-controls="datatables"
                 ></el-input>
               </base-input>
-
             </div>
             <el-table :data="queriedData">
-              <el-table-column
-                label="Poliza"
-                :min-width="70"
-              >
-                <div slot-scope="{ row }">{{row.polizas.numero}}</div>
+              <el-table-column label="Poliza" :min-width="70">
+                <div slot-scope="{ row }">{{ row.polizas.numero }}</div>
               </el-table-column>
               <el-table-column
                 label="Endoso"
@@ -31,25 +29,19 @@
                 prop="numero_endoso"
               >
               </el-table-column>
-              <el-table-column
-                label="Tipo"
-                :min-width="70"
-              >
-                <div slot-scope="{ row }">{{row.tipo_endosos.nombre}}</div>
+              <el-table-column label="Tipo" :min-width="70">
+                <div slot-scope="{ row }">{{ row.tipo_endosos.nombre }}</div>
               </el-table-column>
-              <el-table-column
-                label="Asegurado"
-                :min-width="120"
-              >
-                <div slot-scope="{ row }">{{row.polizas.clientes.apellido}} {{row.polizas.clientes.nombre}}</div>
-
+              <el-table-column label="Asegurado" :min-width="120">
+                <div slot-scope="{ row }">
+                  {{ row.polizas.clientes.apellido }}
+                  {{ row.polizas.clientes.nombre }}
+                </div>
               </el-table-column>
-              <el-table-column
-                label="Compañia"
-                :min-width="70"
-              >
-                <div slot-scope="{ row }">{{row.polizas.companias.nombre}}</div>
-
+              <el-table-column label="Compañia" :min-width="70">
+                <div slot-scope="{ row }">
+                  {{ row.polizas.companias.nombre }}
+                </div>
               </el-table-column>
               <el-table-column
                 label="Fecha Solicitud"
@@ -57,19 +49,13 @@
                 prop="fecha_solicitud"
               ></el-table-column>
 
-              <el-table-column
-                label="Completo"
-                :min-width="50"
-              >
+              <el-table-column label="Completo" :min-width="50">
                 <div slot-scope="{ row }">
                   <div v-if="row.completo == true">SI</div>
                   <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column
-                align="right"
-                label="Actions"
-              >
+              <el-table-column align="right" label="Actions">
                 <div slot-scope="props">
                   <el-tooltip
                     content="Editar"
@@ -78,7 +64,9 @@
                     placement="top"
                   >
                     <base-button
-                      @click.native="editar(props.row.id, props.row.tipo_endoso_id)"
+                      @click.native="
+                        editar(props.row.id, props.row.tipo_endoso_id)
+                      "
                       class="edit btn-link"
                       type="warning"
                       size="sm"
@@ -88,7 +76,7 @@
                     </base-button>
                   </el-tooltip>
                   <base-button
-                    @click.native="borrar(props.row.id);"
+                    @click.native="borrar(props.row.id)"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -105,7 +93,9 @@
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
             <div class>
-              <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
+              <p class="card-category">
+                Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+              </p>
             </div>
             <el-select
               class="select-primary mb-3 pagination-select"
@@ -198,11 +188,8 @@ export default {
     vaciarForm() {
       EventBus.$emit('resetInput', false);
     },
-    showModalEndosoEditar(tipo_endoso_id) {
+    showModalEndosoEditar() {
       this.vaciarForm();
-      this.$nextTick(() => {
-        EventBus.$emit('filtrarTipos', tipo_endoso_id);
-      });
       this.isModalVisibleEndosoEditar = true;
     },
     editar(id, tipo_endoso_id) {
@@ -210,6 +197,9 @@ export default {
         this.endoso = r.data.data;
       });
       this.dataLoaded = true;
+      this.$nextTick(() => {
+        EventBus.$emit('filtrarTipos', tipo_endoso_id);
+      });
       this.showModalEndosoEditar(tipo_endoso_id);
     },
     borrar(url, id) {
