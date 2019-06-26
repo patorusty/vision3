@@ -79,7 +79,7 @@ export default {
     },
     crear() {
       this.nota_siniestro_aut.siniestro_automotor_id = this.siniestro.id;
-      http.create('/notas_siniestro_aut', this.nota_siniestro_aut).then(r => {
+      http.create('/notas_siniestro_aut', this.nota_siniestro_aut).then(() => {
         this.cargar(this.siniestro.id);
         this.nota_siniestro_aut.nota = '';
         EventBus.$emit('resetInput', false);
