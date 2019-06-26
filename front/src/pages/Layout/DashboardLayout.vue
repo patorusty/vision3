@@ -24,7 +24,6 @@
             icon: 'tim-icons icon-bus-front-12',
             path: '/polizas/automotor'
           }">
-
         </sidebar-item>
         <sidebar-item :link="{ name: 'Otros Riesgos', icon: 'tim-icons icon-molecule-40' }">
           <sidebar-item :link="{ name: 'Accidente Personal', path: '/otrosriesgos/accidentepersonal' }"></sidebar-item>

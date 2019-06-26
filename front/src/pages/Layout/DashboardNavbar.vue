@@ -1,21 +1,43 @@
 <template>
-  <base-nav v-model="showMenu" class="navbar-absolute top-navbar" type="white" :transparent="true">
-    <div slot="brand" class="navbar-wrapper">
+  <base-nav
+    v-model="showMenu"
+    class="navbar-absolute top-navbar"
+    type="white"
+    :transparent="true"
+  >
+    <div
+      slot="brand"
+      class="navbar-wrapper"
+    >
+      <a class="text-info titulo">VISION</a>
       <div class="navbar-minimize d-inline">
-        <sidebar-toggle-button/>
+        <sidebar-toggle-button />
       </div>
-      <div class="navbar-toggle d-inline" :class="{ toggled: $sidebar.showSidebar }">
-        <button type="button" class="navbar-toggler" @click="toggleSidebar">
+      <div
+        class="navbar-toggle d-inline"
+        :class="{ toggled: $sidebar.showSidebar }"
+      >
+        <button
+          type="button"
+          class="navbar-toggler"
+          @click="toggleSidebar"
+        >
           <span class="navbar-toggler-bar bar1"></span>
           <span class="navbar-toggler-bar bar2"></span>
           <span class="navbar-toggler-bar bar3"></span>
         </button>
       </div>
-      <a class="navbar-brand" href="#pablo">{{ routeName }}</a>
+      <a class="navbar-brand">{{ routeName }}</a>
     </div>
 
-    <ul class="navbar-nav" :class="$rtl.isRTL ? 'mr-auto' : 'ml-auto'">
-      <div class="search-bar input-group" @click="searchModalVisible = true;">
+    <ul
+      class="navbar-nav"
+      :class="$rtl.isRTL ? 'mr-auto' : 'ml-auto'"
+    >
+      <div
+        class="search-bar input-group"
+        @click="searchModalVisible = true;"
+      >
         <!--
           <input type="text" class="form-control" placeholder="Search...">
           <div class="input-group-addon"><i class="tim-icons icon-zoom-split"></i></div>
@@ -46,7 +68,12 @@
           placeholder="SEARCH"
         >
       </modal>
-      <base-dropdown tag="li" :menu-on-right="!$rtl.isRTL" title-tag="a" class="nav-item">
+      <base-dropdown
+        tag="li"
+        :menu-on-right="!$rtl.isRTL"
+        title-tag="a"
+        class="nav-item"
+      >
         <a
           slot="title"
           href="#"
@@ -59,19 +86,34 @@
           <p class="d-lg-none">New Notifications</p>
         </a>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Mike John responded to your email</a>
+          <a
+            href="#"
+            class="nav-item dropdown-item"
+          >Mike John responded to your email</a>
         </li>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">You have 5 more tasks</a>
+          <a
+            href="#"
+            class="nav-item dropdown-item"
+          >You have 5 more tasks</a>
         </li>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Your friend Michael is in town</a>
+          <a
+            href="#"
+            class="nav-item dropdown-item"
+          >Your friend Michael is in town</a>
         </li>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Another notification</a>
+          <a
+            href="#"
+            class="nav-item dropdown-item"
+          >Another notification</a>
         </li>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Another one</a>
+          <a
+            href="#"
+            class="nav-item dropdown-item"
+          >Another one</a>
         </li>
       </base-dropdown>
       <base-dropdown
@@ -95,14 +137,23 @@
           <p class="d-lg-none">Log out</p>
         </a>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Profile</a>
+          <a
+            href="#"
+            class="nav-item dropdown-item"
+          >Profile</a>
         </li>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Settings</a>
+          <a
+            href="#"
+            class="nav-item dropdown-item"
+          >Settings</a>
         </li>
         <div class="dropdown-divider"></div>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Log out</a>
+          <a
+            href="#"
+            class="nav-item dropdown-item"
+          >Log out</a>
         </li>
       </base-dropdown>
     </ul>
@@ -162,5 +213,11 @@ export default {
 <style scoped>
 .top-navbar {
   top: 0px;
+}
+.navbar-brand {
+  margin-right: 20px;
+}
+.titulo {
+  font-size: 1.5em;
 }
 </style>

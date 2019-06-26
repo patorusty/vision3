@@ -200,7 +200,9 @@ export default {
     },
     showModalEndosoEditar(tipo_endoso_id) {
       this.vaciarForm();
-      EventBus.$emit('filtrarTipos', tipo_endoso_id);
+      this.$nextTick(() => {
+        EventBus.$emit('filtrarTipos', tipo_endoso_id);
+      });
       this.isModalVisibleEndosoEditar = true;
     },
     editar(id, tipo_endoso_id) {

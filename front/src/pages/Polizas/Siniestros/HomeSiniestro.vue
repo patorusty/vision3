@@ -199,7 +199,9 @@ export default {
     },
     showModalSiniestroEditar(id) {
       this.vaciarForm();
-      EventBus.$emit('cargarNotas', id);
+      this.$nextTick(() => {
+        EventBus.$emit('cargarNotas', id);
+      });
       this.isModalVisibleSiniestroEditar = true;
     },
     editar(id) {
