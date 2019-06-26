@@ -53,10 +53,10 @@
                     <el-select
                       filterable
                       class="select-primary"
-                      :class="{ errorS: errorSelect.automotor_anio }"
-                      v-model="riesgo_automotor.automotor_anio"
+                      :class="{ errorS: errorSelect.automotor_anio_id }"
+                      v-model="riesgo_automotor.automotor_anio_id"
                       name="automotor_anio_id"
-                      @change="touchSelect('automotor_anio'), reset()"
+                      @change="touchSelect('automotor_anio_id'), reset()"
                     >
                       <el-option
                         v-for="anio in anios"
@@ -65,7 +65,7 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect.automotor_anio">
+                    <p class="errorSelect" v-show="errorSelect.automotor_anio_id">
                       Este campo es obligatorio
                     </p>
                     <label class="mt-2">Marca</label>
@@ -647,7 +647,7 @@ export default {
     versiones: [],
     url: '/anios/filtrar',
     errorSelect: {
-      automotor_anio: false,
+      automotor_anio_id: false,
       automotor_marca_id: false,
       automotor_modelo_id: false,
       automotor_version_id: false,
@@ -655,7 +655,7 @@ export default {
       tipo_carroceria: false
     },
     selected: {
-      automotor_anio: false,
+      automotor_anio_id: false,
       automotor_marca_id: false,
       automotor_modelo_id: false,
       automotor_version_id: false,
@@ -678,7 +678,9 @@ export default {
       valor_accesorio_01: 0,
       valor_accesorio_02: 0,
       valor_total: '',
-      automotor_version_id: ''
+      automotor_version_id: '',
+      automotor_marca_id: '',
+      automotor_anio_id: ''
     },
     dropzoneOptions: {
       url: 'http://127.0.0.1:8000/api/imagenes_r_a',
