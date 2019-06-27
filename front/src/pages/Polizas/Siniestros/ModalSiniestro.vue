@@ -23,96 +23,84 @@
               </button>
             </div>
             <div class="modal-contenido">
+
               <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-3">
-                    <base-input
-                      label="Numero Siniestro"
-                      type="text"
-                      name="numero_siniestro"
-                      v-model="siniestro.numero_siniestro"
-                    ></base-input>
-                  </div>
-                  <div class="col-md-3">
-                    <label>Fecha Denuncia</label>
-                    <base-input>
-                      <el-date-picker
-                        type="date"
-                        format="d/M/yyyy"
-                        value-format="yyyy-MM-dd"
-                        v-model="siniestro.fecha_denuncia"
-                        @change="touchSelect('fecha_denuncia')"
-                        :class="{ errorS: errorSelect.fecha_denuncia }"
-                      >
-                      </el-date-picker>
-                      <p
-                        class="errorSelect"
-                        v-show="errorSelect.fecha_denuncia"
-                      >
-                        Este campo es obligatorio
-                      </p>
-                    </base-input>
-                  </div>
-                  <div class="col-md-3">
-                    <label>Fecha Siniestro</label>
-                    <base-input>
-                      <el-date-picker
-                        type="date"
-                        format="d/M/yyyy"
-                        value-format="yyyy-MM-dd"
-                        v-model="siniestro.fecha_siniestro"
-                        @change="touchSelect('fecha_siniestro')"
-                        :class="{ errorS: errorSelect.fecha_siniestro }"
-                      >
-                      </el-date-picker>
-                      <p
-                        class="errorSelect"
-                        v-show="errorSelect.fecha_siniestro"
-                      >
-                        Este campo es obligatorio
-                      </p>
-                    </base-input>
-                  </div>
-                  <div class="col-md-3">
-                    <label>Completo</label>
-                    <base-input>
-                      <el-date-picker
-                        type="date"
-                        format="d/M/yyyy"
-                        value-format="yyyy-MM-dd"
-                        v-model="siniestro.fecha_completo"
-                      >
-                      </el-date-picker>
-                    </base-input>
-                  </div>
-                </div>
-                <div class="row">
                   <div class="col-md-6">
-                    <label>Tipo Reclamo</label>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <base-input
+                          label="Numero Siniestro"
+                          type="text"
+                          name="numero_siniestro"
+                          v-model="siniestro.numero_siniestro"
+                        ></base-input>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Fecha Denuncia</label>
+                        <base-input>
+                          <el-date-picker
+                            type="date"
+                            format="d/M/yyyy"
+                            value-format="yyyy-MM-dd"
+                            v-model="siniestro.fecha_denuncia"
+                            @change="touchSelect('fecha_denuncia')"
+                            :class="{ errorS: errorSelect.fecha_denuncia }"
+                          >
+                          </el-date-picker>
+                          <p
+                            class="errorSelect"
+                            v-show="errorSelect.fecha_denuncia"
+                          >
+                            Este campo es obligatorio
+                          </p>
+                        </base-input>
+                      </div>
+                    </div>
 
-                    <el-select
-                      filterable
-                      class="select-primary"
-                      name="tipo_reclamo"
-                      v-model="siniestro.tipo_reclamo"
-                      :class="{ errorS: errorSelect.tipo_reclamo }"
-                      @change="touchSelect('tipo_reclamo');"
-                    >
-                      <el-option
-                        v-for="tipo_reclamo in tipo_reclamos"
-                        :key="tipo_reclamo.value"
-                        :value="tipo_reclamo.value"
-                        :label="tipo_reclamo.label"
-                        class="select-primary"
-                      >
-                      </el-option>
-                    </el-select>
-                    <p
-                      class="errorSelect"
-                      v-show="errorSelect.tipo_reclamo"
-                    >
-                      Este campo es obligatorio
-                    </p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label>Fecha Siniestro</label>
+                        <base-input>
+                          <el-date-picker
+                            type="date"
+                            format="d/M/yyyy"
+                            value-format="yyyy-MM-dd"
+                            v-model="siniestro.fecha_siniestro"
+                            @change="touchSelect('fecha_siniestro')"
+                            :class="{ errorS: errorSelect.fecha_siniestro }"
+                          >
+                          </el-date-picker>
+                          <p
+                            class="errorSelect"
+                            v-show="errorSelect.fecha_siniestro"
+                          >
+                            Este campo es obligatorio
+                          </p>
+                        </base-input>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Completo</label>
+                        <base-input>
+                          <el-date-picker
+                            type="date"
+                            format="d/M/yyyy"
+                            value-format="yyyy-MM-dd"
+                            v-model="siniestro.fecha_completo"
+                          >
+                          </el-date-picker>
+                        </base-input>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <label>Detalle Siniestro</label>
+                      <textarea
+                        class="form-control form-control"
+                        rows="6"
+                        name="detalle"
+                        v-model="siniestro.detalle"
+                      ></textarea>
+                    </div>
                   </div>
                   <div class="col-md-6">
                     <label>Estado Siniestro</label>
@@ -139,10 +127,33 @@
                     >
                       Este campo es obligatorio
                     </p>
-                  </div>
-                </div>
-                <div class="row mt-3">
-                  <div class="col-md-6">
+                    <div class="mt-3">
+                      <label>Tipo Reclamo</label>
+
+                      <el-select
+                        filterable
+                        class="select-primary"
+                        name="tipo_reclamo"
+                        v-model="siniestro.tipo_reclamo"
+                        :class="{ errorS: errorSelect.tipo_reclamo }"
+                        @change="touchSelect('tipo_reclamo');"
+                      >
+                        <el-option
+                          v-for="tipo_reclamo in tipo_reclamos"
+                          :key="tipo_reclamo.value"
+                          :value="tipo_reclamo.value"
+                          :label="tipo_reclamo.label"
+                          class="select-primary"
+                        >
+                        </el-option>
+                      </el-select>
+                      <p
+                        class="errorSelect"
+                        v-show="errorSelect.tipo_reclamo"
+                      >
+                        Este campo es obligatorio
+                      </p>
+                    </div>
                     <div
                       class="row mt-3"
                       v-show="siniestro.tipo_reclamo == 'DAÑO A ASEGURADO (Cleas)' || siniestro.tipo_reclamo ==  'DAÑO A ASEGURADO (Cia. vs Cia.)' || siniestro.tipo_reclamo == 'DAÑO PARCIAL (Todo Riesgo)' "
@@ -271,32 +282,11 @@
                         </el-select>
                       </div>
                     </div>
-                    <div class="mt-3">
-                      <label>Detalle Siniestro</label>
-                      <textarea
-                        class="form-control form-control"
-                        rows="6"
-                        name="detalle"
-                        v-model="siniestro.detalle"
-                      ></textarea>
-                    </div>
+
                   </div>
 
-                  <div
-                    v-if="siniestro.id != null"
-                    class="col-md-6"
-                  >
-                    <label>Notas</label>
-                    <div
-                      type="tasks"
-                      class="text-left"
-                    >
-                      <div class="table-full-width table-responsive">
-                        <notas-siniestro></notas-siniestro>
-                      </div>
-                    </div>
-                  </div>
                 </div>
+
               </div>
             </div>
             <div class="modal-pie pull-right mt-3">
