@@ -136,8 +136,8 @@ import { mixin } from '../../../mixins/mixin.js';
 import { EventBus } from '../../../main.js';
 
 export default {
+  mixins: [mixin],
   components: {
-    mixins: [mixin],
     BaseSwitch,
     ImageUpload,
     [Select.name]: Select,

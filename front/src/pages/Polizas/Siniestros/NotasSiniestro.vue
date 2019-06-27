@@ -1,8 +1,11 @@
 <template>
   <div>
     <div class="row ">
-      <div class="col-md-10 mt-1">
-        <base-input v-model="nota_siniestro_aut.nota"> </base-input>
+      <div class="col-md-10">
+        <base-input
+          @keydown.enter="crear"
+          v-model="nota_siniestro_aut.nota"
+        > </base-input>
       </div>
       <div
         id="botonenviar"
@@ -97,19 +100,14 @@ export default {
       });
     },
     borrar(id) {
-      this.dangerSwal().then(r => {
-        if (r.value) {
-          http.delete('/notas_siniestro_aut', id).then(() => {
-            this.notifyVue('danger', 'El endoso ha sido eliminado');
-            this.cargar(this.siniestro.id);
-          });
-        }
+      http.delete('/notas_siniestro_aut', id).then(() => {
+        this.notifyVue('danger', 'Nota eliminada');
+        this.cargar(this.siniestro.id);
       });
     }
   },
   mounted() {
     EventBus.$on('cargarNotas', id => {
-      console.log('pin');
       this.cargar(id);
     });
     EventBus.$on('closeModal', val => {

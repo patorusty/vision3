@@ -610,9 +610,9 @@ export default {
 }
 .table-responsive {
   padding-bottom: 10px;
-  max-height: 200px;
+  max-height: 360px;
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .recuadro {
   margin-right: 15px;

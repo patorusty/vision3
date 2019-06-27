@@ -190,9 +190,15 @@ export default {
           http
             .create('configuracion/usuarios', this.usuario)
             .then(() => {
-              this.notifyVue('success', 'El usuario ha sido creado con exito');
-              this.$router.push({ name: 'Usuarios' });
+              this.notifyVue(
+                'success',
+                'El usuario ha sido modificado con exito'
+              );
+              this.$router.push({
+                name: 'Usuarios'
+              });
             })
+
             .catch(e => console.log(e));
         }
       });
