@@ -19,7 +19,7 @@
                     <div class="col-md-6">
                       <div class="row">
                         <div class="col-md-6">
-                          <label>Cliente</label>
+                          <label>Asegurado</label>
                           <el-select
                             filterable
                             name="cliente_id"
@@ -85,8 +85,7 @@
                               :key="compania.id"
                               :value="compania.id"
                               :label="compania.nombre"
-                              >{{ compania.nombre }}</el-option
-                            >
+                            >{{ compania.nombre }}</el-option>
                           </el-select>
                           <p
                             class="errorSelect"
@@ -138,17 +137,13 @@
                           ></base-input>
                           <div class="row">
                             <div class="col-md-6">
-                              <label for="numero_solicitud"
-                                >Renueva Poliza Nro:</label
-                              >
+                              <label for="numero_solicitud">Renueva Poliza Nro:</label>
                               <p class="text-primary">
                                 {{ poliza.renueva_numero }}
                               </p>
                             </div>
                             <div class="col-md-6">
-                              <label for="numero_solicitud"
-                                >Nro de Solicitud:</label
-                              >
+                              <label for="numero_solicitud">Nro de Solicitud:</label>
                               <p class="text-primary">
                                 {{ poliza.numero_solicitud }}
                               </p>
@@ -366,9 +361,7 @@
                         </div>
                       </div>
                     </div>
-                    <div
-                      class="col-md-4 d-flex flex-column justify-content-between"
-                    >
+                    <div class="col-md-4 d-flex flex-column justify-content-between">
                       <label>Detalle:</label>
                       <textarea
                         class="form-control form-control"
@@ -378,10 +371,11 @@
                         v-model="poliza.detalle_medio_pago"
                       ></textarea>
                     </div>
-                    <div
-                      class="col-md-2 d-flex justify-content-end align-items-end"
-                    >
-                      <button type="submit" class="btn btn-primary">
+                    <div class="col-md-2 d-flex justify-content-end align-items-end">
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                      >
                         Crear
                       </button>
                     </div>
@@ -472,15 +466,15 @@ export default {
       medio_pagos: [
         {
           value: 'TARJETA DE CREDITO',
-          label: 'TARJETA DE CREDITO'
+          label: 'TC'
         },
         {
           value: 'DEBITO EN CUENTA',
-          label: 'DEBITO EN CUENTA'
+          label: 'DC'
         },
         {
           value: 'RAPIPAGO / PAGOFACIL',
-          label: 'RAPIPAGO / PAGOFACIL'
+          label: 'RP / PF'
         }
       ],
       dataLoaded: false

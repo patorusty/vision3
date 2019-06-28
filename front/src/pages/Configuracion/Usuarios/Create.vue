@@ -20,16 +20,6 @@
                   v-model="usuario.compania"
                 >
                 </base-input>
-                <base-input
-                  type="text"
-                  label="Nombre"
-                  v-model="usuario.nombre"
-                  v-validate="'required'"
-                  :error="getError('nombre')"
-                  name="nombre"
-                >
-                </base-input>
-
               </div>
               <div class="col-md-6">
                 <base-input
@@ -44,6 +34,22 @@
                   :class="{ 'has-danger': mailUsed }"
                 >
                 </base-input>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <base-input
+                  type="text"
+                  label="Nombre"
+                  v-model="usuario.nombre"
+                  v-validate="'required'"
+                  :error="getError('nombre')"
+                  name="nombre"
+                >
+                </base-input>
+              </div>
+              <div class="col-md-6">
                 <base-input
                   type="text"
                   label="Apellido"
@@ -53,9 +59,7 @@
                   name="apellido"
                 >
                 </base-input>
-
               </div>
-
             </div>
             <div class="row">
               <div class="col-md-4">
@@ -143,6 +147,7 @@ import { BaseSwitch, ImageUpload } from 'src/components/index';
 import http from '../../../API/http-request.js';
 import debounce from '../../../debounce.js';
 import { mixin } from '../../../mixins/mixin.js';
+import { EventBus } from '../../../main.js';
 
 export default {
   mixins: [mixin],
@@ -183,6 +188,16 @@ export default {
       http.load('tipousuario').then(response => {
         this.tipo_usuarios = response.data.data;
       });
+    },
+    checkSelect() {
+      let valor = true;
+      Object.entries(this.selected).forEach(select => {
+        if (select[1] == false) {
+          this.errorSelect[`${select[0]}`] = true;
+          valor = false;
+        }
+      });
+      return valor;
     },
     crearUsuario() {
       this.$validator.validateAll().then(r => {

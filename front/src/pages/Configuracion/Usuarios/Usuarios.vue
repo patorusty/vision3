@@ -41,6 +41,14 @@
                 label="Email"
                 :min-width="100"
               ></el-table-column>
+              <el-table-column
+                label="Tipo Usuario"
+                :min-width="100"
+              >
+                <div slot-scope="{ row }">
+                  {{ row.tipo_usuario.nombre}}
+                </div>
+              </el-table-column>
               <el-table-column label="Activo">
                 <div slot-scope="{ row }">
                   <div v-if="row.activo == 1">SI</div>
@@ -89,6 +97,35 @@
                 </div>
               </el-table-column>
             </el-table>
+          </div>
+          <div
+            slot="footer"
+            class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+          >
+            <div class>
+              <p class="card-category">
+                Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+              </p>
+            </div>
+            <el-select
+              class="select-primary mb-3 pagination-select"
+              v-model="pagination.perPage"
+              placeholder="Per page"
+            >
+              <el-option
+                class="select-primary"
+                v-for="item in pagination.perPageOptions"
+                :key="item"
+                :label="item"
+                :value="item"
+              ></el-option>
+            </el-select>
+            <base-pagination
+              class="pagination-no-border"
+              v-model="pagination.currentPage"
+              :per-page="pagination.perPage"
+              :total="total"
+            ></base-pagination>
           </div>
         </card>
       </div>

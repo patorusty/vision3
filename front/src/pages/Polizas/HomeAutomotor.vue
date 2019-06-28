@@ -3,50 +3,171 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <div>
-            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
-              <base-input>
-                <el-input
-                  type="search"
-                  class="mb-3 search-input"
-                  clearable
-                  prefix-icon="el-icon-search"
-                  placeholder="Buscar"
-                  v-model="searchQuery"
-                  aria-controls="datatables"
-                ></el-input>
-              </base-input>
-              <router-link
-                slot="header"
-                to="/polizas/create"
-              >
-                <base-button
-                  class="animation-on-hover pull-right"
-                  type="primary"
-                >Crear</base-button>
-              </router-link>
+          <div class="">
+            <div class="row">
+              <div class="col-md-10">
+                <div class="row">
+                  <div class="col-md-4">
+                    <label>Asegurado:</label>
+                    <el-select
+                      filterable
+                      name="cliente_id"
+                      class="select-primary"
+                    >
+                      <el-option
+                        v-for="cliente in clientes"
+                        class="select-primary"
+                        :key="cliente.id"
+                        :value="cliente.id"
+                        :label="
+                                cliente.apellido +
+                                  ' ' +
+                                  cliente.nombre +
+                                  ' | DNI: ' +
+                                  cliente.nro_dni
+                              "
+                      ></el-option>
+                    </el-select>
+                  </div>
+                  <div class="col-md-3">
+                    <base-input>
+                      <label>Poliza N:</label>
+                      <el-input
+                        type="search"
+                        class="search-input"
+                        clearable
+                        prefix-icon="el-icon-search"
+                        placeholder="Buscar"
+                        v-model="searchQuery"
+                        aria-controls="datatables"
+                      ></el-input>
+                    </base-input>
+                  </div>
+                  <div class="col-md-3">
+                    <base-input>
+                      <label>Patente:</label>
+                      <el-input
+                        type="search"
+                        class="search-input"
+                        clearable
+                        prefix-icon="el-icon-search"
+                        placeholder="Buscar"
+                        v-model="searchQuery"
+                        aria-controls="datatables"
+                      ></el-input>
+                    </base-input>
+                  </div>
+                </div>
+                <collapse :active-index="1">
+                  <collapse-item
+                    title="Busqueda avanzada"
+                    class="style=padding:0px"
+                  >
+                    <div class="
+                    row">
+                      <div class="col-md-3">
+                        <label>Compañia</label>
+                        <el-select
+                          name="compania"
+                          class="select-primary"
+                          filterable
+                        >
+                          <el-option
+                            class="select-primary"
+                            v-for="compania in companias"
+                            :key="compania.id"
+                            :value="compania.id"
+                            :label="compania.nombre"
+                          ></el-option>
+                        </el-select>
+                      </div>
+                      <div class="col-md-3">
+                        <base-input>
+                          <label>Estado:</label>
+                          <el-input
+                            type="search"
+                            class="search-input"
+                            clearable
+                            prefix-icon="el-icon-search"
+                            placeholder="Buscar"
+                            v-model="searchQuery"
+                            aria-controls="datatables"
+                          ></el-input>
+                        </base-input>
+                      </div>
+                      <div class="col-md-3">
+                        <base-input>
+                          <label>Cobertura:</label>
+                          <el-input
+                            type="search"
+                            class="search-input"
+                            clearable
+                            prefix-icon="el-icon-search"
+                            placeholder="Buscar"
+                            v-model="searchQuery"
+                            aria-controls="datatables"
+                          ></el-input>
+                        </base-input>
+                      </div>
+                      <div class="col-md-3">
+                        <base-input>
+                          <label>Forma de Pago:</label>
+                          <el-input
+                            type="search"
+                            class="search-input"
+                            clearable
+                            prefix-icon="el-icon-search"
+                            placeholder="Buscar"
+                            v-model="searchQuery"
+                            aria-controls="datatables"
+                          ></el-input>
+                        </base-input>
+                      </div>
+                    </div>
+                  </collapse-item>
+                </collapse>
+                <div class="botonbuscar">
+                  <base-button type="primary">Buscar
+                  </base-button>
+                </div>
+              </div>
+              <div class="botoncrear col-md-2">
+                <router-link to="/polizas/create">
+                  <base-button
+                    class="right"
+                    type="primary"
+                  >Crear</base-button>
+                </router-link>
+              </div>
             </div>
+          </div>
+        </card>
+        <!-- ACA EMPIEZA LA TABLA -->
+        <card card-body-classes="table-full-width">
+          <div>
+
             <el-table :data="queriedData">
               <el-table-column
                 label="Poliza"
                 prop="numero"
-                sortable
-                :min-width="50"
+                :min-width="127"
               ></el-table-column>
-              <!-- <el-table-column label="Patente"></el-table-column> -->
-              <el-table-column label="Compania">
-                <div slot-scope="{ row }">{{row.companias.nombre}} ({{row.codigo_productor.codigo_productor}})</div>
+              <el-table-column
+                label="Compania"
+                :min-width="113"
+              >
+                <div slot-scope="{ row }">{{row.companias.nombre}} <br>
+                  Cod.({{row.codigo_productor.codigo_productor}})</div>
               </el-table-column>
               <el-table-column
                 label="Cliente"
-                sortable
-                :min-width="100"
+                :min-width="128"
               >
                 <div slot-scope="{ row }">
                   <router-link
                     v-if="row.clientes.razon_social === null"
                     to="#"
-                  >{{ row.clientes.nombre }} {{ row.clientes.apellido }}</router-link>
+                  >{{ row.clientes.apellido }} <br> {{ row.clientes.nombre }}</router-link>
                   <router-link
                     v-else
                     to="#"
@@ -54,42 +175,65 @@
                 </div>
               </el-table-column>
               <el-table-column
+                label="Patente"
+                :min-width="100"
+              >
+                <div slot-scope="{ row }">{{row.vigencia_desde}}</div>
+              </el-table-column>
+              <el-table-column
                 label="Vigencia"
-                :min-width="60"
+                :min-width="100"
                 prop="tipo_vigencias.vigencia"
               ></el-table-column>
               <el-table-column
-                label="Desde / Hasta"
-                :min-width="100"
+                label="Desde/Hasta"
+                :min-width="141"
+                sortable
               >
-                <div slot-scope="{ row }">{{row.vigencia_desde}} - {{row.vigencia_hasta}}</div>
+                <div slot-scope="{ row }">{{row.vigencia_desde}} <br> {{row.vigencia_hasta}}</div>
               </el-table-column>
               <el-table-column
                 label="Estado"
                 prop="estado_polizas.nombre"
-                :min-width="100"
+                :min-width="109"
               ></el-table-column>
-              <el-table-column label="Envio">
+              <el-table-column
+                :min-width="117"
+                label="Envio"
+              >
                 <div slot-scope="{ row }">
                   <div v-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null">Recibida</div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null">Entregada</div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null">Correo</div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null">Email</div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null">Entregada / Correo</div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null">Entregada / Email</div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null">Correo / Email</div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null">Entregada / Correo / Email</div>
-                  <div v-else>No recibida</div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null"> <i class="tim-icons icon-check-2"></i>
+                  </div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null"> <i class="tim-icons icon-send"></i>
+                  </div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null"> <i class="tim-icons icon-email-85"></i>
+                  </div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null"> <i class="tim-icons icon-check-2"></i>
+                    / <i class="tim-icons icon-send"></i>
+                  </div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null"> <i class="tim-icons icon-check-2"></i>
+                    / <i class="tim-icons icon-email-85"></i>
+                  </div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null"> <i class="tim-icons icon-send"></i>
+                    / <i class="tim-icons icon-email-85"></i>
+                  </div>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null"> <i class="tim-icons icon-check-2"></i>
+                    / <i class="tim-icons icon-send"></i>
+                    / <i class="tim-icons icon-email-85"></i>
+                  </div>
+                  <div v-else>No Recibida</div>
                 </div>
               </el-table-column>
               <el-table-column
-                label="F. Pago"
+                label="Pago"
                 prop="medio_pago"
-                :min-width="50"
+                :min-width="71"
               ></el-table-column>
               <el-table-column
                 align="right"
                 label="Actions"
+                :width="94"
               >
                 <div slot-scope="props">
                   <el-tooltip
@@ -156,7 +300,7 @@
 </template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
-import { BasePagination } from 'src/components';
+import { BasePagination, CollapseItem, Collapse } from 'src/components';
 import { mixin } from '../../mixins/mixin.js';
 import http from '../../API/http-request.js';
 import { format } from 'date-fns';
@@ -165,6 +309,8 @@ export default {
   mixins: [mixin],
   components: {
     BasePagination,
+    Collapse,
+    CollapseItem,
     [Select.name]: Select,
     [Option.name]: Option,
     [Table.name]: Table,
@@ -172,7 +318,10 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      companias: {},
+      clientes: {}
+    };
   },
   methods: {
     cargaPolizas() {
@@ -200,10 +349,55 @@ export default {
           });
         }
       });
+    },
+    cargarCompanias() {
+      http.load('administracion/companias').then(response => {
+        this.companias = response.data.data;
+      });
+    },
+    cargarClientes() {
+      http.load('clientes').then(response => {
+        this.clientes = response.data.data;
+      });
     }
   },
   created() {
     this.cargaPolizas();
+    this.cargarCompanias();
+    this.cargarClientes();
   }
 };
 </script>
+<style>
+.card-collapse .card .card-body {
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.card-collapse .card .card-header {
+  padding-top: 0px;
+  padding-bottom: 3px;
+  padding-left: 0px;
+}
+.card-collapse .card {
+  align-items: left;
+}
+.card-collapse .card .card-header a i {
+  margin-left: 5px;
+  padding-top: 3px;
+}
+
+.card-collapse .card .card-header a[data-toggle='collapse'] i {
+  float: left;
+  position: absolute;
+  color: gray;
+}
+.botoncrear {
+  align-self: center;
+  text-align: right;
+}
+.botonbuscar {
+  text-align: center;
+}
+</style>
+

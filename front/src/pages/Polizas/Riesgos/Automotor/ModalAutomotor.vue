@@ -1,7 +1,14 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div class="modal-backdrop" @keydown.esc="close" @click="close">
-      <div @click.stop style="width:75%;">
+    <div
+      class="modal-backdrop"
+      @keydown.esc="close"
+      @click="close"
+    >
+      <div
+        @click.stop
+        style="width:75%;"
+      >
         <card>
           <form>
             <div class="d-flex justify-content-between">
@@ -65,7 +72,10 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect.automotor_anio_id">
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.automotor_anio_id"
+                    >
                       Este campo es obligatorio
                     </p>
                     <label class="mt-2">Marca</label>
@@ -168,7 +178,10 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect.cobertura_id">
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.cobertura_id"
+                    >
                       Este campo es obligatorio
                     </p>
                     <base-input
@@ -176,7 +189,7 @@
                       label="Franquicia"
                       v-model="riesgo_automotor.franquicia"
                       name="franquicia"
-                      :disabled="cobertura.todo_riesgo == 1"
+                      :disabled="cobertura.todo_riesgo == 0"
                     >
                     </base-input>
                   </div>
@@ -272,9 +285,7 @@
                     >
                     </base-input>
                     <div class="mt-4">
-                      <base-checkbox v-model="riesgo_automotor.okm"
-                        >0km</base-checkbox
-                      >
+                      <base-checkbox v-model="riesgo_automotor.okm">0km</base-checkbox>
                     </div>
                     <label class="mt-4">Ajuste</label>
                     <el-select
@@ -343,7 +354,10 @@
                         class="select-primary"
                       ></el-option>
                     </el-select>
-                    <p class="errorSelect" v-show="errorSelect.tipo_carroceria">
+                    <p
+                      class="errorSelect"
+                      v-show="errorSelect.tipo_carroceria"
+                    >
                       Este campo es obligatorio
                     </p>
                     <label class="mt-2">Combustible</label>
@@ -377,9 +391,15 @@
                       ></el-option>
                     </el-select>
                     <label class="mt-2">Color</label>
-                    <base-input v-model="riesgo_automotor.color" name="color">
+                    <base-input
+                      v-model="riesgo_automotor.color"
+                      name="color"
+                    >
                     </base-input>
-                    <base-input label="Valor Total" v-model="suma">
+                    <base-input
+                      label="Valor Total"
+                      v-model="suma"
+                    >
                     </base-input>
                     <base-input label="Observaciones">
                       <textarea
@@ -425,7 +445,10 @@
                   <i class="tim-icons icon-settings"></i>GNC
                 </span>
                 <div class="row col-md-4">
-                  <p class="text-primary col-md-3" style="padding-left:0px">
+                  <p
+                    class="text-primary col-md-3"
+                    style="padding-left:0px"
+                  >
                     GNC
                   </p>
                   <base-checkbox
@@ -536,8 +559,7 @@
                 <base-checkbox
                   class="mb-3"
                   v-model="riesgo_automotor.acreedor_prendario"
-                  >Tiene Acreedor Prendario?</base-checkbox
-                >
+                >Tiene Acreedor Prendario?</base-checkbox>
                 <div class="row">
                   <div class="col-md-4">
                     <base-input
@@ -584,15 +606,12 @@
                 </vue-dropzone>
               </tab-pane>
             </tabs>
-            <div
-              class="col-md-12 d-flex justify-content-center align-items-stretch"
-            >
+            <div class="col-md-12 d-flex justify-content-center align-items-stretch">
               <base-button
                 @click="crear"
                 type="submit"
                 class="btn btn-primary ladda-button"
-                >Crear</base-button
-              >
+              >Crear</base-button>
             </div>
           </form>
         </card>

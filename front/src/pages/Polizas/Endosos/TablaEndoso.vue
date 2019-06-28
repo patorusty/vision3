@@ -1,7 +1,10 @@
 <template>
   <div class="col-md-6">
     <card class="mt-4 ">
-      <div class="col-sm-12 row align-items-center" slot="header">
+      <div
+        class="col-sm-12 row align-items-center"
+        slot="header"
+      >
         <div class="col">
           <h4 class="d-inline text-primary ">ENDOSOS</h4>
           <base-button
@@ -9,8 +12,7 @@
             size="sm"
             class="float-right"
             @click="showModalEndoso"
-            >+</base-button
-          >
+          >+</base-button>
         </div>
       </div>
       <div class="row">
@@ -23,24 +25,36 @@
               prop="fecha_solicitud"
             >
             </el-table-column>
-            <el-table-column min-width="132" label="Tipo" align="left">
+            <el-table-column
+              min-width="130"
+              label="Tipo"
+              align="left"
+            >
               <div slot-scope="{ row }">
                 {{ row.tipo_endosos.nombre }}
               </div>
             </el-table-column>
-            <el-table-column min-width="150" label="Detalle" align="left">
+            <el-table-column
+              min-width="145"
+              label="Detalle"
+              align="left"
+            >
               <div slot-scope="{ row }">
                 {{ row.detalle_endosos.nombre }}
               </div>
             </el-table-column>
-            <el-table-column min-width="85" align="left" label="Compl.">
+            <el-table-column
+              min-width="80"
+              align="left"
+              label="Compl."
+            >
               <div slot-scope="{ row }">
                 <div v-if="row.completo == true">SI</div>
                 <div v-else>NO</div>
               </div>
             </el-table-column>
             <el-table-column
-              min-width="90"
+              min-width="94"
               header-align="right"
               align="right"
               label="Actions"
@@ -71,7 +85,12 @@
                   :open-delay="300"
                   placement="top"
                 >
-                  <base-button type="danger" icon size="sm" class="btn-link">
+                  <base-button
+                    type="danger"
+                    icon
+                    size="sm"
+                    class="btn-link"
+                  >
                     <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </el-tooltip>

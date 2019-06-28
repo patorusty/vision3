@@ -1,7 +1,10 @@
 <template>
   <div class="col-md-6">
     <card class="mt-4 ">
-      <div class="col-sm-12 row align-items-center" slot="header">
+      <div
+        class="col-sm-12 row align-items-center"
+        slot="header"
+      >
         <div class="col">
           <h4 class="d-inline text-primary ">SINIESTROS</h4>
           <base-button
@@ -9,8 +12,7 @@
             size="sm"
             class="float-right"
             @click="showModalSiniestro"
-            >+</base-button
-          >
+          >+</base-button>
         </div>
       </div>
       <div class="row">
@@ -37,7 +39,11 @@
               prop="numero_siniestro"
             >
             </el-table-column>
-            <el-table-column min-width="85" align="left" label="Completo">
+            <el-table-column
+              min-width="85"
+              align="left"
+              label="Compl."
+            >
               <div slot-scope="{ row }">
                 <div v-if="row.fecha_completo == null">NO</div>
                 <div v-else>SI</div>
@@ -73,7 +79,12 @@
                   :open-delay="300"
                   placement="top"
                 >
-                  <base-button type="danger" icon size="sm" class="btn-link">
+                  <base-button
+                    type="danger"
+                    icon
+                    size="sm"
+                    class="btn-link"
+                  >
                     <i class="tim-icons icon-simple-remove"></i>
                   </base-button>
                 </el-tooltip>
