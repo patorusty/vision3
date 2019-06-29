@@ -75,8 +75,7 @@
                               :key="compania.id"
                               :value="compania.id"
                               :label="compania.nombre"
-                              >{{ compania.nombre }}</el-option
-                            >
+                            >{{ compania.nombre }}</el-option>
                           </el-select>
                         </div>
                         <div class="col-md-6">
@@ -111,17 +110,13 @@
                           ></base-input>
                           <div class="row">
                             <div class="col-md-6">
-                              <label for="numero_solicitud"
-                                >Renueva Poliza Nro:</label
-                              >
+                              <label for="numero_solicitud">Renueva Poliza Nro:</label>
                               <p class="text-primary">
                                 {{ poliza.renueva_numero }}
                               </p>
                             </div>
                             <div class="col-md-6">
-                              <label for="numero_solicitud"
-                                >Nro de Solicitud:</label
-                              >
+                              <label for="numero_solicitud">Nro de Solicitud:</label>
                               <p class="text-primary">
                                 {{ poliza.numero_solicitud }}
                               </p>
@@ -140,7 +135,6 @@
                             value="tipo_vigencia_id"
                             v-model="poliza.tipo_vigencia_id"
                           >
-                            >
                             <el-option
                               class="select-primary"
                               v-for="tipo_vigencia in tipo_vigencias"
@@ -278,17 +272,18 @@
                       <label>Medio de Pago:</label>
                       <el-select
                         filterable
-                        name="medio_pago"
+                        name="forma_pago"
                         class="select-primary"
-                        v-model="poliza.medio_pago"
+                        value="forma_pago_id"
+                        v-model="poliza.forma_pago_id"
                       >
                         <el-option
-                          v-for="medio_pago in medio_pagos"
-                          :key="medio_pago.value"
-                          :label="medio_pago.label"
-                          :value="medio_pago.value"
+                          v-for="forma_pago in forma_pagos"
+                          :key="forma_pago.id"
+                          :value="forma_pago.id"
+                          :label="forma_pago.nombre"
                           class="select-primary"
-                        >
+                        >{{ forma_pago.nombre}}
                         </el-option>
                       </el-select>
                       <div class="row">
@@ -296,7 +291,7 @@
                           <label>Plan de Pago:</label>
                           <el-select
                             filterable
-                            name="medio_pago"
+                            name="plan_pago"
                             class="select-primary"
                             v-model="poliza.plan_pago"
                           >
@@ -332,10 +327,11 @@
                         v-model="poliza.detalle_medio_pago"
                       ></textarea>
                     </div>
-                    <div
-                      class="col-md-3 d-flex justify-content-end align-items-end"
-                    >
-                      <button type="submit" class="btn btn-primary">
+                    <div class="col-md-3 d-flex justify-content-end align-items-end">
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                      >
                         Guardar
                       </button>
                     </div>
@@ -351,8 +347,14 @@
             />
             <div class="col-md-12">
               <div class="row">
-                <tabla-endosos v-if="dataLoaded" :poliza="poliza" />
-                <tabla-siniestros v-if="dataLoaded" :poliza="poliza" />
+                <tabla-endosos
+                  v-if="dataLoaded"
+                  :poliza="poliza"
+                />
+                <tabla-siniestros
+                  v-if="dataLoaded"
+                  :poliza="poliza"
+                />
               </div>
             </div>
           </div>
@@ -393,6 +395,7 @@ export default {
       tipo_riesgos: {},
       codigo_productores: {},
       tipo_vigencias: {},
+      forma_pagos: {},
       plan_pagos: [
         {
           value: 'MENSUAL',
@@ -415,20 +418,7 @@ export default {
           label: 'TOTAL'
         }
       ],
-      medio_pagos: [
-        {
-          value: 'TARJETA DE CREDITO',
-          label: 'TARJETA DE CREDITO'
-        },
-        {
-          value: 'DEBITO EN CUENTA',
-          label: 'DEBITO EN CUENTA'
-        },
-        {
-          value: 'RAPIPAGO / PAGOFACIL',
-          label: 'RAPIPAGO / PAGOFACIL'
-        }
-      ],
+
       numeroSolicitud: this.$route.params.numero_solicitud,
       dataLoaded: false
     };
@@ -509,6 +499,11 @@ export default {
         this.companias = response.data.data;
       });
     },
+    cargarFormaPagos() {
+      http.load('formapagos').then(response => {
+        this.forma_pagos = response.data.data;
+      });
+    },
     cargarCodigos_ProductorOnChange(id) {
       http
         .loadOne('compania', id)
@@ -527,7 +522,7 @@ export default {
     this.cargarTipo_Riesgos();
     this.cargarCompanias();
     this.cargarTipo_Vigencias();
-    //     this.cargarCodigos_Productor();
+    this.cargarFormaPagos();
   },
   mounted() {}
 };

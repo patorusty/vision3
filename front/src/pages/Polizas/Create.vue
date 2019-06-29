@@ -316,15 +316,16 @@
                       <label>Medio de Pago:</label>
                       <el-select
                         filterable
-                        name="medio_pago"
+                        name="forma_pago"
                         class="select-primary"
-                        v-model="poliza.medio_pago"
+                        value="forma_pago_id"
+                        v-model="poliza.forma_pago_id"
                       >
                         <el-option
-                          v-for="medio_pago in medio_pagos"
-                          :key="medio_pago.value"
-                          :label="medio_pago.label"
-                          :value="medio_pago.value"
+                          v-for="forma_pago in forma_pagos"
+                          :key="forma_pago.id"
+                          :value="forma_pago.id"
+                          :label="forma_pago.nombre"
                           class="select-primary"
                         >
                         </el-option>
@@ -334,7 +335,7 @@
                           <label>Plan de Pago:</label>
                           <el-select
                             filterable
-                            name="medio_pago"
+                            name="plan_pago"
                             class="select-primary"
                             v-model="poliza.plan_pago"
                           >
@@ -426,6 +427,7 @@ export default {
       tipo_riesgos: {},
       codigo_productores: {},
       tipo_vigencias: {},
+      forma_pagos: {},
       numeroUsed: false,
       errorSelect: {
         cliente_id: false,
@@ -463,20 +465,7 @@ export default {
           label: 'TOTAL'
         }
       ],
-      medio_pagos: [
-        {
-          value: 'TARJETA DE CREDITO',
-          label: 'TC'
-        },
-        {
-          value: 'DEBITO EN CUENTA',
-          label: 'DC'
-        },
-        {
-          value: 'RAPIPAGO / PAGOFACIL',
-          label: 'RP / PF'
-        }
-      ],
+
       dataLoaded: false
     };
   },
@@ -547,6 +536,11 @@ export default {
         this.companias = response.data.data;
       });
     },
+    cargarFormaPagos() {
+      http.load('formapagos').then(response => {
+        this.forma_pagos = response.data.data;
+      });
+    },
     cargarCodigos_Productor(id) {
       http
         .loadOne('codigoproductor/compania', id)
@@ -604,6 +598,7 @@ export default {
     this.cargarCompanias();
     this.cargarTipo_Vigencias();
     this.sumarMes();
+    this.cargarFormaPagos();
   }
 };
 </script>

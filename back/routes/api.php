@@ -59,7 +59,6 @@ Route::get('/usuario/busquedaMail', 'UserController@searchMail');
 Route::Resource('/tipousuario', 'TipoUsuarioController');
 
 
-
 //Configuracion Gral////////////////////////////////
 Route::Resource('/localidades', 'LocalidadController');
 Route::Resource('/tiporiesgo', 'TipoRiesgoController');
@@ -71,7 +70,10 @@ Route::Resource('/polizas', 'PolizaController');
 Route::get('/numerosolicitud', 'PolizaController@numeroDeSolicitud');
 Route::get('/poliza/busquedaNumero', 'PolizaController@searchPoliza');
 Route::get('/poliza/predecesora/{id}', 'PolizaController@chequeoRenovada');  
-Route::get('/poliza/vigencias', 'PolizaController@vigencias');  
+Route::get('/poliza/vigencias', 'PolizaController@vigencias'); 
+Route::Resource('/estadopolizas', 'EstadoPolizaController');
+Route::Resource('/formapagos', 'FormaPagoController');
+
 
 //Riesgo Automotor/
 Route::Resource('/riesgo_automotor', 'RiesgoAutomotorController');

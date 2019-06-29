@@ -37,7 +37,7 @@ class Polizas extends Migration
             $table->string('prima')->nullable();
             $table->string('plan_pago')->nullable();
             $table->integer('cantidad_cuotas')->nullable();
-            $table->string('medio_pago')->nullable();
+            $table->integer('forma_pago_id')->nullable();
             $table->string('detalle_medio_pago')->nullable();
             $table->string('comision')->nullable();
             $table->string('descuento')->nullable();

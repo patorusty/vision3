@@ -42,7 +42,11 @@ class Polizas extends Model
     public function tipo_vigencias() {
         return $this->belongsTo(TipoVigencia::class, 'tipo_vigencia_id');
     }
-    
+
+    public function forma_pagos() {
+        return $this->belongsTo(TipoVigencia::class, 'forma_pago_id');
+    }
+
     public function riesgo_automotor(){
         return $this->hasMany(RiesgoAutomotor::class, 'poliza_id', 'id');
     }

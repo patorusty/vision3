@@ -82,46 +82,37 @@
                         </el-select>
                       </div>
                       <div class="col-md-3">
-                        <base-input>
-                          <label>Estado:</label>
-                          <el-input
-                            type="search"
-                            class="search-input"
-                            clearable
-                            prefix-icon="el-icon-search"
-                            placeholder="Buscar"
-                            v-model="searchQuery"
-                            aria-controls="datatables"
-                          ></el-input>
-                        </base-input>
+                        <label>Estado:</label>
+                        <el-select
+                          name="estado"
+                          class="select-primary"
+                          filterable
+                        >
+                          <el-option
+                            class="select-primary"
+                            v-for="estado in estados"
+                            :key="estado.id"
+                            :value="estado.id"
+                            :label="estado.nombre"
+                          ></el-option>
+                        </el-select>
                       </div>
+
                       <div class="col-md-3">
-                        <base-input>
-                          <label>Cobertura:</label>
-                          <el-input
-                            type="search"
-                            class="search-input"
-                            clearable
-                            prefix-icon="el-icon-search"
-                            placeholder="Buscar"
-                            v-model="searchQuery"
-                            aria-controls="datatables"
-                          ></el-input>
-                        </base-input>
-                      </div>
-                      <div class="col-md-3">
-                        <base-input>
-                          <label>Forma de Pago:</label>
-                          <el-input
-                            type="search"
-                            class="search-input"
-                            clearable
-                            prefix-icon="el-icon-search"
-                            placeholder="Buscar"
-                            v-model="searchQuery"
-                            aria-controls="datatables"
-                          ></el-input>
-                        </base-input>
+                        <label>Forma de Pago:</label>
+                        <el-select
+                          name="forma_pagos"
+                          class="select-primary"
+                          filterable
+                        >
+                          <el-option
+                            class="select-primary"
+                            v-for="formapago in formapagos"
+                            :key="formapago.id"
+                            :value="formapago.id"
+                            :label="formapago.nombre"
+                          ></el-option>
+                        </el-select>
                       </div>
                     </div>
                   </collapse-item>
@@ -321,9 +312,15 @@
               </el-table-column>
               <el-table-column
                 label="Pago"
-                prop="medio_pago"
                 :min-width="71"
-              ></el-table-column>
+                prop="forma_pago_id"
+              >
+                <div slot-scope="{ row }">
+                  <div v-if="row.forma_pago_id == 1"> TC </div>
+                  <div v-else-if="row.forma_pago_id == 2"> DC </div>
+                  <div v-else> PF/RP </div>
+                </div>
+              </el-table-column>
               <el-table-column
                 align="right"
                 label="Actions"
@@ -415,7 +412,9 @@ export default {
   data() {
     return {
       companias: {},
-      clientes: {}
+      clientes: {},
+      estados: {},
+      formapagos: {}
     };
   },
   methods: {
@@ -454,12 +453,24 @@ export default {
       http.load('clientes').then(response => {
         this.clientes = response.data.data;
       });
+    },
+    cargarEstadoPolizas() {
+      http.load('estadopolizas').then(response => {
+        this.estados = response.data.data;
+      });
+    },
+    cargarFormaPagos() {
+      http.load('formapagos').then(response => {
+        this.formapagos = response.data.data;
+      });
     }
   },
   created() {
     this.cargaPolizas();
     this.cargarCompanias();
     this.cargarClientes();
+    this.cargarEstadoPolizas();
+    this.cargarFormaPagos();
   }
 };
 </script>
