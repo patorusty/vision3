@@ -420,6 +420,7 @@ export default {
       estado_siniestro: false
     },
     dataLista: false,
+
     tipo_reclamos: [
       {
         value: 'DAÑO A ASEGURADO (Reclamo a Tercero)',

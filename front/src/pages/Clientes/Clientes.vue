@@ -4,9 +4,7 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div
-              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-            >
+            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
               <base-input>
                 <el-input
                   type="search"
@@ -18,16 +16,22 @@
                   aria-controls="datatables"
                 ></el-input>
               </base-input>
-              <router-link slot="header" to="clientes/create">
+              <router-link
+                slot="header"
+                to="clientes/create"
+              >
                 <base-button
                   class="animation-on-hover pull-right"
                   type="primary"
-                  >Crear</base-button
-                >
+                >Crear</base-button>
               </router-link>
             </div>
             <el-table :data="queriedData">
-              <el-table-column label="Nombre" :min-width="100" prop="apellido">
+              <el-table-column
+                label="Nombre"
+                :min-width="140"
+                prop="apellido"
+              >
                 <div slot-scope="{ row }">
                   {{ row.apellido }} {{ row.nombre }}
                 </div>
@@ -45,14 +49,20 @@
               <el-table-column
                 label="Email"
                 prop="email"
-                :min-width="120"
+                :min-width="160"
               ></el-table-column>
-              <el-table-column label="Productor" :min-width="70">
+              <el-table-column
+                label="Productor"
+                :min-width="70"
+              >
                 <div slot-scope="{ row }">
                   {{ row.productores.apellido }} {{ row.productores.nombre }}
                 </div>
               </el-table-column>
-              <el-table-column align="right" label="Actions">
+              <el-table-column
+                align="right"
+                label="Actions"
+              >
                 <div slot-scope="props">
                   <el-tooltip
                     content="Editar"
@@ -60,9 +70,7 @@
                     :open-delay="300"
                     placement="top"
                   >
-                    <router-link
-                    :to="{ name: 'Editar Cliente', params: { id: props.row.id }}"
-                    >
+                    <router-link :to="{ name: 'Editar Cliente', params: { id: props.row.id }}">
                       <base-button
                         class="edit btn-link"
                         type="warning"

@@ -327,7 +327,8 @@ export default {
     siniestro: {
       tipo_reclamo: '',
       estado_siniestro: '',
-      inspeccion: ''
+      inspeccion: '',
+      culpabilidad: 'Pendiente'
     },
     errorSelect: {
       fecha_denuncia: false,

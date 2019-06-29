@@ -4,9 +4,7 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div
-              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-            >
+            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
               <base-input>
                 <el-input
                   type="search"
@@ -20,42 +18,66 @@
               </base-input>
             </div>
             <el-table :data="queriedData">
-              <el-table-column label="Poliza" :min-width="70">
+              <el-table-column
+                label="Poliza N°"
+                :min-width="90"
+              >
                 <div slot-scope="{ row }">{{ row.polizas.numero }}</div>
               </el-table-column>
               <el-table-column
-                label="Endoso"
-                :min-width="70"
+                label="Endoso N°"
+                :min-width="80"
                 prop="numero_endoso"
               >
               </el-table-column>
-              <el-table-column label="Tipo" :min-width="70">
+              <el-table-column
+                label="Tipo"
+                :min-width="90"
+              >
                 <div slot-scope="{ row }">{{ row.tipo_endosos.nombre }}</div>
               </el-table-column>
-              <el-table-column label="Asegurado" :min-width="120">
+              <el-table-column
+                label="Asegurado"
+                :min-width="128"
+              >
                 <div slot-scope="{ row }">
-                  {{ row.polizas.clientes.apellido }}
-                  {{ row.polizas.clientes.nombre }}
+                  <router-link
+                    v-if="row.polizas.clientes.razon_social === null"
+                    to="#"
+                  >{{ row.polizas.clientes.apellido }} <br> {{ row.polizas.clientes.nombre }}</router-link>
+                  <router-link
+                    v-else
+                    to="#"
+                  >{{ row.polizas.clientes.razon_social }}</router-link>
                 </div>
               </el-table-column>
-              <el-table-column label="Compañia" :min-width="70">
+              <el-table-column
+                label="Compañia"
+                :min-width="70"
+              >
                 <div slot-scope="{ row }">
                   {{ row.polizas.companias.nombre }}
                 </div>
               </el-table-column>
               <el-table-column
-                label="Fecha Solicitud"
-                :min-width="70"
+                label="F. Solicitud"
+                :min-width="90"
                 prop="fecha_solicitud"
               ></el-table-column>
 
-              <el-table-column label="Completo" :min-width="50">
+              <el-table-column
+                label="Completo"
+                :min-width="65"
+              >
                 <div slot-scope="{ row }">
                   <div v-if="row.completo == true">SI</div>
                   <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column align="right" label="Actions">
+              <el-table-column
+                align="right"
+                label="Actions"
+              >
                 <div slot-scope="props">
                   <el-tooltip
                     content="Editar"

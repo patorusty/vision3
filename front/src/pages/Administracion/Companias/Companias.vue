@@ -4,9 +4,7 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div
-              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-            >
+            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
               <base-input>
                 <el-input
                   type="search"
@@ -18,19 +16,20 @@
                   aria-controls="datatables"
                 ></el-input>
               </base-input>
-              <router-link slot="header" to="/administracion/companias/create">
+              <router-link
+                slot="header"
+                to="/administracion/companias/create"
+              >
                 <base-button
                   class="animation-on-hover pull-right"
                   type="primary"
-                  >Crear</base-button
-                >
+                >Crear</base-button>
               </router-link>
             </div>
             <el-table :data="queriedData">
               <el-table-column
                 label="Nombre"
                 prop="nombre"
-                sortable
                 :min-width="80"
               ></el-table-column>
               <el-table-column
@@ -48,13 +47,19 @@
                 prop="telefono_siniestros"
                 :min-width="100"
               ></el-table-column>
-              <el-table-column label="Activo" prop="activo">
+              <el-table-column
+                label="Activo"
+                prop="activo"
+              >
                 <div slot-scope="{ row }">
                   <div v-if="row.activo == 1">SI</div>
                   <div v-else>NO</div>
                 </div>
               </el-table-column>
-              <el-table-column align="right" label="Actions">
+              <el-table-column
+                align="right"
+                label="Actions"
+              >
                 <div slot-scope="props">
                   <base-button
                     @click.native="editar(props.row.nombre)"

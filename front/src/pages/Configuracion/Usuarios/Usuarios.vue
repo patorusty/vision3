@@ -39,7 +39,7 @@
               <el-table-column
                 prop="email"
                 label="Email"
-                :min-width="100"
+                :min-width="160"
               ></el-table-column>
               <el-table-column
                 label="Tipo Usuario"

@@ -4,9 +4,7 @@
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <div>
-            <div
-              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-            >
+            <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
               <base-input>
                 <el-input
                   type="search"
@@ -21,37 +19,58 @@
             </div>
             <el-table :data="queriedData">
               <el-table-column
-                label="Siniestro N"
-                :min-width="70"
+                label="Poliza N°"
+                :min-width="90"
+              >
+                <div slot-scope="{ row }">{{ row.polizas.numero }}</div>
+              </el-table-column>
+              <el-table-column
+                label="Siniestro N°"
+                :min-width="90"
                 prop="numero_siniestro"
               >
+              </el-table-column>
+              <el-table-column
+                label="Asegurado"
+                :min-width="128"
+              >
+                <div slot-scope="{ row }">
+                  <router-link
+                    v-if="row.polizas.clientes.razon_social === null"
+                    to="#"
+                  >{{ row.polizas.clientes.apellido }} <br> {{ row.polizas.clientes.nombre }}</router-link>
+                  <router-link
+                    v-else
+                    to="#"
+                  >{{ row.polizas.clientes.razon_social }}</router-link>
+                </div>
+              </el-table-column>
+              <el-table-column
+                label="Compañia"
+                :min-width="70"
+              >
+                <div slot-scope="{ row }">
+                  {{ row.polizas.companias.nombre }}
+                </div>
               </el-table-column>
               <el-table-column
                 label="F. Siniestro"
                 :min-width="70"
                 prop="fecha_siniestro"
               ></el-table-column>
-              <el-table-column label="Poliza" :min-width="70">
-                <div slot-scope="{ row }">{{ row.polizas.numero }}</div>
-              </el-table-column>
-              <el-table-column label="Compañia" :min-width="70">
-                <div slot-scope="{ row }">
-                  {{ row.polizas.companias.nombre }}
-                </div>
-              </el-table-column>
-              <el-table-column label="Asegurado" :min-width="120">
-                <div slot-scope="{ row }">
-                  {{ row.polizas.clientes.apellido }}
-                  {{ row.polizas.clientes.nombre }}
-                </div>
-              </el-table-column>
-              <el-table-column label="Completo" :min-width="50">
+              <el-table-column
+                label="Completo"
+                :min-width="60"
+              >
                 <div slot-scope="{ row }">
                   <div v-if="row.fecha_completo == null">NO</div>
                   <div v-else>SI</div>
                 </div>
               </el-table-column>
-              <el-table-column align="right" label="Actions">
+              <el-table-column
+                align="right"
+                label="Actions"
+              >
                 <div slot-scope="props">
                   <el-tooltip
                     content="Editar"

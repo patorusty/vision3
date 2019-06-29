@@ -139,7 +139,7 @@
 
             <el-table :data="queriedData">
               <el-table-column
-                label="Poliza"
+                label="Poliza N°"
                 prop="numero"
                 :min-width="127"
               ></el-table-column>
@@ -151,7 +151,7 @@
                   Cod.({{row.codigo_productor.codigo_productor}})</div>
               </el-table-column>
               <el-table-column
-                label="Cliente"
+                label="Asegurado"
                 :min-width="128"
               >
                 <div slot-scope="{ row }">
