@@ -203,24 +203,118 @@
               >
                 <div slot-scope="{ row }">
                   <div v-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null">Recibida</div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null"> <i class="tim-icons icon-check-2"></i>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null">
+                    <el-tooltip
+                      content="Entregada"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-check-2"></i>
+                    </el-tooltip>
+
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null"> <i class="tim-icons icon-send"></i>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null">
+                    <el-tooltip
+                      content="Enviada por Correo"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-send"></i>
+                    </el-tooltip>
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null"> <i class="tim-icons icon-email-85"></i>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null">
+
+                    <el-tooltip
+                      content="Email"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-email-85"></i>
+                    </el-tooltip>
+
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null"> <i class="tim-icons icon-check-2"></i>
-                    / <i class="tim-icons icon-send"></i>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null">
+                    <el-tooltip
+                      content="Entregada"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-check-2"></i>
+                    </el-tooltip>
+                    / <el-tooltip
+                      content="Enviada por Correo"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-send"></i>
+                    </el-tooltip>
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null"> <i class="tim-icons icon-check-2"></i>
-                    / <i class="tim-icons icon-email-85"></i>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null">
+                    <el-tooltip
+                      content="Entregada"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-check-2"></i>
+                    </el-tooltip>
+                    / <el-tooltip
+                      content="Email"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-email-85"></i>
+                    </el-tooltip>
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null"> <i class="tim-icons icon-send"></i>
-                    / <i class="tim-icons icon-email-85"></i>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null">
+                    <el-tooltip
+                      content="Enviada por Correo"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-send"></i>
+                    </el-tooltip>
+                    / <el-tooltip
+                      content="Email"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-email-85"></i>
+                    </el-tooltip>
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null"> <i class="tim-icons icon-check-2"></i>
-                    / <i class="tim-icons icon-send"></i>
-                    / <i class="tim-icons icon-email-85"></i>
+                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null">
+                    <el-tooltip
+                      content="Entregada"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-check-2"></i>
+                    </el-tooltip>
+                    / <el-tooltip
+                      content="Enviada por Correo"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-send"></i>
+                    </el-tooltip>
+                    / <el-tooltip
+                      content="Email"
+                      effect="light"
+                      :open-delay="300"
+                      placement="top"
+                    >
+                      <i class="tim-icons icon-email-85"></i>
+                    </el-tooltip>
                   </div>
                   <div v-else>No Recibida</div>
                 </div>
@@ -255,6 +349,7 @@
                   </el-tooltip>
                   <base-button
                     @click.native="borrar(props.row.id);"
+                    content="Borrar"
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -391,6 +486,9 @@ export default {
   float: left;
   position: absolute;
   color: gray;
+}
+.card-collapse .card .card-header a[data-toggle='collapse'] {
+  font-size: 10px;
 }
 .botoncrear {
   align-self: center;
