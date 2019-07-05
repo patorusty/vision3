@@ -3,125 +3,9 @@
     <div class="row">
       <div class="col-12">
         <card card-body-classes="table-full-width">
-          <div class="">
-            <div class="row">
-              <div class="col-md-10">
-                <div class="row">
-                  <div class="col-md-4">
-                    <label>Asegurado:</label>
-                    <el-select
-                      filterable
-                      name="cliente_id"
-                      class="select-primary"
-                    >
-                      <el-option
-                        v-for="cliente in clientes"
-                        class="select-primary"
-                        :key="cliente.id"
-                        :value="cliente.id"
-                        :label="
-                                cliente.apellido +
-                                  ' ' +
-                                  cliente.nombre +
-                                  ' | DNI: ' +
-                                  cliente.nro_dni
-                              "
-                      ></el-option>
-                    </el-select>
-                  </div>
-                  <div class="col-md-3">
-                    <base-input>
-                      <label>Poliza N:</label>
-                      <el-input
-                        type="search"
-                        class="search-input"
-                        clearable
-                        prefix-icon="el-icon-search"
-                        placeholder="Buscar"
-                        v-model="searchQuery"
-                        aria-controls="datatables"
-                      ></el-input>
-                    </base-input>
-                  </div>
-                  <div class="col-md-3">
-                    <base-input>
-                      <label>Patente:</label>
-                      <el-input
-                        type="search"
-                        class="search-input"
-                        clearable
-                        prefix-icon="el-icon-search"
-                        placeholder="Buscar"
-                        v-model="searchQuery"
-                        aria-controls="datatables"
-                      ></el-input>
-                    </base-input>
-                  </div>
-                </div>
-                <collapse :active-index="1">
-                  <collapse-item
-                    title="Busqueda avanzada"
-                    class="style=padding:0px"
-                  >
-                    <div class="
-                    row">
-                      <div class="col-md-3">
-                        <label>Compañia</label>
-                        <el-select
-                          name="compania"
-                          class="select-primary"
-                          filterable
-                        >
-                          <el-option
-                            class="select-primary"
-                            v-for="compania in companias"
-                            :key="compania.id"
-                            :value="compania.id"
-                            :label="compania.nombre"
-                          ></el-option>
-                        </el-select>
-                      </div>
-                      <div class="col-md-3">
-                        <label>Estado:</label>
-                        <el-select
-                          name="estado"
-                          class="select-primary"
-                          filterable
-                        >
-                          <el-option
-                            class="select-primary"
-                            v-for="estado in estados"
-                            :key="estado.id"
-                            :value="estado.id"
-                            :label="estado.nombre"
-                          ></el-option>
-                        </el-select>
-                      </div>
+          <div class="row">
+            <div class="col-md-10">
 
-                      <div class="col-md-3">
-                        <label>Forma de Pago:</label>
-                        <el-select
-                          name="forma_pagos"
-                          class="select-primary"
-                          filterable
-                        >
-                          <el-option
-                            class="select-primary"
-                            v-for="formapago in formapagos"
-                            :key="formapago.id"
-                            :value="formapago.id"
-                            :label="formapago.nombre"
-                          ></el-option>
-                        </el-select>
-                      </div>
-                    </div>
-                  </collapse-item>
-                </collapse>
-                <div class="botonbuscar">
-                  <base-button type="primary">Buscar
-                  </base-button>
-                </div>
-              </div>
               <div class="botoncrear col-md-2">
                 <router-link to="/polizas/create">
                   <base-button
@@ -351,7 +235,7 @@
                     placement="top"
                   >
                     <base-button
-                      @click.native="renovar(props.row.id)"
+                      @click.native="renovar(props.row.id, props.row.tipo_vigencia_id)"
                       :type="'success'"
                       icon
                       size="sm"
@@ -407,6 +291,8 @@
     <modal-renovar-automotor
       v-show="isModalVisibleModalRenovarAutomotor"
       @close="closeModalRenovarAutomotor"
+      :poliza="poliza"
+      v-if="dataLoaded"
     />
   </div>
 </template>
@@ -438,7 +324,8 @@ export default {
       companias: {},
       clientes: {},
       estados: {},
-      formapagos: {}
+      forma_pagos: {},
+      dataLoaded: false
     };
   },
   methods: {
@@ -485,7 +372,7 @@ export default {
     },
     cargarFormaPagos() {
       http.load('formapagos').then(response => {
-        this.formapagos = response.data.data;
+        this.forma_pagos = response.data.data;
       });
     },
     closeModalRenovarAutomotor() {
@@ -500,6 +387,11 @@ export default {
       this.isModalVisibleModalRenovarAutomotor = true;
     },
     renovar(id) {
+      http.loadOne('polizas', id).then(r => {
+        this.polizas = r.data.data;
+      });
+      this.dataLoaded = true;
+
       this.showModalRenovarAutomotor(id);
     }
   },
