@@ -324,7 +324,7 @@
               <el-table-column
                 align="right"
                 label="Actions"
-                :width="94"
+                :min-width="115"
               >
                 <div slot-scope="props">
                   <el-tooltip
@@ -343,6 +343,22 @@
                         <i class="tim-icons icon-pencil"></i>
                       </base-button>
                     </router-link>
+                  </el-tooltip>
+                  <el-tooltip
+                    content="Renovar"
+                    effect="light"
+                    :open-delay="300"
+                    placement="top"
+                  >
+                    <base-button
+                      @click.native="renovar(props.row.id)"
+                      :type="'success'"
+                      icon
+                      size="sm"
+                      class="btn-link"
+                    >
+                      <i class="tim-icons icon-refresh-01"></i>
+                    </base-button>
                   </el-tooltip>
                   <base-button
                     @click.native="borrar(props.row.id);"
@@ -388,6 +404,10 @@
         </card>
       </div>
     </div>
+    <modal-renovar-automotor
+      v-show="isModalVisibleModalRenovarAutomotor"
+      @close="closeModalRenovarAutomotor"
+    />
   </div>
 </template>
 <script>
@@ -396,6 +416,8 @@ import { BasePagination, CollapseItem, Collapse } from 'src/components';
 import { mixin } from '../../mixins/mixin.js';
 import http from '../../API/http-request.js';
 import { format } from 'date-fns';
+import ModalRenovarAutomotor from './Riesgos/Automotor/ ModalRenovarAutomotor';
+import { EventBus } from '../../main.js';
 
 export default {
   mixins: [mixin],
@@ -406,11 +428,13 @@ export default {
     [Select.name]: Select,
     [Option.name]: Option,
     [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [TableColumn.name]: TableColumn,
+    ModalRenovarAutomotor
   },
 
   data() {
     return {
+      isModalVisibleModalRenovarAutomotor: false,
       companias: {},
       clientes: {},
       estados: {},
@@ -463,6 +487,20 @@ export default {
       http.load('formapagos').then(response => {
         this.formapagos = response.data.data;
       });
+    },
+    closeModalRenovarAutomotor() {
+      this.vaciarForm();
+      this.isModalVisibleModalRenovarAutomotor = false;
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
+    },
+    showModalRenovarAutomotor() {
+      this.vaciarForm();
+      this.isModalVisibleModalRenovarAutomotor = true;
+    },
+    renovar(id) {
+      this.showModalRenovarAutomotor(id);
     }
   },
   created() {
