@@ -235,7 +235,7 @@
                     placement="top"
                   >
                     <base-button
-                      @click.native="renovar(props.row.id, props.row.tipo_vigencia_id)"
+                      @click.native="renovar(props.row.id)"
                       :type="'success'"
                       icon
                       size="sm"
@@ -325,7 +325,8 @@ export default {
       clientes: {},
       estados: {},
       forma_pagos: {},
-      dataLoaded: false
+      dataLoaded: false,
+      poliza: {}
     };
   },
   methods: {
@@ -388,11 +389,10 @@ export default {
     },
     renovar(id) {
       http.loadOne('polizas', id).then(r => {
-        this.polizas = r.data.data;
+        this.poliza = r.data.data[0];
       });
       this.dataLoaded = true;
-
-      this.showModalRenovarAutomotor(id);
+      this.showModalRenovarAutomotor();
     }
   },
   created() {

@@ -278,9 +278,6 @@ export default {
   },
   data() {
     return {
-      poliza: {
-        fecha_solicitud: new Date()
-      },
       tipo_vigencias: {},
       forma_pagos: {},
       plan_pagos: [
@@ -321,24 +318,9 @@ export default {
       http.load('formapagos').then(response => {
         this.forma_pagos = response.data.data;
       });
-    },
-    cargarPoliza() {
-      http.loadOne('polizas', this.numeroSolicitud).then(response => {
-        this.poliza = response.data.data[0];
-        EventBus.$emit('poliza_id', this.poliza.id);
-        // http
-        //   .loadOne('codigoproductor/compania', this.poliza.compania_id)
-        //   .then(response => {
-        //     this.codigo_productores = response.data.data;
-        //   })
-        //   .catch(err => {
-        //     console.log(err);
-        //   });
-      });
     }
   },
   created() {
-    this.cargarPoliza();
     this.cargarTipo_Vigencias();
     this.cargarFormaPagos();
   }
