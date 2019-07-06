@@ -27,24 +27,29 @@
                 <div class="row ml-1">
                   <div class="col-md-6">
                     <div class="row ">
-                      <p class="text-primary">Asegurado: </p>
-                      <p class="">Juan Carlos Perez</p>
+                      <p class="text-primary">Asegurado: </p> &nbsp;
+
+                      <p class="">{{poliza.cliente_id}}</p>
                     </div>
                     &nbsp;
                     <div class="row">
-                      <p class="text-primary">Compañia: Sancor</p>
-                      <p class="">Sancor</p>
+                      <p class="text-primary">Compañia: </p> &nbsp;
+
+                      <p class="">{{poliza.compania_id}}</p>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="row">
-                      <p class="text-primary">Renueva Poliza: </p>
-                      <p class="">90909282</p>
+                      <p class="text-primary">Renueva Poliza: </p> &nbsp;
+
+                      <p class="">{{poliza.numero}}</p>
                     </div>
                     &nbsp;
                     <div class="row">
-                      <p class="text-primary">Productor</p>
+                      <p class="text-primary">Productor</p> &nbsp;
+
                       <p class="">Juan Ignacio Sarno (Cod.1234)</p>
+                      <p class="">{{poliza.codigo_productor_id}}</p>
                     </div>
                   </div>
                 </div>
@@ -278,6 +283,10 @@ export default {
   },
   data() {
     return {
+      poliza: {
+        fecha_solicitud: new Date(),
+        premio: ''
+      },
       tipo_vigencias: {},
       forma_pagos: {},
       plan_pagos: [
