@@ -99,7 +99,7 @@ class PolizaController extends Controller
      */
     public function show($numero_solicitud)
     {
-        $numero_solicitud = Polizas::where('numero_solicitud', $numero_solicitud)->get();
+        $numero_solicitud = Polizas::where('numero_solicitud', $numero_solicitud)->with(['codigo_productor.productores', 'estado_polizas', 'clientes', 'companias', 'tipo_vigencias'])->get();
 
         return new PolizasResource($numero_solicitud);
     }

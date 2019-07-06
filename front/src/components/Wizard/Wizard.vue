@@ -1,17 +1,26 @@
 <template>
   <div class="wizard-container">
-    <div class="card card-wizard active" id="wizardProfile">
+    <div
+      class="card card-wizard active"
+      id="wizardProfile"
+    >
       <form @submit.prevent>
         <!--
           You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"
         -->
-        <div class="card-header text-center">
+        <!-- <div class="card-header text-center">
           <slot name="header">
-            <h3 v-if="title" class="card-title">{{ title }}</h3>
-            <h5 v-if="subTitle" class="description">{{ subTitle }}</h5>
-          </slot>
+            <h3
+              v-if="title"
+              class="card-title"
+            >{{ title }}</h3>
+            <h5
+              v-if="subTitle"
+              class="description"
+            >{{ subTitle }}</h5>
+          </slot> -->
 
-          <div class="wizard-navigation">
+        <!-- <div class="wizard-navigation">
             <div class="progress-with-circle">
               <div
                 class="progress-bar"
@@ -50,17 +59,24 @@
                 </a>
               </li>
             </ul>
-          </div>
-        </div>
+          </div> -->
+        <!-- </div> -->
 
         <div class="card-body">
           <div class="tab-content">
-            <slot :activeIndex="activeTabIndex" :activeTab="activeTab"> </slot>
+            <slot
+              :activeIndex="activeTabIndex"
+              :activeTab="activeTab"
+            > </slot>
           </div>
         </div>
 
         <div class="card-footer">
-          <slot name="footer" :next-tab="nextTab" :prev-tab="prevTab">
+          <slot
+            name="footer"
+            :next-tab="nextTab"
+            :prev-tab="prevTab"
+          >
             <div class="pull-right">
               <base-button
                 v-if="activeTabIndex < tabCount - 1"
@@ -71,7 +87,11 @@
               >
                 {{ nextButtonText }}
               </base-button>
-              <base-button v-else wide @click.native="nextTab">{{
+              <base-button
+                v-else
+                wide
+                @click.native="nextTab"
+              >{{
                 finishButtonText
               }}</base-button>
             </div>

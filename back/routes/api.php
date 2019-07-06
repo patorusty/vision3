@@ -75,6 +75,7 @@ Route::Resource('/estadopolizas', 'EstadoPolizaController');
 Route::Resource('/formapagos', 'FormaPagoController');
 
 
+
 //Riesgo Automotor/
 Route::Resource('/riesgo_automotor', 'RiesgoAutomotorController');
 Route::post('/imagenes_r_a', 'ImagenRAController@uploadFile');

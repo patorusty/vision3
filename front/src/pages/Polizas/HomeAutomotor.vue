@@ -302,7 +302,7 @@ import { BasePagination, CollapseItem, Collapse } from 'src/components';
 import { mixin } from '../../mixins/mixin.js';
 import http from '../../API/http-request.js';
 import { format } from 'date-fns';
-import ModalRenovarAutomotor from './Riesgos/Automotor/ ModalRenovarAutomotor';
+import ModalRenovarAutomotor from './Riesgos/Automotor/Renovar/ModalRenovarAutomotor';
 import { EventBus } from '../../main.js';
 
 export default {
@@ -390,9 +390,9 @@ export default {
     renovar(id) {
       http.loadOne('polizas', id).then(r => {
         this.poliza = r.data.data[0];
+        this.dataLoaded = true;
+        this.showModalRenovarAutomotor();
       });
-      this.dataLoaded = true;
-      this.showModalRenovarAutomotor();
     }
   },
   created() {

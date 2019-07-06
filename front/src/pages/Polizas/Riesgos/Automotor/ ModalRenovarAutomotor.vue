@@ -29,13 +29,14 @@
                     <div class="row ">
                       <p class="text-primary">Asegurado: </p> &nbsp;
 
-                      <p class="">{{poliza.cliente_id}}</p>
+                      <p class="">{{poliza.clientes.apellido}}</p>&nbsp;
+                      <p class="">{{poliza.clientes.nombre}}</p>
                     </div>
                     &nbsp;
                     <div class="row">
                       <p class="text-primary">Compañia: </p> &nbsp;
 
-                      <p class="">{{poliza.compania_id}}</p>
+                      <p class="">{{poliza.companias.nombre}}</p>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -46,10 +47,14 @@
                     </div>
                     &nbsp;
                     <div class="row">
-                      <p class="text-primary">Productor</p> &nbsp;
+                      <p class="text-primary">Productor:</p> &nbsp;
 
-                      <p class="">Juan Ignacio Sarno (Cod.1234)</p>
-                      <p class="">{{poliza.codigo_productor_id}}</p>
+                      <p class=""></p>
+                      <p class="">{{poliza.codigo_productor.productores.apellido}}</p>&nbsp;
+                      <p class="">{{poliza.codigo_productor.productores.nombre}}</p>&nbsp;
+                      <p> - Cod. &nbsp;(</p>
+                      <p class="">{{poliza.codigo_productor.codigo_productor}}</p>
+                      <p>)</p>
                     </div>
                   </div>
                 </div>
@@ -76,7 +81,7 @@
                         type="date"
                         format="dd/MM/yyyy"
                         value-format="yyyy-MM-dd"
-                        v-model="poliza.vigencia_desde"
+                        v-model="poliza_nueva.vigencia_desde"
                       ></el-date-picker>
                     </base-input>
                     <label>Hasta:</label>
@@ -85,7 +90,7 @@
                         type="date"
                         format="dd/MM/yyyy"
                         value-format="yyyy-MM-dd"
-                        v-model="poliza.vigencia_hasta"
+                        v-model="poliza_nueva.vigencia_hasta"
                       ></el-date-picker>
                     </base-input>
                   </div>
@@ -93,7 +98,7 @@
                     <label>Solicitud:</label>
                     <base-input class="mb-0">
                       <el-date-picker
-                        v-model="poliza.fecha_solicitud"
+                        v-model="poliza_nueva.fecha_solicitud"
                         type="date"
                         format="dd/MM/yyyy"
                         value-format="yyyy-MM-dd"
@@ -101,7 +106,7 @@
                     </base-input><label>Emision:</label>
                     <base-input class="mb-0">
                       <el-date-picker
-                        v-model="poliza.fecha_emision"
+                        v-model="poliza_nueva.fecha_emision"
                         type="date"
                         format="dd/MM/yyyy"
                         value-format="yyyy-MM-dd"
@@ -109,7 +114,7 @@
                     </base-input><label>Recepcion:</label>
                     <base-input class="mb-0">
                       <el-date-picker
-                        v-model="poliza.fecha_recepcion"
+                        v-model="poliza_nueva.fecha_recepcion"
                         type="date"
                         format="dd/MM/yyyy"
                         value-format="yyyy-MM-dd"
@@ -117,26 +122,15 @@
                     </base-input>
                   </div>
                   <div class="col-md-4">
-                    <label>Entrega Original:</label>
-                    <base-input class="mb-0">
-                      <el-date-picker
-                        v-model="poliza.entrega_original"
-                        type="date"
-                        format="dd/MM/yyyy"
-                        value-format="yyyy-MM-dd"
-                      ></el-date-picker>
+                    <label>Numero Poliza:</label>
+                    <base-input
+                      v-model="poliza_nueva.numero"
+                      class="mb-0"
+                    >
                     </base-input><label>Email:</label>
                     <base-input class="mb-0">
                       <el-date-picker
-                        v-model="poliza.entrega_email"
-                        type="date"
-                        format="dd/MM/yyyy"
-                        value-format="yyyy-MM-dd"
-                      ></el-date-picker>
-                    </base-input><label>Correo:</label>
-                    <base-input class="mb-0">
-                      <el-date-picker
-                        v-model="poliza.fecha_entrega_correo"
+                        v-model="poliza_nueva.entrega_email"
                         type="date"
                         format="dd/MM/yyyy"
                         value-format="yyyy-MM-dd"
@@ -150,7 +144,7 @@
                       <div class="col-md-6">
                         <label>Premio:</label>
                         <base-input
-                          v-model="poliza.premio"
+                          v-model="poliza_nueva.premio"
                           type="text"
                           name="premio"
                         ></base-input>
@@ -158,7 +152,7 @@
                       <div class="col-md-6">
                         <label>Prima:</label>
                         <base-input
-                          v-model="poliza.prima"
+                          v-model="poliza_nueva.prima"
                           type="text"
                         ></base-input>
                       </div>
@@ -167,7 +161,7 @@
                       <div class="col-md-6">
                         <label>Comision:</label>
                         <base-input
-                          v-model="poliza.comision"
+                          v-model="poliza_nueva.comision"
                           type="text"
                           name="comision"
                         ></base-input>
@@ -175,7 +169,7 @@
                       <div class="col-md-6">
                         <label>Descuento:</label>
                         <base-input
-                          v-model="poliza.descuento"
+                          v-model="poliza_nueva.descuento"
                           type="text"
                         ></base-input>
                       </div>
@@ -242,6 +236,7 @@
               </div>
               <div class="modal-pie pull-right mt-3">
                 <button
+                  @click="cargarPoliza"
                   type="submit"
                   class="btn btn-primary"
                 >
@@ -263,6 +258,7 @@ import { Card } from 'src/components';
 import { BaseButton } from 'src/components';
 import http from '../../../../API/http-request.js';
 import { EventBus } from '../../../../main.js';
+import { addMonths, startOfHour, setHours } from 'date-fns';
 
 export default {
   props: {
@@ -283,9 +279,10 @@ export default {
   },
   data() {
     return {
-      poliza: {
-        fecha_solicitud: new Date(),
-        premio: ''
+      poliza_nueva: {
+        vigencia_desde: this.poliza.vigencia_hasta,
+        vigencia_hasta: '',
+        fecha_solicitud: new Date()
       },
       tipo_vigencias: {},
       forma_pagos: {},
@@ -314,6 +311,32 @@ export default {
     };
   },
   methods: {
+    sumarMes(mes) {
+      switch (this.poliza.tipo_vigencia_id) {
+        case 6:
+          mes = 12;
+          break;
+        case 5:
+          mes = 6;
+          break;
+        case 4:
+          mes = 4;
+          break;
+        case 3:
+          mes = 3;
+          break;
+        case 2:
+          mes = 2;
+          break;
+        case 1:
+          mes = 1;
+          break;
+      }
+      this.poliza_nueva.vigencia_hasta = addMonths(
+        this.poliza_nueva.vigencia_desde,
+        mes
+      );
+    },
     close() {
       this.$emit('close');
       EventBus.$emit('resetInput', false);
@@ -327,11 +350,15 @@ export default {
       http.load('formapagos').then(response => {
         this.forma_pagos = response.data.data;
       });
+    },
+    cargarPoliza() {
+      this.$emit('envioPoliza', this.poliza);
     }
   },
   created() {
     this.cargarTipo_Vigencias();
     this.cargarFormaPagos();
+    this.sumarMes();
   }
 };
 </script>
