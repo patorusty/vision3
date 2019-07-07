@@ -81,11 +81,10 @@
               <base-button
                 v-if="activeTabIndex < tabCount - 1"
                 type="primary"
-                wide
                 @click.native="nextTab"
-                class="btn-next"
+                class="right"
               >
-                {{ nextButtonText }}
+                {{ Renovar }}
               </base-button>
               <base-button
                 v-else
@@ -146,6 +145,10 @@ export default {
     },
     vertical: {
       type: Boolean
+    },
+    Renovar: {
+      type: String,
+      default: 'Renovar'
     }
   },
   components: {

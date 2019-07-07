@@ -11,7 +11,7 @@
       >
         <card>
           <div class="d-flex justify-content-between mb-2">
-            <h4>Renovar</h4>
+            <h4>Renovacion de Poliza</h4>
             <button
               class="close"
               type="button"
@@ -28,7 +28,7 @@
             </wizard-tab>
 
             <wizard-tab>
-              <riesgo>hola hola hola</riesgo>
+              <riesgo :poliza="poliza">hola hola hola</riesgo>
             </wizard-tab>
           </simple-wizard>
 

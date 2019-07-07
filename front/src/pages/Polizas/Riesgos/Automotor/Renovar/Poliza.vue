@@ -44,6 +44,7 @@
               class="select-primary"
               value="tipo_vigencia_id"
               v-model="poliza.tipo_vigencia_id"
+              @change="sumarMes"
             >
               <el-option
                 class="select-primary"
@@ -60,7 +61,14 @@
                 format="dd/MM/yyyy"
                 value-format="yyyy-MM-dd"
                 v-model="poliza_nueva.vigencia_desde"
+                @change="touchSelect('vigencia_desde')"
               ></el-date-picker>
+              <p
+                class="errorSelect"
+                v-show="errorSelect.vigencia_desde"
+              >
+                Este campo es obligatorio
+              </p>
             </base-input>
             <label>Hasta:</label>
             <base-input>
@@ -69,7 +77,14 @@
                 format="dd/MM/yyyy"
                 value-format="yyyy-MM-dd"
                 v-model="poliza_nueva.vigencia_hasta"
+                @change="touchSelect('vigencia_hasta')"
               ></el-date-picker>
+              <p
+                class="errorSelect"
+                v-show="errorSelect.vigencia_hasta"
+              >
+                Este campo es obligatorio
+              </p>
             </base-input>
           </div>
           <div class="col-md-4">
@@ -80,6 +95,7 @@
                 type="date"
                 format="dd/MM/yyyy"
                 value-format="yyyy-MM-dd"
+                @change="touchSelect('fecha_solicitud')"
               ></el-date-picker>
             </base-input><label>Emision:</label>
             <base-input class="mb-0">
@@ -100,10 +116,14 @@
             </base-input>
           </div>
           <div class="col-md-4">
-            <label>Numero Poliza:</label>
+            <label>Poliza Nro:</label>
             <base-input
               v-model="poliza_nueva.numero"
               class="mb-0"
+              type="text"
+              :error="getErrorNumero('numero', numeroUsed)"
+              :class="{ 'has-danger': numeroUsed }"
+              @keyup="buscarNumero"
             >
             </base-input><label>Email:</label>
             <base-input class="mb-0">
@@ -125,6 +145,8 @@
                   v-model="poliza_nueva.premio"
                   type="text"
                   name="premio"
+                  v-validate="'required'"
+                  :error="getError('premio')"
                 ></base-input>
               </div>
               <div class="col-md-6">
@@ -141,7 +163,9 @@
                 <base-input
                   v-model="poliza_nueva.comision"
                   type="text"
+                  v-validate="'required'"
                   name="comision"
+                  :error="getError('comision')"
                 ></base-input>
               </div>
               <div class="col-md-6">
@@ -195,8 +219,9 @@
                 <base-input
                   v-model="poliza.cantidad_cuotas"
                   type="text"
-                  placeholder=""
+                  v-validate="'required'"
                   name="cantidad_cuotas"
+                  :error="getError('cantidad_cuotas')"
                 ></base-input>
               </div>
             </div>
@@ -212,7 +237,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </form>
 </template>
@@ -225,6 +249,7 @@ import { BaseButton } from 'src/components';
 import http from '../../../../../API/http-request.js';
 import { EventBus } from '../../../../../main.js';
 import { addMonths, startOfHour, setHours } from 'date-fns';
+import debounce from '../../../../../debounce.js';
 
 export default {
   props: {
@@ -241,17 +266,34 @@ export default {
     Card,
     [Option.name]: Option,
     [Select.name]: Select,
-    [DatePicker.name]: DatePicker
+    [DatePicker.name]: DatePicker,
+    debounce
   },
   data() {
     return {
       poliza_nueva: {
         vigencia_desde: this.poliza.vigencia_hasta,
         vigencia_hasta: '',
-        fecha_solicitud: new Date()
+        fecha_solicitud: new Date(),
+        renueva_numero: this.poliza.numero
       },
       tipo_vigencias: {},
       forma_pagos: {},
+      numeroUsed: false,
+      errorSelect: {
+        cliente_id: false,
+        compania_id: false,
+        codigo_productor_id: false,
+        vigencia_desde: false,
+        vigencia_hasta: false
+      },
+      selected: {
+        cliente_id: false,
+        compania_id: false,
+        codigo_productor_id: false,
+        vigencia_desde: true,
+        vigencia_hasta: true
+      },
       plan_pagos: [
         {
           value: 'MENSUAL',
@@ -319,21 +361,80 @@ export default {
     },
     cargarPoliza() {
       this.$emit('envioPoliza', this.poliza);
+    },
+    getErrorNumero(fieldName, numeroUsed) {
+      if (!numeroUsed) {
+        return this.errors.first(fieldName);
+      } else {
+        return 'Este numero de póliza esta en uso';
+      }
+    },
+    buscarNumero: debounce(function() {
+      if (this.poliza.numero) {
+        http.search('poliza/busquedaNumero?q=' + this.poliza.numero).then(r => {
+          this.n = r.data.data;
+          if (this.n.length > 0) {
+            this.numeroUsed = true;
+          } else {
+            this.numeroUsed = false;
+          }
+        });
+      }
+    }, 500),
+    touchSelect(val) {
+      if (!this.poliza[`${val}`] || this.poliza[`${val}`] === undefined) {
+        this.selected[val] = false;
+        this.errorSelect[val] = true;
+      } else {
+        this.selected[val] = true;
+        this.errorSelect[val] = false;
+      }
+    },
+    checkSelect() {
+      let valor = true;
+      Object.entries(this.selected).forEach(select => {
+        if (select[1] == false) {
+          this.errorSelect[`${select[0]}`] = true;
+          valor = false;
+        }
+      });
+      return valor;
+    },
+    cargarUltimoNumeroSolicitud() {
+      http.load('numerosolicitud').then(response => {
+        this.poliza.numero_solicitud =
+          response.data.data[0].numero_solicitud + 1;
+      });
     }
   },
   created() {
     this.cargarTipo_Vigencias();
     this.cargarFormaPagos();
     this.sumarMes();
+    this.cargarUltimoNumeroSolicitud();
   }
 };
 </script>
 <style>
 .card-wizard .card-body {
   background-color: transparent;
+  margin-top: 0px;
+  padding: 0px;
 }
-card-wizard.active {
+.card-wizard {
   margin-bottom: 0px;
+}
+.card .card-footer {
+  padding: 0px;
+}
+.card-wizard .card-footer {
+  background-color: transparent !important;
+}
+.card-wizard .card-footer .pull-right {
+  padding-right: 0px;
+}
+.card-wizard .card-footer .pull-left {
+  padding-left: 0px;
 }
 </style>
 
