@@ -125,7 +125,8 @@
               :class="{ 'has-danger': numeroUsed }"
               @keyup="buscarNumero"
             >
-            </base-input><label>Email:</label>
+            </base-input>
+            <label>Envío por Email:</label>
             <base-input class="mb-0">
               <el-date-picker
                 v-model="poliza_nueva.entrega_email"
@@ -272,10 +273,8 @@ export default {
   data() {
     return {
       poliza_nueva: {
-        vigencia_desde: this.poliza.vigencia_hasta,
-        vigencia_hasta: '',
         fecha_solicitud: new Date(),
-        renueva_numero: this.poliza.numero
+        vigencia_desde: this.poliza.vigencia_hasta
       },
       tipo_vigencias: {},
       forma_pagos: {},
@@ -370,15 +369,17 @@ export default {
       }
     },
     buscarNumero: debounce(function() {
-      if (this.poliza.numero) {
-        http.search('poliza/busquedaNumero?q=' + this.poliza.numero).then(r => {
-          this.n = r.data.data;
-          if (this.n.length > 0) {
-            this.numeroUsed = true;
-          } else {
-            this.numeroUsed = false;
-          }
-        });
+      if (this.poliza_nueva.numero) {
+        http
+          .search('poliza/busquedaNumero?q=' + this.poliza_nueva.numero)
+          .then(r => {
+            this.n = r.data.data;
+            if (this.n.length > 0) {
+              this.numeroUsed = true;
+            } else {
+              this.numeroUsed = false;
+            }
+          });
       }
     }, 500),
     touchSelect(val) {
@@ -402,9 +403,30 @@ export default {
     },
     cargarUltimoNumeroSolicitud() {
       http.load('numerosolicitud').then(response => {
+        this.poliza_nueva.numero_solicitud =
+          response.data.data[0].numero_solicitud + 1;
+      });
+    },
+    cargarUltimoNumeroSolicitud() {
+      http.load('numerosolicitud').then(response => {
         this.poliza.numero_solicitud =
           response.data.data[0].numero_solicitud + 1;
       });
+    },
+    renovarPoliza() {
+      this.notifyVue('success', 'La poliza se ha renovado con exito');
+      this.poliza_nueva.cliente_id = this.poliza.cliente_id;
+      this.poliza_nueva.tipo_riesgo_id = this.poliza.tipo_riesgo_id;
+      this.poliza_nueva.compania_id = this.poliza.compania_id;
+      this.poliza_nueva.codigo_productor_id = this.poliza.codigo_productor_id;
+      this.poliza_nueva.renueva_numero = this.poliza.numero;
+      this.poliza_nueva.tipo_vigencia_id = this.poliza.tipo_vigencia_id;
+      this.poliza_nueva.forma_pago_id = this.poliza.forma_pago_id;
+      this.poliza_nueva.plan_pago = this.poliza.plan_pago;
+      this.poliza_nueva.cantidad_cuotas = this.poliza.cantidad_cuotas;
+      this.poliza_nueva.detalle_medio_pago = this.poliza.detalle_medio_pago;
+
+      http.create('polizas', this.poliza_nueva).then(r => console.log(r));
     }
   },
   created() {
@@ -412,6 +434,10 @@ export default {
     this.cargarFormaPagos();
     this.sumarMes();
     this.cargarUltimoNumeroSolicitud();
+    this.cargarUltimoNumeroSolicitud();
+  },
+  mounted() {
+    EventBus.$on('cl', () => this.renovarPoliza());
   }
 };
 </script>

@@ -28,7 +28,10 @@
             </wizard-tab>
 
             <wizard-tab>
-              <riesgo :poliza="poliza">hola hola hola</riesgo>
+              <riesgo
+                :riesgo_automotor="riesgo_automotor"
+                :poliza="poliza"
+              >hola hola hola</riesgo>
             </wizard-tab>
           </simple-wizard>
 
@@ -41,6 +44,7 @@
 import { SlideYUpTransition } from 'vue2-transitions';
 import { Card } from 'src/components';
 import { SimpleWizard, WizardTab } from 'src/components';
+// import http from '../../../../../API/http-request.js';
 import Poliza from './Poliza';
 import Riesgo from './Riesgo';
 
@@ -49,6 +53,11 @@ export default {
 
   props: {
     poliza: {
+      type: Object,
+      required: true,
+      default: null
+    },
+    riesgo_automotor: {
       type: Object,
       required: true,
       default: null

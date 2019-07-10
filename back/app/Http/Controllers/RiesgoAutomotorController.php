@@ -23,7 +23,7 @@ class RiesgoAutomotorController extends Controller
 
     public function searchPoliza($id)
     {
-        $polizaId = RiesgoAutomotor::where('poliza_id', $id)->get();
+        $polizaId = RiesgoAutomotor::where('poliza_id', $id)->with('automotor_marca', 'automotor_modelo', 'automotor_version', 'automotor_anio', 'cobertura')->get();
         return RiesgoAutomotorsResource::collection($polizaId);
     }
 

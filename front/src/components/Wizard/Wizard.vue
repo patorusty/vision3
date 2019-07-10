@@ -95,7 +95,7 @@
               }}</base-button>
             </div>
 
-            <div class="pull-left">
+            <!-- <div class="pull-left">
               <base-button
                 v-if="activeTabIndex > 0"
                 wide
@@ -105,7 +105,7 @@
               >
                 {{ prevButtonText }}
               </base-button>
-            </div>
+            </div> -->
             <div class="clearfix"></div>
           </slot>
         </div>
@@ -115,6 +115,7 @@
 </template>
 <script>
 import { throttle } from './throttle';
+import { EventBus } from '../../main';
 
 export default {
   name: 'simple-wizard',
@@ -249,6 +250,7 @@ export default {
       let isValid = await this.validate();
       if (isValid && this.activeTabIndex < this.tabCount - 1) {
         this.activeTabIndex++;
+        EventBus.$emit('cl');
       }
       return isValid;
     },

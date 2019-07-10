@@ -292,6 +292,7 @@
       v-show="isModalVisibleModalRenovarAutomotor"
       @close="closeModalRenovarAutomotor"
       :poliza="poliza"
+      :riesgo_automotor="riesgo_automotor"
       v-if="dataLoaded"
     />
   </div>
@@ -326,7 +327,8 @@ export default {
       estados: {},
       forma_pagos: {},
       dataLoaded: false,
-      poliza: {}
+      poliza: {},
+      riesgo_automotor: {}
     };
   },
   methods: {
@@ -388,11 +390,22 @@ export default {
       this.isModalVisibleModalRenovarAutomotor = true;
     },
     renovar(id) {
-      http.loadOne('polizas', id).then(r => {
-        this.poliza = r.data.data[0];
-        this.dataLoaded = true;
-        this.showModalRenovarAutomotor();
-      });
+      http
+        .loadOne('polizas', id)
+        .then(r => {
+          this.poliza = r.data.data[0];
+        })
+        .then(() => {
+          http.loadOne('/polizas/busquedaPolizaId', this.poliza.id).then(r => {
+            console.log(r.data.data);
+            console.log(this.poliza.id);
+            this.riesgo_automotor = r.data.data[0];
+          });
+        })
+        .then(() => {
+          this.dataLoaded = true;
+          this.showModalRenovarAutomotor();
+        });
     }
   },
   created() {

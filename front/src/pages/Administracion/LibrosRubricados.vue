@@ -35,7 +35,7 @@ export default {
       desde: setDate(setMonth(setYear(new Date(), 2018), 0), 1),
 
       hasta: format(
-        setDate(setMonth(setYear(new Date(), 2019), 5), 1),
+        setDate(setMonth(setYear(new Date(), 2020), 5), 1),
         'DD/MM/YYYY'
       ),
       estado: '',
@@ -46,7 +46,7 @@ export default {
   methods: {
     estadoVigencia() {
       let hoy = new Date();
-      let desde = setDate(setMonth(setYear(new Date(), 2020), 0), 1);
+      let desde = setDate(setMonth(setYear(new Date(), 2018), 0), 1);
       //poliza.vigencia_desde;
       let hasta = setDate(setMonth(setYear(new Date(), 2020), 5), 1);
       //poliza.vigencia_hasta;
@@ -104,7 +104,7 @@ export default {
     }
   },
   created() {
-    // this.checkAnuladas();
+    this.checkAnuladas();
     http.load('poliza/vigencias');
   }
 };
