@@ -22,16 +22,18 @@
             </button>
           </div>
           <simple-wizard>
-
             <wizard-tab>
-              <poliza :poliza="poliza"></poliza>
+              <poliza
+                :poliza="poliza"
+                :riesgo_automotor="riesgo_automotor"
+              ></poliza>
             </wizard-tab>
-
             <wizard-tab>
               <riesgo
                 :riesgo_automotor="riesgo_automotor"
                 :poliza="poliza"
-              >hola hola hola</riesgo>
+                :coberturas="coberturas"
+              ></riesgo>
             </wizard-tab>
           </simple-wizard>
 
@@ -44,6 +46,7 @@
 import { SlideYUpTransition } from 'vue2-transitions';
 import { Card } from 'src/components';
 import { SimpleWizard, WizardTab } from 'src/components';
+import { EventBus } from '../../../../../main';
 // import http from '../../../../../API/http-request.js';
 import Poliza from './Poliza';
 import Riesgo from './Riesgo';
@@ -61,6 +64,9 @@ export default {
       type: Object,
       required: true,
       default: null
+    },
+    coberturas: {
+      type: Array
     }
   },
   components: {
@@ -73,8 +79,9 @@ export default {
   },
   methods: {
     close() {
-      this.$emit('close');
       EventBus.$emit('resetInput', false);
+      EventBus.$emit('reset');
+      this.$emit('close');
     }
   }
 };

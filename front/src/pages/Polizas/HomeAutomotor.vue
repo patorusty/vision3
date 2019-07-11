@@ -293,6 +293,7 @@
       @close="closeModalRenovarAutomotor"
       :poliza="poliza"
       :riesgo_automotor="riesgo_automotor"
+      :coberturas="coberturas"
       v-if="dataLoaded"
     />
   </div>
@@ -328,7 +329,8 @@ export default {
       forma_pagos: {},
       dataLoaded: false,
       poliza: {},
-      riesgo_automotor: {}
+      riesgo_automotor: {},
+      coberturas: []
     };
   },
   methods: {
@@ -396,16 +398,20 @@ export default {
           this.poliza = r.data.data[0];
         })
         .then(() => {
-          http.loadOne('/polizas/busquedaPolizaId', this.poliza.id).then(r => {
-            console.log(r.data.data);
-            console.log(this.poliza.id);
-            this.riesgo_automotor = r.data.data[0];
-          });
+          http
+            .loadOne('cobertura/compania', this.poliza.compania_id)
+            .then(r => {
+              this.coberturas = r.data.data;
+            });
         })
         .then(() => {
-          this.dataLoaded = true;
-          this.showModalRenovarAutomotor();
-        });
+          http.loadOne('/polizas/busquedaPolizaId', this.poliza.id).then(r => {
+            this.riesgo_automotor = r.data.data[0];
+            this.dataLoaded = true;
+            this.showModalRenovarAutomotor();
+          });
+        })
+        .then(() => {});
     }
   },
   created() {

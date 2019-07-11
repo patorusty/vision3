@@ -3,7 +3,7 @@
     <div class="page-header no-margin-bottom">
       <div class="container-fluid">
         <div class="row">
-          <h4 class="text-primary pl-3">POLIZA /</h4>
+          <h4 class="text-primary pl-3">POLIZA /</h4>&nbsp;&nbsp;
           <h4 class="">{{ poliza.numero }}</h4>
         </div>
       </div>

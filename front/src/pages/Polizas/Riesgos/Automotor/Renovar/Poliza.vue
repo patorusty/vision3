@@ -4,34 +4,27 @@
       <div class="col-md-12">
         <div class="row ml-1">
           <div class="col-md-6">
-            <div class="row ">
-              <p class="text-primary">Asegurado: </p> &nbsp;
-
-              <p class="">{{poliza.clientes.apellido}}</p>&nbsp;
-              <p class="">{{poliza.clientes.nombre}}</p>
+            <div class="row pr-3">
+              <p class="text-primary">Asegurado: </p>&nbsp;&nbsp;
+              <p>{{poliza.clientes.apellido}}&nbsp;{{poliza.clientes.nombre}}</p>
             </div>
-            &nbsp;
-            <div class="row">
-              <p class="text-primary">Compañia: </p> &nbsp;
-
-              <p class="">{{poliza.companias.nombre}}</p>
+            <div class="row pr-3">
+              <p class="text-primary">Compañia: </p>&nbsp;&nbsp;
+              <p>{{poliza.companias.nombre}}</p>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="row">
-              <p class="text-primary">Renueva Poliza: </p> &nbsp;
-
-              <p class="">{{poliza.numero}}</p>
+            <div class="row pr-3">
+              <p class="text-primary">Renueva Poliza: </p>&nbsp;&nbsp;
+              <p>{{poliza.numero}}</p>
             </div>
-            &nbsp;
-            <div class="row">
-              <p class="text-primary">Productor:</p> &nbsp;
-
-              <p class=""></p>
-              <p class="">{{poliza.codigo_productor.productores.apellido}}</p>&nbsp;
-              <p class="">{{poliza.codigo_productor.productores.nombre}}</p>&nbsp;
-              <p> - Cod. &nbsp;(</p>
-              <p class="">{{poliza.codigo_productor.codigo_productor}}</p>
+            <div class="row pr-3">
+              <p class="text-primary">Productor:</p>&nbsp;&nbsp;
+              <p></p>
+              <p>{{poliza.codigo_productor.productores.apellido}}</p>
+              <p>{{poliza.codigo_productor.productores.nombre}}</p>
+              <p> - Cod. (</p>
+              <p>{{poliza.codigo_productor.codigo_productor}}</p>
               <p>)</p>
             </div>
           </div>
@@ -258,6 +251,11 @@ export default {
       type: Object,
       required: true,
       default: null
+    },
+    riesgo_automotor: {
+      type: Object,
+      required: true,
+      default: null
     }
   },
   mixins: [mixin],
@@ -276,20 +274,58 @@ export default {
         fecha_solicitud: new Date(),
         vigencia_desde: this.poliza.vigencia_hasta
       },
+      riesgo_automotor_nuevo: {
+          automotor_tipo: this.riesgo_automotor.automotor_tipo,
+          automotor_anio_id: this.riesgo_automotor.automotor_anio_id,
+          automotor_marca_id: this.riesgo_automotor.automotor_marca_id,
+          automotor_modelo_id: this.riesgo_automotor.automotor_modelo_id,
+          automotor_version_id: this.riesgo_automotor.automotor_version_id,
+          tipo_patente: this.riesgo_automotor.tipo_patente,
+          patente: this.riesgo_automotor.patente,
+          nro_motor: this.riesgo_automotor.nro_motor,
+          nro_chasis: this.riesgo_automotor.nro_chasis,
+          uso: this.riesgo_automotor.uso,
+          tipo_carroceria: this.riesgo_automotor.tipo_carroceria,
+          combustible: this.riesgo_automotor.combustible,
+          okm: this.riesgo_automotor.okm,
+          estado_general: this.riesgo_automotor.estado_general,
+          color: this.riesgo_automotor.color,
+          equipo_rastreo: this.riesgo_automotor.equipo_rastreo,
+          gnc: this.riesgo_automotor.gnc,
+          gnc_nro_oblea: this.riesgo_automotor.gnc_nro_oblea,
+          gnc_vencimiento_oblea: this.riesgo_automotor.gnc_vencimiento_oblea,
+          gnc_nro_regulador: this.riesgo_automotor.gnc_nro_regulador,
+          gnc_marca_regulador: this.riesgo_automotor.gnc_marca_regulador,
+          gnc_nro_cilindro: this.riesgo_automotor.gnc_nro_cilindro,
+          gnc_marca_cilindro: this.riesgo_automotor.gnc_marca_cilindro,
+          cubiertas_medida: this.riesgo_automotor.cubiertas_medida,
+          cubiertas_marca: this.riesgo_automotor.cubiertas_marca,
+          accesorio_01: this.accesorio_01,
+          valor_accesorio_01: this.riesgo_automotor.valor_accesorio_01,
+          accesorio_02: this.accesorio_02,
+          valor_accesorio_02: this.riesgo_automotor.valor_accesorio_02,
+          acreedor_prendario: this.riesgo_automotor.acreedor_prendario,
+          acreedor_rs: this.riesgo_automotor.acreedor_rs,
+          acreedor_cuit: this.riesgo_automotor.acreedor_cuit,
+          observaciones: this.riesgo_automotor.observaciones,
+          cobertura_id: this.riesgo_automotor.cobertura_id,
+          franquicia: this.riesgo_automotor.franquicia,
+          ajuste: this.riesgo_automotor.ajuste,
+          valor_vehiculo: this.riesgo_automotor.valor_vehiculo,
+          valor_gnc: this.riesgo_automotor.valor_gnc,
+          valor_accesorios: this.riesgo_automotor.valor_accesorios,
+          valor_total: this.riesgo_automotor.valor_total,
+          vigencia_desde: this.riesgo_automotor.vigencia_desde,
+          vigencia_hasta: this.riesgo_automotor.vigencia_hasta,
+      }
       tipo_vigencias: {},
       forma_pagos: {},
       numeroUsed: false,
       errorSelect: {
-        cliente_id: false,
-        compania_id: false,
-        codigo_productor_id: false,
         vigencia_desde: false,
         vigencia_hasta: false
       },
       selected: {
-        cliente_id: false,
-        compania_id: false,
-        codigo_productor_id: false,
         vigencia_desde: true,
         vigencia_hasta: true
       },
@@ -407,26 +443,30 @@ export default {
           response.data.data[0].numero_solicitud + 1;
       });
     },
-    cargarUltimoNumeroSolicitud() {
-      http.load('numerosolicitud').then(response => {
-        this.poliza.numero_solicitud =
-          response.data.data[0].numero_solicitud + 1;
-      });
-    },
     renovarPoliza() {
-      this.notifyVue('success', 'La poliza se ha renovado con exito');
-      this.poliza_nueva.cliente_id = this.poliza.cliente_id;
-      this.poliza_nueva.tipo_riesgo_id = this.poliza.tipo_riesgo_id;
-      this.poliza_nueva.compania_id = this.poliza.compania_id;
-      this.poliza_nueva.codigo_productor_id = this.poliza.codigo_productor_id;
-      this.poliza_nueva.renueva_numero = this.poliza.numero;
-      this.poliza_nueva.tipo_vigencia_id = this.poliza.tipo_vigencia_id;
-      this.poliza_nueva.forma_pago_id = this.poliza.forma_pago_id;
-      this.poliza_nueva.plan_pago = this.poliza.plan_pago;
-      this.poliza_nueva.cantidad_cuotas = this.poliza.cantidad_cuotas;
-      this.poliza_nueva.detalle_medio_pago = this.poliza.detalle_medio_pago;
-
-      http.create('polizas', this.poliza_nueva).then(r => console.log(r));
+      if (
+        this.$validator.validateAll().then(r => r) &&
+        this.checkSelect() &&
+        !this.numeroUsed
+      ) {
+        this.notifyVue('success', 'La poliza se ha renovado con exito');
+        this.poliza_nueva.cliente_id = this.poliza.cliente_id;
+        this.poliza_nueva.tipo_riesgo_id = this.poliza.tipo_riesgo_id;
+        this.poliza_nueva.compania_id = this.poliza.compania_id;
+        this.poliza_nueva.codigo_productor_id = this.poliza.codigo_productor_id;
+        this.poliza_nueva.renueva_numero = this.poliza.numero;
+        this.poliza_nueva.tipo_vigencia_id = this.poliza.tipo_vigencia_id;
+        this.poliza_nueva.forma_pago_id = this.poliza.forma_pago_id;
+        this.poliza_nueva.plan_pago = this.poliza.plan_pago;
+        this.poliza_nueva.cantidad_cuotas = this.poliza.cantidad_cuotas;
+        this.poliza_nueva.detalle_medio_pago = this.poliza.detalle_medio_pago;
+        http.create('polizas', this.poliza_nueva).then(r => {
+          this.poliza_renovada = r.data.data;
+          EventBus.$emit('nueva_id', this.poliza_renovada.id);
+        });
+        // riesgo_automotor_nuevo.poliza_id = poliza_nueva.id
+        // http.create('/riesgo_automotor', this.riesgo_automotor_nuevo)
+      }
     }
   },
   created() {

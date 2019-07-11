@@ -1,64 +1,55 @@
 <template>
   <div class="modal-contenido">
     <div class="col-md-12">
-      <div class="row ml-1">
-        <div class="col-md-6">
+      <div class="row pl-3">
+        <div class="col-md-6 ">
           <div class="row ">
-            <p class="text-primary">Asegurado: </p> &nbsp;
-            <p>{{poliza.clientes.apellido}}</p>&nbsp;
-            <p>{{poliza.clientes.nombre}}</p>
+            <p class="text-primary">Asegurado: </p>&nbsp;&nbsp;
+            <p>{{poliza.clientes.apellido}}&nbsp;{{poliza.clientes.nombre}}</p>
           </div>
-          &nbsp;
-          <div class="row">
-            <p class="text-primary">Compañia: </p> &nbsp;
+          <div class="row ">
+            <p class="text-primary">Compañia: </p>&nbsp;&nbsp;
             <p>{{poliza.companias.nombre}}</p>
           </div>
+          <div class="row ">
+            <p class="text-primary">Marca: </p>&nbsp;&nbsp;
+            <p>{{riesgo_automotor.automotor_marca.nombre}}</p>
+          </div>
+          <div class="row ">
+            <p class="text-primary">Modelo: </p>&nbsp;&nbsp;
+            <p>{{riesgo_automotor.automotor_version.nombre}}</p>
+          </div>
+          <div class="row ">
+            <p class="text-primary">Año: </p>&nbsp;&nbsp;
+            <p>{{riesgo_automotor.automotor_anio.anio_id}}</p>
+          </div>
+
         </div>
         <div class="col-md-6">
-          <div class="row">
-            <p class="text-primary">Renueva Poliza: </p> &nbsp;
+          <div class="row ">
+            <p class="text-primary">Renueva Poliza: </p>&nbsp;&nbsp;
             <p>{{poliza.numero}}</p>
           </div>
-          &nbsp;
-          <div class="row">
-            <p class="text-primary">Productor:</p> &nbsp;
+          <div class="row ">
+            <p class="text-primary">Productor:</p>&nbsp;&nbsp;
             <p></p>
-            <p>{{poliza.codigo_productor.productores.apellido}}</p>&nbsp;
+            <p>{{poliza.codigo_productor.productores.apellido}}</p>
             <p>{{poliza.codigo_productor.productores.nombre}}</p>&nbsp;
-            <p> - Cod. &nbsp;(</p>
+            <p> - Cod. (</p>&nbsp;
             <p>{{poliza.codigo_productor.codigo_productor}}</p>
             <p>)</p>
           </div>
-        </div>
-        <div class="col-md-12">
-          <div class="row mt-3">
-            <div class="row col-md-4">
-              <p class="text-primary">Marca: </p> &nbsp;
-              <p>{{riesgo_automotor.automotor_marca.nombre}}</p>&nbsp;
-            </div>
-            <div class="row col-md-6">
-              <p class="text-primary">Modelo: </p> &nbsp;
-              <p>{{riesgo_automotor.automotor_version.nombre}}</p>&nbsp;
-            </div>
-            <div class="row col-md-3">
-              <p class="text-primary">Año: </p> &nbsp;
-              <p>{{riesgo_automotor.automotor_anio.anio_id}}</p>&nbsp;
-            </div>
+          <div class="row ">
+            <p class="text-primary">Patente: </p>&nbsp;&nbsp;
+            <p>{{riesgo_automotor.patente}}</p>
           </div>
-          <div class="row mt-3">
-            <div class="row col-md-4">
-              <p class="text-primary">Patente: </p> &nbsp;
-              <p>{{riesgo_automotor.patente}}</p>&nbsp;
-            </div>
-            <div class="row col-md-4">
-              <p class="text-primary">Motor: </p> &nbsp;
-              <p>{{riesgo_automotor.nro_motor}}</p>&nbsp;
-            </div>
-            <div class="row col-md-5">
-              <p class="text-primary">Chasis: </p> &nbsp;
-              <p>{{riesgo_automotor.nro_chasis}}</p>&nbsp;
-            </div>
-
+          <div class="row ">
+            <p class="text-primary">Motor: </p>&nbsp;&nbsp;
+            <p>{{riesgo_automotor.nro_motor}}</p>
+          </div>
+          <div class="row ">
+            <p class="text-primary">Chasis: </p>&nbsp;&nbsp;
+            <p>{{riesgo_automotor.nro_chasis}}</p>
           </div>
         </div>
       </div>
@@ -96,9 +87,7 @@
             :class="{ errorS: errorSelect.cobertura_id }"
             v-model="riesgo_automotor.cobertura_id"
             name="estado_general"
-            @change="
-                        touchSelect('cobertura_id'), coberturaSeleccionada()
-                      "
+            @change="touchSelect('cobertura_id'), coberturaSeleccionada()"
           >
             <el-option
               v-for="cobertura in coberturas"
@@ -115,19 +104,18 @@
             Este campo es obligatorio
           </p>
           <base-input
-            class="mt-3"
+            class="mt-2"
             label="Franquicia"
             v-model="riesgo_automotor.franquicia"
             name="franquicia"
             :disabled="cobertura.todo_riesgo == 0"
           >
           </base-input>
-
         </div>
       </div>
-
     </div>
   </div>
+
 </template>
 // <script>
 import { mixin } from '../../../../../mixins/mixin.js';
@@ -242,7 +230,7 @@ export default {
       });
     },
     cargarCoberturas() {
-      http.loadOne('cobertura/compania', this.compania_id).then(r => {
+      http.loadOne('cobertura/compania', this.poliza.compania_id).then(r => {
         this.coberturas = r.data.data;
       });
     },
@@ -303,6 +291,10 @@ export default {
           this.versiones = r.data.data;
         });
     });
+    EventBus.$on(
+      'nueva_id',
+      val => (this.riesgo_automotor_nuevo.poliza_id = val)
+    );
   }
 };
 </script>

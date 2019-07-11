@@ -89,9 +89,10 @@
               <base-button
                 v-else
                 wide
+                type="primary"
                 @click.native="nextTab"
               >{{
-                finishButtonText
+                Terminar
               }}</base-button>
             </div>
 
@@ -150,6 +151,10 @@ export default {
     Renovar: {
       type: String,
       default: 'Renovar'
+    },
+    Terminar: {
+      type: String,
+      default: 'Terminar'
     }
   },
   components: {
@@ -293,6 +298,7 @@ export default {
       },
       false
     );
+    EventBus.$on('reset', () => this.prevTab());
   },
   watch: {
     activeTabIndex(newValue, oldValue) {

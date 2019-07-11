@@ -87,7 +87,7 @@ class PolizaController extends Controller
             'archivada' => $request->input('archivada'),
         ]);
 
-        return (['message' => 'guardado']);
+        return new PolizasResource($poliza);
 
     }
 
