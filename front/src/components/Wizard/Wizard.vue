@@ -1,9 +1,6 @@
 <template>
   <div class="wizard-container">
-    <div
-      class="card card-wizard active"
-      id="wizardProfile"
-    >
+    <div class="card card-wizard active" id="wizardProfile">
       <form @submit.prevent>
         <!--
           You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"
@@ -18,7 +15,7 @@
               v-if="subTitle"
               class="description"
             >{{ subTitle }}</h5>
-          </slot> -->
+        </slot>-->
 
         <!-- <div class="wizard-navigation">
             <div class="progress-with-circle">
@@ -59,41 +56,29 @@
                 </a>
               </li>
             </ul>
-          </div> -->
+        </div>-->
         <!-- </div> -->
 
         <div class="card-body">
           <div class="tab-content">
-            <slot
-              :activeIndex="activeTabIndex"
-              :activeTab="activeTab"
-            > </slot>
+            <slot :activeIndex="activeTabIndex" :activeTab="activeTab"></slot>
           </div>
         </div>
 
         <div class="card-footer">
-          <slot
-            name="footer"
-            :next-tab="nextTab"
-            :prev-tab="prevTab"
-          >
+          <slot name="footer" :next-tab="nextTab" :prev-tab="prevTab">
             <div class="pull-right">
               <base-button
                 v-if="activeTabIndex < tabCount - 1"
                 type="primary"
                 @click.native="nextTab"
                 class="right"
-              >
-                {{ Renovar }}
-              </base-button>
-              <base-button
-                v-else
-                wide
-                type="primary"
-                @click.native="nextTab"
-              >{{
+              >{{ Renovar }}</base-button>
+              <base-button v-else wide type="primary" @click.native="nextTab">
+                {{
                 Terminar
-              }}</base-button>
+                }}
+              </base-button>
             </div>
 
             <!-- <div class="pull-left">
@@ -106,7 +91,7 @@
               >
                 {{ prevButtonText }}
               </base-button>
-            </div> -->
+            </div>-->
             <div class="clearfix"></div>
           </slot>
         </div>
@@ -255,7 +240,7 @@ export default {
       let isValid = await this.validate();
       if (isValid && this.activeTabIndex < this.tabCount - 1) {
         this.activeTabIndex++;
-        EventBus.$emit('cl');
+        EventBus.$emit('renovarP');
       }
       return isValid;
     },

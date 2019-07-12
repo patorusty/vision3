@@ -5,13 +5,9 @@
         <card card-body-classes="table-full-width">
           <div class="row">
             <div class="col-md-10">
-
               <div class="botoncrear col-md-2">
                 <router-link to="/polizas/create">
-                  <base-button
-                    class="right"
-                    type="primary"
-                  >Crear</base-button>
+                  <base-button class="right" type="primary">Crear</base-button>
                 </router-link>
               </div>
             </div>
@@ -20,65 +16,68 @@
         <!-- ACA EMPIEZA LA TABLA -->
         <card card-body-classes="table-full-width">
           <div>
-
             <el-table :data="queriedData">
               <el-table-column
                 label="Poliza N°"
                 prop="numero"
                 :min-width="127"
               ></el-table-column>
-              <el-table-column
-                label="Compania"
-                :min-width="113"
-              >
-                <div slot-scope="{ row }">{{row.companias.nombre}} <br>
-                  Cod.({{row.codigo_productor.codigo_productor}})</div>
-              </el-table-column>
-              <el-table-column
-                label="Asegurado"
-                :min-width="128"
-              >
+              <el-table-column label="Compania" :min-width="113">
                 <div slot-scope="{ row }">
-                  <router-link
-                    v-if="row.clientes.razon_social === null"
-                    to="#"
-                  >{{ row.clientes.apellido }} <br> {{ row.clientes.nombre }}</router-link>
-                  <router-link
-                    v-else
-                    to="#"
-                  >{{ row.clientes.razon_social }}</router-link>
+                  {{ row.companias.nombre }} <br />
+                  Cod.({{ row.codigo_productor.codigo_productor }})
                 </div>
               </el-table-column>
-              <el-table-column
-                label="Patente"
-                :min-width="100"
-              >
-                <div slot-scope="{ row }">{{row.vigencia_desde}}</div>
+              <el-table-column label="Asegurado" :min-width="128">
+                <div slot-scope="{ row }">
+                  <router-link v-if="row.clientes.razon_social === null" to="#"
+                    >{{ row.clientes.apellido }} <br />
+                    {{ row.clientes.nombre }}</router-link
+                  >
+                  <router-link v-else to="#">{{
+                    row.clientes.razon_social
+                  }}</router-link>
+                </div>
+              </el-table-column>
+              <el-table-column label="Patente" :min-width="100">
+                <div slot-scope="{ row }">{{ row.vigencia_desde }}</div>
               </el-table-column>
               <el-table-column
                 label="Vigencia"
                 :min-width="100"
                 prop="tipo_vigencias.vigencia"
               ></el-table-column>
-              <el-table-column
-                label="Desde/Hasta"
-                :min-width="141"
-                sortable
-              >
-                <div slot-scope="{ row }">{{row.vigencia_desde}} <br> {{row.vigencia_hasta}}</div>
+              <el-table-column label="Desde/Hasta" :min-width="141" sortable>
+                <div slot-scope="{ row }">
+                  {{ row.vigencia_desde }} <br />
+                  {{ row.vigencia_hasta }}
+                </div>
               </el-table-column>
               <el-table-column
                 label="Estado"
                 prop="estado_polizas.nombre"
                 :min-width="109"
               ></el-table-column>
-              <el-table-column
-                :min-width="117"
-                label="Envio"
-              >
+              <el-table-column :min-width="117" label="Envio">
                 <div slot-scope="{ row }">
-                  <div v-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null">Recibida</div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email === null">
+                  <div
+                    v-if="
+                      row.fecha_recepcion !== null &&
+                        row.fecha_entrega_original === null &&
+                        row.fecha_entrega_correo === null &&
+                        row.fecha_entrega_email === null
+                    "
+                  >
+                    Recibida
+                  </div>
+                  <div
+                    v-else-if="
+                      row.fecha_recepcion !== null &&
+                        row.fecha_entrega_original !== null &&
+                        row.fecha_entrega_correo === null &&
+                        row.fecha_entrega_email === null
+                    "
+                  >
                     <el-tooltip
                       content="Entregada"
                       effect="light"
@@ -87,9 +86,15 @@
                     >
                       <i class="tim-icons icon-check-2"></i>
                     </el-tooltip>
-
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null">
+                  <div
+                    v-else-if="
+                      row.fecha_recepcion !== null &&
+                        row.fecha_entrega_original === null &&
+                        row.fecha_entrega_correo !== null &&
+                        row.fecha_entrega_email === null
+                    "
+                  >
                     <el-tooltip
                       content="Enviada por Correo"
                       effect="light"
@@ -99,8 +104,14 @@
                       <i class="tim-icons icon-send"></i>
                     </el-tooltip>
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null">
-
+                  <div
+                    v-else-if="
+                      row.fecha_recepcion !== null &&
+                        row.fecha_entrega_original === null &&
+                        row.fecha_entrega_correo === null &&
+                        row.fecha_entrega_email !== null
+                    "
+                  >
                     <el-tooltip
                       content="Email"
                       effect="light"
@@ -109,9 +120,15 @@
                     >
                       <i class="tim-icons icon-email-85"></i>
                     </el-tooltip>
-
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email === null">
+                  <div
+                    v-else-if="
+                      row.fecha_recepcion !== null &&
+                        row.fecha_entrega_original !== null &&
+                        row.fecha_entrega_correo !== null &&
+                        row.fecha_entrega_email === null
+                    "
+                  >
                     <el-tooltip
                       content="Entregada"
                       effect="light"
@@ -120,7 +137,8 @@
                     >
                       <i class="tim-icons icon-check-2"></i>
                     </el-tooltip>
-                    / <el-tooltip
+                    /
+                    <el-tooltip
                       content="Enviada por Correo"
                       effect="light"
                       :open-delay="300"
@@ -129,7 +147,14 @@
                       <i class="tim-icons icon-send"></i>
                     </el-tooltip>
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo === null && row.fecha_entrega_email !== null">
+                  <div
+                    v-else-if="
+                      row.fecha_recepcion !== null &&
+                        row.fecha_entrega_original !== null &&
+                        row.fecha_entrega_correo === null &&
+                        row.fecha_entrega_email !== null
+                    "
+                  >
                     <el-tooltip
                       content="Entregada"
                       effect="light"
@@ -138,7 +163,8 @@
                     >
                       <i class="tim-icons icon-check-2"></i>
                     </el-tooltip>
-                    / <el-tooltip
+                    /
+                    <el-tooltip
                       content="Email"
                       effect="light"
                       :open-delay="300"
@@ -147,7 +173,14 @@
                       <i class="tim-icons icon-email-85"></i>
                     </el-tooltip>
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original === null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null">
+                  <div
+                    v-else-if="
+                      row.fecha_recepcion !== null &&
+                        row.fecha_entrega_original === null &&
+                        row.fecha_entrega_correo !== null &&
+                        row.fecha_entrega_email !== null
+                    "
+                  >
                     <el-tooltip
                       content="Enviada por Correo"
                       effect="light"
@@ -156,7 +189,8 @@
                     >
                       <i class="tim-icons icon-send"></i>
                     </el-tooltip>
-                    / <el-tooltip
+                    /
+                    <el-tooltip
                       content="Email"
                       effect="light"
                       :open-delay="300"
@@ -165,7 +199,14 @@
                       <i class="tim-icons icon-email-85"></i>
                     </el-tooltip>
                   </div>
-                  <div v-else-if="row.fecha_recepcion !== null && row.fecha_entrega_original !== null && row.fecha_entrega_correo !== null && row.fecha_entrega_email !== null">
+                  <div
+                    v-else-if="
+                      row.fecha_recepcion !== null &&
+                        row.fecha_entrega_original !== null &&
+                        row.fecha_entrega_correo !== null &&
+                        row.fecha_entrega_email !== null
+                    "
+                  >
                     <el-tooltip
                       content="Entregada"
                       effect="light"
@@ -174,7 +215,8 @@
                     >
                       <i class="tim-icons icon-check-2"></i>
                     </el-tooltip>
-                    / <el-tooltip
+                    /
+                    <el-tooltip
                       content="Enviada por Correo"
                       effect="light"
                       :open-delay="300"
@@ -182,7 +224,8 @@
                     >
                       <i class="tim-icons icon-send"></i>
                     </el-tooltip>
-                    / <el-tooltip
+                    /
+                    <el-tooltip
                       content="Email"
                       effect="light"
                       :open-delay="300"
@@ -200,16 +243,12 @@
                 prop="forma_pago_id"
               >
                 <div slot-scope="{ row }">
-                  <div v-if="row.forma_pago_id == 1"> TC </div>
-                  <div v-else-if="row.forma_pago_id == 2"> DC </div>
-                  <div v-else> PF/RP </div>
+                  <div v-if="row.forma_pago_id == 1">TC</div>
+                  <div v-else-if="row.forma_pago_id == 2">DC</div>
+                  <div v-else>PF/RP</div>
                 </div>
               </el-table-column>
-              <el-table-column
-                align="right"
-                label="Actions"
-                :min-width="115"
-              >
+              <el-table-column align="right" label="Actions" :min-width="115">
                 <div slot-scope="props">
                   <el-tooltip
                     content="Editar"
@@ -217,7 +256,12 @@
                     :open-delay="300"
                     placement="top"
                   >
-                    <router-link :to="{ name: 'Editar Poliza', params: { numero_solicitud: props.row.numero_solicitud }}">
+                    <router-link
+                      :to="{
+                        name: 'Editar Poliza',
+                        params: { numero_solicitud: props.row.numero_solicitud }
+                      }"
+                    >
                       <base-button
                         class="edit btn-link"
                         type="warning"
@@ -245,7 +289,7 @@
                     </base-button>
                   </el-tooltip>
                   <base-button
-                    @click.native="borrar(props.row.id);"
+                    @click.native="borrar(props.row.id)"
                     content="Borrar"
                     class="remove btn-link"
                     type="danger"
@@ -263,7 +307,9 @@
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
             <div class>
-              <p class="card-category">Showing {{ from + 1 }} to {{ to }} of {{ total }} entries</p>
+              <p class="card-category">
+                Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+              </p>
             </div>
             <el-select
               class="select-primary mb-3 pagination-select"
@@ -420,6 +466,13 @@ export default {
     this.cargarClientes();
     this.cargarEstadoPolizas();
     this.cargarFormaPagos();
+  },
+  mounted() {
+    EventBus.$on('nuevoRiesgo', val => {
+      http.loadOne('/polizas/busquedaPolizaId', val.poliza_id).then(r => {
+        this.riesgo_automotor = r.data.data[0];
+      });
+    });
   }
 };
 </script>
@@ -458,4 +511,3 @@ export default {
   text-align: center;
 }
 </style>
-

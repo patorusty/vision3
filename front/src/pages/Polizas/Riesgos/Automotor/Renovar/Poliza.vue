@@ -5,26 +5,26 @@
         <div class="row ml-1">
           <div class="col-md-6">
             <div class="row pr-3">
-              <p class="text-primary">Asegurado: </p>&nbsp;&nbsp;
-              <p>{{poliza.clientes.apellido}}&nbsp;{{poliza.clientes.nombre}}</p>
+              <p class="text-primary">Asegurado:</p>&nbsp;&nbsp;
+              <p>{{ poliza.clientes.apellido }}&nbsp;{{ poliza.clientes.nombre }}</p>
             </div>
             <div class="row pr-3">
-              <p class="text-primary">Compañia: </p>&nbsp;&nbsp;
-              <p>{{poliza.companias.nombre}}</p>
+              <p class="text-primary">Compañia:</p>&nbsp;&nbsp;
+              <p>{{ poliza.companias.nombre }}</p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="row pr-3">
-              <p class="text-primary">Renueva Poliza: </p>&nbsp;&nbsp;
-              <p>{{poliza.numero}}</p>
+              <p class="text-primary">Renueva Poliza:</p>&nbsp;&nbsp;
+              <p>{{ poliza.numero }}</p>
             </div>
             <div class="row pr-3">
               <p class="text-primary">Productor:</p>&nbsp;&nbsp;
               <p></p>
-              <p>{{poliza.codigo_productor.productores.apellido}}</p>
-              <p>{{poliza.codigo_productor.productores.nombre}}</p>
-              <p> - Cod. (</p>
-              <p>{{poliza.codigo_productor.codigo_productor}}</p>
+              <p>{{ poliza.codigo_productor.productores.apellido }}</p>
+              <p>{{ poliza.codigo_productor.productores.nombre }}</p>
+              <p>- Cod. (</p>
+              <p>{{ poliza.codigo_productor.codigo_productor }}</p>
               <p>)</p>
             </div>
           </div>
@@ -56,12 +56,7 @@
                 v-model="poliza_nueva.vigencia_desde"
                 @change="touchSelect('vigencia_desde')"
               ></el-date-picker>
-              <p
-                class="errorSelect"
-                v-show="errorSelect.vigencia_desde"
-              >
-                Este campo es obligatorio
-              </p>
+              <p class="errorSelect" v-show="errorSelect.vigencia_desde">Este campo es obligatorio</p>
             </base-input>
             <label>Hasta:</label>
             <base-input>
@@ -72,12 +67,7 @@
                 v-model="poliza_nueva.vigencia_hasta"
                 @change="touchSelect('vigencia_hasta')"
               ></el-date-picker>
-              <p
-                class="errorSelect"
-                v-show="errorSelect.vigencia_hasta"
-              >
-                Este campo es obligatorio
-              </p>
+              <p class="errorSelect" v-show="errorSelect.vigencia_hasta">Este campo es obligatorio</p>
             </base-input>
           </div>
           <div class="col-md-4">
@@ -90,7 +80,8 @@
                 value-format="yyyy-MM-dd"
                 @change="touchSelect('fecha_solicitud')"
               ></el-date-picker>
-            </base-input><label>Emision:</label>
+            </base-input>
+            <label>Emision:</label>
             <base-input class="mb-0">
               <el-date-picker
                 v-model="poliza_nueva.fecha_emision"
@@ -98,7 +89,8 @@
                 format="dd/MM/yyyy"
                 value-format="yyyy-MM-dd"
               ></el-date-picker>
-            </base-input><label>Recepcion:</label>
+            </base-input>
+            <label>Recepcion:</label>
             <base-input class="mb-0">
               <el-date-picker
                 v-model="poliza_nueva.fecha_recepcion"
@@ -117,8 +109,7 @@
               :error="getErrorNumero('numero', numeroUsed)"
               :class="{ 'has-danger': numeroUsed }"
               @keyup="buscarNumero"
-            >
-            </base-input>
+            ></base-input>
             <label>Envío por Email:</label>
             <base-input class="mb-0">
               <el-date-picker
@@ -145,10 +136,7 @@
               </div>
               <div class="col-md-6">
                 <label>Prima:</label>
-                <base-input
-                  v-model="poliza_nueva.prima"
-                  type="text"
-                ></base-input>
+                <base-input v-model="poliza_nueva.prima" type="text"></base-input>
               </div>
             </div>
             <div class="row">
@@ -164,10 +152,7 @@
               </div>
               <div class="col-md-6">
                 <label>Descuento:</label>
-                <base-input
-                  v-model="poliza_nueva.descuento"
-                  type="text"
-                ></base-input>
+                <base-input v-model="poliza_nueva.descuento" type="text"></base-input>
               </div>
             </div>
           </div>
@@ -186,8 +171,7 @@
                 :value="forma_pago.id"
                 :label="forma_pago.nombre"
                 class="select-primary"
-              >
-              </el-option>
+              ></el-option>
             </el-select>
             <div class="row">
               <div class="col-md-8 mt-2">
@@ -204,8 +188,7 @@
                     :label="plan_pago.label"
                     :value="plan_pago.value"
                     class="select-primary"
-                  >
-                  </el-option>
+                  ></el-option>
                 </el-select>
               </div>
               <div class="col-md-4 mt-2">
@@ -311,7 +294,7 @@ export default {
         cobertura_id: this.riesgo_automotor.cobertura_id,
         franquicia: this.riesgo_automotor.franquicia,
         ajuste: this.riesgo_automotor.ajuste,
-        valor_vehiculo: this.riesgo_automotor.valor_vehiculo,
+        valor_vehiculo: '',
         valor_gnc: this.riesgo_automotor.valor_gnc,
         valor_accesorios: this.riesgo_automotor.valor_accesorios,
         valor_total: this.riesgo_automotor.valor_total,
@@ -462,10 +445,15 @@ export default {
         this.poliza_nueva.detalle_medio_pago = this.poliza.detalle_medio_pago;
         http.create('polizas', this.poliza_nueva).then(r => {
           this.poliza_renovada = r.data.data;
-          EventBus.$emit('nueva_id', this.poliza_renovada.id);
+          this.riesgo_automotor_nuevo.poliza_id = this.poliza_renovada.id;
+          http
+            .create('/riesgo_automotor', this.riesgo_automotor_nuevo)
+            .then(r => {
+              console.log(r.data.data);
+              this.nuevoRiesgo = r.data.data;
+              EventBus.$emit('nuevoRiesgo', this.nuevoRiesgo);
+          });
         });
-        // riesgo_automotor_nuevo.poliza_id = poliza_nueva.id
-        // http.create('/riesgo_automotor', this.riesgo_automotor_nuevo)
       }
     }
   },
@@ -477,7 +465,7 @@ export default {
     this.cargarUltimoNumeroSolicitud();
   },
   mounted() {
-    EventBus.$on('cl', () => this.renovarPoliza());
+    EventBus.$on('renovarP', () => this.renovarPoliza());
   }
 };
 </script>
@@ -503,4 +491,3 @@ export default {
   padding-left: 0px;
 }
 </style>
-

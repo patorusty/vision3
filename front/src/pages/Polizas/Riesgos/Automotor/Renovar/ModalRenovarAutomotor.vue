@@ -1,14 +1,7 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:60%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:60%;">
         <card>
           <div class="d-flex justify-content-between mb-2">
             <h4>Renovacion de Poliza</h4>
@@ -36,7 +29,6 @@
               ></riesgo>
             </wizard-tab>
           </simple-wizard>
-
         </card>
       </div>
     </div>
