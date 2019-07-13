@@ -110,13 +110,16 @@
               class="select-primary"
             ></el-option>
           </el-select>
-          <p class="errorSelect" v-show="errorSelect.cobertura_id">
+          <p
+            class="errorSelect"
+            v-show="errorSelect.cobertura_id"
+          >
             Este campo es obligatorio
           </p>
           <base-input
             class="mt-2"
             label="Franquicia"
-            v-model="riesgo_automotor.poliza_id"
+            v-model="riesgo_automotor.franquicia"
             name="franquicia"
             :disabled="cobertura.todo_riesgo == 0"
           >
@@ -290,6 +293,26 @@ export default {
       this.riesgo_automotor.automotor_marca_id = '';
       this.riesgo_automotor.automotor_modelo_id = '';
       this.riesgo_automotor.automotor_version_id = '';
+    },
+    close() {
+      this.$emit('close');
+      EventBus.$emit('resetInput', false);
+    },
+    update() {
+      this.$validator.validateAll().then(r => {
+        if (this.checkSelect() && r) {
+          http
+            .update(
+              '/riesgo_automotor',
+              this.riesgo_automotor_nuevo.id,
+              this.riesgo_automotor_nuevo
+            )
+            .then(() => {
+              this.close();
+              this.notifyVue('success', 'El riesgo ha sido renovado');
+            });
+        }
+      });
     }
   },
   created() {
@@ -308,6 +331,7 @@ export default {
           this.versiones = r.data.data;
         });
     });
+    EventBus.$on('renovarR', () => this.update());
   }
 };
 </script>

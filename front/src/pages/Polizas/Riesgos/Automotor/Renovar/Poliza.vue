@@ -56,7 +56,10 @@
                 v-model="poliza_nueva.vigencia_desde"
                 @change="touchSelect('vigencia_desde')"
               ></el-date-picker>
-              <p class="errorSelect" v-show="errorSelect.vigencia_desde">Este campo es obligatorio</p>
+              <p
+                class="errorSelect"
+                v-show="errorSelect.vigencia_desde"
+              >Este campo es obligatorio</p>
             </base-input>
             <label>Hasta:</label>
             <base-input>
@@ -67,7 +70,10 @@
                 v-model="poliza_nueva.vigencia_hasta"
                 @change="touchSelect('vigencia_hasta')"
               ></el-date-picker>
-              <p class="errorSelect" v-show="errorSelect.vigencia_hasta">Este campo es obligatorio</p>
+              <p
+                class="errorSelect"
+                v-show="errorSelect.vigencia_hasta"
+              >Este campo es obligatorio</p>
             </base-input>
           </div>
           <div class="col-md-4">
@@ -136,7 +142,10 @@
               </div>
               <div class="col-md-6">
                 <label>Prima:</label>
-                <base-input v-model="poliza_nueva.prima" type="text"></base-input>
+                <base-input
+                  v-model="poliza_nueva.prima"
+                  type="text"
+                ></base-input>
               </div>
             </div>
             <div class="row">
@@ -152,7 +161,10 @@
               </div>
               <div class="col-md-6">
                 <label>Descuento:</label>
-                <base-input v-model="poliza_nueva.descuento" type="text"></base-input>
+                <base-input
+                  v-model="poliza_nueva.descuento"
+                  type="text"
+                ></base-input>
               </div>
             </div>
           </div>
@@ -449,10 +461,9 @@ export default {
           http
             .create('/riesgo_automotor', this.riesgo_automotor_nuevo)
             .then(r => {
-              console.log(r.data.data);
               this.nuevoRiesgo = r.data.data;
               EventBus.$emit('nuevoRiesgo', this.nuevoRiesgo);
-          });
+            });
         });
       }
     }

@@ -1,6 +1,9 @@
 <template>
   <div class="wizard-container">
-    <div class="card card-wizard active" id="wizardProfile">
+    <div
+      class="card card-wizard active"
+      id="wizardProfile"
+    >
       <form @submit.prevent>
         <!--
           You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"
@@ -61,12 +64,19 @@
 
         <div class="card-body">
           <div class="tab-content">
-            <slot :activeIndex="activeTabIndex" :activeTab="activeTab"></slot>
+            <slot
+              :activeIndex="activeTabIndex"
+              :activeTab="activeTab"
+            ></slot>
           </div>
         </div>
 
         <div class="card-footer">
-          <slot name="footer" :next-tab="nextTab" :prev-tab="prevTab">
+          <slot
+            name="footer"
+            :next-tab="nextTab"
+            :prev-tab="prevTab"
+          >
             <div class="pull-right">
               <base-button
                 v-if="activeTabIndex < tabCount - 1"
@@ -74,7 +84,12 @@
                 @click.native="nextTab"
                 class="right"
               >{{ Renovar }}</base-button>
-              <base-button v-else wide type="primary" @click.native="nextTab">
+              <base-button
+                v-else
+                wide
+                type="primary"
+                @click.native="nextTab"
+              >
                 {{
                 Terminar
                 }}
@@ -242,7 +257,8 @@ export default {
         this.activeTabIndex++;
         EventBus.$emit('renovarP');
       }
-      return isValid;
+      // return isValid;
+      EventBus.$emit('renovarR');
     },
     prevTab() {
       this.activeTabIndex--;
