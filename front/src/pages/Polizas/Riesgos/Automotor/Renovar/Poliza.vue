@@ -56,10 +56,7 @@
                 v-model="poliza_nueva.vigencia_desde"
                 @change="touchSelect('vigencia_desde')"
               ></el-date-picker>
-              <p
-                class="errorSelect"
-                v-show="errorSelect.vigencia_desde"
-              >Este campo es obligatorio</p>
+              <p class="errorSelect" v-show="errorSelect.vigencia_desde">Este campo es obligatorio</p>
             </base-input>
             <label>Hasta:</label>
             <base-input>
@@ -70,10 +67,7 @@
                 v-model="poliza_nueva.vigencia_hasta"
                 @change="touchSelect('vigencia_hasta')"
               ></el-date-picker>
-              <p
-                class="errorSelect"
-                v-show="errorSelect.vigencia_hasta"
-              >Este campo es obligatorio</p>
+              <p class="errorSelect" v-show="errorSelect.vigencia_hasta">Este campo es obligatorio</p>
             </base-input>
           </div>
           <div class="col-md-4">
@@ -142,10 +136,7 @@
               </div>
               <div class="col-md-6">
                 <label>Prima:</label>
-                <base-input
-                  v-model="poliza_nueva.prima"
-                  type="text"
-                ></base-input>
+                <base-input v-model="poliza_nueva.prima" type="text"></base-input>
               </div>
             </div>
             <div class="row">
@@ -161,10 +152,7 @@
               </div>
               <div class="col-md-6">
                 <label>Descuento:</label>
-                <base-input
-                  v-model="poliza_nueva.descuento"
-                  type="text"
-                ></base-input>
+                <base-input v-model="poliza_nueva.descuento" type="text"></base-input>
               </div>
             </div>
           </div>
@@ -223,6 +211,11 @@
               name="detalle_medio_pago"
               v-model="poliza.detalle_medio_pago"
             ></textarea>
+          </div>
+        </div>
+        <div>
+          <div class="pull-right">
+            <base-button type="primary" class="right" @click="renovarPoliza">Renovar</base-button>
           </div>
         </div>
       </div>
@@ -321,8 +314,8 @@ export default {
         vigencia_hasta: false
       },
       selected: {
-        vigencia_desde: true,
-        vigencia_hasta: true
+        vigencia_desde: false,
+        vigencia_hasta: false
       },
       plan_pagos: [
         {
@@ -414,7 +407,10 @@ export default {
       }
     }, 500),
     touchSelect(val) {
-      if (!this.poliza[`${val}`] || this.poliza[`${val}`] === undefined) {
+      if (
+        !this.poliza_nueva[`${val}`] ||
+        this.poliza_nueva[`${val}`] === undefined
+      ) {
         this.selected[val] = false;
         this.errorSelect[val] = true;
       } else {
@@ -425,9 +421,12 @@ export default {
     checkSelect() {
       let valor = true;
       Object.entries(this.selected).forEach(select => {
-        if (select[1] == false) {
+        if (select[1] == false && !this.poliza_nueva[`${select[0]}`]) {
           this.errorSelect[`${select[0]}`] = true;
           valor = false;
+        } else {
+          this.errorSelect[`${select[0]}`] = false;
+          valor = true;
         }
       });
       return valor;
@@ -439,33 +438,33 @@ export default {
       });
     },
     renovarPoliza() {
-      if (
-        this.$validator.validateAll().then(r => r) &&
-        this.checkSelect() &&
-        !this.numeroUsed
-      ) {
-        this.notifyVue('success', 'La poliza se ha renovado con exito');
-        this.poliza_nueva.cliente_id = this.poliza.cliente_id;
-        this.poliza_nueva.tipo_riesgo_id = this.poliza.tipo_riesgo_id;
-        this.poliza_nueva.compania_id = this.poliza.compania_id;
-        this.poliza_nueva.codigo_productor_id = this.poliza.codigo_productor_id;
-        this.poliza_nueva.renueva_numero = this.poliza.numero;
-        this.poliza_nueva.tipo_vigencia_id = this.poliza.tipo_vigencia_id;
-        this.poliza_nueva.forma_pago_id = this.poliza.forma_pago_id;
-        this.poliza_nueva.plan_pago = this.poliza.plan_pago;
-        this.poliza_nueva.cantidad_cuotas = this.poliza.cantidad_cuotas;
-        this.poliza_nueva.detalle_medio_pago = this.poliza.detalle_medio_pago;
-        http.create('polizas', this.poliza_nueva).then(r => {
-          this.poliza_renovada = r.data.data;
-          this.riesgo_automotor_nuevo.poliza_id = this.poliza_renovada.id;
-          http
-            .create('/riesgo_automotor', this.riesgo_automotor_nuevo)
-            .then(r => {
-              this.nuevoRiesgo = r.data.data;
-              EventBus.$emit('nuevoRiesgo', this.nuevoRiesgo);
-            });
-        });
-      }
+      this.$validator.validateAll().then(r => {
+        if (this.checkSelect() && r && !this.numeroUsedr) {
+          EventBus.$emit('renovarP');
+          this.notifyVue('success', 'La poliza se ha renovado con exito');
+          this.poliza_nueva.cliente_id = this.poliza.cliente_id;
+          this.poliza_nueva.tipo_riesgo_id = this.poliza.tipo_riesgo_id;
+          this.poliza_nueva.compania_id = this.poliza.compania_id;
+          this.poliza_nueva.codigo_productor_id = this.poliza.codigo_productor_id;
+          this.poliza_nueva.renueva_numero = this.poliza.numero;
+          this.poliza_nueva.tipo_vigencia_id = this.poliza.tipo_vigencia_id;
+          this.poliza_nueva.forma_pago_id = this.poliza.forma_pago_id;
+          this.poliza_nueva.plan_pago = this.poliza.plan_pago;
+          this.poliza_nueva.cantidad_cuotas = this.poliza.cantidad_cuotas;
+          this.poliza_nueva.detalle_medio_pago = this.poliza.detalle_medio_pago;
+          http.create('polizas', this.poliza_nueva).then(r => {
+            this.poliza_renovada = r.data.data;
+            this.riesgo_automotor_nuevo.poliza_id = this.poliza_renovada.id;
+            http
+              .create('/riesgo_automotor', this.riesgo_automotor_nuevo)
+              .then(r => {
+                this.nuevoRiesgo = r.data.data;
+                EventBus.$emit('nuevoRiesgo', this.nuevoRiesgo);
+              });
+          });
+          
+        }
+      });
     }
   },
   created() {
@@ -475,9 +474,7 @@ export default {
     this.cargarUltimoNumeroSolicitud();
     this.cargarUltimoNumeroSolicitud();
   },
-  mounted() {
-    EventBus.$on('renovarP', () => this.renovarPoliza());
-  }
+  mounted() {}
 };
 </script>
 <style>

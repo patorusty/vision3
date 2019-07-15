@@ -5,24 +5,17 @@
         <card>
           <div class="d-flex justify-content-between mb-2">
             <h4>Renovacion de Poliza</h4>
-            <button
-              class="close"
-              type="button"
-              aria-label="Close"
-              @click="close"
-            >
+            <button class="close" type="button" aria-label="Close" @click="close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <simple-wizard>
             <wizard-tab>
-              <poliza
-                :poliza="poliza"
-                :riesgo_automotor="riesgo_automotor"
-              ></poliza>
+              <poliza :poliza="poliza" :riesgo_automotor="riesgo_automotor"></poliza>
             </wizard-tab>
             <wizard-tab>
               <riesgo
+                @close="close"
                 :riesgo_automotor="riesgo_automotor"
                 :poliza="poliza"
                 :coberturas="coberturas"

@@ -71,7 +71,7 @@
           </div>
         </div>
 
-        <div class="card-footer">
+        <!-- <div class="card-footer">
           <slot
             name="footer"
             :next-tab="nextTab"
@@ -94,7 +94,7 @@
                 Terminar
                 }}
               </base-button>
-            </div>
+            </div> -->
 
             <!-- <div class="pull-left">
               <base-button
@@ -107,9 +107,9 @@
                 {{ prevButtonText }}
               </base-button>
             </div>-->
-            <div class="clearfix"></div>
+            <!-- <div class="clearfix"></div>
           </slot>
-        </div>
+        </div> -->
       </form>
     </div>
   </div>
@@ -255,7 +255,6 @@ export default {
       let isValid = await this.validate();
       if (isValid && this.activeTabIndex < this.tabCount - 1) {
         this.activeTabIndex++;
-        EventBus.$emit('renovarP');
       }
       // return isValid;
       EventBus.$emit('renovarR');
@@ -299,6 +298,7 @@ export default {
       },
       false
     );
+    EventBus.$on('renovarP', () => this.nextTab());
     EventBus.$on('reset', () => this.prevTab());
   },
   watch: {

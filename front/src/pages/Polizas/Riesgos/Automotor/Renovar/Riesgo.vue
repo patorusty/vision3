@@ -2,66 +2,52 @@
   <div class="modal-contenido">
     <div class="col-md-12">
       <div class="row pl-3">
-        <div class="col-md-6 ">
-          <div class="row ">
-            <p class="text-primary">Asegurado:</p>
-            &nbsp;&nbsp;
-            <p>
-              {{ poliza.clientes.apellido }}&nbsp;{{ poliza.clientes.nombre }}
-            </p>
+        <div class="col-md-6">
+          <div class="row">
+            <p class="text-primary">Asegurado:</p>&nbsp;&nbsp;
+            <p>{{ poliza.clientes.apellido }}&nbsp;{{ poliza.clientes.nombre }}</p>
           </div>
-          <div class="row ">
-            <p class="text-primary">Compañia:</p>
-            &nbsp;&nbsp;
+          <div class="row">
+            <p class="text-primary">Compañia:</p>&nbsp;&nbsp;
             <p>{{ poliza.companias.nombre }}</p>
           </div>
-          <div class="row ">
-            <p class="text-primary">Marca:</p>
-            &nbsp;&nbsp;
+          <div class="row">
+            <p class="text-primary">Marca:</p>&nbsp;&nbsp;
             <p>{{ riesgo_automotor.automotor_marca.nombre }}</p>
           </div>
-          <div class="row ">
-            <p class="text-primary">Modelo:</p>
-            &nbsp;&nbsp;
+          <div class="row">
+            <p class="text-primary">Modelo:</p>&nbsp;&nbsp;
             <p>{{ riesgo_automotor.automotor_version.nombre }}</p>
           </div>
-          <div class="row ">
-            <p class="text-primary">Año:</p>
-            &nbsp;&nbsp;
+          <div class="row">
+            <p class="text-primary">Año:</p>&nbsp;&nbsp;
             <p>{{ riesgo_automotor.automotor_anio.anio_id }}</p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="row ">
-            <p class="text-primary">Renueva Poliza:</p>
-            &nbsp;&nbsp;
+          <div class="row">
+            <p class="text-primary">Renueva Poliza:</p>&nbsp;&nbsp;
             <p>{{ poliza.numero }}</p>
           </div>
-          <div class="row ">
-            <p class="text-primary">Productor:</p>
-            &nbsp;&nbsp;
+          <div class="row">
+            <p class="text-primary">Productor:</p>&nbsp;&nbsp;
             <p></p>
             <p>{{ poliza.codigo_productor.productores.apellido }}</p>
-            <p>{{ poliza.codigo_productor.productores.nombre }}</p>
-            &nbsp;
-            <p>- Cod. (</p>
-            &nbsp;
+            <p>{{ poliza.codigo_productor.productores.nombre }}</p>&nbsp;
+            <p>- Cod. (</p>&nbsp;
             <p>{{ poliza.codigo_productor.codigo_productor }}</p>
             <p>)</p>
           </div>
-          <div class="row ">
-            <p class="text-primary">Patente:</p>
-            &nbsp;&nbsp;
+          <div class="row">
+            <p class="text-primary">Patente:</p>&nbsp;&nbsp;
             <p>{{ riesgo_automotor.patente }}</p>
           </div>
-          <div class="row ">
-            <p class="text-primary">Motor:</p>
-            &nbsp;&nbsp;
+          <div class="row">
+            <p class="text-primary">Motor:</p>&nbsp;&nbsp;
             <p>{{ riesgo_automotor.nro_motor }}</p>
           </div>
-          <div class="row ">
-            <p class="text-primary">Chasis:</p>
-            &nbsp;&nbsp;
+          <div class="row">
+            <p class="text-primary">Chasis:</p>&nbsp;&nbsp;
             <p>{{ riesgo_automotor.nro_chasis }}</p>
           </div>
         </div>
@@ -74,8 +60,7 @@
             name="valor_vehiculo"
             v-validate="'required'"
             :error="getError('valor_vehiculo')"
-          >
-          </base-input>
+          ></base-input>
           <label>Ajuste</label>
           <el-select
             filterable
@@ -110,20 +95,19 @@
               class="select-primary"
             ></el-option>
           </el-select>
-          <p
-            class="errorSelect"
-            v-show="errorSelect.cobertura_id"
-          >
-            Este campo es obligatorio
-          </p>
+          <p class="errorSelect" v-show="errorSelect.cobertura_id">Este campo es obligatorio</p>
           <base-input
             class="mt-2"
             label="Franquicia"
             v-model="riesgo_automotor.franquicia"
             name="franquicia"
             :disabled="cobertura.todo_riesgo == 0"
-          >
-          </base-input>
+          ></base-input>
+        </div>
+      </div>
+      <div>
+        <div class="pull-right">
+          <base-button type="primary" class="right" @click="update">Terminar</base-button>
         </div>
       </div>
     </div>
@@ -140,7 +124,6 @@ export default {
   props: {
     riesgo_automotor: {
       type: Object,
-      required: true,
       default: null
     },
     poliza: {
@@ -157,14 +140,6 @@ export default {
     TheMask
   },
   data: () => ({
-    // riesgo_automotor:{
-    //   automotor_version: {
-    //     nombre: ''
-    //   },
-    //   automotor_version: {
-    //     nombre: ''
-    //   }
-    // },
     dataLoaded: false,
     riesgo_automotor_nuevo: {},
     marcas: {},
@@ -180,20 +155,10 @@ export default {
     versiones: [],
     url: '/anios/filtrar',
     errorSelect: {
-      automotor_anio_id: false,
-      automotor_marca_id: false,
-      automotor_modelo_id: false,
-      automotor_version_id: false,
-      cobertura_id: false,
-      tipo_carroceria: false
+      cobertura_id: false
     },
     selected: {
-      automotor_anio_id: false,
-      automotor_marca_id: false,
-      automotor_modelo_id: false,
-      automotor_version_id: false,
-      cobertura_id: false,
-      tipo_carroceria: false
+      cobertura_id: false
     },
     tipo_patentes: [
       {
@@ -225,38 +190,9 @@ export default {
     ]
   }),
   methods: {
-    cargarMarcas() {
-      http.load('administracion/marcas', this.marca_id).then(r => {
-        this.marcas = r.data.data;
-      });
-    },
-    buscarMarca() {
-      http.loadOne('administracion/marcas', this.marca_id).then(r => {
-        this.marca = r.data.data;
-      });
-    },
-    filtrarModeloPorMarca(id) {
-      this.riesgo_automotor.automotor_modelo_id = '';
-      this.versiones = [];
-      http.loadOne('/modelos/filtrar', id).then(r => {
-        this.modelos = r.data.data;
-      });
-    },
-    filtrarVersionesDeModelo(url, anio, modelo) {
-      this.riesgo_automotor.automotor_version_id = '';
-      this.versiones = [];
-      http.search2(url, anio, modelo).then(r => {
-        this.versiones = r.data.data;
-      });
-    },
     cargarCoberturas() {
       http.loadOne('cobertura/compania', this.poliza.compania_id).then(r => {
         this.coberturas = r.data.data;
-      });
-    },
-    cargarAnios() {
-      http.load('anios', this.anio_id).then(r => {
-        this.anios = r.data.data;
       });
     },
     touchSelect(val) {
@@ -289,11 +225,6 @@ export default {
         .loadOne('/cobertura', this.riesgo_automotor.cobertura_id)
         .then(r => (this.cobertura = r.data.data));
     },
-    reset() {
-      this.riesgo_automotor.automotor_marca_id = '';
-      this.riesgo_automotor.automotor_modelo_id = '';
-      this.riesgo_automotor.automotor_version_id = '';
-    },
     close() {
       this.$emit('close');
       EventBus.$emit('resetInput', false);
@@ -301,14 +232,16 @@ export default {
     update() {
       this.$validator.validateAll().then(r => {
         if (this.checkSelect() && r) {
+          console.log(this.riesgo_automotor.id)
+          this.riesgo_automotor.valor_vehiculo = this.riesgo_automotor_nuevo.valor_vehiculo
           http
             .update(
               '/riesgo_automotor',
-              this.riesgo_automotor_nuevo.id,
-              this.riesgo_automotor_nuevo
+              this.riesgo_automotor.id,
+              this.riesgo_automotor
             )
             .then(() => {
-              this.close();
+              this.$emit('close');
               this.notifyVue('success', 'El riesgo ha sido renovado');
             });
         }
@@ -316,22 +249,10 @@ export default {
     }
   },
   created() {
-    this.cargarMarcas();
     this.cargarCoberturas();
-    this.cargarAnios();
   },
   mounted() {
-    EventBus.$on('MMV', value => {
-      http.loadOne('/modelos/filtrar', value.automotor_marca_id).then(r => {
-        this.modelos = r.data.data;
-      });
-      http
-        .search2(this.url, value.automotor_anio_id, value.automotor_modelo_id)
-        .then(r => {
-          this.versiones = r.data.data;
-        });
-    });
-    EventBus.$on('renovarR', () => this.update());
+
   }
 };
 </script>
