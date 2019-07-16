@@ -1,8 +1,5 @@
 <template>
-  <base-table
-    :data="tableData"
-    thead-classes="text-primary"
-  >
+  <base-table :data="tableData" thead-classes="text-primary">
     <template slot-scope="{ row }">
       <td>
         <p class="title">{{ row.titulo }}</p>
@@ -11,22 +8,14 @@
       </td>
 
       <td class="botones">
-        <base-checkbox
-          class="td-actions text-right"
-          v-model="row.hecho"
-        ></base-checkbox>
-        <el-tooltip
-          content="Editar"
-          effect="light"
-          :open-delay="300"
-          placement="top"
-        >
+        <base-checkbox class="td-actions text-right" v-model="row.hecho"></base-checkbox>
+        <el-tooltip content="Editar" effect="light" :open-delay="300" placement="top">
           <base-button
             @click.native="editar(row.id)"
             type="warning"
             icon
             size="sm"
-            class="edit btn-link "
+            class="edit btn-link"
           >
             <i class="tim-icons icon-pencil"></i>
           </base-button>
@@ -38,18 +27,12 @@
           :open-delay="300"
           placement="top"
         >
-          <base-button
-            type="danger"
-            icon
-            size="sm"
-            class="btn-link"
-          >
+          <base-button type="danger" icon size="sm" class="btn-link">
             <i class="tim-icons icon-simple-remove"></i>
           </base-button>
         </el-tooltip>
       </td>
     </template>
-
   </base-table>
 </template>
 <script>
@@ -74,15 +57,21 @@ export default {
   },
   methods: {
     cargar() {
-      http.load(this.url).then(r => (this.tableData = r.data.data));
+      http.load(this.url).then(r => {
+        this.tableData = r.data.data;
+        this.tableData.forEach(element => {
+          console.log(element);
+        });
+      });
     },
     editar(url, id) {
-      EventBus.$emit('showModalNotas');
+      console.log(id);
       this.modoEditar = true;
       http
         .loadOne(this.url, id)
         .then(r => {
           this.nota = r.data.data;
+          EventBus.$emit('showModalNotasEditar', this.nota);
         })
         .catch(e => console.log(e));
     },

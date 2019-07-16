@@ -47,14 +47,13 @@
                   </base-input>
                 </div>
                 <div class="modal-pie pull-right mt-3">
-                  <base-button
+                  <!-- <base-button
                     v-if="modo == true"
                     class="btn btn-primary ladda-button"
                     type="submit"
                     @click="actualizar"
-                  >Guardar</base-button>
+                  >Guardar</base-button> -->
                   <base-button
-                    v-else
                     class="btn btn-primary ladda-button"
                     type="submit"
                     @click="crear"

@@ -58,7 +58,7 @@
     <modal-notas
       v-if="isModalVisibleNotas"
       @close="closeModalNotas"
-      :modo="modo=true"
+      :nota='nota'
     />
   </div>
 </template>
@@ -86,6 +86,7 @@ export default {
     return {
       isModalVisibleNotas: false,
       tableData: [],
+      nota: {},
       statsCards: [
         {
           title: 'Aut: 50 Comb: 50 Otros: 50',
@@ -142,6 +143,10 @@ export default {
   mounted() {
     EventBus.$on('cerrarModalNota', () => this.closeModalNotas());
     EventBus.$on('showModalNotas', () => this.showModalNotas());
+    EventBus.$on('showModalNotasEditar', (val) => {
+      this.nota = val;
+      this.showModalNotas();
+    });
   }
 };
 </script>
