@@ -63,6 +63,8 @@ Route::Resource('/tipousuario', 'TipoUsuarioController');
 Route::Resource('/localidades', 'LocalidadController');
 Route::Resource('/tiporiesgo', 'TipoRiesgoController');
 Route::Resource('/tipovigencia', 'TipoVigenciaController');
+Route::Resource('/notas', 'NotaController');
+
 
 
 //Polizas///////////////////////////////////////////

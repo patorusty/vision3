@@ -41,10 +41,16 @@
           :header-classes="{ 'text-right': $rtl.isRTL }"
         >
           <template slot="header">
-            <h6 class="title d-inline">Tasks (5)</h6>
+            <h6 class="title d-inline">Notas</h6>
+            <base-button
+              type="primary"
+              size="sm"
+              class="float-right"
+              @click="showModalNotas"
+            >+</base-button>
           </template>
           <div class="table-full-width table-responsive">
-            <task-list></task-list>
+            <notas></notas>
           </div>
         </card>
       </div>
@@ -60,7 +66,8 @@ import IconCar from '../components/Icons/IconCar';
 import IconMoon from '../components/Icons/IconMoon';
 import http from '../API/http-request.js';
 import StatsCard from 'src/components/Cards/StatsCard';
-import TaskList from './Dashboard/TaskList';
+import Notas from './Pages/Notas/Notas';
+import { EventBus } from '../main.js';
 
 export default {
   components: {
@@ -68,7 +75,7 @@ export default {
     IconCar,
     IconMoon,
     StatsCard,
-    TaskList
+    Notas
   },
   data() {
     return {
@@ -114,8 +121,8 @@ export default {
     };
   },
   methods: {
-    prueba() {
-      console.log(this.tableData);
+    showModalNotas() {
+      EventBus.$emit('showModalNotas');
     }
   },
   created() {
