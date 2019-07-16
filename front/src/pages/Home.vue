@@ -55,9 +55,11 @@
         </card>
       </div>
     </div>
-
+    <modal-notas
+      v-if="isModalVisibleNotas"
+      @close="closeModalNotas"
+    />
   </div>
-
 </template>
 
 <script>
@@ -68,6 +70,7 @@ import http from '../API/http-request.js';
 import StatsCard from 'src/components/Cards/StatsCard';
 import Notas from './Pages/Notas/Notas';
 import { EventBus } from '../main.js';
+import ModalNotas from './Pages/Notas/ModalNotas';
 
 export default {
   components: {
@@ -75,11 +78,12 @@ export default {
     IconCar,
     IconMoon,
     StatsCard,
-    Notas
+    Notas,
+    ModalNotas
   },
   data() {
     return {
-      url: 'clientes',
+      isModalVisibleNotas: false,
       tableData: [],
       statsCards: [
         {
@@ -123,11 +127,22 @@ export default {
   methods: {
     showModalNotas() {
       EventBus.$emit('showModalNotas');
+    },
+    closeModalNotas() {
+      console.log('cerrar');
+      this.vaciarForm();
+      this.isModalVisibleNotas = false;
+    },
+    showModalNotas() {
+      console.log('hola');
+      this.isModalVisibleNotas = true;
+      this.vaciarForm();
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
     }
   },
-  created() {
-    http.load(this.url).then(res => (this.tableData = res.data.data));
-  }
+  created() {}
 };
 </script>
 <style>

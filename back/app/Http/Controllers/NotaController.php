@@ -16,8 +16,9 @@ class NotaController extends Controller
     public function index()
     {
         $notas = Notas::All();
+        $notasordenadas = $notas->sortByDesc('id');
 
-        return NotasResource::collection($notas);
+        return NotasResource::collection($notasordenadas);
     }
     
     /**

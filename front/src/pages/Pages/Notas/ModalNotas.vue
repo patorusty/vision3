@@ -13,8 +13,8 @@
           <div class="">
             <card>
               <form>
+                <!-- ACA VA EL TITULO -->
                 <div class="d-flex justify-content-between">
-                  <!-- ACA VA EL TITULO -->
                   <h4>Nota</h4>
                   <button
                     class="close"
@@ -26,17 +26,23 @@
                   </button>
                 </div>
                 <!-- ACA VA EL FORMULARIO -->
-                <div class="col-md-6">
-                  <label>Titulo:</label>
-                  <base-input
-                    placeholder="Nombre"
-                    v-model="notas.nota"
-                  >
-                  </base-input>
-                  <base-input label="Observaciones">
+                <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-9">
+                      <label>Titulo:</label>
+                      <base-input v-model="notas.titulo">
+                      </base-input>
+                    </div>
+                    <div class="col-md-3">
+                      <base-checkbox v-model="notas.hecho"></base-checkbox>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <base-input label="Nota">
                     <textarea
+                      v-model="notas.nota"
                       class="form-control"
-                      v-model="cliente.observaciones_1"
                     ></textarea>
                   </base-input>
                 </div>
@@ -69,15 +75,18 @@ import { Card } from 'src/components';
 import http from './../../../API/http-request.js';
 import { EventBus } from './../../../main.js';
 import { mixin } from './../../../mixins/mixin.js';
+import { format } from 'date-fns';
 
 export default {
   props: ['nota', 'modo'],
   mixins: [mixin],
   data() {
     return {
-      user_id: '1',
-      fecha: new Date(),
-      url: 'notas'
+      url: 'notas',
+      notas: {
+        user_id: 1,
+        fecha: format(new Date(), 'DD/MM/YYYY')
+      }
     };
   },
   components: {
@@ -87,9 +96,16 @@ export default {
   methods: {
     close() {
       EventBus.$emit('resetInput', false);
+      this.$emit('close');
     },
     crear() {
-      this.$emit('crear', this.nota);
+      console.log(this.notas);
+      http.create(this.url, this.notas).then(() => {
+        this.notifyVue('success', 'Nota Creada');
+        //ver el tema de cargar la tabla y cerrar el modal
+        // this.cargar();
+        this.closeModal();
+      });
     },
     actualizar() {
       http.update(this.url, this.productor.id, this.productor).then(() => {
@@ -119,5 +135,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.text-right {
+  text-align: center !important;
 }
 </style>

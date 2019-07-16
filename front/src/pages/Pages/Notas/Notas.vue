@@ -48,14 +48,7 @@
         </el-tooltip>
       </td>
     </template>
-    <notas
-      v-show="isModalVisibleNotas"
-      :nota="nota"
-      :modo="modoEditar"
-      @close="closeModalNotas"
-      @crear="crear"
-      @recargar="cargar"
-    />
+
   </base-table>
 </template>
 <script>
@@ -64,19 +57,17 @@ import http from './../../../API/http-request.js';
 import { mixin } from './../../../mixins/mixin.js';
 import { EventBus } from './../../../main';
 import { format } from 'date-fns';
-import Notas from './ModalNotas';
 
 export default {
   mixins: [mixin],
+  name: 'notas',
   components: {
-    Notas,
     BaseTable
   },
 
   data() {
     return {
       nota: {},
-      isModalVisibleNotas: false,
       url: 'notas'
     };
   },
@@ -86,6 +77,7 @@ export default {
     },
     crear() {
       this.showModalNotas();
+      console.log('crear');
       http.create(this.url, value).then(() => {
         this.notifyVue('success', 'Nota Creada');
         this.cargar();
@@ -107,25 +99,13 @@ export default {
         this.notifyVue('danger', 'Nota eliminada');
         this.cargar();
       });
-    },
-    closeModalNotas() {
-      this.vaciarForm();
-      this.isModalVisibleNotas = false;
-    },
-    showModalNotas() {
-      console.log('hola');
-      this.isModalVisibleNotas = true;
-      this.vaciarForm();
-    },
-    vaciarForm() {
-      EventBus.$emit('resetInput', false);
     }
   },
   created() {
     this.cargar();
   },
   mounted() {
-    EventBus.$on('showModalNotas', () => this.showModalNotas());
+    EventBus.$on('crearNota', () => this.crear());
   }
 };
 </script>
