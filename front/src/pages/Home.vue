@@ -58,6 +58,7 @@
     <modal-notas
       v-if="isModalVisibleNotas"
       @close="closeModalNotas"
+      :modo="modo=true"
     />
   </div>
 </template>
@@ -125,16 +126,11 @@ export default {
     };
   },
   methods: {
-    showModalNotas() {
-      EventBus.$emit('showModalNotas');
-    },
     closeModalNotas() {
-      console.log('cerrar');
       this.vaciarForm();
       this.isModalVisibleNotas = false;
     },
     showModalNotas() {
-      console.log('hola');
       this.isModalVisibleNotas = true;
       this.vaciarForm();
     },
@@ -142,7 +138,11 @@ export default {
       EventBus.$emit('resetInput', false);
     }
   },
-  created() {}
+  created() {},
+  mounted() {
+    EventBus.$on('cerrarModalNota', () => this.closeModalNotas());
+    EventBus.$on('showModalNotas', () => this.showModalNotas());
+  }
 };
 </script>
 <style>

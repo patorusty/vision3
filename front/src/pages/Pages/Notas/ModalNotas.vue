@@ -99,12 +99,10 @@ export default {
       this.$emit('close');
     },
     crear() {
-      console.log(this.notas);
       http.create(this.url, this.notas).then(() => {
         this.notifyVue('success', 'Nota Creada');
-        //ver el tema de cargar la tabla y cerrar el modal
-        // this.cargar();
-        this.closeModal();
+        EventBus.$emit('cerrarModalNota');
+        EventBus.$emit('cargarNotas');
       });
     },
     actualizar() {

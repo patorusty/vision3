@@ -9,6 +9,7 @@
         <p class="text-primary">{{ row.fecha }}</p>
         <p class="text-muted">{{ row.nota }}</p>
       </td>
+
       <td class="botones">
         <base-checkbox
           class="td-actions text-right"
@@ -21,7 +22,7 @@
           placement="top"
         >
           <base-button
-            @click.native="editar(props.row.id)"
+            @click.native="editar(row.id)"
             type="warning"
             icon
             size="sm"
@@ -75,17 +76,8 @@ export default {
     cargar() {
       http.load(this.url).then(r => (this.tableData = r.data.data));
     },
-    crear() {
-      this.showModalNotas();
-      console.log('crear');
-      http.create(this.url, value).then(() => {
-        this.notifyVue('success', 'Nota Creada');
-        this.cargar();
-        this.closeModal();
-      });
-    },
     editar(url, id) {
-      this.showModalNotas();
+      EventBus.$emit('showModalNotas');
       this.modoEditar = true;
       http
         .loadOne(this.url, id)
@@ -106,10 +98,14 @@ export default {
   },
   mounted() {
     EventBus.$on('crearNota', () => this.crear());
+    EventBus.$on('cargarNotas', () => this.cargar());
   }
 };
 </script>
 <style>
+.tachado {
+  text-decoration: line-through;
+}
 .botones {
   width: 55px;
 }
