@@ -1,25 +1,13 @@
 <template>
   <SlideYUpTransition :duration="500">
-    <div
-      class="modal-backdrop"
-      @keydown.esc="close"
-      @click="close"
-    >
-      <div
-        @click.stop
-        style="width:75%;"
-      >
+    <div class="modal-backdrop" @keydown.esc="close" @click="close">
+      <div @click.stop style="width:75%;">
         <card>
           <form>
             <div class="d-flex justify-content-between">
               <!-- ACA VA EL TITULO -->
               <h4>Automotor</h4>
-              <button
-                class="close"
-                type="button"
-                aria-label="Close"
-                @click="close"
-              >
+              <button class="close" type="button" aria-label="Close" @click="close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -52,7 +40,7 @@
                         :key="tipo_vehiculo.value"
                         :label="tipo_vehiculo.label"
                         :value="tipo_vehiculo.value"
-                        class="select-primary "
+                        class="select-primary"
                       ></el-option>
                     </el-select>
 
@@ -75,9 +63,7 @@
                     <p
                       class="errorSelect"
                       v-show="errorSelect.automotor_anio"
-                    >
-                      Este campo es obligatorio
-                    </p>
+                    >Este campo es obligatorio</p>
                     <label class="mt-2">Marca</label>
                     <el-select
                       v-model="riesgo_automotor.automotor_marca_id"
@@ -97,15 +83,12 @@
                         :value="marca.id"
                         :label="marca.nombre"
                         class="select-primary"
-                      >
-                      </el-option>
+                      ></el-option>
                     </el-select>
                     <p
                       class="errorSelect"
                       v-show="errorSelect.automotor_marca_id"
-                    >
-                      Este campo es obligatorio
-                    </p>
+                    >Este campo es obligatorio</p>
                     <label class="mt-2">Modelo</label>
                     <el-select
                       v-model="riesgo_automotor.automotor_modelo_id"
@@ -127,15 +110,12 @@
                         :value="modelo.id"
                         :label="modelo.nombre"
                         class="select-primary"
-                      >
-                      </el-option>
+                      ></el-option>
                     </el-select>
                     <p
                       class="errorSelect"
                       v-show="errorSelect.automotor_modelo_id"
-                    >
-                      Este campo es obligatorio
-                    </p>
+                    >Este campo es obligatorio</p>
                     <label class="mt-2">Version</label>
                     <el-select
                       v-model="riesgo_automotor.automotor_version_id"
@@ -150,15 +130,12 @@
                         :value="version.automotor_version.id"
                         :label="version.automotor_version.nombre"
                         class="select-primary"
-                      >
-                      </el-option>
+                      ></el-option>
                     </el-select>
                     <p
                       class="errorSelect"
                       v-show="errorSelect.automotor_version_id"
-                    >
-                      Este campo es obligatorio
-                    </p>
+                    >Este campo es obligatorio</p>
                     <label>Cobertura</label>
                     <el-select
                       filterable
@@ -181,17 +158,14 @@
                     <p
                       class="errorSelect"
                       v-show="errorSelect.cobertura_id"
-                    >
-                      Este campo es obligatorio
-                    </p>
+                    >Este campo es obligatorio</p>
                     <base-input
                       class="mt-3"
                       label="Franquicia"
                       v-model="riesgo_automotor.franquicia"
                       name="franquicia"
                       :disabled="cobertura.todo_riesgo == 0"
-                    >
-                    </base-input>
+                    ></base-input>
                   </div>
                   <!-- SEGUNDA COLUMNA -->
                   <div class="col-md-4">
@@ -209,8 +183,7 @@
                             :value="tipo_patente.value"
                             :label="tipo_patente.label"
                             class="select-primary"
-                          >
-                          </el-option>
+                          ></el-option>
                         </el-select>
                       </div>
                       <div class="col-md-6">
@@ -227,14 +200,11 @@
                             placeholder="ABC123"
                             style="text-transform:uppercase;"
                             mask="AAA###"
-                          >
-                          </the-mask>
+                          ></the-mask>
                           <p
                             class="errorSelect"
                             v-show="errors.first('patente')"
-                          >
-                            Este campo es obligatorio
-                          </p>
+                          >Este campo es obligatorio</p>
                         </div>
                         <div
                           class="form-group"
@@ -249,14 +219,11 @@
                             v-validate="'required'"
                             style="text-transform:uppercase;"
                             mask="AA###AA"
-                          >
-                          </the-mask>
+                          ></the-mask>
                           <p
                             class="errorSelect"
                             v-show="errors.first('patente')"
-                          >
-                            Este campo es obligatorio
-                          </p>
+                          >Este campo es obligatorio</p>
                         </div>
                       </div>
                     </div>
@@ -266,24 +233,29 @@
                       name="nro_motor"
                       v-validate="'required'"
                       :error="getError('nro_motor')"
-                    >
-                    </base-input>
+                    ></base-input>
                     <label>Chasis</label>
                     <base-input
                       v-model="riesgo_automotor.nro_chasis"
                       name="nro_chasis"
                       v-validate="'required'"
                       :error="getError('nro_chasis')"
-                    >
-                    </base-input>
+                    ></base-input>
                     <label>Valor Vehiculo</label>
-                    <base-input
-                      v-model="riesgo_automotor.valor_vehiculo"
-                      name="valor_vehiculo"
-                      v-validate="'required'"
-                      :error="getError('valor_vehiculo')"
-                    >
-                    </base-input>
+                    <div class="form-group" :class="{ 'has-danger': errors.first('patente') }">
+                      <money
+                        v-bind="money"
+                        class="form-control"
+                        v-model.lazy="riesgo_automotor.valor_vehiculo"
+                        name="valor_vehiculo"
+                        v-validate="'required'"
+                        :error="getError('valor_vehiculo')"
+                      />
+                      <p
+                            class="errorSelect"
+                            v-show="errors.first('patente')"
+                          >Este campo es obligatorio</p>
+                    </div>
                     <div class="mt-4">
                       <base-checkbox
                         :checked="riesgo_automotor.okm"
@@ -360,9 +332,7 @@
                     <p
                       class="errorSelect"
                       v-show="errorSelect.tipo_carroceria"
-                    >
-                      Este campo es obligatorio
-                    </p>
+                    >Este campo es obligatorio</p>
                     <label class="mt-2">Combustible</label>
                     <el-select
                       filterable
@@ -394,32 +364,27 @@
                       ></el-option>
                     </el-select>
                     <label class="mt-2">Color</label>
-                    <base-input
-                      v-model="riesgo_automotor.color"
-                      name="color"
-                    >
-                    </base-input>
-                    <base-input
-                      label="Valor Total"
-                      v-model="suma"
-                    >
-                    </base-input>
-                    <base-input label="Observaciones">
-                      <textarea
+                    <base-input v-model="riesgo_automotor.color" name="color"></base-input>
+                    <base-input label="Valor Total" v-model="suma"></base-input>
+                    <div class="form-group">
+                      <the-mask
                         class="form-control"
-                        v-model="riesgo_automotor.observaciones"
-                      ></textarea>
+                        v-model="suma"
+                        name="patente"
+                        mask="###.###.###"
+                      ></the-mask>
+                    </div>
+                    <base-input label="Observaciones">
+                      <textarea class="form-control" v-model="riesgo_automotor.observaciones"></textarea>
                     </base-input>
                   </div>
                 </div>
               </tab-pane>
               <tab-pane>
-                <p class="text-primary">
-                  Cubiertas
-                </p>
+                <p class="text-primary">Cubiertas</p>
                 <div class="row">
                   <div class="col-md-4">
-                    <label>Marca </label>
+                    <label>Marca</label>
                     <el-select
                       filterable
                       class="select-primary"
@@ -436,30 +401,20 @@
                     </el-select>
                   </div>
                   <div class="col-md-4">
-                    <label>Medida </label>
-                    <base-input
-                      v-model="riesgo_automotor.cubiertas_medida"
-                      name="cubiertas_medida"
-                    >
-                    </base-input>
+                    <label>Medida</label>
+                    <base-input v-model="riesgo_automotor.cubiertas_medida" name="cubiertas_medida"></base-input>
                   </div>
                 </div>
                 <span slot="label">
                   <i class="tim-icons icon-settings"></i>GNC
                 </span>
                 <div class="row col-md-4">
-                  <p
-                    class="text-primary col-md-3"
-                    style="padding-left:0px"
-                  >
-                    GNC
-                  </p>
+                  <p class="text-primary col-md-3" style="padding-left:0px">GNC</p>
                   <base-checkbox
                     class="col-md-6"
                     style="margin-top:-13px"
                     v-model="riesgo_automotor.gnc"
-                  >
-                  </base-checkbox>
+                  ></base-checkbox>
                 </div>
                 <div class="row">
                   <div class="col-md-4">
@@ -468,8 +423,7 @@
                       :disabled="riesgo_automotor.gnc == false"
                       v-model="riesgo_automotor.gnc_nro_oblea"
                       name="gnc_nro_oblea"
-                    >
-                    </base-input>
+                    ></base-input>
                     <label>Vencimiento Oblea</label>
                     <base-input>
                       <el-date-picker
@@ -477,16 +431,16 @@
                         placeholder="Date Picker"
                         v-model="riesgo_automotor.gnc_venc_oblea"
                         :disabled="riesgo_automotor.gnc == false"
-                      >
-                      </el-date-picker>
+                      ></el-date-picker>
                     </base-input>
                     <label>Valor GNC</label>
-                    <base-input
-                      v-model="riesgo_automotor.valor_gnc"
-                      name="valor_gnc"
-                      :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
+                    <div class="form-group">
+                      <money
+                        v-bind="money"
+                        class="form-control"
+                        v-model.lazy="riesgo_automotor.valor_gnc"
+                      />
+                    </div>
                   </div>
                   <div class="col-md-4">
                     <label>Marca Cilindro</label>
@@ -494,15 +448,13 @@
                       v-model="riesgo_automotor.gnc_marca_cilindro"
                       name="gnc_marca_cilindro"
                       :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
+                    ></base-input>
                     <label>Nro Cilindro</label>
                     <base-input
                       v-model="riesgo_automotor.gnc_nro_cilindro"
                       name="gnc_nro_cilindro"
                       :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
+                    ></base-input>
                   </div>
                   <div class="col-md-4">
                     <label>Marca Regulador</label>
@@ -510,48 +462,40 @@
                       v-model="riesgo_automotor.gnc_marca_regulador"
                       name="gnc_marca_regulador"
                       :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
+                    ></base-input>
                     <label>Nro Regulador</label>
                     <base-input
                       v-model="riesgo_automotor.gnc_nro_regulador"
                       name="gnc_nro_regulador"
                       :disabled="riesgo_automotor.gnc == false"
-                    >
-                    </base-input>
+                    ></base-input>
                   </div>
                 </div>
-                <p class="text-primary">
-                  Accesorios
-                </p>
+                <p class="text-primary">Accesorios</p>
                 <div class="row">
                   <div class="col-md-4">
                     <label>Accesorio Nro 1</label>
-                    <base-input
-                      v-model="riesgo_automotor.accesorio_01"
-                      name="accesorio_1"
-                    >
-                    </base-input>
+                    <base-input v-model="riesgo_automotor.accesorio_01" name="accesorio_1"></base-input>
                     <label>Accesorio Nro 2</label>
-                    <base-input
-                      v-model="riesgo_automotor.accesorio_02"
-                      name="accesorio_2"
-                    >
-                    </base-input>
+                    <base-input v-model="riesgo_automotor.accesorio_02" name="accesorio_2"></base-input>
                   </div>
                   <div class="col-md-4">
                     <label>Valor Accesorio 1</label>
-                    <base-input
-                      v-model="riesgo_automotor.valor_accesorio_01"
-                      name="valor_accesorio_1"
-                    >
-                    </base-input>
+                    <div class="form-group">
+                      <money
+                        v-bind="money"
+                        class="form-control"
+                        v-model.lazy="riesgo_automotor.valor_accesorio_01"
+                      />
+                    </div>
                     <label>Valor Accesorio 2</label>
-                    <base-input
-                      v-model="riesgo_automotor.valor_accesorio_02"
-                      name="valor_accesorio_2"
-                    >
-                    </base-input>
+                    <div class="form-group">
+                      <money
+                        v-bind="money"
+                        class="form-control"
+                        v-model.lazy="riesgo_automotor.valor_accesorio_02"
+                      />
+                    </div>
                   </div>
                 </div>
               </tab-pane>
@@ -570,8 +514,7 @@
                       v-model="riesgo_automotor.acreedor_rs"
                       name="acreedor_rs"
                       :disabled="riesgo_automotor.acreedor_prendario == false"
-                    >
-                    </base-input>
+                    ></base-input>
                   </div>
                   <div class="col-md-4">
                     <base-input
@@ -579,8 +522,7 @@
                       v-model="riesgo_automotor.acreedor_cuit"
                       name="acreedor_cuit"
                       :disabled="riesgo_automotor.acreedor_prendario == false"
-                    >
-                    </base-input>
+                    ></base-input>
                   </div>
                 </div>
               </tab-pane>
@@ -596,16 +538,9 @@
                   :options="dropzoneOptions"
                 >
                   <div class="dropzone-custom-content">
-                    <div class="texto-drop">
-                      Arrastra las fotos aquí...
-                    </div>
+                    <div class="texto-drop">Arrastra las fotos aquí...</div>
                   </div>
-                  <input
-                    style="display: none;"
-                    type="text"
-                    name="riesgo_id"
-                    value="xx"
-                  />
+                  <input style="display: none;" type="text" name="riesgo_id" value="xx" />
                 </vue-dropzone>
                 <base-button
                   @click="subirFotos"
@@ -617,10 +552,8 @@
                     class="imagen-container"
                     :key="imagen.id"
                   >
-                    <a
-                      :href="'http://localhost:8000' + imagen.path"
-                      target="_blank"
-                    ><img :src="'http://localhost:8000' + imagen.path" />
+                    <a :href="'http://localhost:8000' + imagen.path" target="_blank">
+                      <img :src="'http://localhost:8000' + imagen.path" />
                     </a>
                     <i
                       class="icono-imagen tim-icons icon-simple-remove"
@@ -653,6 +586,7 @@ import { BaseSwitch } from 'src/components/index';
 import { mixin } from '../../../../mixins/mixin.js';
 import { TheMask } from 'vue-the-mask';
 import vue2Dropzone from 'vue2-dropzone';
+import { Money } from 'v-money';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 
 export default {
@@ -679,9 +613,16 @@ export default {
     TabPane,
     TheMask,
     Tabs,
+    Money,
     vueDropzone: vue2Dropzone
   },
   data: () => ({
+    money: {
+      decimal: ',',
+      thousands: '.',
+      prefix: '$ ',
+      masked: false /* doesn't work with directive */
+    },
     visible: false,
     index: 0,
     marcas: {},

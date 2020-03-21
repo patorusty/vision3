@@ -50,7 +50,7 @@
             >+</base-button>
           </template>
           <div class="table-full-width table-responsive">
-            <notas></notas>
+            <notas :isModalVisibleNotas='isModalVisibleNotas'></notas>
           </div>
         </card>
       </div>
@@ -81,6 +81,7 @@ export default {
     return {
       url: 'clientes',
       tableData: [],
+      isModalVisibleNotas: false,
       statsCards: [
         {
           title: 'Aut: 50 Comb: 50 Otros: 50',
@@ -122,7 +123,8 @@ export default {
   },
   methods: {
     showModalNotas() {
-      EventBus.$emit('showModalNotas');
+      this.isModalVisibleNotas = true;
+      EventBus.$emit('showModalNotas', true);
     }
   },
   created() {

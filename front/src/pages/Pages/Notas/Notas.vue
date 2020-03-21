@@ -48,7 +48,7 @@
         </el-tooltip>
       </td>
     </template>
-    <notas
+    <modal-notas
       v-show="isModalVisibleNotas"
       :nota="nota"
       :modo="modoEditar"
@@ -64,19 +64,20 @@ import http from './../../../API/http-request.js';
 import { mixin } from './../../../mixins/mixin.js';
 import { EventBus } from './../../../main';
 import { format } from 'date-fns';
-import Notas from './ModalNotas';
+import ModalNotas from './ModalNotas';
 
 export default {
   mixins: [mixin],
   components: {
-    Notas,
+    ModalNotas,
     BaseTable
   },
+  props:['isModalVisibleNotas'],
 
   data() {
     return {
       nota: {},
-      isModalVisibleNotas: false,
+      // isModalVisibleNotas: false,
       url: 'notas'
     };
   },
@@ -110,11 +111,11 @@ export default {
     },
     closeModalNotas() {
       this.vaciarForm();
-      this.isModalVisibleNotas = false;
+      this.showModalNotas = false;
     },
     showModalNotas() {
-      console.log('hola');
-      this.isModalVisibleNotas = true;
+      // console.log('hola');
+      // this.isModalVisibleNotas = true;
       this.vaciarForm();
     },
     vaciarForm() {
@@ -125,7 +126,7 @@ export default {
     this.cargar();
   },
   mounted() {
-    EventBus.$on('showModalNotas', () => this.showModalNotas());
+    // EventBus.$on('showModalNotas', (val) => this.showModalNotas = val);
   }
 };
 </script>

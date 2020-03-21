@@ -471,7 +471,7 @@ export default {
     EventBus.$on('nuevoRiesgo', val => {
       http.loadOne('/polizas/busquedaPolizaId', val.poliza_id).then(r => {
         this.riesgo_automotor = r.data.data[0];
-        console.log(this.riesgo_automotor.id)
+        console.log(this.riesgo_automotor.id);
       });
     });
   }
