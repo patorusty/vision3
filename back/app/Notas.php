@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notas extends Model
 {
-    //
+    protected $guarded = [];
+
 }

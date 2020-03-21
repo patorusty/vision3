@@ -55,9 +55,12 @@
         </card>
       </div>
     </div>
-
+    <modal-notas
+      v-if="isModalVisibleNotas"
+      @close="closeModalNotas"
+      :nota='nota'
+    />
   </div>
-
 </template>
 
 <script>
@@ -68,6 +71,7 @@ import http from '../API/http-request.js';
 import StatsCard from 'src/components/Cards/StatsCard';
 import Notas from './Pages/Notas/Notas';
 import { EventBus } from '../main.js';
+import ModalNotas from './Pages/Notas/ModalNotas';
 
 export default {
   components: {
@@ -75,13 +79,18 @@ export default {
     IconCar,
     IconMoon,
     StatsCard,
-    Notas
+    Notas,
+    ModalNotas
   },
   data() {
     return {
-      url: 'clientes',
-      tableData: [],
       isModalVisibleNotas: false,
+      tableData: [],
+<<<<<<< HEAD
+      isModalVisibleNotas: false,
+=======
+      nota: {},
+>>>>>>> 6062246e21d5fdff7017ffcf70aeae713a888b58
       statsCards: [
         {
           title: 'Aut: 50 Comb: 50 Otros: 50',
@@ -122,13 +131,30 @@ export default {
     };
   },
   methods: {
+    closeModalNotas() {
+      this.vaciarForm();
+      this.isModalVisibleNotas = false;
+    },
     showModalNotas() {
       this.isModalVisibleNotas = true;
+<<<<<<< HEAD
       EventBus.$emit('showModalNotas', true);
+=======
+      this.vaciarForm();
+    },
+    vaciarForm() {
+      EventBus.$emit('resetInput', false);
+>>>>>>> 6062246e21d5fdff7017ffcf70aeae713a888b58
     }
   },
-  created() {
-    http.load(this.url).then(res => (this.tableData = res.data.data));
+  created() {},
+  mounted() {
+    EventBus.$on('cerrarModalNota', () => this.closeModalNotas());
+    EventBus.$on('showModalNotas', () => this.showModalNotas());
+    EventBus.$on('showModalNotasEditar', (val) => {
+      this.nota = val;
+      this.showModalNotas();
+    });
   }
 };
 </script>
