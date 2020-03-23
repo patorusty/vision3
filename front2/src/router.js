@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'hash',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -39,8 +39,8 @@ export default new Router({
       children: [
         // Dashboard
         {
-          name: 'Dashboard',
-          path: '',
+          name: 'Home',
+          path: 'Home',
           component: () => import('@/views/dashboard/Dashboard'),
         },
         // Pages
@@ -157,13 +157,16 @@ export default new Router({
       ],
     },
     {
-      path: '*',
-      component: () => import('@/views/pages/Index'),
+      path: '/Configuracion',
+      component: () => import('@/views/dashboard/Index'),
+      name: 'Configuracion',
+      redirect: '/Configuracion/Usuarios',
       children: [
         {
-          name: '404 Error',
-          path: '',
-          component: () => import('@/views/pages/Error'),
+          name: 'Usuarios',
+          path: 'usuarios',
+          // component: require('@/views/pages/Configuracion/Usuarios/Usuarios.vue'),
+          component: () => import('@/views/pages/Configuracion/Usuarios/Usuarios.vue'),
         },
       ],
     },

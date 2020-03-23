@@ -90,161 +90,73 @@
       items: [
         {
           icon: 'mdi-view-dashboard',
-          title: 'dashboard',
+          title: 'Home',
           to: '/',
         },
         {
+          icon: 'mdi-car',
+          title: 'Automotor',
+          to: '/polizas/automotor',
+        },
+        {
+          icon: 'mdi-file',
+          title: 'Otros Riesgos',
+          to: 'polizas/otrosriesgos',
+        },
+        {
+          icon: 'mdi-alert',
+          title: 'Siniestros',
+          to: '/polizas/siniestros',
+        },
+        {
+          icon: 'mdi-note',
+          title: 'Endosos',
+          to: '/polizas/endosos',
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Clientes',
+          to: '/clientes',
+        },
+        {
           group: '/pages',
-          icon: 'mdi-image',
-          title: 'pages',
+          icon: 'mdi-tune',
+          title: 'Administracion',
           children: [
             {
-              title: 'pricing',
-              to: 'pricing',
+              title: 'Compañias',
+              to: '/administracion/companias',
             },
             {
-              title: 'rtl',
-              to: 'rtl',
+              title: 'Organizadores',
+              to: '/administracion/organizadores',
             },
             {
-              title: 'timeline',
-              to: 'timeline',
+              title: 'Productores',
+              to: '/administracion/productores',
             },
             {
-              title: 'login',
-              to: 'login',
+              title: 'Marca / Modelo / Version',
+              to: '/administracion/marcamodeloversion/edit',
             },
             {
-              title: 'register',
-              to: 'pricing',
-            },
-            {
-              title: 'lock',
-              to: 'lock',
-            },
-            {
-              title: 'user',
-              to: 'user',
-            },
-            {
-              title: 'error',
-              to: '404',
+              title: 'Estadisticas',
+              to: '/administracion/estadisticas',
             },
           ],
         },
         {
           group: '/components',
-          icon: 'mdi-view-comfy',
-          title: 'components',
+          icon: 'mdi-cog',
+          title: 'Configuracion',
           children: [
             {
-              title: 'multi',
+              title: 'Urusarios',
               group: '',
-              children: [
-                {
-                  title: 'example',
-                  href: '#',
-                },
-              ],
-            },
-            {
-              title: 'buttons',
-              to: 'buttons',
-            },
-            {
-              title: 'grid',
-              to: 'grid-system',
-            },
-            {
-              title: 'tabs',
-              to: 'tabs',
-            },
-            {
-              title: 'notifications',
-              to: 'notifications',
-            },
-            {
-              title: 'icons',
-              to: 'icons',
-            },
-            {
-              title: 'typography',
-              to: 'typography',
             },
           ],
         },
-        {
-          group: '/forms',
-          icon: 'mdi-clipboard-outline',
-          title: 'forms',
-          children: [
-            {
-              title: 'rforms',
-              to: 'regular',
-            },
-            {
-              title: 'eforms',
-              to: 'extended',
-            },
-            {
-              title: 'vforms',
-              to: 'validation',
-            },
-            {
-              title: 'wizard',
-              to: 'wizard',
-            },
-          ],
-        },
-        {
-          group: '/tables',
-          icon: 'mdi-grid',
-          title: 'tables',
-          children: [
-            {
-              title: 'rtables',
-              to: 'regular-tables',
-            },
-            {
-              title: 'etables',
-              to: 'extended-tables',
-            },
-            {
-              title: 'dtables',
-              to: 'data-tables',
-            },
-          ],
-        },
-        {
-          group: '/maps',
-          icon: 'mdi-map-marker',
-          title: 'maps',
-          children: [
-            {
-              title: 'google',
-              to: 'google-maps',
-            },
-            {
-              title: 'fullscreen',
-              to: 'full-screen-map',
-            },
-          ],
-        },
-        {
-          icon: 'mdi-widgets',
-          title: 'widgets',
-          to: '/widgets',
-        },
-        {
-          icon: 'mdi-chart-timeline-variant',
-          title: 'charts',
-          to: '/charts',
-        },
-        {
-          icon: 'mdi-calendar-range',
-          title: 'calendar',
-          to: '/calendar',
-        },
+
       ],
     }),
 
