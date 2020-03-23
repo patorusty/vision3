@@ -352,7 +352,7 @@
     }),
 
     methods: {
-      validateForm (scope) {
+      validateForm () {
         alert('Form Submitted!')
       },
     },
