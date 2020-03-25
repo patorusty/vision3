@@ -2,7 +2,7 @@
   <v-container>
     <v-card>
       <v-card-title>
-        Usuarios
+        Productores
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
@@ -46,25 +46,26 @@
   </v-container>
 </template>
 <script>
-import http from "../../../http-request";
-import ModalUsuarios from "./ModalUsuarios";
+import http from "../../../../http-request";
+// import ModalUsuarios from "./ModalUsuarios";
 
 export default {
   components:{
-    ModalUsuarios
+    // ModalUsuarios
   },
   data() {
     return {
       dialog: false,
       tableData: [],
       usuarios: {},
-      url: "configuracion/usuarios",
+      url: "administracion/productores",
       search: "",
       headers: [
         { text: "Apellido", value: "apellido" },
         { text: "Nombre", value: "nombre" },
+        { text: "cuit", value: "cuit" },
         { text: "Mail", value: "email" },
-        { text: "Tipo Usuario", value: "tipo_usuario_id" },
+        { text: "celular", value: "telefono_2" },
         { text: "Activo", value: "activo" },
         { text: "Actions", value: "actions", sortable: false, align: 'right'
  },

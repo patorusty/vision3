@@ -157,6 +157,25 @@ export default new Router({
       ],
     },
     {
+      path: '/administracion',
+      component: () => import('@/views/dashboard/Index'),
+      name: 'Administracion',
+      redirect: '/administracion/companias',
+      children: [
+        {
+          name: 'Organizadores',
+          path: 'organizadores',
+          component: () => import('@/views/pages/Administracion/Organizadores/Organizadores.vue'),
+        },
+        {
+          name: 'Productores',
+          path: 'productores',
+          component: () => import('@/views/pages/Administracion/Productores/Productores.vue'),
+        },
+      ],
+      
+    },
+    {
       path: '/configuracion',
       component: () => import('@/views/dashboard/Index'),
       name: 'Configuracion',
