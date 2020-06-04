@@ -157,7 +157,7 @@ class PolizaController extends Controller
     }
     public function searchPoliza()
     {
-        if ($search = \Request::get('q')) {
+        if ($search = Request::get('q')) {
             $numero = Polizas::where('numero', $search)->get();
         } 
         // dd($numero);
