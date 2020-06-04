@@ -100,40 +100,40 @@ export default {
         to: "/clientes"
       },
       {
-        group: "/pages",
+        group: "/administracion",
         icon: "mdi-tune",
         title: "Administracion",
         children: [
           {
             title: "Compañias",
-            to: "/administracion/companias"
+            to: "/companias"
           },
           {
             title: "Organizadores",
-            to: "/administracion/organizadores"
+            to: "/organizadores"
           },
           {
             title: "Productores",
-            to: "/administracion/productores"
+            to: "/productores"
           },
           {
             title: "Marca / Modelo / Version",
-            to: "/administracion/marcamodeloversion/edit"
+            to: "/marcamodeloversion/edit"
           },
           {
             title: "Estadisticas",
-            to: "/administracion/estadisticas"
+            to: "/estadisticas"
           }
         ]
       },
       {
-        group: "/components",
+        group: "/configuracion",
         icon: "mdi-cog",
         title: "Configuracion",
         children: [
           {
             title: "Urusarios",
-            group: ""
+            to: "/usuarios"
           }
         ]
       }

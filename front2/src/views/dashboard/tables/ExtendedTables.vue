@@ -266,7 +266,9 @@
 </template>
 
 <script>
+
   export default {
+    
     name: 'DashboardExtendedTables',
 
     data: () => ({

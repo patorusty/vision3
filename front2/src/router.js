@@ -141,10 +141,36 @@ export default new Router({
       ]
     },
     {
+<<<<<<< HEAD
       path: "/configuracion",
       component: () => import("@/views/dashboard/Index"),
       name: "Configuracion",
       redirect: "/configuracion/usuarios",
+=======
+      path: '/administracion',
+      component: () => import('@/views/dashboard/Index'),
+      name: 'Administracion',
+      redirect: '/administracion/companias',
+      children: [
+        {
+          name: 'Organizadores',
+          path: 'organizadores',
+          component: () => import('@/views/pages/Administracion/Organizadores/Organizadores.vue'),
+        },
+        {
+          name: 'Productores',
+          path: 'productores',
+          component: () => import('@/views/pages/Administracion/Productores/Productores.vue'),
+        },
+      ],
+      
+    },
+    {
+      path: '/configuracion',
+      component: () => import('@/views/dashboard/Index'),
+      name: 'Configuracion',
+      redirect: '/configuracion/usuarios',
+>>>>>>> 97a42782b4690a806d35718ac79476e18aff0e0e
       children: [
         {
           name: "Usuarios",
