@@ -2,7 +2,6 @@
   <v-container>
     <v-card>
       <v-card-title>
-        Usuarios
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
@@ -11,6 +10,7 @@
           single-line
           hide-details
         ></v-text-field>
+        <v-spacer></v-spacer>
         <v-btn color="primary" @click="SHOW_MODAL(false)" dark>Crear</v-btn>
         <v-dialog v-model="modal" persistent max-width="600px">
           <modal-usuarios> </modal-usuarios>
