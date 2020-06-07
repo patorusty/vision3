@@ -19,8 +19,8 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-mini">{{ $t('ct') }}</span>
-          <span class="logo-normal">{{ $t('tim') }}</span>
+          <span class="logo-mini">{{ $t("ct") }}</span>
+          <span class="logo-normal">{{ $t("tim") }}</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -132,7 +132,7 @@ export default {
         title: "Configuracion",
         children: [
           {
-            title: "Urusarios",
+            title: "Usuarios",
             to: "/usuarios"
           }
         ]

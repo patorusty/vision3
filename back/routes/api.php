@@ -55,7 +55,7 @@ Route::get('/versiones/busquedaVersion', 'AutomotorVersionController@searchVersi
 
 //Usuarios//////////////////////////////////
 Route::Resource('/configuracion/usuarios', 'UserController');
-Route::get('/usuario/busquedaMail', 'UserController@searchMail');
+Route::post('/usuario/busquedaMail', 'UserController@searchMail');
 Route::Resource('/tipousuario', 'TipoUsuarioController');
 
 
@@ -71,8 +71,8 @@ Route::Resource('/notas', 'NotaController');
 Route::Resource('/polizas', 'PolizaController');
 Route::get('/numerosolicitud', 'PolizaController@numeroDeSolicitud');
 Route::get('/poliza/busquedaNumero', 'PolizaController@searchPoliza');
-Route::get('/poliza/predecesora/{id}', 'PolizaController@chequeoRenovada');  
-Route::get('/poliza/vigencias', 'PolizaController@vigencias'); 
+Route::get('/poliza/predecesora/{id}', 'PolizaController@chequeoRenovada');
+Route::get('/poliza/vigencias', 'PolizaController@vigencias');
 Route::Resource('/estadopolizas', 'EstadoPolizaController');
 Route::Resource('/formapagos', 'FormaPagoController');
 
@@ -91,31 +91,18 @@ Route::get('/polizas/busquedaPolizaId/{id}', 'RiesgoAutomotorController@searchPo
 Route::Resource('/endosos', 'EndosoController');
 Route::Resource('/tipoendoso', 'TipoEndosoController');
 Route::get('/detallesendosos/filtrar/{id}', 'DetalleEndosoController@filtro');
-Route::get('/endosos/poliza_id/{id}', 'EndosoController@indexFiltrado'); 
-Route::get('/endosos/poliza/{id}', 'EndosoController@anulaciones');    
+Route::get('/endosos/poliza_id/{id}', 'EndosoController@indexFiltrado');
+Route::get('/endosos/poliza/{id}', 'EndosoController@anulaciones');
 
 
 //Siniestros/
 Route::Resource('/siniestrosautomotor', 'SiniestroAutomotorController');
 Route::Resource('/notas_siniestro_aut', 'NotaSiniestroAutController');
-Route::get('/siniestrosautomotor/poliza_id/{id}', 'SiniestroAutomotorController@indexFiltrado');  
-Route::get('/notasiniestroautomotor/siniestro_automotor_id/{id}', 'NotaSiniestroAutController@indexFiltrado');  
+Route::get('/siniestrosautomotor/poliza_id/{id}', 'SiniestroAutomotorController@indexFiltrado');
+Route::get('/notasiniestroautomotor/siniestro_automotor_id/{id}', 'NotaSiniestroAutController@indexFiltrado');
 
 
 //Clientes/////////////////////////////////////
 Route::Resource('/clientes', 'ClienteController');
 Route::get('/cliente/busquedaDNI', 'ClienteController@searchDNI');
 Route::get('/cliente/busquedaCuit', 'ClienteController@searchCuit');
-
-
-
-
-
-  
-
-
-
-
-
-
-

@@ -18,20 +18,14 @@ export default new Router({
       children: [
         // Dashboard
         {
-          name: "Home",
-          path: "Home",
-          component: () => import("@/views/dashboard/Dashboard")
-        },
-        // Pages
-        {
-          name: "RTL",
-          path: "pages/rtl",
-          component: () => import("@/views/dashboard/pages/Rtl")
-        },
-        {
           name: "Automotor",
           path: "polizas/automotor",
           component: () => import("@/views/pages/polizas/Automotor")
+        },
+        {
+          name: "Usuarios",
+          path: "/configuracion/usuarios",
+          component: () => import("@/views/pages/Configuracion/Usuarios")
         },
         {
           name: "User Profile",
@@ -116,66 +110,28 @@ export default new Router({
           name: "Google Maps",
           path: "maps/google-maps",
           component: () => import("@/views/dashboard/maps/GoogleMaps")
-        },
-        {
-          name: "Full Screen Map",
-          path: "maps/full-screen-map",
-          component: () => import("@/views/dashboard/maps/FullScreenMap")
-        },
-        // Root level
-        {
-          name: "Widgets",
-          path: "widgets",
-          component: () => import("@/views/dashboard/Widgets")
-        },
-        {
-          name: "Charts",
-          path: "charts",
-          component: () => import("@/views/dashboard/Charts")
-        },
-        {
-          name: "Calendar",
-          path: "calendar",
-          component: () => import("@/views/dashboard/Calendar")
         }
       ]
     },
     {
-<<<<<<< HEAD
-      path: "/configuracion",
+      path: "/administracion",
       component: () => import("@/views/dashboard/Index"),
-      name: "Configuracion",
-      redirect: "/configuracion/usuarios",
-=======
-      path: '/administracion',
-      component: () => import('@/views/dashboard/Index'),
-      name: 'Administracion',
-      redirect: '/administracion/companias',
+      name: "Administracion",
+      redirect: "/administracion/companias",
       children: [
         {
-          name: 'Organizadores',
-          path: 'organizadores',
-          component: () => import('@/views/pages/Administracion/Organizadores/Organizadores.vue'),
+          name: "Organizadores",
+          path: "organizadores",
+          component: () =>
+            import(
+              "@/views/pages/Administracion/Organizadores/Organizadores.vue"
+            )
         },
         {
-          name: 'Productores',
-          path: 'productores',
-          component: () => import('@/views/pages/Administracion/Productores/Productores.vue'),
-        },
-      ],
-      
-    },
-    {
-      path: '/configuracion',
-      component: () => import('@/views/dashboard/Index'),
-      name: 'Configuracion',
-      redirect: '/configuracion/usuarios',
->>>>>>> 97a42782b4690a806d35718ac79476e18aff0e0e
-      children: [
-        {
-          name: "Usuarios",
-          path: "usuarios",
-          component: () => import("@/views/pages/Configuracion/Usuarios.vue")
+          name: "Productores",
+          path: "productores",
+          component: () =>
+            import("@/views/pages/Administracion/Productores/Productores.vue")
         }
       ]
     }

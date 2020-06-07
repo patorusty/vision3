@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const HTTP = axios.create({
   baseURL: `http://127.0.0.1:8000/api/`
@@ -25,8 +25,8 @@ export default {
   delete(url, id) {
     return HTTP.delete(`${url}/${id}`);
   },
-  search(url) {
-    return HTTP.get(url);
+  search(url, data) {
+    return HTTP.post(url, data);
   },
   search2(url, param1, param2) {
     return HTTP.get(`${url}/${param1}/${param2}`);
