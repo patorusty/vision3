@@ -3,12 +3,14 @@
     <pages-core-app-bar />
 
     <pages-core-view />
+    
 
     <pages-core-footer />
   </v-app>
 </template>
 
 <script>
+import Notifications from '../../../../front/src/components/NotificationPlugin/Notifications.vue'
   export default {
     name: 'PagesIndex',
 

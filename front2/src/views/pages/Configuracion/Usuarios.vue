@@ -66,12 +66,6 @@
         </template>
       </v-data-table>
     </v-card>
-    <v-snackbar :value="snackbar" :color="color" right :timeout="3000" top>
-      {{ snackText }}
-      <v-icon color="white" aria-label="Close">
-        mdi-close-circle
-      </v-icon>
-    </v-snackbar>
   </v-container>
 </template>
 <script>
@@ -100,7 +94,6 @@ export default {
   computed: {
     ...mapState("usuarios", ["usuarios"]),
     ...mapState("modal", ["modal"]),
-    ...mapState("snackbar", ["snackbar", "color", "snackText"])
   },
   methods: {
     ...mapActions("usuarios", ["getUsuarios", "getUsuario", "deleteUsuario"]),
@@ -122,7 +115,7 @@ export default {
     }
   },
   created() {
-    this.getUsuarios();
+    // this.getUsuarios();
   }
 };
 </script>

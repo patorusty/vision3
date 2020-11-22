@@ -135,8 +135,8 @@ export default {
       this.HIDE_MODAL(false);
       this.RESET_USUARIO();
       this.$refs.form.resetValidation();
-      this.mailOriginal = null;
-      this.mailUsado = false;
+        this.mailOriginal = null;
+        this.mailUsado = false;
     },
     cargarTipo_Usuarios() {
       http.load(this.url).then(r => {

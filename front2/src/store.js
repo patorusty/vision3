@@ -3,6 +3,9 @@ import Vuex from "vuex";
 import usuarios from "./modules/usuarios";
 import modal from "./modules/modal";
 import snackbar from "./modules/snackbar";
+import companias from "./modules/companias";
+import organizadores from "./modules/organizadores";
+import productores from "./modules/productores";
 
 Vue.use(Vuex);
 
@@ -28,6 +31,9 @@ export default new Vuex.Store({
   modules: {
     usuarios,
     modal,
-    snackbar
+    snackbar,
+    companias,
+    organizadores,
+    productores
   }
 });

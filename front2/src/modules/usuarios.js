@@ -44,6 +44,7 @@ const actions = {
     const resp = await http.loadOne("configuracion/usuarios", id);
     commit("SET_USUARIO", resp.data);
   },
+
   async updateUsuario({ commit }, usuario) {
     const resp = await http.update(
       "configuracion/usuarios",
@@ -70,6 +71,7 @@ const actions = {
       );
     }
   },
+
   async createUsuario({ commit }, usuario) {
     const resp = await http.create("configuracion/usuarios", usuario);
     if (resp.status === 201) {
@@ -93,6 +95,7 @@ const actions = {
       );
     }
   },
+  
   async deleteUsuario({ commit }, id) {
     const resp = await http.delete("configuracion/usuarios", id);
     if (resp.status === 200) {

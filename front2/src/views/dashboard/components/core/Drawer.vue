@@ -19,8 +19,8 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-mini">{{ $t("ct") }}</span>
-          <span class="logo-normal">{{ $t("tim") }}</span>
+          <span class="logo-mini">{{ $t("v") }}</span>
+          <span class="logo-normal">{{ $t("vision") }}</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -39,11 +39,12 @@
       <div />
 
       <template v-for="(item, i) in computedItems">
+        <!-- <router-link :key="`group-${i}`" :to='item.to'> -->
         <base-item-group v-if="item.children" :key="`group-${i}`" :item="item">
           <!--  -->
-        </base-item-group>
-
+        </base-item-group> 
         <base-item v-else :key="`item-${i}`" :item="item" />
+        <!-- </router-link> -->
       </template>
 
       <!-- Style cascading bug  -->
@@ -82,7 +83,7 @@ export default {
       {
         icon: "mdi-file",
         title: "Otros Riesgos",
-        to: "polizas/otrosriesgos"
+        to: "/polizas/otrosriesgos"
       },
       {
         icon: "mdi-alert",
@@ -106,23 +107,23 @@ export default {
         children: [
           {
             title: "Compañias",
-            to: "/companias"
+            to: "companias"
           },
           {
             title: "Organizadores",
-            to: "/organizadores"
+            to: "organizadores"
           },
           {
             title: "Productores",
-            to: "/productores"
+            to: "productores"
           },
           {
             title: "Marca / Modelo / Version",
-            to: "/marcamodeloversion/edit"
+            to: "marcamodeloversion/edit"
           },
           {
             title: "Estadisticas",
-            to: "/estadisticas"
+            to: "estadisticas"
           }
         ]
       },
@@ -133,7 +134,7 @@ export default {
         children: [
           {
             title: "Usuarios",
-            to: "/usuarios"
+            to: "usuarios"
           }
         ]
       }

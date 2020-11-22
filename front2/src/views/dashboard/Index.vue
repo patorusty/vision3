@@ -3,6 +3,7 @@
     <dashboard-core-app-bar v-model="expandOnHover" />
 
     <dashboard-core-drawer :expand-on-hover.sync="expandOnHover" />
+    <notifications />
 
     <dashboard-core-view />
 
@@ -19,6 +20,7 @@
       DashboardCoreDrawer: () => import('./components/core/Drawer'),
       DashboardCoreSettings: () => import('./components/core/Settings'),
       DashboardCoreView: () => import('./components/core/View'),
+      Notifications: () => import('./Notifications')
     },
 
     data: () => ({
