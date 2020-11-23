@@ -7,7 +7,9 @@ const state = () => ({
     organizador: {
         cuit: "",
         matricula: "",
-        activo: true
+        activo: true,
+        matriuclaOriginal: '',
+        cuitOriginal: ''
     }
 });
 const mutations = {
@@ -16,6 +18,8 @@ const mutations = {
     },
     SET_ORGANIZADOR(state, organizador) {
         state.organizador = organizador;
+        state.organizador.cuitOriginal = organizador.cuit;
+        state.organizador.matriculaOriginal = organizador.matricula;
     },
     RESET_ORGANIZADOR(state) {
         state.organizador = Object.assign(
@@ -23,7 +27,9 @@ const mutations = {
             {
                 cuit: "",
                 matricula: "",
-                activo: true
+                activo: true,
+                matriculaOriginal: '',
+                cuitOriginal: ''
             }
         );
     },

@@ -184,7 +184,7 @@ export default {
       this.cuitUsado = false;
     },
     buscarCuit: debounce(async function () {
-      if (this.compania.cuit.length >= 6) {
+      if (this.compania.cuit.length >= 6 && this.compania.cuit != this.compania.cuitOriginal) {
         const resp = await http.search("/companias/busquedaCuit", {
           cuit: this.compania.cuit,
         });

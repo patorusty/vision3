@@ -7,7 +7,9 @@ const state = () => ({
     productor: {
         cuit: "",
         matricula: "",
-        activo: true
+        activo: true,
+        matriuclaOriginal: '',
+        cuitOriginal: ''
     }
 });
 const mutations = {
@@ -16,6 +18,8 @@ const mutations = {
     },
     SET_PRODUCTOR(state, productor) {
         state.productor = productor;
+        state.productor.cuitOriginal = productor.cuit;
+        state.productor.matriculaOriginal = productor.matricula;
     },
     RESET_PRODUCTOR(state) {
         state.productor = Object.assign(
@@ -23,7 +27,9 @@ const mutations = {
             {
                 cuit: "",
                 matricula: "",
-                activo: true
+                activo: true,
+                matriuclaOriginal: '',
+                cuitOriginal: ''
             }
         );
     },

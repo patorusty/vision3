@@ -154,7 +154,7 @@ export default {
       this.matriculaUsada = false;
     },
     buscarCuit: debounce(async function () {
-      if (this.productor.cuit.length >= 6) {
+      if (this.productor.cuit.length >= 6 && this.productor.cuit != this.productor.cuitOriginal) {
         const resp = await http.search("/productores/busquedaCuit", {
           cuit: this.productor.cuit,
         });
@@ -162,7 +162,7 @@ export default {
       }
     }, 700),
     buscarMatricula: debounce(async function () {
-      if (this.productor.matricula.length >= 3) {
+      if (this.productor.matricula.length >= 3 && this.productor.matricula != this.productor.matriculaOriginal) {
         const resp = await http.search("/productores/busquedaMatricula", {
           matricula: this.productor.matricula,
         });

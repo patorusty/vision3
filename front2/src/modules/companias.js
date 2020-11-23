@@ -6,7 +6,8 @@ const state = () => ({
     companias: [],
     compania: {
         cuit: "",
-        activo: true
+        activo: true,
+        cuitOriginal:''
     }
 });
 const mutations = {
@@ -15,13 +16,15 @@ const mutations = {
     },
     SET_COMPANIA(state, compania) {
         state.compania = compania
+        state.compania.cuitOriginal = compania.cuit
     },
     RESET_COMPANIA(state) {
         state.compania = Object.assign(
             {},
             {
                 cuit: "",
-                activo: true
+                activo: true,
+                cuitOriginal:''
             }
         );
     },
